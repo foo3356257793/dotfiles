@@ -1,7 +1,0 @@
-@import url("/usr/share/themes/Adapta/gnome-shell/gnome-shell.css");  
-
-stage {
-    font-family: FONT_NAME, Sans-Serif;
-    font-size: 14pt;
-    color: #ffffff;
-}

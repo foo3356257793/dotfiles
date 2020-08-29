@@ -1,7 +1,0 @@
-Find the $10001$st prime number.
-
-It should be about $n \log(n)$.
-
-# Algorithm
-
-Doing this in C.

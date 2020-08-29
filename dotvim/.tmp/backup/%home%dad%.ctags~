@@ -1,4 +1,0 @@
-# to have ctags skip indexing import statements uncomment following line
-# --python-kinds=-i
-# SageMath
---langmap=Python:+.sage

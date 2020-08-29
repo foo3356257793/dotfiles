@@ -1,5 +1,0 @@
-`configure` probes a system for required functions, libraries, and tools
-
-it generates a `config.h` file with all `#defines`.
-it generates `Makefile`s
-
