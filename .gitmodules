@@ -25,3 +25,6 @@
 [submodule "dotvim/bundle/vim-tmux-focus-events"]
 	path = dotvim/bundle/vim-tmux-focus-events
 	url = https://github.com/tmux-plugins/vim-tmux-focus-events.git
+[submodule "dotvim/bundle/vim-tmux-navigator"]
+	path = dotvim/bundle/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
