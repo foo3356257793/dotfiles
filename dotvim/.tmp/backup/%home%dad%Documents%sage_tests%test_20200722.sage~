@@ -1,0 +1,57 @@
+#!/usr/bin/sage
+
+class MyClass:
+
+    def __init__(self, arr):
+
+        if not isinstance(arr, list) or (len(arr) != 3):
+            raise TypeError(f'MyClass needs to be initialized with a list of length 3')
+
+        self.arr = copy(arr)
+
+    def __repr__(self):
+
+        return f'[MyClass: {self.arr}]'
+
+    def __hash__(self):
+
+        return hash(tuple(self.arr))
+
+    def __eq__(self, other):
+
+        if isinstance(other, MyClass):
+            return self.arr == other.arr
+        return NotImplemented
+
+def get_coefficient(formal_sum, term):
+    """
+    get the coefficient of the term 'term' in the FormalSum 'formal_sum'
+    """
+
+    if not isinstance(formal_sum, FormalSum):
+        raise TypeError('Argument 0 must be a formal sum')
+
+    try:
+        index = [tup[1] for tup in formal_sum].index(term)
+
+    except:
+
+        return 0
+
+    return formal_sum[index][0]
+
+
+if __name__ == "__main__":
+
+    set_random_seed(0)
+
+    vals = [MyClass([randrange(64) for _ in range(3)]) for _ in range(8)]
+
+    fs = FormalSum([(1,val) for val in vals])
+
+    print(fs)
+
+    new_val = copy(vals[0])
+
+    print('the following should be true...')
+    print(vals[0] == new_val)

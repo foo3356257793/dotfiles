@@ -1,0 +1,58 @@
+#!/usr/bin/python3
+
+from random import *
+
+seed()
+key_bits = 16
+max_key = (1<<key_bits)-1
+num_rows = 1024
+
+num_trials = 40
+
+list = [None] * (16*num_rows)
+split_list = [None] * (2*16*num_rows)
+lane_list = [None] * (2*num_rows)
+counts = [0] * num_trials
+
+for trial in range(0,num_trials):
+  for i in range(0,16*num_rows):
+    list[i] = randint(0,max_key)
+    if (list[i] & 1) == (i & 1):
+      split_list[i] = list[i]
+      split_list[i+(16*num_rows)^1] = 0
+    else:
+      split_list[i] = 0
+      split_list[i+(16*num_rows)^1] = list[i]
+  for lane in range(0,16):
+    for j in range(0,2*num_rows):
+      lane_list[j] = split_list[lane+16*j]
+    lane_list.sort()
+    for j in range(0,2*num_rows):
+      split_list[lane+16*j] = lane_list[j]
+  find_zero_rows = True
+  j = 0
+  while find_zero_rows:
+    is_zero = True
+    for k in range(0,16):
+      if split_list[16*j+k] != 0:
+        find_zero_rows = False
+        break
+    j += 1
+  counts[trial] = j
+
+for vec in range(0,2*num_rows):
+  for s in range(0,16):
+    print("%4X" % split_list[16*vec+s], end = " ")
+  print("")
+
+# for count in counts:
+#   print(count)
+
+mean_count = 0
+for count in counts:
+  mean_count += count
+mean_count /= num_trials
+
+print("")
+print(mean_count)
+print("expanded by %f" % ((2*num_rows-mean_count)/num_rows))

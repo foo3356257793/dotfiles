@@ -1,0 +1,35 @@
+$$
+h = \sqrt{L^2 - (b/2)^2}
+h^2 = L^2 - b^2/4
+4h^2 + b^2 = 4L^2
+$$
+Need $b$ even.
+
+Want
+$$
+4(b\pm 1)^2 + b^2 = 4L^2
+$$
+$$
+4b^2 \pm 8b + 4 + b^2 = 4L^2
+5b^2 \pm 8b + 4 = 4L^2
+$$
+$$
+20k^2 \pm 16 k + 4 = 4L^2
+$$
+$$
+5k^2 \pm 4 k + 1 = L^2
+$$
+
+Use the diophantine solver?
+
+$(k,L) = (0,1)$ and $(k,L) = (0,-1)$
+and
+$$
+k_{n+1} = -9 k_n - 4 k_n - 4
+L_{n+1} = -20 k_n - 9 k_n - 8
+$$
+and
+$$
+k_{n+1} = -9 k_n + 4 k_n - 4
+L_{n+1} = 20 k_n - 9 k_n - 8
+$$

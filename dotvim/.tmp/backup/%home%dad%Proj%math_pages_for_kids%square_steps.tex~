@@ -1,0 +1,69 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+{\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Square Club and Step Squad}
+
+Use a calculator to find these squares
+which are also step squads.
+
+%\begin{wrapfigure}{R}{\textwidth}
+  \begin{figure}[h]
+  \centering
+  \includegraphics[height=2.5in]{number_36.jpg}
+  %\caption{\label{fig:step}This is an example of the square club.}
+%\end{wrapfigure}
+\end{figure}
+
+\begin{multicols}{2}
+
+  \begin{itemize}
+    \item $0 \times 0 = \blank$
+    \item $1 \times 1 = \blank$
+    \item $1 + \cdots + 8 = 6 \times 6$\\
+      \\
+      $6 \times 6 = \blank$
+    \item $1 + \cdots + 49 = 35 \times 35$\\
+      \\
+      $35 \times 35 = \blank$
+    \item $1 + \cdots + 288 = 204 \times 204$\\
+      \\
+      $204 \times 204 = \blank$
+    \item $1 + \cdots + 1681 = 1189 \times 1189$\\
+      \\
+      $1189 \times 1189 = \blank$
+    \item $1 + \cdots + 9800 = 6930 \times 6930$\\
+      \\
+      $6930 \times 6930 = \blank$
+    \item $1 + \cdots + 57121 = 40391 \times 40391$\\
+      \\
+      $40391 \times 40391 = \blank$
+    \item $1 + \cdots + 332928 = 235416 \times 235416$\\
+      \\
+      $235416 \times 235416 = \blank$
+    % \item $1 + \cdots + 1940449 = 1372105 \times 1372105$\\
+    %   \\
+    %   $1372105 \times 1372105 = \blank$
+    % \item $1 + \cdots + 11309768 = 7997214 \times 7997214$\\
+    %   \\
+    %   $7997214 \times 7997214 = \blank$
+\end{itemize}
+
+\end{multicols}
+
+\end{document}
+

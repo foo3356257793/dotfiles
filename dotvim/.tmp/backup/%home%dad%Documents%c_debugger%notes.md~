@@ -1,0 +1,111 @@
+# TODO
+
+* How to use this with autotools
+* Learn the commands (cheatsheet?)
+
+
+# Notes
+
+Compile with debugging symbols
+```bash
+-g
+```
+
+Open the debugger on the file
+```bash
+gdb [executable]
+```
+
+Set a breakpoint
+```bash
+b [line num]
+```
+
+Start the program
+```bash
+run
+```
+or
+```bash
+r
+
+
+Step to next line
+```bash
+next
+```
+or
+```bash
+n
+```
+
+Print out a variable
+```bash
+p [varname]
+```
+
+Continue to next breakpoint
+```bash
+c
+```
+
+Continue to 10 breakpoints
+```bash
+c 10
+```
+
+Kill the program being run
+```bash
+kill
+```
+or
+```bash
+k
+```
+
+Quit
+```bash
+q
+```
+
+## threads
+
+```bash
+info threads
+```
+prints out stuff about threads
+
+```bash
+thread [num]
+```
+switch to a thread
+
+
+## gmp
+
+you can print a gmp variable as is
+not that helpful
+
+you can put a `gmp_printf` in the code and
+step through it so that it doesn't spam you
+
+I also found out you can do this
+```
+(gdb) call ((void) __gmp_printf("%Zd\n", a))
+```
+and it prints stuff out.
+
+## autotools
+
+random thing which might be helpful
+```bash
+libtool --mode=execute gdb [prog]
+```
+or this
+```bash
+./configure CXXFLAGS="-g -O0"
+make
+libtool --mode=execute gdb --arg [prog] [arg_list]
+```
+
+I should spin up a quick example of autotools.

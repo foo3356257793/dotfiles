@@ -1,0 +1,69 @@
+#!/usr/bin/sage
+
+def find_min_x(d):
+
+    cf = continued_fraction(sqrt(d))
+
+    a0 = cf[0]
+    h0 = a0
+    k0 = 1
+
+    check_0 = h0^2 - d * k0^2 - 1
+
+    if check_0 == 0:
+        return h0
+
+    a1 = cf[1]
+    h1 = a1*a0 + 1
+    k1 = a1
+
+    check_1 = h1^2 - d * k1^2 - 1
+
+    if check_1 == 0:
+        return h1
+
+    i = 1
+    while True:
+
+        i += 1
+
+        ai = cf[i]
+
+        hi = ai*h1 + h0
+        ki = ai*k1 + k0
+
+        h0 = h1
+        k0 = k1
+
+        h1 = hi
+        k1 = ki
+
+        check_1 = h1^2 - d * k1^2 - 1
+
+        if check_1 == 0:
+            return h1
+
+if __name__ == "__main__":
+
+    d = 5
+
+    cf = continued_fraction(sqrt(d))
+
+    max_x_min = 0
+    arg_max = 0
+
+    for d in range(2,1000+1):
+
+        if is_square(d):
+            continue
+
+        x_min = find_min_x(d)
+
+        if x_min > max_x_min:
+
+            max_x_min = x_min
+            arg_max = d
+
+    print(d)
+
+

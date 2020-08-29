@@ -1,0 +1,253 @@
+# config stuff this week
+
+## Vim packages
+
+``
+fzf.vim
+traces.vim
+vim-fugitive
+vim-tmux-navigator
+vim-tmux-focus-events
+sensible.vim (copied some stuff from here)
+``
+
+removed
+
+``
+vim-startify
+``
+
+## vim config
+
+``
+" some settings, mostly from sensible.vim {{{
+set smarttab        " in sensible.vim
+set complete-=i     " in sensible.vim
+
+if !&scrolloff
+set scrolloff=5    " keep some lines visible above and below the cursor
+endif
+if !&sidescrolloff
+set sidescrolloff=5
+endif
+
+if &tabpagemax < 50
+set tabpagemax=50
+endif
+set sessionoptions-=options
+set viewoptions-=options
+
+set shell=/usr/bin/zsh
+
+set rtp+=/usr/bin/fzf "use fzf
+" }}}
+
+" m is make by default {{{
+nnoremap m :w<cr>:!make<cr>
+" }}}
+
+" Headlines {{{
+nnoremap <Leader>h= yypVr=
+nnoremap <Leader>h- yypVr-
+nnoremap <Leader>h# yypVr#
+nnoremap <Leader>h* yypVr*
+nnoremap <Leader>H= yyPVr=yyjp
+nnoremap <Leader>H- yyPVr-yyjp
+nnoremap <Leader>H# yyPVr#yyjp
+nnoremap <Leader>H* yyPVr*yyjp
+" }}}
+
+" bookmarks {{{
+source $HOME/.vim/bookmarks.vim
+" bookmark the current page
+nnoremap M :let @f = expand('%:p')<cr>:tabnew $HOME/.vim/bookmarks.vim<cr>Go<cr>nnoremap <lt>leader>9 :e <esc>"fpa<lt>cr><esc>0EEs
+" }}}
+
+" split shortcuts {{{
+" one key, easy to remember
+nnoremap _ <c-w>s
+nnoremap \| <c-w>v
+" repurpose arrow keys for resizing
+nnoremap <silent> <up> :resize +5<cr>
+nnoremap <silent> <down> :resize -5<cr>
+nnoremap <silent> <left> :vertical resize +5<cr>
+nnoremap <silent> <down> :vertical resize -5<cr>
+" }}}
+
+" buffer menu and switching {{{
+nnoremap <leader>b :Buffers<cr>
+nnoremap - :bp<cr>
+nnoremap + :bn<cr>
+" }}}
+
+" toggle numbering {{{
+nnoremap <leader>n :set invnumber<cr>
+" }}}
+
+" copy/paste between tmux windows {{{
+vnoremap <leader>y "cy:call writefile(getreg('c',1,1),'/home/dad/.clipboard.txt')<cr>
+noremap <leader>p :let @c = system('cat /home/dad/.clipboard.txt')<cr>"cp
+" Note: alt-v in tmux also is pretty useful for pasting
+" }}}
+``
+
+## bookmarks.vim
+
+``
+" bookmark this file, of course
+nnoremap <leader>0 :tabnew $HOME/.vim/bookmarks.vim<cr>
+
+" config files: open in new tab
+nnoremap <leader>1 :tabnew $HOME/dotfiles/vimrc<cr>
+nnoremap <leader>2 :tabnew $HOME/dotfiles/gvimrc<cr>
+nnoremap <leader>3 :tabnew $HOME/dotfiles/tmux.conf<cr>
+nnoremap <leader>4 :tabnew $HOME/dotfiles/zshrc<cr>
+
+" bookmarked directory
+nnoremap <leader>5 :FZF $HOME/dotfiles/dotvim<cr>
+
+" current projects: open directly
+nnoremap <leader>8 :e /home/dad/Documents/notes_20200718.md<cr>
+nnoremap <leader>9 :e $HOME/Documents/lessons/lesson_20200719/kids_lesson.md<cr>
+``
+
+## m in Sage
+
+``
+" load file in tmux window {{{
+" default is sage pane to the right
+" change this by setting this variable
+let g:sage_target = "right"
+
+" function to send the correct keys
+au FileType python :nnoremap <silent> <buffer> <leader>m :w<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "load(\"' . expand('%') . '\")" Enter')<cr>
+" }}}
+``
+
+### tip
+
+This is syntax highlighted on home config:
+
+```python
+2+2 = 4
+```
+
+
+## tmux
+
+``
+##########
+# settings
+##########
+
+# autoread vim buffers which changed
+set -g focus-events on
+
+# renumber windows sequentially after closing any of them
+set -g renumber-windows on
+
+###############
+# split windows
+###############
+# splits
+bind -n M-\\ split-window -h -c "#{pane_current_path}"
+bind -n M-- split-window -v -c "#{pane_current_path}"
+
+# resize panes
+bind-key -n M-Left resize-pane -L 10
+bind-key -n M-Right resize-pane -R 10
+bind-key -n M-Up resize-pane -U 10
+bind-key -n M-Down resize-pane -D 10
+
+####################
+# vim tmux navigator
+####################
+
+# Smart pane switching with awareness of Vim splits.
+# See: https://github.com/christoomey/vim-tmux-navigator
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+        | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+        bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+        bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+        bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+        bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+        tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
+        if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1  ]' \
+          "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+          if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1  ]' \
+            "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+
+            bind-key -T copy-mode-vi 'C-h' select-pane -L
+            bind-key -T copy-mode-vi 'C-j' select-pane -D
+            bind-key -T copy-mode-vi 'C-k' select-pane -U
+            bind-key -T copy-mode-vi 'C-l' select-pane -R
+            bind-key -T copy-mode-vi 'C-\' select-pane -l
+
+
+#########################
+# copy and paste like Vim
+#########################
+
+# easy enter copy-mode
+bind-key -n M-k copy-mode
+
+# copy/paste with an external file (easy integration with Vim)
+bind-key -Tcopy-mode-vi 'y' send -X copy-pipe 'cat > ~/.clipboard.txt'
+bind-key -n M-v run "tmux set-buffer -b foo \"$(cat ~/.clipboard.txt)\"\; tmux paste-buffer -b foo"
+
+############################
+# other convenient shortcuts
+############################
+
+# reload this config
+bind-key -n M-r source-file ~/.tmux.conf \; display "tmux has been reloaded!"
+
+# Can always kill panes by ctrl-d
+# bind-key -n M-x kill-pane
+
+# rename windows
+bind-key -n M-R command-prompt -I "" "rename-window '%%'"
+
+##########################
+# begin a sage/vim session
+##########################
+bind-key s run "tmux splitw -h -p 50 -c \"#{pane_current_path}\" \; tmux send-keys -t right \"sage\" Enter \; tmux send-keys -t left \"vim\" Enter \; tmux selectp -t left \; tmux select-pane -t right -P 'bg=colour124'"
+``
+
+## zsh
+
+``
+# don't remove files by accident
+alias rm='safedelete'
+function safedelete {
+    if command -v gio > /dev/null; then
+        for f in "$@"
+        do
+            gio trash -f "$f"
+        done
+
+    elif command -v gvfs-trash > /dev/null; then
+        for f in "$@"
+        do
+            gvfs-trash "$f"
+        done
+
+    elif [ -d "$HOME/.local/share/Trash/files" ]; then
+        for f in "$@"
+        do
+            mv "$f" "$HOME/.local/share/Trash/files"
+        done
+
+    else
+        for f in "$@"
+        do
+            # shellcheck disable=SC1012
+            \rm "$f"
+        done
+    fi
+}
+``
+
+### tip
+
+Esc-v sends to Vim to edit stuff.

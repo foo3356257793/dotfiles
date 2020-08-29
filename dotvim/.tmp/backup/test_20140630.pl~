@@ -1,0 +1,11 @@
+# Lenstra's elliptic curve method
+#   from wikipedia
+#
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+
+

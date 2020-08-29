@@ -1,0 +1,56 @@
+\documentclass[17pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\def\ma{\includegraphics[height=0.9in]{minion_24.eps}}
+\def\mb{\includegraphics[height=0.9in]{minion_25.eps}}
+\def\mc{\includegraphics[height=0.9in]{minion_26.eps}}
+\def\md{\includegraphics[height=0.9in]{minion_27.eps}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+  \paragraph{Minion Math \#8.}
+
+\begin{align*}
+  \includegraphics[height=0.9in]{minion_00.eps}
+  & = 1\\
+  \includegraphics[height=0.9in]{minion_01.eps}
+  & = 2\\
+  \includegraphics[height=0.9in]{minion_02.eps}
+  & = 3\\
+  \includegraphics[height=0.9in]{minion_03.eps}
+  & = 4\\
+  \includegraphics[height=0.9in]{minion_04.eps}
+  & = 5\\
+  \includegraphics[height=0.9in]{minion_05.eps}
+  & = 6 \\
+  \includegraphics[height=0.9in]{minion_00.eps}
+  +
+  \includegraphics[height=0.9in]{minion_01.eps}
+  +
+  \includegraphics[height=0.9in]{minion_02.eps}
+  +
+  \includegraphics[height=0.9in]{minion_03.eps}
+  +
+  \includegraphics[height=0.9in]{minion_04.eps}
+  +
+  \includegraphics[height=0.9in]{minion_05.eps}
+  &= \blank
+\end{align*}
+
+\end{document}
+

@@ -1,0 +1,270 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=0.5in, bottom=0.5in, left=0.5in,
+right=0.5in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{multicol}
+\setlength\parindent{0pt}
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\usepackage{fontspec}
+\setmainfont{HelveticaNeue}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{multicols}{4}
+	{\bf Smith/Matthews}
+	\begin{itemize}
+		\item Aleman
+		\item Davis (Focus Five)
+		\item Dawkins
+	\end{itemize}
+
+	{\bf Wightman/Werkeiser}
+	\begin{itemize}
+		\item Anderson
+		\item Jones
+	\end{itemize}
+
+	{\bf Haslam/Himminghoefer}
+	\begin{itemize}
+		\item Austin
+		\item Murrell-Ford
+		\item Bridger
+	\end{itemize}
+
+	{\bf Holyoak/Jacobson}
+	\begin{itemize}
+		\item Barfuss
+		\item Berger (Focus Five)
+	\end{itemize}
+
+	{\bf Nelson/Hartung}
+	\begin{itemize}
+		\item Chabries
+		\item Ebersohl
+		\item White, Sarah
+	\end{itemize}
+
+	{\bf Barnum/Snook}
+	\begin{itemize}
+		\item Blair
+		\item Milligan
+		\item Syphert
+	\end{itemize}
+
+	{\bf Vest/Wallace, Amber}
+	\begin{itemize}
+		\item Bonniksen
+		\item Jackson, Mckell
+		\item Snyder
+	\end{itemize}
+
+	\columnbreak
+	{\bf Wallace, Janye/Aleman}
+	\begin{itemize}
+		\item Boston, Megan
+		\item Himminghoefer
+		\item White, Sarah
+	\end{itemize}
+
+	{\bf Martinez/Butzin}
+	\begin{itemize}
+		\item George, Chelsea
+		\item Horr
+		\item Schalk, Hannah
+	\end{itemize}
+
+	{\bf Dorman/Chabries}
+	\begin{itemize}
+		\item Butzin
+		\item Nielson
+		\item Hartung
+	\end{itemize}
+
+	{\bf FIllmore/Snyder}
+	\begin{itemize}
+		\item Chi (Laura and Yvette)
+		\item Simuluh
+	\end{itemize}
+
+	{\bf Dawkins/Foutz}
+	\begin{itemize}
+		\item Dorman
+		\item Matheson
+		\item Dorsey
+	\end{itemize}
+
+	{\bf Milligan/Moore}
+	\begin{itemize}
+		\item Fewkes
+		\item Wallace, Amber
+	\end{itemize}
+
+	{\bf Ebersohl/Fewkes}
+	\begin{itemize}
+		\item Foutz
+		\item Snook
+		\item Vennard
+	\end{itemize}
+
+	\columnbreak
+	{\bf Jones/Thomas}
+	\begin{itemize}
+		\item Hansen
+		\item Walther
+		\item Fillmore
+	\end{itemize}
+
+	{\bf Anderson/Austin}
+	\begin{itemize}
+		\item Laird
+		\item Luedtke
+	\end{itemize}
+
+	{\bf Bridger/Wetzel}
+	\begin{itemize}
+		\item Holyoak
+		\item Jacobson
+		\item Jackson, Ruby
+	\end{itemize}
+
+	{\bf Simuluh/Savage}
+	\begin{itemize}
+		\item Kuehn
+		\item Richardson
+	\end{itemize}
+
+	{\bf Roach/Robertson}
+	\begin{itemize}
+		\item Martinez
+		\item Contratto (Focus five)
+	\end{itemize}
+
+	{\bf Luedtke/Laird}
+	\begin{itemize}
+		\item Barnum
+		\item Mathews
+	\end{itemize}
+
+	{\bf Blair/Bonniksen}
+	\begin{itemize}
+		\item Martin, Bailey and Sara (Focus Five)	
+		\item Mecham
+	\end{itemize}
+
+	\columnbreak
+	{\bf Jackson, Mckell/Horr}
+	\begin{itemize}
+		\item Moore
+		\item Wallace, Amber
+		\item Haslam
+	\end{itemize}
+
+	{\bf Barfuss/Shorr}
+	\begin{itemize}
+		\item Nelson
+		\item Porter
+	\end{itemize}
+
+	{\bf Porter/Richardson}
+	\begin{itemize}
+		\item Roach
+		\item Savage
+		\item Ward
+	\end{itemize}
+
+	{\bf Hansen/Murrell-Ford}
+	\begin{itemize}
+		\item Robertson
+		\item Smith
+	\end{itemize}
+
+	{\bf Matheson/Lewis}
+	\begin{itemize}
+		\item Simpson
+		\item Shorr
+		\item Jorgensen
+	\end{itemize}
+
+	{\bf Walther/Ward}
+	\begin{itemize}
+		\item Vest, Jeanine
+		\item Wetzel
+		\item Wightman
+	\end{itemize}
+
+	{\bf George, Linda/Simpson}
+	\begin{itemize}
+		\item Werkeiser
+	\end{itemize}
+
+	{\bf Jorgensen/Syphert}
+	\begin{itemize}
+		\item Lewis, Amber	
+		\item McGee, Adrian
+	\end{itemize}
+\end{multicols}
+
+\subsection*{Sisters to be seen by the missionaries}
+
+\begin{multicols}{2}
+	\begin{tabular}{l p{12em}}
+	Baker, Andrea 	& Anderson/Austin \\
+	Bass, Rachel		& George/Simpson \\
+	Butler, Natasha	& Letter Route \\
+	Chi, Yvette		& Mecham/Snyder \\
+	Knudson, Esther	& Dorman/Chabries \\
+	Cooper, Jaimie	& LR \\
+	Cox, Michelle		& LR \\
+	Harper, Jennifer	& Dorman/Chabries \\
+	Maese, Tracy		& LR \\
+	Minster, Chelsea	& Fillmore/Foutz \\
+	Mong, Renee		& LR \\
+	Morgan, Amber	& Bridger/Wetzel \\
+	Nixon, Aubrie
+	& Pierson, Yeon Ju	LR \\
+	Pittman, Erin		& Martinez/Butzin \\
+\end{tabular}
+\columnbreak
+\begin{tabular}{l p{12em}}
+	Pittman, Kristina	& Martinez/Butzin \\
+	Ritterby, Ashley	
+	& Roe, Maria		LR (name brought up in ward council) \\
+	Saunders, Sarah	& Syphert	 \\
+	Thomas, Amanda	& Ebersohl/Fewkes (has companion for a route) \\
+	Velasquez, Yajahira	& LR \\
+	Vest, Rebecca 	& (is she active?) \\
+	Weber, Sabrina	& Matheson/Lewis \\
+	Williams, Charlene	& Syphert	 \\
+	Wilson, Lucinda	& LR \\
+	Zollinhofer, Mai	& Dawkins/Savage \\
+	Robinson, Janelle
+	&  \\
+\end{tabular}
+\end{multicols}
+
+\end{document}
+

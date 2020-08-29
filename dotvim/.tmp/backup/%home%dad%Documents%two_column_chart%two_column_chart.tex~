@@ -1,0 +1,81 @@
+\documentclass[a4paper,20pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{fontspec}
+
+\setmainfont{Alte Haas Grotesk}
+
+\usepackage[margin=0.5in]{geometry}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\def\blankrow{\hline \hspace{2in} & \hspace{2in} & \hspace{2in} \\}
+
+%opening
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  \bf{date} & \bf{A} & \bf{C} \\
+  \hline
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \blankrow
+  \hline
+\end{tabular}
+\end{center}
+
+\end{document}
+

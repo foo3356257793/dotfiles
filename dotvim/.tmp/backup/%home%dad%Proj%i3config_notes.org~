@@ -1,0 +1,100 @@
+* Commands
+
+** Install
+yay -S i3 i3status dmenu
+
+**Enable tap to click
+sudo mkdir -p /etc/X11/xorg.conf.d && sudo tee <<'EOF' /etc/X11/xorg.conf.d/90-touchpad.conf 1> /dev/null
+Section "InputClass"
+        Identifier "touchpad"
+        MatchIsTouchpad "on"
+        Driver "libinput"
+        Option "Tapping" "on"
+EndSection
+
+EOF
+
+**Natural scrolling
+
+yay -S xorg-xinput
+
+xinput list
+
+showed the touchpad was id 11
+
+xinput list-props 11
+
+showed natural scrolling option
+
+exec --no-startup-id xinput set-prop 11 304 1
+
+set the option
+
+**Caps is escape
+
+exec --no-startup-id setxkbmap -option caps:escape
+
+**workspace navigation
+yay -S cargo
+cargo install i3switcher
+
+**gaps
+See config file.
+
+** move bottom bar to top?
+
+add
+
+position top
+
+to the bar { ... } block of the config
+
+** chrome stored passwords issue
+
+need to autostart the gnome-keyring-daemon
+
+exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
+
+need to call chrome with the following option:
+
+--password-store=gnome
+
+** audio
+
+I have a volume icon now
+I think I was changing the volume before with my keyboard
+This could be improved
+
+
+* TODO
+
+configure panel (replace with a nicer panel?)
+dealing with floating windows
+make some things be floating by default
+shutdown option
+manage wifi
+conky (show shortcuts)
+manage users (gnome settings)
+screen brightness settings
+  this doesn't seem to work via keyboard
+do something with the fn key??
+screenshots easily
+what is happening with screen saver?
+compton?? compositor??
+four finger gestures??
+change gtk font on i3
+google-chrome passwords issue: use dmenu (or alternative)
+rofi vs dmenu??
+add transparency to the terminal
+  gnome-terminal? termite?
+battery stuff??
+keyboard shortcuts to swap windows
+how to cycle layouts
+compare system resource usage in various configs
+
+spinning wheel on "open"
+  - it doesn't spin if you put it over another window
+
+volumeicon:
+  have a much nicer visual indicator
+  rearrange things on the panel and find the right spot for volume

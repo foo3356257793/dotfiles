@@ -1,0 +1,106 @@
+#!/usr/bin/sage
+
+groups = [[0,1,2],[3,2,4],[5,4,6],[7,6,8],[9,8,1]]
+
+def get_ans_string(tup):
+
+    print_order = [0,1,2,3,2,4,5,4,6,7,6,8,9,8,1]
+
+    # rotate based on smallest external node
+    external_indices = [0,3,5,7,9]
+    external_values = [tup[i] for i in external_indices]
+    min_index = external_values.index(min(external_values))
+
+    rotate = 3 * min_index
+
+    head = print_order[rotate:]
+    tail = print_order[:rotate]
+
+    print_order = head + tail
+
+    ans = ''
+    for i in print_order:
+
+        ans += str(tup[i])
+
+    return ans
+
+def branch_solutions(current, remaining):
+
+    num_current = len(current)
+
+    if num_current == 9:
+
+        S = current[0] + current[1] + current[2]
+
+        if current[1] + current[8] + remaining[0] == S:
+
+            ans = get_ans_string(current + remaining)
+
+            if len(ans) == 16:
+
+                return [int(ans)]
+
+            else:
+
+                return []
+
+        else:
+
+            return []
+
+    ret = []
+    for a in remaining:
+
+        poss = current + [a]
+        new_remaining = [r for r in remaining if r != a]
+
+        if num_current == 3:
+
+            S = poss[0] + poss[1] + poss[2]
+
+            b = S - (poss[3] + poss[2])
+
+            if not b in new_remaining:
+                continue
+
+            poss.append(b)
+            new_remaining = [r for r in new_remaining if r != b]
+
+        elif num_current == 5:
+
+            S = poss[0] + poss[1] + poss[2]
+
+            b = S - (poss[5] + poss[4])
+
+            if not b in new_remaining:
+                continue
+
+            poss.append(b)
+            new_remaining = [r for r in new_remaining if r != b]
+
+        elif num_current == 7:
+
+            S = poss[0] + poss[1] + poss[2]
+
+            b = S - (poss[7] + poss[6])
+
+            if not b in new_remaining:
+                continue
+
+            poss.append(b)
+            new_remaining = [r for r in new_remaining if r != b]
+
+
+        ret += branch_solutions(poss, new_remaining)
+
+    return ret
+
+
+if __name__ == "__main__":
+
+    fills = [9,8,7,6,5,4,3,2,1,10]
+
+    ret = branch_solutions([], fills)
+
+    #print(ret[0])

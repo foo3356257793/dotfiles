@@ -1,0 +1,53 @@
+\documentclass[a4paper,17pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Leah's School Checklist}
+\author{}
+\date{May 4--8, 2020}
+
+\begin{document}
+
+\maketitle
+
+This is all of the homework Leah
+has to do this week.
+
+\begin{todolist}
+\item Science book about extreme weather
+\item \emph{Lizards from the Park} book talk
+\item \emph{What if You Had Animal Teeth?} book talk
+\item Language Arts Lesson 8
+\item Language Arts Lesson 9
+\item Math Lesson 11
+\item Math Lesson 12
+\end{todolist}
+
+
+\end{document}
+

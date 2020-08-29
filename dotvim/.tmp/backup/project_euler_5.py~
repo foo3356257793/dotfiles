@@ -1,0 +1,25 @@
+import math
+
+" def primeInfo(upperBound): "
+  " primes = []
+  " isPrime = [1] * (upperBound + 1)
+  " isPrime[0] = 0
+  " isPrime[1] = 0
+  " for x in range(2, upperBound):
+    " if isPrime[x]:
+      " primes.append(x)
+      " multiple = 2*x
+      " while multiple <= upperBound:
+        " isPrime[multiple] = 0
+        " multiple += x
+  " return primes, isPrime
+
+upperBound = 20
+primes, isPrime = primeInfo(upperBound)
+logUpperBound = math.log(upperBound)
+prod = 1
+for prime in primes:
+  power = int(logUpperBound / math.log(prime))
+  prod *= prime ** power
+
+print prod

@@ -1,0 +1,33 @@
+\documentclass[17pt]{extarticle}
+\usepackage{tabu,mathtools}
+\setlength\parindent{0pt}
+\tabulinesep=_20pt
+
+\usepackage{multicol}
+
+\setlength{\columnsep}{2.5cm}
+
+\usepackage[margin=1in]{geometry}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{4cm}{0.15mm}}
+
+\begin{document}
+
+{\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Classify It!}
+
+Roll two dice.  Cross off one of the
+hexagons which match the dice (if you can).
+Continue until all of the hexagons are
+crossed off.
+
+
+\begin{center}
+  \includegraphics[height=7.25in]{classify_it.jpg}
+\end{center}
+
+
+\end{document}

@@ -1,0 +1,6 @@
+bind-key -n M-. select-window -n
+bind-key -n M-, select-window -p
+
+* TODO
+
+Should

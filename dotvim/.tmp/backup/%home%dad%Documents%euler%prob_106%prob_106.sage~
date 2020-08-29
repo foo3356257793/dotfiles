@@ -1,0 +1,50 @@
+#!/usr/bin/sage
+
+import itertools
+
+def num_homog_to_test(n):
+
+    N = 2*n
+
+    num_test = 0
+
+    for tup in itertools.combinations(range(1,N), n-1):
+
+        A = [0] + list(tup)
+        B = [i for i in range(1,N) if not i in A]
+
+        good = False
+        for i in range(1,n):
+
+            if A[i] > B[i]:
+                good = True
+                break
+
+        if good:
+            num_test += 1
+
+    return num_test
+
+def num_to_test(N):
+
+    # only need to test evens
+    num_test = []
+    for n in range(2,(N//2)+1):
+        num_test.append(num_homog_to_test(n))
+
+    print(num_test)
+
+    num_classes_to_test = [binomial(N,2*n) for n in range(2,(N//2)+1)]
+
+    print(num_classes_to_test)
+
+    return sum([num_test[i] * num_classes_to_test[i] for i in
+        range(len(num_test))])
+
+
+
+if __name__ == "__main__":
+
+    print(num_homog_to_test(1))
+    print(num_homog_to_test(2))
+    print(num_homog_to_test(3))

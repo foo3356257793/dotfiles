@@ -1,0 +1,69 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    bd = 20
+
+    hits = []
+
+    for x1 in range(0,bd+1):
+        for y1 in range(0,bd+1):
+
+            vec = vector([x1,y1])
+
+            if vec == 0:
+                continue
+
+            G = gcd(x1,y1)
+
+            perp_vec = vector([y1/G, -x1/G])
+
+            # what multiples of perp_vec work when adding to the end?
+            # 0 <= vec[i] + k*perp_vec[i] <= bd
+
+            #k_min = -vec[i] / perp_vec[i]
+            k_mins = []
+            k_maxs = []
+
+            for i in range(2):
+
+                if perp_vec[i] > 0:
+
+                    k_mins.append(ceil(-vec[i]/perp_vec[i]))
+                    k_maxs.append(floor((bd-vec[i])/perp_vec[i]))
+
+                elif perp_vec[i] < 0:
+
+                    k_maxs.append(floor(-vec[i]/perp_vec[i]))
+                    k_mins.append(ceil((bd-vec[i])/perp_vec[i]))
+
+            k_min = max(k_mins)
+            k_max = min(k_maxs)
+
+            for k in range(k_min,k_max+1):
+
+                if k != 0:
+                    hits.append([vec, vec + k*perp_vec])
+
+
+            # what multiples of perp vec work when adding to the origin
+            if perp_vec[0] == 0:
+                perp_vec[1] = 1
+
+            if perp_vec[1] >= 0:
+
+                k_maxs = []
+                for i in range(2):
+                    if perp_vec[i] != 0:
+                        k_maxs.append(floor(bd/perp_vec[i]))
+                k_max = min(k_maxs)
+
+                for k in range(1,k_max+1):
+
+                    hit = [vec, k*perp_vec]
+                    hit.sort()
+
+                    if not hit in hits:
+                        hits.append(hit)
+
+    print(len(hits))

@@ -1,0 +1,55 @@
+```bash
+# fzf config
+#export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_DEFAULT_COMMAND="/home/dad/opt/list_all_files.py"
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+
+export FZF_ALT_C_COMMAND="/home/dad/opt/list_all_directories.py"
+
+source /usr/share/fzf/shell/key-bindings.zsh
+```
+
+```python
+#!/usr/bin/python3
+
+import os
+
+if __name__ == "__main__":
+
+for root, dirs, files in os.walk("/home/dad/", topdown=True):
+
+  if root[0] != '.':
+    print(root)
+
+    #files = [f for f in files if not f[0] == '.']
+    dirs[:] = [d for d in dirs if not d[0] == '.']
+```
+
+```python
+#!/usr/bin/python3
+
+import os
+
+if __name__ == "__main__":
+
+for root, dirs, files in os.walk("/home/dad/", topdown=True):
+
+  files = [f for f in files if not f[0] == '.']
+  dirs[:] = [d for d in dirs if not d[0] == '.']
+
+  for f in files:
+
+  print(f'{root}/{f}')
+```
+
+
+```vim
+nnoremap <leader>F :FZF<cr>
+nnoremap <leader>f :FZF ~<cr>
+
+imap <c-x><c-f> <plug>(fzf-complete-path)
+```
+
+```tmux
+bind-key -n M-e tmux send-keys "vim" Space C-t
+```

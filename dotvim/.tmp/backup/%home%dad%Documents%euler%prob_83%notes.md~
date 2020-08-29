@@ -1,0 +1,21 @@
+# Idea
+
+Keep track of a set of border points.
+Initialize to (0,0).
+Keep track of the minimum path to points visited.
+
+For the minimum weight point in the set of border points,
+we can fill in all neighbors.  Remove the old minimum from the
+border set.  Check whether the new points are border points.
+
+_Proof_.
+
+We set up the border so that we have visited all points
+in the region from the border to the top corner.  To visit a new point,
+we have to pass through _some_ border point.  We are guaranteed minimal
+if we pass through the minimum weight point.
+
+**Claim**. This terminates.
+
+_Proof_. There is a minimum at each iteration, and we visit at least
+one point.

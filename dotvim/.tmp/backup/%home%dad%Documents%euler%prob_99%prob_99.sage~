@@ -1,0 +1,27 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    fp = open('base_exp.txt')
+
+    lines = fp.readlines()
+
+    fp.close()
+
+    max_val = 0
+    arg_max = 0
+
+    for i in range(len(lines)):
+
+        line = lines[i]
+        vals = line.split(',')
+        vals = [int(v) for v in vals]
+
+        #N = vals[0] ** vals[1]
+        lb_N = vals[1] * lb(vals[0])
+
+        if lb_N > max_val:
+            max_val = lb_N
+            arg_max = i
+
+    print(arg_max+1)

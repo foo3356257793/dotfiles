@@ -1,0 +1,74 @@
+#!/usr/bin/sage
+
+def palindrome_from_tail(a, tail_digits, double_middle=True):
+
+    a_str = '%d' % a
+
+    while len(a_str) < tail_digits:
+
+        a_str = '0' + a_str
+
+    rev_str = a_str[::-1]
+
+    if not double_middle:
+        rev_str = rev_str[:-1]
+
+    full_str = rev_str + a_str
+
+    return int(full_str)
+
+def is_palindrome_in_binary(a):
+
+    bin_str = bin(a)[2:]
+    len_str = len(bin_str)
+
+    for i in range((len_str//2) + 1):
+
+        if bin_str[i] != bin_str[len_str-1-i]:
+            return False
+
+    return True
+
+if __name__ == "__main__":
+
+    a = 123
+
+    pal_numbers = []
+
+    #for n_digits in range(1,7):
+    for n_digits in [6]:
+
+        tail_size = ceil(n_digits/2)
+
+        dbl_middle = n_digits % 2 == 0
+
+        print('---')
+        print(tail_size, dbl_middle)
+        print('---')
+
+        for a in range(10**tail_size):
+
+            if a % 10 == 0:
+                continue
+
+            pal = palindrome_from_tail(a, tail_size, dbl_middle)
+
+            if is_palindrome_in_binary(pal):
+
+                print(a, pal, bin(pal)[2:])
+
+                if not pal in pal_numbers:
+
+                    pal_numbers.append(pal)
+
+
+
+    """
+    for n_digits in range(1,7):
+
+        tail_size = ceil(n_digits/2)
+
+        for a in range(10**tail_size):
+
+
+    """

@@ -1,0 +1,18 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    # I'm going to do this the easy, inefficient way
+
+    d = []
+
+    a = 1
+
+    while len(d) < 1000000:
+
+        a_str = str(a)
+
+        for c in a_str:
+
+            d.append(int(c))
+

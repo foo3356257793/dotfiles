@@ -1,0 +1,97 @@
+#!/usr/bin/python3
+
+from random import *
+
+def print_partial_line(arr,n):
+  for i in range(n):
+    print("%8X " % arr[i], end="")
+  print("")
+
+def print_line(arr):
+  print_partial_line(arr,16)
+
+def print_part_list(arr,n,n_print):
+  if n_print == 0:
+    return
+  elif n <= 16:
+    print_partial_line(arr,n)
+    return
+  elif n_print == 1:
+    print_line(arr)
+
+  n_partial = 1 if n&15 != 0 else 0
+  n_full = n_print - n_partial
+  full_in_arr = n//16
+  n_full = full_in_arr if (full_in_arr < n_full) else n_full
+
+  if n_full == 1:
+    print_line(arr)
+  else:
+    for i in range(n_full):
+      j = (i*(full_in_arr-1))//(n_full-1)
+      print_line(arr[16*j:16*(j+1)])
+
+  if n_partial:
+    print_partial_line(arr[16*full_in_arr:n],n&15)
+
+def print_list(arr,n):
+  n_partial = 1 if n&15 != 0 else 0
+  n_full = n//16
+  for line in range(n_full):
+    print_line(arr[line*16:(line+1)*16])
+
+  if n_partial:
+    print_partial_line(arr[n_full*16:n],n&15)
+
+def gen_rand_list_ll_form(n,bsize,maxkey):
+  n_full_blocks = n // (bsize-16)
+  n_partial = n % (bsize-16)
+  n_total_blocks = n_full_blocks if n_partial==0 else n_full_blocks+1
+  n_ll = bsize*n_total_blocks
+
+  arr = [0] * n_ll
+
+  for bl in range(n_full_blocks):
+    for i in range(bsize-16):
+      arr[bl*bsize+i] = randint(0,maxkey)
+    arr[(bl+1)*bsize-1] = (bl+1)*bsize
+
+  if n_partial:
+    for i in range(n_partial):
+      arr[(n_full_blocks)*bsize+i] = randint(0,maxkey)
+    arr[(n_full_blocks+1)*bsize-1] = 1
+    arr[(n_full_blocks+1)*bsize-2] = n_partial
+  else:
+    arr[(n_full_blocks)*bsize-1] = 1
+    arr[(n_full_blocks)*bsize-2] = bsize-16
+
+  return arr, n_ll
+
+def process_line(line,buffers,dst,shift,mask,bsize,next):
+  digits = [0]*16
+  for i in range(16):
+    digits[i] = (line[i]>>shift)&mask
+  for i in range(16):
+    digit = digits[i]
+    buff_line = buffers[16*digit:16*(digit+1)]
+    buff_c = buff_line[15]
+    buff_line[buff_c] = line[i]
+    buff_c += 1
+    if(buff_c & 15):
+      flush_line(buff_line,dst,buff_c,block_size,next)
+
+########
+# MAIN #
+########
+
+seed()
+
+key_size = 32
+max_key = (1<<key_size)-1
+
+n = (1<<8)+16
+bsize = (1<<6)
+#arr = [randint(0,max_key) for r in range(n)]
+arr, n_ll = gen_rand_list_ll_form(n,bsize,max_key)
+
+print_list(arr,n_ll)

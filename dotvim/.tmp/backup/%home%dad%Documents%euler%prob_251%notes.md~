@@ -1,0 +1,174 @@
+# Problem
+
+$$
+(a+b\sqrt{c})^{1/3}
++
+(a-b\sqrt{c})^{1/3}
+=
+1
+$$
+
+How can we solve this?
+
+Let's say
+$$
+x + y = 1
+$$
+where
+$$
+x^3 = a+b\sqrt{c}
+y^3 = a-b\sqrt{c}
+$$
+so
+$$
+x^3+y^3 = 2a
+$$
+$$
+(x^3-y^3)^2 = 4b^2c
+$$
+
+We get
+$$
+x^3+y^3 = x^2 + xy + y^2 = 2a
+$$
+and
+$$
+(x-y)^2(x^2 - xy + y^2)^2 = 4b^2c
+$$
+
+$$
+(x-y)^2(xy - a)^2 = b^2c
+$$
+
+Continue
+$$
+(x^2 - 2xy + y^2)(x^2y^2 - 2axy + a^2) = b^2c
+$$
+
+
+**example**.
+They claim
+$$
+(2 + \sqrt{5})^{1/3}
++
+(2 - \sqrt{5})^{1/3}
+=
+1 \; .
+$$
+How can we see this algebraically?
+
+Equivalent to
+$$
+(2 + \sqrt{5})
++
+3 (4-5)^{1/3} (2+\sqrt{5})^{1/3}
+3 (4-5)^{1/3} (2-\sqrt{5})^{1/3}
++
+(2 - \sqrt{5})
+=
+1
+$$
+which does reduce to the relation.
+
+In general we get
+$$
+(a + b\sqrt{c})
++
+(a - b\sqrt{c})
++
+3 (a^2 -b^2c)^{1/3} (a+b\sqrt{c})^{1/3}
++
+3 (a^2 -b^2c)^{1/3} (a-b\sqrt{c})^{1/3}
+=
+(a+b\sqrt{c})^{1/3}
++
+(a-b\sqrt{c})^{1/3}
+$$
+
+This gives
+$$
+2a
+=
+\left(
+1
+- 3 (a^2 - b^2c)^{1/3}
+\right)
+\left(
+    (a+b\sqrt{c})^{1/3}
+    +
+    (a-b\sqrt{c})^{1/3}
+\right)
+$$
+This requires that
+$$
+2a = 1 -3 (a^2 - b^2c)^{1/3}
+$$
+
+This forces $a^2 - b^2c$ to be a cube.
+
+For choices of $a,b$ we then are forced into using choices
+of $c$ to make a cube.  An actually
+$$
+\left(-\frac{2a-1}{3}\right)^3 = (a^2 - b^2c)
+$$
+Forces a unique choice of $c$.
+
+**Note**.
+We get
+$$
+\left(\frac{2a-1}{3}\right)^3 + a^2 = b^2c
+$$
+We can factor this thing, then, to figure out what $b$ and $c$
+could be.  This is particularly restrictive on $b$ as we need square factors
+for $b$.
+
+*Note*.
+It isn't that expensive to do $b=1$.
+
+*Note*.  We need $2a=1 \mod 3$, so $a=3k+2$.
+Then,
+$$
+\frac{2(3k+2)-1}{3}
+=
+\frac{6k+4-1}{3}
+=
+2k+1 \; .
+$$
+This gives
+$$
+(2k+1)^3 + (3k+2)^2
+=
+8k^3 + 21 x^2 + 18 x + 5
+=
+(8k+5) (k+1)^2 = b^2 c
+$$
+
+One solution is $b = k+1$ and $c=8k+5$.
+
+# My idea
+
+Exhaust $k$.
+Factor $(8k+5)$ and $(k+1)$.
+
+Branch over square factors to pick $b$ and $c$.
+
+*Note*.
+If $a=3k+2$ and $b=k+1$ and $c=8k+5$,
+then the perimeter is
+$$
+12k + 8
+$$
+and we can count how many are like this.
+Maybe this isn't a major savings?
+
+*TODO*.
+Use parallel programming and cython to speed this up.
+
+## Bound
+
+If
+$$
+(8k+5)(k+1)^2 = b^2c
+$$
+then the smallest we can make $b+c$ is
+about $2k$.

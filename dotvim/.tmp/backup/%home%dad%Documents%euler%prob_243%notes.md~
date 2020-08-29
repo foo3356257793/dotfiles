@@ -1,0 +1,22 @@
+If we just had
+
+phi(a) / a
+
+And
+
+$$
+a = p_1^{e_1} ... p_n^{e_n}
+$$
+
+This would be
+
+$$
+p_1^{e_1-1} ... p_n^{e_n-1} (p_1-1) ... (p_n-1)/ p_1^{e_1} .. p_n^{e_n}
+=
+\prod_i (1 - 1/p_i)
+$$
+
+The resiliance is then
+$$
+r \times \frac{d}{d-1}
+$$

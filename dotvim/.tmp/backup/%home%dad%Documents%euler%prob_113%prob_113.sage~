@@ -1,0 +1,14 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    n_digits = 10
+
+    # start with 1-9 (has to at least be a positive integer)
+    non_bouncy = [9]
+
+    for d in range(2,n_digits+1):
+
+        non_bouncy.append(binomial(d+10-1,d) + binomial(d+9-1,d) - 10)
+
+    print(sum(non_bouncy))

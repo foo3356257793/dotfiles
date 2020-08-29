@@ -1,0 +1,67 @@
+# How to do this?
+
+Number of possible packings.
+
+## Ideas
+
+The straightforward code is very slow.
+There should be a much better algorithm.
+
+At the top level, we can split into ways to
+divide up loose bags and not loose bags.
+
+**Update**.
+My code is going to take too long to finish.
+
+$f(2) = 1$
+$f(3) = 2$.
+$f(4) = 5$.
+
+$f(4) = f(3) + 3 \times f(2)$.
+
+**try**
+
+$f(n) = f(n-1) + {{n-1}\choose{2}} f(n-2) + {{n-3}\choose{4}} f(n-4)$.
+
+**again**.
+
+Have a set of number of arrangements into odd and even number of bags.
+
+
+**still slow**.
+
+I have
+
+$f_{odd}(n) = \sum_{p even} {n-1}\choose{p} f_{even}(p) f_{even}(n-1-p)$
+$f_{even}(n) = \sum_{p even} {n-1}\choose{p} f_{even}(p) f_{odd}(n-1-p)$
+
+# New ideas
+
+We can write
+
+$$
+f(24680) =
+\sum_{p even}
+{{24679}\choose{p}} f_{even}(p) f(24679-p)
+$$
+
+# Alternating permutations
+
+Permutations which go only up/down.
+
+The number of these seem to match the solution here.  Why?
+
+1324
+1423
+2314
+2413
+3412
+
+1,2,3,4
+(1,2)-3,4
+(1,3)-4,2
+(1,2)-4,3
+(2,3)-4,1
+
+(1,2)-3,4 <-> 1423
+(2,3)-4,1 <-> 1324

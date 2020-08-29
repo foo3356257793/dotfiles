@@ -1,0 +1,30 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    bd = 2**20
+
+    sieve_area = [0] * (bd+1)
+
+    primes = prime_range(bd)
+
+    for p in primes:
+
+        for k in range(p, bd+1, p):
+
+            sieve_area[k] += 1
+
+    # look for consecutive 4s
+
+    for i in range(bd-3):
+
+        if sieve_area[i] == 4:
+            hit = True
+            for j in range(1,4):
+                if sieve_area[i+j] != 4:
+                    hit = False
+                    break
+
+            if hit:
+
+                print(i)

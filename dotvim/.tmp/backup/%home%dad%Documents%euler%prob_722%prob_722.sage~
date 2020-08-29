@@ -1,0 +1,45 @@
+#!/usr/bin/sage
+
+prec = ceil(12 * lb(10))
+
+RF = RealField(128)
+
+from multiprocessing import Pool
+
+q = RF( 1-1/(2**25) )
+k = 15
+
+def process_chunk(n_start):
+
+    print(n_start)
+
+    S = 0
+    for n in range(n_start * (2**20),(n_start+1)*(2**20)):
+        S += RF( (RF(n)**k) * (q**n) / (1-(q**n)) )
+
+    return S
+
+if __name__ == "__main__":
+
+    S = 0
+
+    N = (2**6) * 10**6
+
+
+    """
+    for n in range(1,N+1):
+
+        #print('...', n)
+        if n % 100000 == 0:
+            print('...', n)
+            print('S = %.12e' % S)
+
+        S += RF( (RF(n)**k) * (q**n) / (1-(q**n)) )
+
+    print("%.12e" % S)
+    """
+
+    with Pool(4) as pool:
+        data = pool.map(process_chunk, range(2**12))
+
+    print(sum(data))

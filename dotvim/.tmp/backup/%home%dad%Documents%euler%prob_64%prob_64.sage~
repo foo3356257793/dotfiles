@@ -1,0 +1,73 @@
+#!/usr/bin/sage
+
+def continued_fractions_period(R):
+
+    # (a,b) -> (sqrt(R)-a) / b
+
+    x = sqrt(R)
+    x_vals = [x]
+
+    a = floor(sqrt(R))
+
+    num_iter = 0
+
+    while True:
+
+        c = x.coefficient(sqrt(R))
+        d = x - c*sqrt(R)
+
+        # c*sqrt(R) + d
+        # ->
+        # c * sqrt(R) + d - a
+        # ->
+        # (c*sqrt(R) - d + a) / (c^2*R - (d-a)^2)
+
+        d = d-a
+        x = (c * sqrt(R) - d) / (c^2 * R - d^2)
+
+        if x in x_vals:
+            i = x_vals.index(x)
+            return len(x_vals) - i
+
+        x_vals.append(x)
+
+        # what is floor((c*sqrt(R) + d)/D)?
+        D = x.denominator()
+
+        #a = floor(x)
+
+
+        num_iter += 1
+
+        if num_iter > 100:
+            print("ERROR!")
+            break
+
+    # hopefully don't get here
+    return len(x_vals)
+
+
+
+
+if __name__ == "__main__":
+
+    bd = 10000
+
+    poly_ZZ.<x> = ZZ[]
+
+    num_odd = 0
+    b = 1
+    while b^2 <= bd:
+
+        for a in range(b^2+1,min(bd,(b+1)^2-1)+1):
+
+            K.<s> = NumberField(x^2-a)
+            cf = continued_fraction(s)
+            pd = cf.period()
+            p = len(pd)
+
+            num_odd += (p%2)
+
+        b += 1
+
+    print(num_odd)

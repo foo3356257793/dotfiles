@@ -1,0 +1,119 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{fontspec}
+\setmainfont{HelveticaNeue}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+
+{\bf Current Relief Society Callings}
+
+\
+
+\begin{tabular}{l l}
+	President			&	Allison Nelson \\
+	1st Counselor	&	Amy Jorgensen \\
+	2nd Counselor & Michele Smith \\
+	Secretary     & Amber Jones
+\end{tabular}
+
+\
+
+\
+
+{\bf Compassionate Service}
+
+\
+
+\begin{tabular}{l l}
+Leader              & Nicole Barfuss \\
+Committee member    & Linda George \\
+Military resiliency	& Sharlene Anderson \\
+New move-ins        &  Sarah Blair \\
+	Expectant mothers & Christine Barnum
+\end{tabular}
+
+\
+
+\
+
+{\bf Music}
+
+\
+
+\begin{tabular}{l l}
+	Pianist		&	Jessica Ebersohl\\
+	Chorister   & Monica Ward\\
+\end{tabular}
+
+\
+
+\
+
+{\bf Visiting teaching}
+
+\
+
+\begin{tabular}{l l}
+	Coordinator & Jessica Ebersohl
+\end{tabular}
+
+
+\
+
+\
+
+
+{\bf Teachers}
+
+\
+
+\begin{tabular}{l l}
+	2nd Sunday & Sandy Snyder \\
+3rd Sundayay & Laura Chi \\
+	4th Sunday &
+\end{tabular}
+
+\
+
+\
+
+
+{\bf Activities committee}
+
+\
+
+\begin{tabular}{l l}
+	Chairperson & Janye Wallace \\
+	Member & Jenneth Snook \\
+	Member & Shalina Murrell-Ford
+\end{tabular}
+
+
+
+\end{document}
+

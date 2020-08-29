@@ -1,0 +1,9 @@
+syn match texSectioning "\\section\>" skipwhite nextgroup=texSectioningTitle
+syn region texSectioningTitle       contained matchgroup=Delimiter start='{'    end='}' contains=@texSectioningGroup
+syn cluster texSectioningGroup      contains=texMatcher,texComment,texDelimiter
+
+hi texSectioning gui=bold guifg=red
+
+hi def link texSectioning Statement
+hi def link texSectioningTitle String
+hi def link texSectioningGroup Comment

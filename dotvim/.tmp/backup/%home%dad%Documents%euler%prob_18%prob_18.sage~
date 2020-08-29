@@ -1,0 +1,26 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    fp = open('data.txt', 'r')
+
+    data = []
+    for line in fp.readlines():
+        l = line.split()
+        l = [int(h) for h in l]
+        data.append(l)
+
+    fp.close()
+
+    # go through the data in reverse order
+    i = len(data)-2
+
+    while i >= 0:
+
+        line_len = len(data[i])
+
+        for j in range(line_len):
+
+            max_child = max(data[i+1][j], data[i+1][j+1])
+
+            data[i][j] += max_child

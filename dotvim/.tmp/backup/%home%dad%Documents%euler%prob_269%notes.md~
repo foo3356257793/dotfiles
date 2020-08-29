@@ -1,0 +1,32 @@
+# Ideas
+
+Polynomials with at least one integer root.
+
+The roots need to be non-positive.
+
+Multiples of $10$ have a root at $0$.
+So $Z(100000)$ is at least $10000$.
+There are then $4696$ for the other roots.
+
+Next, consider roots at $-1$.
+This happens for when the odd coefficients sum
+to be equal to the even coefficients.
+
+# Idea
+
+We can find polynomials with a root $-a$ as follows:
+
+1. For $r=-1$, inductively find the distribution of $P_n(-1)$ by number of digits.
+
+2. For $r=-a$, $a>1$, the same, except through out results which fail the modular condition.
+
+3. Figure out overlapping conditions.  **Expensive?** Keep track of a distribution of pairs $P_n(-a), P_n(-b)$.  Need to keep track of increasing levels of overlap.
+
+Possible root sets: singles,
+$$
+[-2,-2], [-2,-3], [-2,-4], [-2,-2,-2], [-3,-3]
+$$
+and any number of $-1$ adjoined with these.
+This is because the constant coefficient is the product of roots.
+
+(Not that bad because using $a>1$ gives a cutdown?)

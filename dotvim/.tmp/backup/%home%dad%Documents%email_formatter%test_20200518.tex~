@@ -1,0 +1,220 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{helvet}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+
+Hello Young Women and Parents,
+
+
+
+\section{Parents!}
+
+We would like your children to be included in these emails.  In order for your children to receive these emails, YOU, their parents, must enter their email addresses into churchofjesuschrist.org.  (To be clear, youth leaders cannot do this for you.)
+
+\subsection{General Instructions}
+
+\begin{enumerate}
+  \item Go to churchofjesuschrist.org
+  \item Click on "My Account and Ward".  (Depending on the type of device, this may be in menu.)
+  \item Sign into your account.
+  \item Click on "Ward Directory and Map".
+  \item Find your child's name.
+  \item Click on the edit pencil and enter their email address.
+\end{enumerate}
+
+\subsubsection{Problems?}
+
+If the above instructions aren't working for you, please contact the Sister Nelson (see contact info below) for more help.
+
+
+
+\section{Thank You!}
+
+
+Thank you so much Marin and Brother Anderson for teaching us kickboxing on Tuesday!  We will now be able to defend ourselves against anybody who tries to mess with us! It was a great activity!
+
+
+
+\section{Weekly Activities}
+
+
+\subsection{Tuesday, May 19th, 7 PM: Combined YW/YM Scripture Scavenger Hunt}
+
+
+
+Joanna Bradshaw will be hosting an awesome dive into the scriptures!  This isn't your typical scripture chase.  Be prepared to move and find items in your home and on your phone!
+
+
+
+Zoom link: https://us02web.zoom.us/j/89369207356. 
+
+
+
+\subsection{Sunday, May 24th, 1 PM: Young Women lesson}
+
+
+
+\subsubsection{Middle School Group:}
+
+\begin{itemize}
+\item "How do I know if I'm Becoming Converted?"
+\item Taught by Lucy and Andrea Jarvis
+\item Zoom link:  https://us02web.zoom.us/j/89369207356
+\end{itemize}
+
+
+\subsubsection{High School Group:}
+
+\begin{itemize}
+\item "How do I know if I'm Becoming Converted?"
+\item Taught by Katie Kibler.
+\item Zoom link: https://us04web.zoom.us/j/74796586080?pwd=N3NvdGNmbitFWXN1UmMyN3VzWmpjQT09
+\item Meeting ID: 747 9658 6080
+\item Password: 8Qz3pA
+\end{itemize}
+
+
+\subsection{Tuesday, May 26th, 7 PM: Combined YW/YM Baking with Brother Fairbanks}
+
+
+
+Brother Fairbanks will be teaching us how to make lemon bars! You will need the following items for the activity (a lot which you possibly already have in your kitchen):
+
+
+
+\paragraph{Ingredients}
+
+\begin{itemize}
+  \item 1/2 cup butter or margarine
+  \item 1/4 cup powdered sugar
+  \item 1 cup granulated sugar
+  \item 1 1/2 cups flour
+  \item 2 eggs
+  \item 2 TBSP lemon juice
+  \item 1 lemon
+\end{itemize}
+
+
+\paragraph{Utensils}
+
+\begin{itemize}
+  \item fork
+  \item mixing bowl
+  \item rubber spatula
+  \item grater or zester
+  \item mixing spoons
+  \item measuring cups and spoons
+  \item 8x8" baking pan
+\end{itemize}
+
+
+Zoom link: https://us02web.zoom.us/j/89369207356.
+
+
+
+\section{May Birthdays}
+
+
+\begin{itemize}
+\item Kacy Simmons (5)
+\item Katie Stalker (7) 
+\item Amy Wing (12) 
+\item Kennedy Bradshaw (26) 
+\item Charlotte Stevens (27) 
+\item Lily Jarvis (29) 
+\item Hailey Tweed (31)
+\end{itemize}
+
+
+\section{Questions?}
+
+
+
+If anyone has any questions, please feel free to contact anyone in the YW presidency.
+
+\
+
+
+Sincerely,
+
+
+
+Sister Allison Nelson \\
+(858) 345-0936 \\
+sully1234@gmail.com 
+
+
+
+
+%--------------------------------------------------------------------------------
+
+\section{YW Presidency}
+
+
+President Kim Peterson \\
+kimpeterson8@gmail.com
+
+
+
+1st Counselor Andrea Jarvis \\
+andreajarvis@gmail.com
+
+
+
+2nd Counselor Laurie Cope \\
+copes55@msn.com
+
+
+
+Secretary Allison Nelson \\
+sully1234@gmail.com
+
+
+
+%--------------------------------------------------------------------------------
+
+
+
+\section{Zoom Information}
+
+
+
+If you don't already have it, please download the "Zoom" App to your smartphone or computer. Then use the Zoom link below and password to use for ALL 3 weekly activities (unless told otherwise). You'll use it to join future Tuesday Night Activities, as well as the weekly MS and HS group chats on Monday and Friday. If you have any further questions, please contact someone from the YW presidency.
+
+
+
+https://us02web.zoom.us/j/89369207356 \\
+Meeting ID: 893 6920 7356
+
+\end{document}
+

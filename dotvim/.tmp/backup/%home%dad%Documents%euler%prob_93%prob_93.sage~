@@ -1,0 +1,116 @@
+#!/usr/bin/sage
+
+import itertools
+
+def my_is_integer(a):
+
+    return abs(a-round(a)) < 1e-6
+
+def convert_parens_tuples_to_characters(tup):
+
+    positions = ['' for _ in range(8)]
+
+    for pair in tup:
+
+        i = pair[0]
+        j = pair[1]
+
+        positions[2*i] += '('
+        positions[2*j+1] += ')'
+
+    return positions
+
+def prune_option(par):
+
+    l_paren = [tup[0] for tup in par]
+    r_paren = [tup[1] for tup in par]
+
+    for l in l_paren:
+        if l in r_paren:
+            return False
+
+    return True
+
+
+if __name__ == "__main__":
+
+    op_symbols = ['+', '-', '*', '/']
+
+    op_options = list(itertools.product(op_symbols, repeat=3))
+
+    parens_positions = list(range(4))
+    parens_combinations = list(itertools.combinations(parens_positions,
+        int(2)))
+
+    parens_combinations.remove((0,3))
+
+    print(parens_combinations)
+
+    parens_options = []
+    for m in range(len(parens_combinations)+1):
+        parens_options += list(itertools.combinations(parens_combinations, m))
+
+    parens_options = [tup for tup in parens_options if prune_option(tup)]
+
+    parens_options = [convert_parens_tuples_to_characters(opt) for opt in
+            parens_options]
+
+
+
+    max_val = 0
+    arg_max = []
+
+    for digits in itertools.combinations(list(range(0,10)), int(4)):
+
+        digit_permutations = list(itertools.permutations(digits, int(4)))
+
+        vals = []
+
+        for tup in digit_permutations:
+
+            for ops in op_options:
+
+                for par in parens_options:
+
+                    expression = '%s %d %s %s %s %d %s %s %s %d %s %s %s %d %s' % (par[0], tup[0], par[1], ops[0], par[2], tup[1], par[3], ops[1], par[4], tup[2], par[5], ops[2], par[6], tup[3], par[7])
+
+                    #print(expression)
+
+                    """
+                    expression = ''
+                    for j in range(3):
+
+                        expression += '%d ' % tup[j]
+                        expression += '%s ' % ops[j]
+
+                    expression += '%d' % tup[3]
+                    """
+
+                    try:
+                        val = eval(expression)
+                    except:
+                        continue
+
+                    if val > 0 and my_is_integer(val) and not val in vals:
+                        vals.append(ZZ(round(val)))
+
+
+
+        vals.sort()
+        n = 0
+        for i in range(len(vals)):
+
+            if vals[i] == i+1:
+                n += 1
+            else:
+                break
+
+        if n > max_val:
+            max_val = n
+            arg_max = digits
+
+
+        print(digits, n)
+
+    print('%d%d%d%d' % arg_max)
+

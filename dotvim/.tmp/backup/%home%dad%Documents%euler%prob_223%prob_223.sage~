@@ -1,0 +1,132 @@
+#!/usr/bin/sage
+
+import itertools
+
+import time
+
+def divisors_from_factorization(fac):
+
+    num_primes = len(fac)
+
+    if num_primes == 0:
+        reutrn [1]
+
+    exponent_ranges = [list(range(tup[1]+1)) for tup in fac]
+
+    factors = []
+
+    for vec in itertools.product(*exponent_ranges):
+
+        F = prod([fac[i][0] ** vec[i] for i in range(num_primes)])
+        factors.append(F)
+
+    factors.sort()
+
+    return factors
+
+def branching_divisors_from_factorization(fac,index,num_fac):
+
+    if index >= num_fac:
+        return [1]
+
+    p = fac[index][0]
+    E = fac[index][1]
+
+    f = 1
+    tail = branching_divisors_from_factorization(fac, index+1, num_fac)
+    ret = []
+
+    for i in range(E):
+
+        ret += tail
+        tail = [p*t for t in tail]
+
+    ret += tail
+
+    return ret
+
+def divisors_new(fac):
+
+    ret = branching_divisors_from_factorization(fac,0,len(fac))
+    ret.sort()
+
+    return ret
+
+
+if __name__ == "__main__":
+
+    perim_bd = 50 # 7 hits
+    #perim_bd = 250 # 88 hits
+    #perim_bd = 25000 # 24848
+    #perim_bd = 250000 # 329423
+    #perim_bd = 25000000 # 49114849
+
+    """
+    fac = [[2,3], [3,2], [5,1]]
+
+    factors = divisors_from_factorization(fac)
+
+    print(factors)
+
+    new_factors = branching_divisors_from_factorization(fac,0,len(fac))
+    new_factors.sort()
+
+    print(new_factors)
+
+    a = prod([tup[0] ** tup[1] for tup in fac])
+    print(divisors(a))
+    """
+
+    # a <- a-1 based on side length
+    a_max = (perim_bd)//3
+
+    start_tm = time.perf_counter()
+
+    hits = []
+    num_hits = (perim_bd-1)//2 # triangles (1,b,b)
+
+    for a in range(2,a_max+1):
+
+        A = (a-1) * (a+1)
+
+        # m2 = 1
+        # if A & 1 == 0:
+        #     A >>= 2
+        #     m2 = 2
+
+        for N in divisors(A):
+
+            M = A // N
+
+            if M <= N:
+                continue
+                #break
+
+            if (M+N) % 2 == 1:
+                continue
+
+            # c = (m2 * (M+N)) // 2
+            # b = (m2 * (M-N)) // 2
+            c = (M+N) // 2
+            b = (M-N) // 2
+
+            if a <= b and a+b+c <= perim_bd:
+                hits.append([a,b,c])
+                num_hits += 1
+
+
+    print('found %d hits' % num_hits)
+    #print('found %d hits' % len(hits))
+    #print(hits)
+
+    end_tm = time.perf_counter()
+
+    tot_tm = end_tm - start_tm
+
+    print("time = %lf" % (tot_tm))
+
+    est_tm = (25000000 / perim_bd) * tot_tm
+
+    est_hrs = est_tm / (60 * 60)
+
+    print('estimate %lf hours' % est_hrs)

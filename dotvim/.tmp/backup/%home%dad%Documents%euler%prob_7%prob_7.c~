@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdint.h>
+
+#include <ulong_extras.h>
+
+
+int main(int argc, char *argv[])
+{
+
+    int ans = n_nth_prime(10001);
+
+    printf("%d\n", ans);
+
+}
+

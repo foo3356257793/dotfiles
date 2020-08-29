@@ -1,0 +1,88 @@
+#!/usr/bin/sage
+
+def binomial_mod_p(n,k,p):
+
+    num = 1
+    den = 1
+
+    for i in range(k):
+
+        num *= (n-i)
+        num %= p
+
+        den *= (i+1)
+        den %= p
+
+    return (num * inverse_mod(den,p)) % p
+
+
+
+if __name__ == "__main__":
+
+    #n = 8
+    n = 24680
+    p = 1020202009
+
+    # count packings by number of bags left
+
+    """
+    packings = [0, 1] # ways to pack 1 bag
+
+    for num_bags in range(2,n+1):
+
+        print('....%d' % num_bags)
+
+        new_packings = [0] + copy(packings)
+
+        # look through the (num_bags)-dim array packings
+        for set_size in range(num_bags):
+
+            num_poss = packings[set_size]
+
+            num_delete = 2
+
+            while num_delete <= set_size:
+
+                coeff = (num_poss * binomial(set_size, num_delete)) % p
+                #coeff = (num_poss * binomial_mod_p(set_size, num_delete,p)) % p
+
+                new_packings[set_size-num_delete+1] += coeff
+                if new_packings[set_size-num_delete+1] >= p:
+                    new_packings[set_size-num_delete+1] -= p
+
+                num_delete += 2
+
+        packings = new_packings
+
+    S = sum(packings)
+    """
+
+    f_odd_arr = [0,1]
+    f_even_arr = [1,0]
+
+    for num_bags in range(2,n+1):
+
+        print(num_bags)
+
+        # number of bags to pack into 'num_bags'
+
+        f_odd = 0
+        f_even = 0
+
+        for pack in range(0,num_bags,2):
+
+            # we have two sets of size
+            # pack | num_bags-1-pack
+            n_comb = binomial(num_bags-1,pack)
+            n_inside = f_even_arr[pack]
+            n_outside_odd = f_odd_arr[num_bags-1-pack]
+            n_outside_even = f_even_arr[num_bags-1-pack]
+
+            f_odd += n_comb * n_inside * n_outside_even
+            f_even += n_comb * n_inside * n_outside_odd
+
+        f_odd_arr.append(f_odd)
+        f_even_arr.append(f_even)
+
+
+    print(f_odd_arr[n]+f_even_arr[n])

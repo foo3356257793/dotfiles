@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <stdbool.h>
+
+/*
+ * n*(n+1)/2
+ *
+ * n and n+1 are coprime, so num divisors is product
+ * of divisors of n and (n+1)/2 or
+ * n/2 and (n+1)
+ *
+ */
+
+void divisor_chart(int bd, int *chart)
+{
+    for(int i=0; i<bd; i++)
+    {
+        chart[i] = 1;
+    }
+
+    for(int i=2; i<bd; i++)
+    {
+        for(int j=i; j<bd; j+=i)
+        {
+            chart[j] += 1;
+        }
+    }
+}
+
+bool search_for_solution(int bd)
+{
+
+    int *chart = (int *) malloc(bd * sizeof(int));
+
+    divisor_chart(bd, chart);
+
+    bool success = false;
+
+    for(int i=0; i<bd; i++)
+    {
+        int n_div;
+        if(i&1)
+        {
+            // i and (i+1)/2
+            n_div = chart[i] * chart[(i+1)/2];
+        }
+        else
+        {
+
+            // i/2 and (i+1)
+            n_div = chart[i/2] * chart[i+1];
+        }
+        if(n_div > 500)
+        {
+            printf("%ld\n", ( ((int64_t) i)*((int64_t) i+1) )/2);
+            success = true;
+            break;
+        }
+    }
+
+    free(chart);
+
+    return success;
+
+}
+
+int main(int argc, char *argv[])
+{
+
+    int bd = 512;
+
+    bool success = search_for_solution(bd);
+
+    while(!success)
+    {
+        bd *= 2;
+        success = search_for_solution(bd);
+    }
+
+}
+

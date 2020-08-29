@@ -1,0 +1,188 @@
+#!/usr/bin/sage
+
+import itertools
+
+def _check_optimal_4(A):
+
+    return A[0] + A[3] != A[1] + A[2]
+
+def _check_optimal_5(A):
+
+    for i in range(5):
+
+        B = A[0:i]
+        B += A[i+1:]
+
+        if not _check_optimal_4(B):
+            return False
+
+    return True
+
+six_checks = [
+        lambda A: A[0] + A[1] + A[5] != A[2] + A[3] + A[4],
+        lambda A: A[0] + A[2] + A[5] != A[1] + A[3] + A[4],
+        lambda A: A[0] + A[3] + A[4] != A[1] + A[2] + A[5],
+        lambda A: A[0] + A[3] + A[5] != A[1] + A[2] + A[4],
+        lambda A: A[0] + A[4] + A[5] != A[1] + A[2] + A[3]
+        ]
+
+def _check_optimal_6(A):
+
+    # check 4s
+    for tup in itertools.combinations(A, 4):
+        if not _check_optimal_4(tup):
+            return False
+
+    for check in six_checks:
+
+        if not check(A):
+            return False
+
+    return True
+
+def _check_optimal_7(A):
+
+    # check 4s
+    for tup in itertools.combinations(A, 4):
+        if not _check_optimal_4(tup):
+            #print('FAILED on %s' % tup)
+            return False
+
+
+    # check 6s
+    for i in range(7):
+
+        B = A[0:i]
+        B += A[i+1:]
+
+        for check in six_checks:
+
+            if not check(B):
+                # print('FAILED on check[%d]' % six_checks.index(check))
+                # print('B = %s' % B)
+                return False
+
+    return True
+
+
+optimal_checkers = [lambda x: True, lambda x: True, lambda x: True,
+        lambda x: True, _check_optimal_4, _check_optimal_5, _check_optimal_6,
+        _check_optimal_7]
+
+
+def check_optimal(A):
+
+    len_A = len(A)
+
+    if len_A <= 2:
+        return True
+
+    mid_pt = (len_A+1)//2
+
+    lhs = sum(A[0:mid_pt])
+    rhs = sum(A[mid_pt+((len_A+1)&1):len_A])
+
+    if lhs <= rhs:
+        return False
+
+    return optimal_checkers[len_A](A)
+
+def _branch_solutions(params, partial_sum, partial_ineq, index, max_sum):
+
+    # print('index = %d' % index)
+    # print('params = %s' % params)
+
+    # verbose = False
+    # if len(params) == 2 and params[1] == 31:
+    #     verbose = True
+
+    # trim by checking whether this is optimal
+    if not check_optimal(params):
+        return []
+
+    if index == 7:
+        # passed check
+        return [params]
+
+    delta_ineq_coeff = 3 - abs(index-3)
+    if delta_ineq_coeff == 0:
+        delta_min = 0
+    else:
+        delta_min = max(0, ceil( (partial_ineq - 1) / delta_ineq_coeff ))
+
+    delta_sum_coeff = 7-index
+    delta_max = floor( (max_sum-partial_sum) / delta_sum_coeff )
+
+    # if verbose:
+    #     print('delta in [%d, %d]' % (delta_min, delta_max))
+    #     print('delta_ineq_coeff = %d' % delta_ineq_coeff)
+    #     print('delta_sum_coeff = %d' % delta_sum_coeff)
+
+    ret = []
+    for delta in range(delta_min, delta_max+1):
+
+        ret += _branch_solutions(params + [params[-1] + 1 + delta], partial_sum + delta_sum_coeff * delta, partial_ineq - delta_ineq_coeff * delta, index+1, max_sum)
+
+    return ret
+
+
+def branch_solutions(max_sum):
+
+    # max a_0?
+    a_0_min = 10
+    a_0_max = (max_sum//7) - 3
+
+    ret = []
+    #for a_0 in range(a_0_min, a_0_max+1):
+    for a_0 in [20]:
+
+        ret += _branch_solutions([a_0], 7*a_0+21, a_0 - 9, 1, max_sum)
+
+    return ret
+
+
+
+if __name__ == "__main__":
+
+    A_6 = [11,18,19,20,22,25]
+
+    # This is optimal
+    N_7 = [A_6[3]] + [a + A_6[3] for a in A_6]
+
+    sum_bd = sum(N_7)
+
+    """
+    p = MixedIntegerLinearProgram()
+    v = p.new_variable(real=True, nonnegative=True)
+    a,b,c,d,e,f,g = v['a'], v['b'], v['c'], v['d'], v['e'], v['f'], v['g']
+
+    p.set_objective(-(a+b+c+d+e+f+g))
+
+    # order the variables
+    p.add_constraint(b >= a+1)
+    p.add_constraint(c >= b+1)
+    p.add_constraint(d >= c+1)
+    p.add_constraint(e >= d+1)
+    p.add_constraint(f >= e+1)
+    p.add_constraint(g >= f+1)
+
+    # unequal sets constaints
+    p.add_constraint(a+b+c+d >= 1+e+f+g)
+    """
+
+    A_5 = [6,9,11,12,13]
+
+    sols = branch_solutions(sum_bd)
+
+    if len(sols) == 0:
+        print('didn\'t find a solution')
+    else:
+        sums = [sum(sol) for sol in sols]
+        arg_min = sums.index(min(sums))
+        ans = sols[arg_min]
+        ans_str = ''
+        for val in sol:
+
+            ans_str += str(val)
+
+        print(ans_str)

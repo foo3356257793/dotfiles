@@ -1,0 +1,133 @@
+Number of points passing through circle
+
+$$
+(0,0),
+(N,0),
+(0,N),
+(N,N)
+$$
+
+These are points on a square.  The center of the circle
+is $(N/2,N/2)$ and the square radius is
+$$
+2 (N/2)^2 = N^2/2 \; .
+$$
+
+If
+$$
+(a-N/2)^2 + (b-N/2)^2 = N^2/2
+$$
+then
+$$
+(b-N/2)^2 + (a-N/2)^2 = N^2/2
+$$
+and
+$$
+(-a+N-N/2)^2 + (-b+N-N/2)^2 = N^2/2
+$$
+So we get points
+$$
+(a,b), (b,a), (-a+N,-b+N), (-b+N,-a+N),
+(a,-b+N), (b,-a+N), (-a+N,b), (-b+N,a)
+$$
+
+# Generating triples
+
+Here is a way to generate Pythagorean triples
+$$
+a = mn
+b = (m^2 - n^2) / 2
+c = (m^2 + n^2) / 2
+$$
+
+# Cases with multiple triples
+
+a^2 + b^2 = c^2 + d^2
+
+<=>
+
+(a+c) * (a-c) = (b+c) * (b-c)
+
+Suppose
+
+$$
+(p_1 * p_2) * (p_3) = (p_1) * (p_2 * p_3)
+$$
+
+# Sum of Squares Function
+
+$r_2(n) = r(n)$ is the number of ways of representing $n$
+as a sum of $2$ squares.
+
+Factor $n$ as
+$$
+n = 2^{a_0} p_1^{2a_1} \cdots p_r^{2a_r} q_1^{b_1} \cdots q_s^{b_s} \; ,
+$$
+where $p_1,\ldots,p_r$ are primes $3 \bmod{4}$
+and the $q_1,\ldots,q_s$ are $1 \bmod{4}$.
+Without this representation, we get $0$ lattice points.
+
+Then we define
+$$
+B = (b_1 + 1) (b_2 + 1) \cdots (b_r + 1)
+$$
+and
+$$
+r_2(n) = 4 \times B \; .
+$$
+
+# Approach
+
+We then want to evaluate the number of ways we can write
+$$
+N^2/2
+$$
+as a square.
+We need $N$ to be even for this to work.
+
+We have $420 = 4B$ gives $B = 3 \times 5 \times 7$.
+There are either $1,2$ or $3$ prime factors equivalent to $1 \bmod{4}$.
+
+**note**.
+Looking for
+$$
+(a-N/2)^2 + (b-N/2)^2 = N^2/2
+$$
+Hence looking for
+$$
+(2a - N)^2 + (2b - N)^2 = 2N^2
+$$
+Suppose $N$ is odd.  Consider an integer solution
+$$
+a'^2 + b'^2 = 2N^2
+$$
+If $a$ is even, then
+$$
+b'^2 = 0 mod 2
+$$
+This doesn't work because this forces the LHS to be a multiple of $4$,
+whereas the RHS is not.  Therefore all solutions must be odd.
+This gives
+$$
+a = (a' + N)/2
+b = (b' + N)/2
+$$
+as integer solutions.
+
+The converse is clearly true.
+
+**all possibilities**
+
+To get $N = 4 \times 3 \times 5 \times 7$ with
+
+$p_1^e_1 \times p_2^e_2$
+
+We could have
+$$
+(e_1,e_2) = (7,3)
+(e_1,e_2) = (10,2)
+(e_1,e_2) = (1,17)
+$$
+
+To get one, we would have an exponent $52$.
+we can rule this out.

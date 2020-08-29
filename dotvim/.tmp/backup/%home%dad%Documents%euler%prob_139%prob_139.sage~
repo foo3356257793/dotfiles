@@ -1,0 +1,27 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    sols = []
+
+    x=0
+    y=1
+
+    max_perim = 100000000 - 1
+
+    num_triangles = 0
+
+    for trial in range(50):
+
+        t = 3*x+2*y+1
+        y = 4*x+3*y+2
+        x = t
+
+        perim = 2*x+1+y
+
+        max_mul = floor(max_perim/perim)
+
+        if max_mul == 0:
+            break
+
+        num_triangles += max_mul

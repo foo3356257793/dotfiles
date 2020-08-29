@@ -1,0 +1,59 @@
+$$
+\rad(p_1^{e_1} \cdots p_n^{e_n}) =
+p_1 \cdots p_n \; .
+$$
+
+$$
+(a,b,c)
+\gcd(a,b) = \gcd(a,c) = \gcd(b,c) = 1
+a < b
+a+b=c
+\rad(abc) < c
+$$
+
+Find sum up to $120000$.
+
+# Ideas
+
+Can compute the radical for each of these numbers via a sieve.
+
+*note*.
+
+If $a<b$ and $a+b=c$,
+then
+$$
+c = a+b < 2b
+\frac{c}{2} < b
+$$
+If $a > 1$, then $\rad(a) \geq 2$ and
+$$
+\rad(a)b > 2 \frac{c}{2} = c \; .
+$$
+Hence we need $\rad(b) < b$.
+
+If we focus on a specific value of $b$, what are the possible values?
+
+We need
+$$
+\rad(abc) < c < 2b
+$$
+so at least
+$$
+\rad(ac) < \frac{2b}{\rad(b)}
+$$
+
+## Throw out examples with small factors
+
+If $a/\rad(a) = 2$, then we would need $\rad(ab) < 2$.  This only happens
+$ab = 1$, which doesn't work.
+
+Other values:
+
+$a/\rad(a) = 3$ implies $a=1$ and $\rad(b) = 2$.
+
+**note**. we can go through and try $a=1$ for each $c$ value
+
+$a/rad(a) = 4$ gives $\rad(ab) \in \{2,3\}$.
+Any case of a non-composite $\rad(ab)$ implies $a=1$
+
+

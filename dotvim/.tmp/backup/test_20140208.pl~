@@ -1,0 +1,69 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+sub find_all_sums;
+
+my $resultsHash = {};
+for(my $start = 2; $start <= 7; $start++){
+  my @array = ($start);
+  find_all_sums($resultsHash, \@array, $start, 1, $start, $start);
+}
+
+for(my $number = 24; $number <= 55; $number++){
+  print "$number: ";
+  if(defined $resultsHash->{$number}){
+    print $resultsHash->{$number};
+  }
+  else{
+    print "---";
+  }
+  print "\n";
+}
+
+sub find_all_sums{
+  my $resultsHash = shift;
+  my $arrayRef = shift;
+  my $currentSum = shift;
+  my $currentNumerator = shift;
+  my $currentDenominator = shift;
+  my $currentMax = shift;
+
+  # min is currentMax, max is 55 - sum
+  # also num/den + 1/next <= 1
+  # => 1/next <= 1 - num/den
+  # next >= 1/(1 - num/den)
+  my $minNext = $currentMax;
+  if($minNext < 1/(1 - ($currentNumerator/$currentDenominator))){
+    $minNext = int(1/(1 - ($currentNumerator/$currentDenominator)));
+  }
+  my $maxNext = 55 - $currentMax;
+  if($minNext <= $maxNext){
+    for(my $next = $minNext; $next <= $maxNext; $next++){
+      my @try = @{$arrayRef};
+      push @try, $next;
+      my $newSum = $currentSum + $next;
+      my $newDenominator = $currentDenominator * $next;
+      my $newNumerator = $currentNumerator * $next + $currentDenominator;
+      if($newSum > 55){
+        return;
+      }
+      if($newNumerator == $newDenominator){
+        if(!defined $resultsHash->{$newSum}){
+          my $resultString = $try[0];
+          for(my $index = 1; $index < @try; $index++){
+            $resultString .= '+' . $try[$index];
+          }
+          $resultsHash->{$newSum} = $resultString;
+          print $newSum, ': ', $resultString, "\n";
+        }
+      }
+      elsif($newNumerator < $newDenominator){
+        find_all_sums($resultsHash, \@try, $newSum, $newNumerator, $newDenominator, $next);
+      }
+    }
+  }
+
+  return;
+}

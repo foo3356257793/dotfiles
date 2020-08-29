@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/home/dad/opt/scriptures-html-generator'
+let g:netrw_dirhist_5='/home/dad/opt'
+let g:netrw_dirhist_4='/home/dad/dotfiles/dotvim'
+let g:netrw_dirhist_3='/home/dad/dotfiles/dotvim/bundle'
+let g:netrw_dirhist_2='/home/dad/dotfiles/dotvim'
+let g:netrw_dirhist_1='/sys/class/power_supply/BAT0'
+let g:netrw_dirhist_0='/sys/class/power_supply'
+let g:netrw_dirhist_9='/etc/X11/xorg.conf.d'
+let g:netrw_dirhist_8='/home/dad/.local/share/supertux2/profile1'
+let g:netrw_dirhist_7='/usr/lib64/spotify-client/Apps'

@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#define UPPER_BD (4000000)
+
+int main(int argc, char *argv[])
+{
+
+    int64_t f = 1;
+    int64_t g = 1;
+    int64_t h;
+
+    int64_t sum = 0;
+
+    while(g <= UPPER_BD)
+    {
+        if((g&1)==0) sum += g;
+
+        h = f+g;
+        f = g;
+        g = h;
+
+    }
+
+    printf("%ld\n", sum);
+
+
+}
+

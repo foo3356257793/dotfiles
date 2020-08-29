@@ -1,0 +1,65 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Two Club.}
+
+Check if these numbers are in the two club.
+This is also called being an {\bf even number}.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[height=3in]{nb_terrible_twos.jpg}
+  \end{center}
+\end{figure}
+
+\paragraph{Trick.}
+
+Check if the last digit is even.
+
+\subparagraph{Example.}
+Is $130$ in the $2$ club?
+Yes: $0$ is even.
+
+\subparagraph{Example.}
+
+Is $13$ in the $2$ club?
+No: $3$ is odd.
+
+\paragraph{Problems.}
+
+\begin{enumerate}
+\item Is $70$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $51$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $86$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $84$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $30$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $34$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $39$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $66$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $32$ in the two club? {\bf Yes} or {\bf No}.
+\item Is $67$ in the two club? {\bf Yes} or {\bf No}.
+\end{enumerate}
+
+\end{document}
+

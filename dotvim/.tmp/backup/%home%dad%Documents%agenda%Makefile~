@@ -1,0 +1,14 @@
+TEX = xelatex
+
+NAME = checklist
+
+all: $(NAME).pdf
+
+%.pdf: %.tex
+	$(TEX) $+
+
+clean:
+	rm -rf $(NAME).pdf $(NAME).log $(NAME).aux
+
+.PHONY: clean
+

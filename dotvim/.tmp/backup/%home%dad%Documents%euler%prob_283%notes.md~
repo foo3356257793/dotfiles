@@ -1,0 +1,165 @@
+# How to do this?
+
+Want area/perimeter ratios in the integers.
+
+Perimeter always integral.
+
+*Heron's formula*.
+$$
+s = P/2
+A = \sqrt{s(s-a)(s-b)(s-c)}
+$$
+This is alternately
+$$
+A^2 =
+  \frac{a+b+c}{2}
+  \times
+  \frac{-a+b+c}{2}
+  \times
+  \frac{a-b+c}{2}
+  \times
+  \frac{a+b-c}{2}
+$$
+This this square integral?  Not necessarily.
+
+Note
+$$
+A^2 / P^2 =
+\frac{(-a+b+c)(a-b+c)(a+b-c)}{16(a+b+c)} \; .
+$$
+
+*Try*. For $(a,b)$, can we determine all values of $c$
+which work?
+
+*Observation*.
+
+Consider a primitive triple $(a,b,c)$.  If we have a square
+at all, we can generate a set of valid things:
+
+If $A,P$ are the area and perimeter for $(a,b,c)$,
+then $k^2A, kP$ are the area and perimeter for $(ka,kb,kc)$
+and $k (A/P)$ is the ratio.
+
+For $a+b+c=1$, what is the minimum area.  We minimize
+$$
+(-2a+1)
+\times
+(-2b+1)
+\times
+(2(a+b)-1)
+$$
+The optimum must be at $a=b=c$.  In this case
+$$
+(1/3)^3
+$$
+is the area.
+If we chose $a=0$, $b=c=1/2$, we would be having
+$$
+0 \; .
+$$
+
+For $P = 12$, for example $(3,4,5)$ has area $6$
+whereas $(1,4,7)$ has area $0$.
+
+The smallest area triangles are $(1,s,s)$ and $(2,s-1,s)$.
+This implies a bound on the perimeter.
+
+$$
+(1+2s)(1)(1)(2s-1)/16 = (4s^2-1)/16
+$$
+$$
+4s^2-1 \leq 16 \times 1000
+$$
+$$
+s \leq \sqrt(4000 - 1/4)
+$$
+so $s \leq 63$.
+
+$$
+(2s+1)(1)(3)(2s-3)/16
+=
+(3/16) (4s^2 - 4s - 3) \leq 1000
+$$
+$$
+4s^2 - 4s - 3 - (16/3)(1000)
+$$
+$$
+s^2 - s - 3/4 - (4/3)(1000)
+$$
+$$
+(1 + \sqrt{1 + 3 + (16/3)(1000)})/2
+$$
+This gives a bound of $37$ on $s$.
+
+**Idea**.
+Exhaust $a$, the minimum side value.
+Figure out a bound on $b$.
+For each $b$, figure out a bound on $c$.
+
+**Fix**.
+
+Consider a triangle
+$(1,s,s)$.  The scaled square area is
+$$
+4s^2 - 1
+$$
+The perimeter here is $2s+1$, so the square ratio is
+$$
+\frac{4s^2-1}{(2s+1)^2}
+=
+\frac{2s-1}{2s+1} \; .
+$$
+This isn't typically a square?
+
+**Next**.
+
+$$
+P * (a+b-c) * (a-b+c) * (-a+b+c)
+$$
+
+We have $b+c$ is $O(P)$.  We then have a bound on $|b-c|$ of
+$O(P)$.
+
+Maybe we want to exhaust $c-b$, ($c \geq b$).
+
+# Wikipedia
+
+We are looking at Heronian triangles:
+triangles with integer side lengths and
+integer area.
+
+**Lesson.**
+
+I could have realized that a triangle having integer
+area was a thing which has been studied.
+
+## Form
+
+They all look like
+
+$$
+a = n(m^2+k^2)
+b = m(n^2+k^2)
+c = (m+n)(mn-k^2)
+$$
+The perimeter is
+$$
+2mn(m+n)
+$$
+the area is
+$$
+mnk(m+n)(mn-k^2)
+$$
+Need
+$$
+\gcd(m,n,k) = 1
+mn > k^2 \geq 1
+m \geq n \geq 1
+$$
+The ratio should then be
+$$
+\frac{2mn(m+n)}{mnk(m+n)(mn-k^2)}
+=
+\frac{2}{k(mn-k^2)} \; .
+$$
+

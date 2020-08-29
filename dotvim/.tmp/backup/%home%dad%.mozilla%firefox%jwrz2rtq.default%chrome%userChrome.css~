@@ -1,0 +1,55 @@
+@namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+#toolbar-menubar:not([autohide="true"]) + #TabsToolbar .tabbrowser-tab > .tab-stack > .tab-background, :root:not([tabsintitlebar]) .tab-background, :root[extradragspace] .tab-background {
+	border-top: 0 !important;
+}
+
+.tab-line {
+	height: 0 !important;
+}
+
+.tab-bottom-line {
+	height: 0 !important;
+}
+
+/* Bookmarked icon grayscale */
+
+#star-button[starred] {
+	filter: grayscale(100%);
+	opacity: 0.5;
+}
+
+/* Identity box grayscale */
+
+#tracking-protection-icon-container, #identity-box {
+	filter: grayscale(100%);
+}
+
+#identity-box {
+	padding-inline-start: 4px !important;
+	border-inline-end: 0px !important;
+	padding-inline-end: 4px !important;
+	margin-inline-end: 4px !important;
+}
+
+/* Hide extra icons in address bar */
+
+#page-action-buttons > *:not(#star-button-box), .urlbar-history-dropmarker {
+	opacity: 0 !important;
+}
+
+/* Show extra icons on hover */
+
+#urlbar:hover #page-action-buttons > *, #urlbar:hover .urlbar-history-dropmarker {
+	opacity: 1 !important;
+}
+
+/* Hide notification about web page saved in library (after bookmared) */
+
+#confirmation-hint { display: none !important; }
+
+/* Hide new tab icon */
+
+.tabbrowser-tab[image="chrome://branding/content/icon32.png"] .tab-icon-image {
+	display: none !important;
+}

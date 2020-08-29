@@ -1,0 +1,174 @@
+#!/usr/bin/sage
+
+import itertools
+
+D = 8 # number of digits (in this problem 10)
+
+sum_digits = binomial(D,2) % 11
+
+def _enumerate_partitions(P, val, dbl_sided=False):
+
+    sum_P = sum(P)
+    len_P = len(P)
+
+    if len_P > D:
+        return []
+
+    if val == D:
+        if sum_P % 11 == sum_digits and len_P == D:
+            return [P]
+        else:
+            return []
+
+    ret = []
+
+    if not dbl_sided:
+        ret += _enumerate_partitions(P, val+1)
+
+    if len_P <= (D-1):
+
+        # NOTE: balanced so preserves whether two sides are equal
+        ret += _enumerate_partitions(P + [val], val+1, dbl_sided)
+
+    if len_P <= (D-2):
+
+        # two sides cannot be equal here
+        ret += _enumerate_partitions(P + [val,val], val+1, False)
+
+    return ret
+
+
+def enumerate_partitions():
+
+    ret  = _enumerate_partitions([0], 1, dbl_sided=True)
+    ret += _enumerate_partitions([0,0], 1, dbl_sided=False)
+
+    return ret
+
+
+def is_minimal(tup):
+
+    num_vals = [0] * D
+
+    tup_str = ''
+    for t in tup:
+        num_vals[t] += 1
+        tup_str += str(t)
+
+    complement_str = ''
+    for i in range(D):
+
+        m = 2-num_vals[i]
+        while m > 0:
+            complement_str += str(i)
+            m -= 1
+
+    tup_val = int(tup_str)
+    complement_val = int(complement_str)
+
+    if tup_val > complement_val:
+        return -1
+    elif tup_val == complement_val:
+        return 0
+    return 1
+
+fac_D = factorial(D)
+
+def count_num_permutations(tup):
+
+    # number of permutations
+    num_vals = [0] * D
+
+    for t in tup:
+        num_vals[t] += 1
+
+
+    num_perm_0 = binomial(D,num_vals[0])
+    num_perm_1 = binomial(D,2-num_vals[0])
+    num_perm_no_lead_0 = binomial(D-1,num_vals[0])
+    num_perm_no_lead_1 = binomial(D-1,2-num_vals[0])
+
+    num_remaining_0 = D - num_vals[0]
+    num_remaining_1 = D - (2-num_vals[0])
+
+    for i in range(1,D):
+
+        if num_vals[i] > 0:
+
+            num_perm_0 *= binomial(num_remaining_0, num_vals[i])
+            num_perm_no_lead_0 *= binomial(num_remaining_0, num_vals[i])
+
+            num_remaining_0 -= num_vals[i]
+
+        if 2 > num_vals[i]:
+
+            num_perm_1 *= binomial(num_remaining_1, 2-num_vals[i])
+            num_perm_no_lead_1 *= binomial(num_remaining_1, 2-num_vals[i])
+
+            num_remaining_1 -= 2-num_vals[i]
+
+    tot_num_perm = num_perm_0 * num_perm_no_lead_1 + num_perm_1 * num_perm_no_lead_0
+
+    if num_perm_0 == fac_D:
+        # this is 0,1,...,9
+        tot_num_perm //= 2
+
+
+    return tot_num_perm, num_perm_0, num_perm_no_lead_0, num_perm_1, num_perm_no_lead_1
+
+def count_num_permutations_simple(tup):
+
+    num_perm = fac_D
+
+    num_vals = [0] * D
+    for t in tup:
+        num_vals[t] += 1
+
+    for t in range(D):
+
+        if num_vals[t] == 2:
+            num_perm //= 2
+
+    switch_factor = 2
+    if num_perm == fac_D:
+        switch_factor = 1
+
+    return switch_factor * num_perm * num_perm
+
+
+def count_permutations_manually(tup):
+
+    unique_tups = []
+
+    num_perm_no_lead_0 = 0
+
+    for tup in itertools.permutations(tup):
+
+        if not tup in unique_tups:
+            unique_tups.append(tup)
+
+            if tup[0] != 0:
+                num_perm_no_lead_0 += 1
+
+    return len(unique_tups), num_perm_no_lead_0
+
+if __name__ == "__main__":
+
+
+    poss = enumerate_partitions()
+
+    print(len(poss))
+
+    # how many ways to permute these
+    S = 0
+    SS = 0
+    for tup in poss:
+
+        S += count_num_permutations(tup)[0]
+        SS += count_num_permutations_simple(tup)
+
+
+    SS *= (D-1)/D
+
+    print(S)
+    print(SS)

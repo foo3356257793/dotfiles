@@ -1,0 +1,67 @@
+#!/usr/bin/sage
+
+def M(p,q,N):
+
+    lb_p = lb(p)
+    lb_q = lb(q)
+    lb_N = lb(N)
+
+    base = p*q
+
+    lb_rem = lb_N - lb_p - lb_q
+
+    e_p_max = floor( lb_rem/lb_p )
+
+    val_max = base
+
+    for e_p in range(e_p_max+1):
+
+        e_q = floor( lb_rem/lb_q )
+
+        val = base * (q**e_q)
+
+        if val > val_max:
+
+            val_max = val
+
+        base *= p
+
+        lb_rem -= lb_p
+
+    return val_max
+
+
+if __name__ == "__main__":
+
+    #N = 10**2 # toy
+    N = 10**7
+
+    primes = prime_range(N)
+
+    pairs = []
+
+    S = 0
+
+    for i in range(len(primes)-1):
+        p = primes[i]
+        print("%6d / %d" % (i+1,len(primes)-1))
+        for j in range(i+1,len(primes)):
+
+            if j%1000 == 0:
+                print("  %6d" % j)
+
+            q = primes[j]
+
+            if p*q > N:
+                break
+
+            m = M(p,q,N)
+
+            S += M(p,q,N)
+
+            #pairs.append([p,q])
+
+    #print(lb(N), lb(len(pairs)))
+
+    print(S)
+

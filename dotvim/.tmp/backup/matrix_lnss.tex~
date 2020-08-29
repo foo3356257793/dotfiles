@@ -1,0 +1,2347 @@
+\documentclass[12pt]{amsart}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{url}
+\usepackage{ulem}
+\usepackage{multicol}
+%\usepackage{makeidx}
+\makeindex
+\usepackage{enumerate}
+\usepackage{tabularx}
+\usepackage{showtags}
+\usepackage{enumerate,hyperref,mathrsfs}
+\usepackage{showkeys}
+\usepackage{comment}
+\usepackage[section]{algorithm}
+\usepackage{algpseudocode}
+%\usepackage{refcheck}
+
+%\usepackage{refcheck}
+
+
+\def\CR{\color{red}}
+\def\CB{\color{blue}}
+
+
+\def\beq{\begin{equation}}
+\def\eeq{\end{equation}}
+
+\def\ben{\begin{enumerate}}
+\def\een{\end{enumerate}}
+
+
+
+\def\R{\mathbb{R}}
+\def\RR{\mathbb{R}}
+\def\CC{\mathbb{C}}
+\def\NN{\mathbb{N}}
+\def\ss{\mathbb{S}}
+\def\HH{\mathbb{H}}
+\def\ax{\langle x \rangle}
+\def\axs{\langle x, x^{\ast} \rangle}
+\def\N{\mathbb{N}}
+\def\eps{\varepsilon}
+\def\fin{\mathrm{fin}}
+\def\z{\mathcal{Z}}
+\def\l{\mathcal{L}}
+\def\A{A}
+\def\P{\mathcal{P}}
+\def\tr{\mathrm{Tr}}
+\def\spn{\mathrm{span}}
+\def\cone{\mathrm{cone}}
+\def\id{\mathrm{Id}}
+\def\A{\CC\langle t,t^{\ast}\rangle}
+
+
+\def\nc{non-commutative}
+
+\def\pt{\mathrm{pt}}
+\def\fpt{\mathrm{fpt}}
+\def\opt{\mathrm{opt}}
+\def\J{\mathcal{I}}
+\def\ev{\mathrm{ev}}
+
+%
+
+%\def\cI{\mathcal C}
+
+
+\def\cA{ {\mathcal A} }
+\def\cB{ {\mathcal B} }
+\def\cC{ {\mathcal C} }
+\def\cD{ {\mathcal D} }
+\def\cE{ {\mathcal E} }
+%\def\cF{ {\mathcal F} }
+\def\cF{\Pi}
+\def\FS{ {\mathcal F} }
+\def\cG{ {\mathcal G} }
+\def\cH{ {\mathcal H} }
+\def\cI{ {\mathcal I} }
+\def\cJ{ {\mathcal J}}
+\def\cK{ {\mathcal K} }
+\def\cL{ {\mathcal L} }
+\def\cM{{\mathcal M}}
+\def\cN{ {\mathcal N} }
+\def\cO{ {\mathcal O} }
+\def\cP{{\mathcal P}}
+\def\cQ{ {\mathcal Q} }
+\def\cR{{ \mathcal R }}
+\def\cS{{\mathcal S} }
+\def\cT{{\mathcal T}}
+\def\cV{{\mathcal V}}
+\def\cW{{\mathcal W}}
+\def\cU{\mathcal U}
+\def\cX{\mathcal X}
+\def\cY{\mathcal Y}
+\def\cZ{ {\mathcal Z} }
+
+\def\fM{\mathfrak{M}}
+
+\def\nss{nullstellensatz}
+\def\lnss{left nullstellensatz property}
+\def\qr{real}
+\def\qrr{real radical}
+\def\rad{saturation}
+
+\def\Sw{Sw}
+%\def\FS{\cF}
+\def\chrisT{\ast}
+\def\FNSx{\RR \langle x,x^{\chrisT} \rangle}
+\def\azs{\langle z, z^* \rangle}
+\def\IX{\phi_z^{-1}}
+\def\IZ{\phi_z}
+\def\IXg{\phi_{x,g}}
+\def\IZg{\varphi_z}
+\newcommand\Inc[1]{\iota_{#1}}
+\def\ncrr{\sqrt[ncr]}
+\def\chrisA{\FNSx}
+\def\WLOG{without loss of generality}
+\def\incw{\tau}
+\def\intr{\operatorname{int}}
+\def\hom{\mbox{\tiny hom}}
+\newcommand{\Proj}[1]{P_{#1}}
+\newcommand{\setmult}[2]{#1 #2}
+\newcommand{\leftact}[2]{#1 \cdot #2}
+\newcommand{\lead}[1]{\operatorname{lm}(#1)}
+\newcommand{\nonlead}[1]{\operatorname{Nlm}(#1)}
+\newcommand{\Id}[1]{1_{#1}}
+\def\finite{\mbox{\tiny finite}}
+\def\Md{M}
+\def\real{\rm rr}
+
+\newcommand{\Lradd}[3]{\sqrt[(#1,#2)]{#3}}
+\newcommand{\LraddS}[3]{\sqrt[(#1,#2)+]{#3}}
+\newcommand{\Lrad}[2]{\sqrt[(#1)]{#2}}
+\newcommand{\LradS}[2]{\sqrt[(#1)+]{#2}}
+
+\def\rC{\mathfrak{C}}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{thm}[theorem]{Theorem}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{cor}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{exa}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+
+
+%%%%%%%%%%%%NELSON
+
+\newtheorem{claim}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\def\ss{\smallskip}
+\def\ms{\medskip}
+\def\bs{\bigskip}
+
+\def\subset{\subseteq}
+\def\supset{\supseteq}
+
+
+\def\chrisA{\mathcal A}
+
+\newcommand{\rr}[1]{\sqrt[\real]{#1}}
+\def\RradI{\sqrt[\cR]{I}   }
+
+\def\SS{$\bold{SSS}$}
+
+\renewcommand{\tilde}{\widetilde}
+
+
+
+\numberwithin{equation}{section}
+
+\begin{document}
+
+\title[Non-Commutative Nullstellensatz]{A Real Nullstellensatz for Matrices of
+Non-Commutative Polynomials }
+
+\author{Christopher S. Nelson}
+
+
+\subjclass{16W10, 16S10, 16Z05, 14P99, 14A22, 47Lxx, 13J30}
+
+\keywords{noncommutative real algebraic geometry, algebras with involution,
+free algebras, matrix polynomials, symbolic computation}
+
+
+\begin{abstract}
+This article extends the classical Real Nullstellensatz to matrices
+of polynomials in a free $\ast$-algebra $\RR\axs$ with $x=(x_1,
+\ldots, x_n)$.  This result is a generalization of a result of
+Cimpri\v c, Helton, McCullough, and the author.
+
+In the free left $\RR\axs$-module $\RR^{1 \times \ell}\axs$ we
+introduce notions of the (noncommutative) zero set of a left
+$\RR\axs$-submodule and of a real left $\RR\axs$-submodule. We prove
+that every element from $\RR^{1 \times \ell}\axs$ whose zero set
+contains the intersection of zero sets of elements from a finite
+subset $S \subset \RR^{1 \times \ell}\axs$ belongs to the smallest
+real left $\RR\axs$-submodule containing $S$.  Using this, we derive
+a nullstellensatz for matrices of polynomials in $\RR\axs$.
+
+The other main contribution of this article is an efficient, implementable
+algorithm which for every finite subset $S \subset \RR^{1 \times \ell}\axs$
+computes the smallest real left $\RR\axs$-submodule containing $S$.  This
+algorithm terminates in a finite number of steps.  By taking advantage of the
+rigid structure of $\RR\axs$, the
+algorithm presented here is an improvement upon the previously known
+algorithm for $\RR\axs$.
+\end{abstract}
+
+\maketitle
+
+\newpage
+
+\section{Introduction}
+\label{sect:intro}
+
+ This article establishes a non-commutative analog
+  of the classical real Nullstellensatz.
+  The results of Krivine \cite{Kri1}, \cite{Kri2},
+Dubois \cite{D69}, and Risler \cite{R70}
+  established a real nullstellensatz in classical (commutative) real algebraic
+geometry.
+For a modern survey of real algebraic geometry (RAG), see the survey by
+Scheiderer
+\cite{sche} the book of Marshall \cite{mm3}, and the book of Bochnak, Coste and
+Roy \cite{bcr}.
+
+The main aim of this paper is to extend the real nullstellensatz to
+non-commutative algebras, in particular free algebras.
+The earliest such result was proved by George Bergman in an algebra without
+involution, settling a conjecture of Helton and McCullough \cite{HM04}.
+Unfortunately, in an algebra with involution, \cite{HM04} contains a
+counterexample to extending Bergman's result.
+In \cite{HMP} a major case is settled
+in a free $\ast$-algebra,
+but much remained open.
+
+A main thrust of real algebraic geometry, in addition to the nullstellensatz,
+is the positivstellensatz.  This holds as well for non-commutative algebras,
+and is an active area of research dating back to ideas of Putinar \cite{P} and
+Helton and McCullough \cite{HM04}. There is a convex branch
+of that subject, see \cite{HM12}, \cite{HKM12}, and \cite{KS}, and this
+article feeds into that thereby underlying the sequel \cite{HKN13} to this
+paper.
+
+This introduction is arranged as follows: in $\S$~\ref{sub:notation}
+some basic notation will be introduced; in $\S$~\ref{sub:commutInsp}
+we will discuss the commutative inspiration for the non-commutative
+nullstellensatz; in $\S$~\ref{sub:NCpolys} we will lay out basic
+definitions for non-commutative polynomials; in
+$\S$~\ref{sub:leftMods} we discuss non-commutative analogs of zero
+sets and radicals; the main results of the article are then
+presented in $\S$~\ref{sub:overview}; and finally an outline of the
+article is given in $\S$~\ref{sub:guide}.
+
+Our approach to Noncommutative Real Algebraic Geometry is motivated
+by \cite{HMP}; for alternative approaches see \cite{sch2} and
+\cite{mm}.
+
+
+\subsection{Notation}
+\label{sub:notation}
+
+Given positive integers $\nu$ and $\ell$,
+let $\RR^{\nu \times \ell}$ denote the space of $\nu
+\times \ell$ real matrices.
+Let $E_{ij} \in \RR^{\nu \times \ell}$
+\index{Eij@$E_{ij}$} denote
+the matrix with a $1$ as the $ij^{th}$ entry and a $0$ for all other entries.
+Let $e_j \in \RR^{1 \times \ell}$ \index{ej@$e_j$} denote
+the
+row vector with $1$ as
+the $j^{th}$ entry and a $0$ as all other entries.
+Let $\Id{\nu} \in \RR^{\nu \times \nu}$ denote the $\nu \times \nu$
+identity matrix.
+Let $A^* \in \RR^{\ell \times \nu}$ denote the transpose of a matrix $A \in
+\RR^{\nu \times \ell}$.
+Let $\mathbb{S}^{k} \subset \RR^{k \times k}$\index{S^k@$\mathbb{S}^k$} denote
+the space of real symmetric $k \times k$ matrices.
+
+Although our notation does not correspond to them, one who wishes a general
+orientation to non-commutative algebras can see Goodearl \cite{Goo}, and for
+free algebras see P. M. Cohn \cite{Coh}.
+
+\subsection{Commutative Inspiration}
+\label{sub:commutInsp}
+
+If $I$ is an ideal in the set of commutative polynomials $\RR[x]$ with real
+coefficients, we say $I$ is {\bf real} if whenever there are some
+polynomials $p_i \in \RR[x]$ which satisfy
+\[
+ \sum_i^{\rm finite} p_i^2 \in I
+\]
+then each $p_i \in I$.
+The real Nullstellensatz \cite{D69},
+\cite{R70} states that if $q \in \RR[x]$, then $q(a) = 0$ for all tuples of
+real scalars $a$ such that $p(a) = 0$ for each $p \in I$ if and only if $q$ is
+in the {\bf real radical of $I$}, that is, the smallest real ideal containing
+$I$.
+
+A more recent result of Cimpri\v c \cite{Cim13} extends this result to matrices
+of commutative polynomials.  A left submodule $I$ of the free
+$\RR[x]$-module $\RR[x]^{1 \times \ell}$ is {\bf
+real} if whenever $p_i \in \RR[x]^{1 \times \ell}$ satisfy
+\[
+ \sum_i^{\rm finite} p_i \otimes p_i \in \RR[x]^{\ell \times 1} \otimes I +
+I \otimes \RR[x]^{1 \times \ell}
+\]
+then each $p_i \in I$.  On $\RR[x]^{1 \times \ell}$, Cimpri\v c's result states
+that if $q
+\in \RR[x]^{1 \times \ell}$, then $q(a) = 0$ for all tuples of
+real scalars $a$ such that $p(a) = 0$ for each $p \in I$ if and only if $q$ is
+in the {\bf real radical of $I$}, that is, the smallest real left submodule
+containing
+$I$.
+
+\subsection{Non-Commutative Polynomials}
+\label{sub:NCpolys}
+
+We now turn our attention to the space of non-commutative polynomials.
+
+Let $\axs$\index{$\axs$} denote the monoid freely generated by $x = (x_1,
+\ldots, x_g)$ and $x^* = (x_1^*, \ldots, x_g^*)$---that is, $\axs$ consists of
+words in the $2g$ free letters $x_1, \ldots, x_g, x_1^*, \ldots, x_g^*$,
+including the empty word $\emptyset$, which plays the role of the identity $1$.
+Let  $\RR\axs$\index{Rxxs@$\RR\axs$} denote the
+$\RR$-algebra freely generated by $\axs$, i.e., the
+elements of $\RR\axs$
+are polynomials in the non-commuting variables $\axs$
+with coefficients
+in $\RR$.  Call elements of $\RR\axs$
+\textbf{non-commutative}\index{non-commutative (NC) polynomials} or \textbf{NC}
+polynomials.
+
+The \textbf{involution}\index{involution} on
+$\RR\axs$ is defined linearly so that $(x_i^*)^* = x_i$ for each variable $x_i$
+and
+$(pq)^* = q^*p^*$ for each $p, q \in \RR\axs$.
+For example,
+\[
+ \left( x_1x_2x_3 + 2x_3^*x_1 - x_3\right)^* = x_3^*x_2^*x_1^* + 2x_1^*x_3 -
+x_3^*.
+\]
+
+
+\subsubsection{Evaluation of NC Polynomials}
+
+NC polynomials can be evaluated at a tuple of matrices in a natural way.
+ Let $X = (X_1, \ldots, X_g) \in \left( \RR^{n \times n} \right)^g$. Given $p
+\in
+\RR\axs$, let $p(X)$ denote the matrix defined by
+replacing each $x_i$ in $p$ with $X_i$, each $x_i^*$ in $p$ with $X_i^{\ast}$,
+and replacing the empty word with $\Id{n}$.  Note that $p^*(X) =
+p(X)^*$ for all $p \in \RR\axs$.
+
+For example, if
+\[
+p(x) = x_1^2 - 2x_1x_2^* -3, \quad
+X_1 = \begin{pmatrix}
+1&2\\
+2&4
+\end{pmatrix}
+\quad
+\mbox{and}
+\quad
+X_2 = \begin{pmatrix}
+0&-1\\
+1&-1
+\end{pmatrix}
+\]
+then
+\begin{align}
+ \notag
+p(X) &= X_1^2 - 2X_1 X_2^* - 3 (\Id{2}) \\
+\notag
+&=
+\begin{pmatrix}
+1&2\\
+2&4
+\end{pmatrix}\begin{pmatrix}
+1&2\\
+2&4
+\end{pmatrix}
+- 2 \begin{pmatrix}
+1&2\\
+2&4
+\end{pmatrix}
+\begin{pmatrix}
+0&1\\
+-1&-1
+\end{pmatrix}
+-
+\begin{pmatrix}
+3&0\\
+0&3
+\end{pmatrix}
+\\
+\notag
+&
+=
+\left(
+\begin{array}{cc}
+ 6 & 12 \\
+ 18 & 21 \\
+\end{array}
+\right).
+\end{align}
+
+\subsubsection{Matrices of NC Polynomials}
+
+The space of $\nu \times \ell$ matrices with entries in $\RR\axs$
+will be
+denoted as $\RR^{\nu \times \ell}\axs$. Each $p \in \RR^{\nu \times \ell}\axs$
+can be expressed as
+\[
+p = \sum_{w \in \axs} A_w \otimes w \in \RR^{\nu \times \ell}\otimes \RR\axs.
+\]
+Given a tuple $X$ of real $n \times n$ matrices, let $p(X)$ denote
+\[
+p(X) = \sum_{w \in \axs} A_w \otimes w(X) \in \RR^{\nu n \times \ell n}
+\]
+where $\otimes$ denotes the Kronecker product.
+The involution on $\RR^{\nu \times \ell}\axs$ is
+given by
+\[
+p^*= \left(\sum_{w \in \axs} A_w \otimes w\right)^* = \sum_{w \in \axs}
+A_w^{\ast} \otimes w^* \in \RR^{\ell \times \nu}\axs.
+\]
+Note that $p^*(X) = p(X)^*$ for any tuple $X$.
+If $p \in \RR^{\nu \times \nu}\axs$, we say $p$
+is \textbf{symmetric}\index{symmetric
+polynomial} if $p = p^*$.
+
+
+\subsubsection{Degree of NC Polynomials}
+Let $|w|$ denote the \textbf{length}\index{length of a word in $\axs$} of a word
+$w \in
+\axs$.
+A \textbf{monomial}\index{monomial} in $\RR^{\nu \times \ell}\axs$ is a
+polynomial
+of the form
+$E_{ij} \otimes m$, where $m \in \axs$.
+Let $\cM^{\nu \times \ell}$ denote the set of monomials in $\RR^{\nu \times
+\ell}\axs$.
+The {\bf length} or
+ \textbf{degree}\index{degree} of a monomial $E_{ij} \otimes m$ is $|E_{ij}
+\otimes m| := |m|$.
+
+If $p$ is a NC polynomial, define the degree of $p$, denoted
+$\deg(p)$, to be the largest degree of any monomial appearing in
+$p$.  A NC polynomial $p$ is \textbf{homogeneous of degree
+$d$}\index{degree!homogeneous} if every monomial appearing in $p$
+has degree $d$.  If $W$ is a subspace of $\RR^{\nu \times
+\ell}\axs$, define $W_d$ \index{Wd for a vector space W in Rxxs@
+  $W_d$ for a vector space $W \subset
+\RR\axs$}\index{RRvlxxsd@$\RR^{\nu \times \ell}\axs_d$} to be the
+space spanned by all elements of $W$ with degree at most $d$.
+
+\subsubsection{Operations on Sets}
+
+If $A, B \subset \RR^{\nu \times
+\ell}\axs$, then define $A + B$ to be
+\[
+ A + B := \{ a + b \mid a \in A, b \in B \} \subset \RR^{\nu \times \ell}\axs.
+\]
+In the case that
+$A \cap B = \{0\}$, we also denote $A + B$ as $A \oplus B$\index{$\oplus$}; the
+expression $A \oplus B$ always asserts that $A \cap B =
+\{0\}$.
+If $A \subset \RR^{\nu \times \ell} \axs$ and $B
+\subset \RR^{\ell \times \rho} \axs$,
+let $\setmult{A}{B}$\index{$\setmult{A}{B}$}
+be
+\[
+ AB := \operatorname{Span}( \{ab \mid a \in A, b \in B \}) \subset \RR^{\nu
+\times \rho}\axs.
+\]
+If $A \subset \RR^{\nu \times \ell}\axs$, let
+\[A^{\ast}  := \{a^* \mid a
+\in A\} \subset
+\RR^{\ell
+\times \nu}
+\axs.\]
+If $A \subset \RR^{\nu \times \ell}$ and $B \subset \RR\axs$, then $A \otimes B$
+is
+\[
+ A \otimes B := \operatorname{Span}(  \{ a \otimes b \mid a \in A, b \in B \} ).
+\]
+
+
+If $p \in \RR^{\nu \times \ell}\axs$, then expressions of the form $p + A$,
+$pB$,
+$Cp$, $D \otimes p$, where $A$, $B$, $C$, and $D$, are sets, denote $\{p\} +
+A$, $\{p\}B$, $C\{p\}$, and $D \otimes \{p\}$ respectively.
+
+
+\subsection{Left \texorpdfstring{$\RR\axs$}{[R x xs]}-Modules}
+\label{sub:leftMods}
+For $\RR\axs$, there is a ``Non-Commutative Left Real Nullstellensatz''. Let
+$p_1, \ldots, p_k, q \in
+\RR\axs$.  If $q(X)v = 0$ for every $(X,v) \in \bigcup_{n \in \NN} \left( \RR^{n
+\times n}
+\right)^g \times \RR^n$ such that $p_1(X)v = \cdots = p_k(X)v = 0$, then $q$ is
+an element
+of the ``real radical'' of the left ideal generated by $p_1, \ldots, p_k$
+\cite{chmn}.  To generalize this result to $\RR^{\nu \times \ell}\axs$, we now
+generalize the notion of left ideal and real left ideal to non-square
+matrices of NC polynomials.
+
+The space
+$\RR^{1 \times \ell}\axs$ is a
+free left $\RR\axs$-module.
+That is,
+if $q \in \RR\axs$, $A  \in \RR^{1 \times \ell}$ and $r \in \RR\axs$, then
+\[
+\leftact{q}{(A \otimes r)} :=  (\Id{\nu} \otimes q)(A \otimes r)=
+A \otimes qr.
+\]
+In the sequel, we will simplify notation by identifying $q$ with
+$\Id{\nu}
+\otimes q$ and
+simply writing $q(A \otimes r)$ when we mean $\leftact{q}{(A \otimes r)}$.
+We will also simplify our terminology by referring to left
+$\RR\axs$-submodules $I \subset \RR^{1 \times \ell}\axs$ as
+ {\bf left modules}.
+
+
+\subsubsection{Real Left Modules}
+
+
+Let $I \subset \RR^{1 \times \ell}\axs$ be a left module.
+We say that $I$ is \textbf{real}\index{real!left module}
+if whenever
+\[ \sum_i^{\finite} p_i^*p_i \in \setmult{\RR^{\ell \times 1}}{I}
++
+\setmult{I^{\ast}}{\RR^{1 \times \ell}} \]
+for some $p_i \in \RR^{1 \times \ell}\axs$, then each $p_i \in I$.
+Note that $\RR^{\ell \times 1}I$ is the subspace of $\ell \times \ell$
+matrices whose rows are elements of $I$, and $(\RR^{\ell
+\times 1}I)^* = I^*\RR^{1 \times \ell}$ is the subspace of $\ell \times \ell$
+matrices whose columns are elements of $I^*$.
+
+The following result shows that defining a real left module in terms of only $1
+\times \ell$ matrices actually covers $\nu \times \ell$ matrices for any
+dimension $\nu$.
+
+\begin{prop}
+\label{prop:diffMiReal}
+ A left module $I \subset \RR^{1 \times \ell}\axs$
+is real if and only if
+whenever
+\begin{equation}
+ \label{eq:diffMi}
+\sum_i^{\finite} p_i^*p_i \in \setmult{\RR^{\ell \times 1}}{I} +
+\setmult{I^{\ast}}{\RR^{1 \times \ell}},
+\end{equation}
+for some $p_i \in
+\RR^{\nu_i
+\times \ell}\axs$ and some $\nu_i \in \NN$, then
+each $p_i \in \setmult{\RR^{\nu_i \times 1}}{I}$.
+\end{prop}
+
+\begin{proof}
+One direction is clear. For the converse, suppose $I$ is real, and suppose that
+(\ref{eq:diffMi}) holds for some polynomials $p_i \in \RR^{\nu_i
+\times \ell}\axs$.
+For each $p_i$,
+\[ p_i^*p_i =p_i^*\Id{\nu_i}p_i = \sum_{j=1}^{\nu_i} p_i^*  E_{jj
+} p _ i =
+\sum_{j=1}^{\nu_i}
+(e_j^*p_i)^*(e_j^*p_i),\]
+so that
+\[ \sum_{i}^{\finite} p_i^*p_i = \sum_{i}^{\finite} \sum_{j=1}^{\nu_i}
+(e_j^*p_i)^*(e_j^*p_i) \in \setmult{\RR^{\ell \times 1}}{I} +
+\setmult{I^*}{\RR^{1 \times \ell}}.\]
+Since $I$ is real, each $e_j^*p_i
+\in I$.
+Therefore, for each $i$,
+$$p_i = \Id{\nu_i}p_i = \sum_{j=1}^{\nu_i} e_je_j^*p_i \in
+\setmult{\RR^{\nu_i \times
+1}}{I}. $$
+\end{proof}
+
+\subsubsection{The Real Radical}
+
+An intersection of real left modules is itself a real left module.
+Define the
+\textbf{real radical}\index{real!radical} of a left module $I \subset \RR^{1
+\times \ell}\axs$ to be
+\[\rr{I} = \bigcap_{\substack{J \supseteq I,\\ J\ \mbox{\tiny real}}} J
+=\text{the smallest real left module containing } I.\]
+
+\subsubsection{Zero Sets of Left \texorpdfstring{$\RR\axs$}{[R x xs]}-Modules}
+
+If $S \subset \RR^{1 \times \ell}\axs$, for each $n \in \NN$,
+ define $V(S)^{(n)}$
+to be
+\[ V(S)^{(n)} := \{ (X,v) \in (\RR^{n \times n})^g \times \RR^{\ell n}
+\mid p(X)v = 0\ \text{for every}\ p \in S\},\]
+and define $V(S)$ to be
+\[ V(S) := \bigcup_{n \in \NN} V(S)^{(n)}.\]
+If $V \subset \bigcup_{n \in \NN} (\RR^{n \times n})^g \times
+\RR^{\ell n}$, define $\cI(V)$ to be
+\[ \cI(V) := \{ p \in \RR^{1 \times \ell}\axs \mid p(X)v = 0\ \text{for every}\
+(X,v) \in V\}.\]
+The set $\cI(V) \subset \RR^{1 \times \ell}\axs$ is clearly a left
+module.
+If $I \subset \RR^{1 \times \ell}\axs$ is a left module, define the
+\textbf{(vanishing) radical}\index{radical!vanishing} of $I$ to be
+\[\sqrt{I} := \cI(V(I)).\]
+We say a left module is {\bf radical} if it is equal to its vanishing radical.
+
+\begin{prop}
+\label{prop:cIcCIsReal}
+Let $V \subset \bigcup_{n \in
+\NN} (\RR^{n \times n})^g \times
+\RR^{\ell n}$. The space $\cI(V) \subset \RR^{1 \times \ell}\axs$ is a real left
+module.
+\end{prop}
+
+\begin{proof}
+ Suppose
+\[\sum_i^{\finite} p_i^*p_i \in \RR^{\ell \times 1} \cI(V) +  \cI(V)^*\RR^{1
+\times \ell},\]
+where each $p_i \in \RR^{1 \times \ell}\axs$.
+For each $(X,v) \in V$, we have
+\[\sum_i^{\finite} p_i(X)^*p_i(X)v = 0  \quad \Longrightarrow
+\quad \sum_i^{\finite}
+v^*p_i(X)^*p_i(X)v = 0. \]
+Therefore each $p_i(X)v = 0$, which implies that each $p_i \in \cI(V)$.
+\end{proof}
+
+Proposition~\ref{prop:cIcCIsReal} implies that for each left module
+$I \subset \RR^{1
+\times \ell}\axs$,
+\[ I \subset \rr{I} \subset \sqrt{I}.\]
+
+
+\subsection{Main Results}
+\label{sub:overview}
+
+\subsubsection{Main Theorem}
+Here is the main result of this article, which is a generalization of
+\cite[Theorem 1.6]{chmn} to the matrix case.
+\begin{theorem}
+\label{thm:mainFromNotes}
+ Let $p_1, \ldots, p_k$ be such that each
+$p_i \in \RR^{\nu_i \times \ell}\axs$ for some $\nu_i \in \NN$.
+Define
+\[
+ J_\nu := \setmult{\RR^{\nu \times 1}}{\rr{\sum_{i=1}^k
+ \setmult{\RR^{1 \times \nu_i}\axs}{p_i}}}
+\]
+for $\nu \in \NN$.
+Let
+$q \in \RR^{\nu \times \ell}\axs$.
+% for some $\nu \in \NN$.
+Then $q(X)v = 0$ for all $(X,v) \in  \bigcup_{n \in \NN} (\RR^{n \times n})^g
+\times
+\RR^{\ell n}$ such that
+$p_1(X)v, \ldots, p_k(X)v = 0$ if and only if  $q \in J_\nu$.
+
+Consequently, if the left module
+\begin{equation}
+\label{eq:checkIReal}
+\sum_{i=1}^k
+\RR^{1
+\times \nu_i}\axs p_i
+\end{equation}
+is real, and if $q(X)v = 0$
+whenever $p_1(X)v, \ldots, p_k(X)v = 0$, then
+$q$ is of the form
+\[q = r_1p_1 + \cdots + r_k p_k,\]
+where each $r_i \in \RR^{\nu \times \nu_i}\axs$.
+\end{theorem}
+
+This is proven in $\S$~\ref{sec:mainResults}.
+
+\subsubsection{Algorithm}
+
+In Algorithm~\ref{alg:rrAlg} we will present an algorithm for
+computing $\rr{I}$ for a finitely-generated left module $I \subset
+\RR^{1 \times \ell}\axs$.  This algorithm is a generalization of and
+an improvement upon the Real Algorithm given in \cite{chmn}.  The
+following theorem, proven in $\S$~\ref{subsub:propsRrAlg}, states
+some of its appealing properties.
+
+\begin{thm}
+\label{thm:algorStops}
+Let $I$ be the left module generated by
+$\iota_1, \ldots, \iota_{\mu} \in \RR^{1 \times \ell}\axs$.  The following are
+true for applying the algorithm described in
+Algorithm~\ref{alg:rrAlg} to $\iota_1, \ldots, \iota_{\mu}$.
+
+\begin{enumerate}
+\item
+ \label{degreed}
+If
+$\deg(\iota_1), \ldots, \deg(\iota_{\mu}) \leq d$,
+the polynomials involved in the algorithm all have degree
+less than $2d$.
+
+\item \label{stops}The algorithm is guaranteed to terminate in
+a finite number of steps.
+
+\item When the algorithm terminates, it outputs a reduced left
+Gr\"obner basis for $\rr{I}$.
+\end{enumerate}
+\end{thm}
+
+\subsection{Reader's Guide}
+\label{sub:guide}
+
+?? Redo when done ??
+
+Sections~\ref{sect:allAboutRC},~\ref{sec:COrders}, and~\ref{sec:DoubleCOrders}
+are technical sections which prove lemmas needed for the proof of the main
+results.
+Section~\ref{sect:linFun} proves some important lemmas and closes with the proof
+of Theorem~\ref{thm:mainFromNotes}.
+Section~\ref{sec:CandH} proves an
+extension of Theorem~\ref{thm:mainFromNotes} to $\CC$ and $\HH$.
+Section~\ref{sec:realRadStuff}
+proves a strong result, Theorem~\ref{thm:reducedRealTest}, for verifying whether
+a left module is real, which will be used for the Real Radical Algorithm.
+Section~\ref{sect:LGB} is a technical section
+discussing left Gr\"obner bases. Section~\ref{sub:rralg} presents the Real
+Radical Algorithm
+mentioned in Theorem~\ref{thm:algorStops} and proves its nice properties.
+
+\section{Right Chip Spaces and Factorization of Monomials}
+\label{sect:allAboutRC}
+
+
+We now introduce  a natural class of monomials
+needed for the proofs, chip sets.
+Further, the Real Radical Algorithm described in Theorem~\ref{thm:algorStops}
+makes extensive use of chip sets, which makes said algorithm very efficient.
+
+Given monomials $m_1, m_2 \in \cM^{\nu \times \ell}$, we say that $m_2$ {\bf
+right divides} $m_1$, or that $m_2$ is a {\bf right chip} of $m_1$, if $m_1 =
+wm_2$ for some $w \in \axs$.  If $w \neq 1$, we say the division is {\bf
+proper} or that $m_2$ is a {\bf proper right chip}.
+
+\begin{exa}
+ If
+\[
+m_1 = e_2 \otimes x_1x_2x_3 \quad \mbox{and} \quad m_2 = e_2 \otimes x_2x_3,
+\]
+then $x_1 m_2 = m_1$, so $m_2$ is a proper right chip of $m_1$.
+\end{exa}
+
+A {\bf right chip space} $\rC \subset \RR^{\nu \times \ell}\axs$ is a space
+spanned by monomials $m$ such that if $m \in \rC$, then so are all of its right
+chips.  A right chip space is {\bf finite} if it is finite dimensional.
+
+The space of NC polynomials has a rigid structure which makes finding sums of
+squares representations easy.  For example, Klep and Povh \cite{kp} showed that
+to verify that a NC polynomial $p$ is a sum of squares, one needs only to use
+the right chips of the terms of $p$.
+In this section we prove some basic results about right chip spaces which will
+be useful in proving the main results of this article.
+
+\subsection{Constant Matrices in the Complement of a Full Right Chip Space}
+
+The element $1 \in \RR\axs$ right divides any monomial in $\RR^{1 \times 1}\axs
+=
+\RR\axs$, hence $1 \in \rC$ for any right chip space $\rC
+\subset \RR\axs$.  For dimensions $\ell > 1$, however, not all right chip
+spaces contain all constants.
+Define
+\textbf{$\Gamma(\rC)$}\index{$\Gamma(\rC)$} to be
+\[\Gamma(\rC) := \{ j \mid e_j \otimes 1 \in \rC\} \subset \{1, \ldots,
+\ell\}.\]
+
+\begin{lemma}
+\label{lem:gammaC}
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space.
+Then $\RR\axs \rC$ is equal to
+\[\RR\axs \rC = \bigoplus_{j \in \Gamma(\rC)} e_j \otimes \RR\axs.\]
+\end{lemma}
+
+\begin{proof}
+If $e_j \otimes w \in \rC$ for some $w \in \axs$, then since $\rC$ is a full
+right chip space,
+$e_j \otimes 1 \in \rC$.  The result is clear from here.
+\end{proof}
+
+Of interest as well are spaces of the form $\rC^* \RR\axs \rC \subset
+\RR^{\ell \times
+\ell}\axs$.
+
+\begin{lemma}
+ \label{lemma:MsFFaxsM}
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a
+right chip space.
+Then $\rC^* \RR\axs \rC$ is equal to
+\begin{equation*}
+%\label{eq:MsFFaxsM}
+\rC^* \RR\axs \rC = \bigoplus_{i,j \in \Gamma(\rC)} E_{ij}
+\otimes
+\RR\axs.
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+ This is clear from Lemma~\ref{lem:gammaC}.
+\end{proof}
+
+\begin{lemma}
+\label{lem:noTheta}
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space,
+and let $I \subset \RR^{1 \times \ell}\axs$ be a left module generated by
+polynomials in $\RR\axs \rC$.  Then
+\[(\RR^{\ell \times 1} I + I^* \RR^{1 \times \ell}) \cap \rC^*\RR\axs \rC
+= \rC^* I + I^* \rC.\]
+\end{lemma}
+
+\begin{proof}
+ Let $\Theta$ be the space defined by
+\[\Theta = \bigoplus_{j \not\in \Gamma(\rC)} e_j \otimes \RR\axs.\]
+By Lemma~\ref{lem:gammaC}, $\RR^{1 \times \ell}\axs = \RR\axs \rC
+\oplus \Theta$, and
+\begin{align}
+\notag
+\rC^*\RR\axs \rC &= \bigoplus_{i,j \in \Gamma(\rC)} E_{ij} \otimes \RR\axs,&
+\Theta^* \rC & = \bigoplus_{\substack{i \not\in \Gamma(\rC)\\ j \in
+\Gamma(\rC)}} E_{ij} \otimes \RR\axs\\
+\notag
+ \rC^*\Theta &=
+ \bigoplus_{\substack{i \in \Gamma(\rC)\\ j \not\in \Gamma(\rC)}} E_{ij} \otimes
+\RR\axs,
+ &\Theta^*\Theta&=\bigoplus_{i,j \not\in \Gamma(\rC)} E_{ij} \otimes \RR\axs.
+\end{align}
+Therefore,
+\begin{equation}
+\label{eq:oplusCTh}
+ \RR^{\ell \times \ell}\axs = \rC^*\RR\axs \rC \oplus
+\Theta^* \rC \oplus \rC^*\Theta \oplus
+\Theta^*\Theta.
+\end{equation}
+Let $\iota_1, \ldots, \iota_i, \ldots \in \RR\axs \rC$ generate $I$.
+Each $\iota \in \RR^{\ell \times 1} I + I^* \RR^{1 \times
+\ell}$
+is of the form
+\[\iota = \sum_i^{\finite} (p_i^*\iota_i + \iota_i^*q_i),\]
+for some $p_i, q_i \in \RR^{1 \times \ell}\axs $.
+Decompose each $p_i$ as $\phi_{p_i} + \theta_{p_i}$ and each
+$q_i$ as $\phi_{q_i} + \theta_{q_i}$ so that
+$\phi_{p_i}, \phi_{q_i} \in \RR\axs \rC$ and $\theta_{p_i},
+\theta_{q_i} \in \Theta$.  Then
+\begin{align}
+\label{eq:partInCsC}
+\iota &=
+\sum_i^{\finite}
+(\phi_{p_i}^*\iota_i + \iota_i^*\phi_{q_i})
++\sum_i^{\finite} (\theta_{p_i}^*\iota_i) +\sum_i^{\finite}
+(\iota_i^*{\theta_{q_i}}),
+\end{align}
+so that the first sum of (\ref{eq:partInCsC})
+is in $\rC^*\RR\axs \rC$, the second in $\Theta^* \rC$, and
+the third in $\rC^*\Theta$.  If $\iota \in \rC^*\RR\axs \rC$, by
+(\ref{eq:oplusCTh}), $\iota$ is equal to the first sum in
+(\ref{eq:partInCsC}), which is an element of $\rC^*I + I^*\rC$.
+\end{proof}
+
+
+\subsection{Unique Factorization of Monomials}
+
+If $w \in \axs$ and $0 \leq d \leq |w|$,
+one can factor $w$ uniquely as
+$w = w_1w_2$, where $w_1, w_2 \in \axs$ with $|w_1| = d$ and $|w_2| = |w| - d$.
+The following lemma generalizes this fact to $\RR^{\nu \times \ell}\axs$.
+
+\begin{lemma}
+\label{lem:canFactorMon}
+Let $m = E_{ij} \otimes w \in \cM^{\nu \times \ell}\axs$ and $w \in \axs$.
+For each $0 \leq d \leq |m|$, there exists a factorization of
+$m$ as $m = m_1^*m_2$, where $m_1 \in \cM^{1 \times \nu}$, $m_2 \in \cM^{1
+\times \ell}$,
+$\deg(m_1) = d$, and $\deg(m_2) = |m| - d$.  Further, this factorization is
+uniquely determined, up to scalar multiplication,  by
+$m_1 = e_i \otimes w_1^*$, $m_2 = e_j \otimes w_2$, where $w = w_1w_2$, $w_1,
+w_2 \in \axs$, with
+$|w_1| = d$ and $|w_2| = |m|-d$.
+\end{lemma}
+
+\begin{proof}
+The factorization $m = (e_i \otimes w_1^*)^*(e_j \otimes
+w_2) = E_{ij} \otimes w$ is clear.
+Conversely, suppose $m = m_1^*m_2$, where
+\[m_1 = \sum_{\rho=1}^{\nu} \sum_{u \in \axs} A_{\rho,u} e_{\rho} \otimes u
+\quad
+\mbox{and}
+\quad
+m_2 =  \sum_{\sigma=1}^{\ell} \sum_{v \in \axs} B_{\sigma,v} e_{\sigma}
+\otimes v,\]
+for some $A_{\rho,u}, B_{\sigma,v} \in \RR$.
+Then,
+\begin{align}
+\notag
+m_1^*m_2 &= \sum_{\rho = 1}^{\nu} \sum_{\sigma=1}^{\ell} \sum_{u \in
+\axs}\sum_{v \in \axs}
+A_{\rho,u}B_{\sigma,v} E_{\rho\sigma} \otimes u^*v \\
+\label{eq:rhoSigma}
+ &= \sum_{\rho=1}^{\nu} \sum_{\sigma = 1}^{\ell} E_{\rho\sigma}
+\otimes \left( \sum_{u \in \axs}
+A_{\rho,u}  u\right)^*
+\left(\sum_{v \in \axs} B_{\sigma,v} v\right)\\
+\notag
+&= E_{ij} \otimes w.
+\end{align}
+The terms of  (\ref{eq:rhoSigma}) with $\rho = i$ and $\sigma = j$ are equal to
+$E_{ij}
+\otimes w_1^*w_2$, which implies, by uniqueness of the factorization of $w$,
+that
+$A_{i,u} = B_{j,v} = 0$, for $u \neq w_1^*$
+and $v \neq w_2$, and $A_{i,w_1^*}B_{j,w_2} = 1$.  The terms of
+ (\ref{eq:rhoSigma}) with
+ $\rho \neq i$ and $\sigma =
+j$
+are equal to $0$, which implies that each
+$A_{\rho, u} = 0$ for $\rho \neq i$.  Similarly, each $B_{\sigma, v} = 0$ for
+$\sigma \neq 0$.
+Therefore $m_1 = A_{i,w_1^*}(e_i \otimes w_1^*)$ and $m_2 =
+(1/A_{i,w_1^*}) (e_j \otimes w_2)$.
+\end{proof}
+
+Given a right chip space $\rC \subset \RR^{1 \times \ell}\axs$, there are some
+special factorizations of monomials in $\cM^{1 \times \ell}$ and $\cM^{\ell
+\times \ell}$ which will be useful.
+
+\begin{lemma}
+\label{lem:uniqueDecomp}
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space.
+Each monomial $m \in \RR\axs \rC$ has a unique
+word $w
+\in \axs$ of minimum length and a unique right chip $\bar{m} \in \rC$
+such that $m = w \bar{m}$.
+\end{lemma}
+
+\begin{proof}
+Each monomial in $\RR\axs \rC$ is of the form $w
+\bar{m}$, with $w \in \axs$ and $\bar{m} \in
+\rC$.  Uniqueness of the minimal $w \in \axs$
+follows from Lemma~\ref{lem:canFactorMon}.
+\end{proof}
+
+\begin{lemma}
+\label{lem:repRRaxsrC}
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space.
+A monomial $m \in \cM^{1 \times \ell}$ is in the set $\RR\axs \rC \setminus \rC$
+if and only if it can be expressed as $m = w\bar{m}$, where $\bar{m} \in
+\RR\axs_1 \rC \setminus \rC$ and $w \in \axs$.  Further, this representation is
+unique.
+\end{lemma}
+
+\begin{proof}
+Decompose $m \in \RR\axs \rC \setminus \rC$ as in Lemma~\ref{lem:uniqueDecomp}
+as $m = \hat{w} \hat{m}$, where $\hat{m} \in \rC$ and $\hat{w}$ is as small as
+possible.
+We cannot have $\hat{w} = 1$ since $m \not\in \rC$, so decompose $\hat{w}$ as
+$\hat{w}_1\hat{w}_2$, where $|\hat{w}_2| = 1$.  Then $m = \hat{w}_1(\hat{w}_2
+\hat{m})$, and by minimality
+of $\hat{w}$, $\bar{m} = \hat{w}_2 \hat{m} \in \RR\axs_1 \rC \setminus \rC$.
+
+Conversely, if $m \in \RR\axs_1\rC$, then $wm \not\in \rC$ by definition.
+
+For uniqueness, if we had two decompositions $m_1 w_1 = m_2 w_2$,
+with $|w_1| < |w_2|$, then $w_2 \in \RR\axs_1 \rC \setminus \rC$
+would imply that $w_1 \in \rC$.
+\end{proof}
+
+\begin{lemma}
+\label{lem:repNEW2}
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space.
+A monomial $m \in \cM^{\ell \times \ell}$ is in the space $\rC^* \RR\axs \rC
+\setminus \rC^*\RR\axs_1
+\rC$ if and only if it can be expressed as
+$m = \bar{m}_1^* w \bar{m}_2$, where $\bar{m}_1, \bar{m}_2 \in
+\RR\axs_1 \rC \setminus \rC$ and $w \in \axs$. Further, this representation is
+unique.
+\end{lemma}
+
+\begin{proof}
+  If $m \in \rC^* \RR\axs \rC$, then
+  \[
+    m = a^* b c
+  \]
+  with $a, c \in \rC$.  Choose $a$ and $c$ to be maximal.  If $m
+  \not\in \rC^* \RR\axs_1 \rC$, then $|b| \geq 2$.  In this case,
+  decompose $b$ as $b = b_1^*b_2b_3$ with $|b_1| = |b_3| = 1$.  Then
+  \[
+    m = (b_1a)^* b_2 (b_3c)
+  \]
+  and $b_1a, b_3c \in \RR\axs_1 \rC \setminus \rC$ by maximality.
+
+  Conversely, if
+  \[
+    m = \bar{m}_1^* w \bar{m_2} = c_1^* d c_2
+  \]
+  where $\bar{m}_1, \bar{m_2} \not\in \rC$, $c_1, c_2 \in \rC$, then
+  we must have $|\bar{m}_1| > c_1$, $|\bar{m}_2| >c_2$, which
+  implies that $|d| \leq 1$.
+
+  Uniqueness follows from Lemma \ref{lem:repRRaxsrC}.
+\end{proof}
+
+\section{\texorpdfstring{$\rC$}{[C]}-Orders and $\rC$-Bases}
+\label{sec:COrders}
+
+Now we turn to orders on monomials.  This is a subject familiar to
+those who work with Gr\"obner bases.  However, it turns out that to
+take advantage of the structure of right chip spaces, we need to
+define an order different from the admissible orders used with
+Gr\"obner bases (see $\S$~\ref{sect:LGB} for more on left admissible
+orders.)
+
+Given a total order $\prec$ on $\cM^{\nu \times \ell}$, we say that the
+\textbf{leading monomial}
+\index{leading monomial} of a polynomial $p$, denoted $\lead{p}$, is the highest
+monomial
+appearing in $p$ according to $\prec$.  We call a polynomial
+\textbf{monic}\index{monic polynomial} if its leading monomial has coefficient
+$1$.  Given a set $I \subset \RR^{1 \times \ell}$, let $\lead{I}$ be the set of
+leading monomials of elements of $I$, and let $\nonlead{I} := \cM^{1 \times
+\ell} \setminus \lead{I}$.
+
+\begin{lemma}
+\label{lem:leadOfSumGen}
+ Let $\prec$ be a total order on monomials in
+$\RR^{\nu \times \ell}\axs$, and let $p_1, \ldots, p_k \in \RR^{\nu \times
+\ell}\axs \setminus \{0\}$.  Suppose $\lead{p_1} \prec \cdots \prec \lead{p_k}$.
+Then the leading monomial of $p_1 + \cdots + p_k$ is $\lead{p_k}$.
+In particular, $p_1 + \cdots + p_k \neq 0$.
+\end{lemma}
+
+\begin{proof}
+ Straightforward.
+\end{proof}
+
+For right chip spaces $\rC$, we would like to find an order on $\cM^{1 \times
+\ell}$ such $a \prec b$ whenever $a \in \rC$ and $b
+\not\in \rC$. To do this, we introduce $\rC$-orders.
+
+First, we say a total order $\prec$ on $\axs$ is a \textbf{degree
+order}\index{order!degree}
+if $a \prec b$ holds whenever $|a| < |b|$.
+
+Next, let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space.
+Let $\prec_0$ be a degree order on $\axs$.
+We say that $\prec_{\rC}$ is a \textbf{$\rC$-order
+(induced by $\prec_0$)}\index{C-order@$\rC$-order}
+if $\prec_{\rC}$ is a total order on $\cM^{1 \times \ell}$ such that if $a,b \in
+\cM^{1 \times \ell}$, then $a \prec_{\rC} b$ if
+one of the following hold
+\begin{enumerate}
+ \item $a \in \rC$ and $b \not\in \rC$,
+ \item $a \in \RR\axs \rC$ and $b \not\in \RR\axs \rC$,
+ \item $a = a_1a_2$, $b = b_1b_2$, where $a_2,b_2 \in \RR\axs_1 \rC \setminus
+\rC$, $a_1, b_1 \in \axs$, and $a_1 \prec_0 b_1$,
+\item $a = wa_2$, $b = wb_2$, where $a_2,b_2 \in \RR\axs_1 \rC \setminus
+\rC$, $w \in \axs$, and $a_2 \prec_{\rC} b_2$.
+\end{enumerate}
+The above conditions in and of themselves only define a partial
+order. By definition, a $\rC$ order $\prec_{\rC}$ is defined in some way
+among
+the elements
+of $\rC$, $\RR\axs_1 \rC \setminus \rC$, and $\RR^{1 \times \ell} \setminus
+\RR\axs \rC$ respectively to make it a total order.
+
+\begin{lemma}
+ \label{lem:leadOfProd}
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space
+and let $\prec_{\rC}$ be a $\rC$-order induced by a degree order $\prec_0$.
+If $q \in \RR\axs_1 \rC \setminus \rC$ and $p \in \RR\axs \setminus
+\{0\}$, then the leading monomial of $pq$ is $\lead{p}\lead{q}$, where
+$\lead{p}$ is the leading
+monomial of
+$p$ according to $\prec_0$ and $\lead{q} \in \RR\axs_1 \rC \setminus \rC$ is the
+leading monomial of $q$ according to $\prec_{\rC}$.
+\end{lemma}
+
+\begin{proof}
+  By Lemma~\ref{lem:leadOfSumGen}, WLOG let $p = \lead{p}$ be a
+  monomial.
+
+  We must have $\lead{q} \not\in \rC$ since otherwise $q \in \rC$.
+  If $r \in \RR\axs_1 \rC \setminus \rC$ with $r \prec_{\rC}
+  \lead{q}$, then it is clear that $pr \prec_{\rC} p\lead{q}$.
+  Further, if $r \in \rC$, then either $pr \in \rC$ or $pr =
+  p_1(p_2r)$ with $p_2r \in \RR\axs_1 \rC \setminus \rC$; in either
+  case, it follows that $pr \prec_{\rC} p\lead{q}$.
+\end{proof}
+
+\subsection{\texorpdfstring{$\rC$}{[C]}-Bases}
+
+Given a $\rC$-order and a left module $I$ generated by elements of $\RR\axs_1
+\rC$, we can construct what we call a
+$\rC$-basis.
+
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space
+and let $\prec_{\rC}$ be a $\rC$-order.  Let $I \subset \RR^{1 \times
+\ell}\axs$ be a left module generated by polynomials in $\RR\axs_1 \rC$.
+We say that a pair of sets $(\{ \iota_i\}_{i \in A},
+\{\vartheta_j\}_{j \in B})$ is a
+\textbf{$\rC$-basis}\index{C-basis@$\rC$-basis} for $I$ if $\{ \iota_i\}_{i \in
+A}$ is a maximal set of monic polynomials in
+$I \cap
+(\RR\axs_1 \rC \setminus \rC)$ with distinct leading monomials
+and if $\{\vartheta_j\}_{j \in B}$
+is a maximal (possibly empty) set of monic polynomials in $I \cap \rC$ with
+distinct
+leading monomials.
+
+\begin{lemma}
+\label{lem:strLinInd}
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space.
+Let $\{ \iota_i\}_{i \in A} \subset \RR\axs_1 \rC \setminus \rC$
+be a set of polynomials with distinct leading monomials,
+and let $\{\vartheta_j\}_{j \in B} \subset \rC$ be a set of polynomials with
+distinct
+leading monomials.
+The following are true of the polynomial $q$ defined by
+\[
+q = \sum_{i}^{\finite} p_i \iota_i + \sum_{j}^{\finite} \alpha_j
+\vartheta_j,
+\]
+where each $p_i \in \RR\axs$ and $\alpha_j \in \RR$.
+\begin{enumerate}
+  \item \label{it:lmIsProd} Given a $\rC$-order $\prec_{\rC}$, if $q \not\in \rC$, then
+    $\lead{q} = \lead{p_i}\lead{\iota_i}$ for some $i$.
+  \item \label{it:piConst} If $q \in \RR\axs_1 \rC$, then each $p_i$ is
+constant.
+\item \label{it:piZero} If $q \in \rC$, then each $p_i = 0$.
+ \item \label{it:linIndReg} If $q = 0$, then each $p_i = 0$ and each
+$\alpha_j = 0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  Item~\ref{it:lmIsProd} follows from  Lemmas~\ref{lem:leadOfSumGen}
+and \ref{lem:leadOfProd}.  Item~\ref{it:piConst} follows from
+Lemma~\ref{lem:repRRaxsrC}.  Item~\ref{it:piZero} is clear.
+Item~\ref{it:linIndReg} follows from the leading monomials being
+distinct.
+\end{proof}
+
+Note that Lemma~\ref{lem:strLinInd} (\ref{it:linIndReg}) implies that the union
+of the two sets
+of a $\rC$-basis is a linearly independent set.
+
+\begin{lemma}
+\label{lem:niceCBasis}
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a finite right chip space
+and let $\prec_{\rC}$
+be a $\rC$-order induced by some degree order.
+ Let $I \subset \RR^{1 \times \ell}\axs$ be a left module
+generated by polynomials in $\RR\axs_1 \rC$ and
+let $(\{\iota_i\}_{i=1}^{\mu},
+\{\vartheta_j\}_{j=1}^{\sigma})$ be a $\rC$-basis for $I$.
+Each element of $I$ can be represented uniquely as
+\begin{equation}
+ \label{eq:formOfAllInI}
+\sum_{i=1}^{\mu} p_i \iota_i + \sum_{j=1}^{\sigma} \alpha_j
+\vartheta_j,
+\end{equation}
+where each $p_i \in \RR\axs$ and $\alpha_j \in \RR$.
+
+\begin{comment}
+Conversely, any pair of sets of monic polynomials $(\{\iota_i\}_{i=1}^{\mu},
+\{\vartheta_j\}_{j=1}^{\sigma})$ with distinct leading monomials such that any
+element of $I$
+can be expressed
+in the form (\ref{eq:formOfAllInI}) is a $\rC$-basis for $I$.
+\end{comment}
+\end{lemma}
+
+\begin{proof} Since $I$ is generated by elements of $\RR\axs_1\rC$,
+  any element of $I$ is of the form (\ref{eq:formOfAllInI}) by
+  maximality of the $\rC$-basis.
+  Uniqueness follows from Lemma
+\ref{lem:strLinInd}.
+
+\begin{comment}
+Conversely, suppose
+$(\{\iota_i\}_{i=1}^{\mu},
+\{\vartheta_j\}_{j=1}^{\sigma})$ is a pair
+of sets of monic polynomials with distinct leading monomials such
+that any
+element of $I$
+can be expressed
+in the form (\ref{eq:formOfAllInI}).
+Let $\theta \in I \cap \RR\axs_1 \rC$
+be equal to
+\[\theta = \sum_{i=1}^{\mu} p_i \iota_i + \sum_{j=1}^{\sigma} \alpha_j
+\vartheta_j.\]
+Lemma~\ref{lem:strLinInd} implies that if $\theta \neq 0$
+then it cannot have a distinct leading monomial
+from the $\iota_i$ and $\vartheta_j$.
+Therefore the pair $(\{\iota_i\}_{i=1}^{\mu},
+\{\vartheta_j\}_{j=1}^{\sigma})$ is a $\rC$-basis.
+\end{comment}
+\end{proof}
+
+\section{Double \texorpdfstring{$\rC$}{[C]}-Orders}
+\label{sec:DoubleCOrders}
+
+In addition to ordering elements of $\cM^{1 \times \ell}$,
+we also want to order elements of $\cM^{\ell \times \ell}$.
+
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space.
+Let $\prec_{\rC}$ be a $\rC$-order.
+We say that $\prec_{\rC \times \rC}$ is a
+\textbf{double $\rC$-order (induced by
+$\prec_{\rC}$)}\index{C-order@$\rC$-order!double}
+if $\prec_{\rC \times \rC}$ is a total order on $\cM^{\ell \times \ell}$
+such that given $a,b \in \cM^{\ell
+\times \ell}$ we have $a \prec_{\rC
+\times \rC} b$ if
+one of the following hold
+\begin{enumerate}
+ \item $a \in (\RR^{1 \times \ell} \cap \rC)^* \rC$ and $b \not\in (\RR^{1
+\times \ell} \cap \rC)^* \rC$,
+ \item $a \in \rC^*\RR\axs \rC$ and $b \not\in \rC^*\RR\axs \rC$,
+ \item $a = a_1^*a_2$, $b = b_1^*b_2$, where $a_2, b_2 \in \RR\axs_1 \rC
+\setminus \rC$, $a_1, b_1 \in \RR\axs \rC$, and either
+\begin{enumerate}
+ \item $a_1 \prec_{\rC} b_1$, or
+ \item $a_1 = b_1$ and $a_2 \prec_{\rC} b_2$.
+\end{enumerate}
+\end{enumerate}
+The above conditions in and of themselves only define a partial
+order. By definition, $\prec_{\rC \times \rC}$ is a total order, so it is
+defined in some way
+beyond
+what has been stated to produce a total order.
+
+\begin{lemma}
+ \label{lem:leadCOrder2}
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space, let
+$\prec_{\rC}$ be a $\rC$-order, and let $\prec_{\rC \times \rC}$
+be a double $\rC$-order induced by $\prec_{\rC}$.
+If $q \in \RR\axs_1 \rC \setminus \rC$ and $p \in \RR\axs \rC \setminus
+\rC$, then the leading monomial of $p^*q$ is $\lead{p}^*\lead{q}$, where
+$\lead{p}$ is the
+leading
+monomial of
+$p$ according to $\prec_{\rC}$ and $\lead{q} \in \RR\axs_1 \rC \setminus \rC$ is
+the
+leading monomial of $q$ according to $\prec_{\rC}$.
+\end{lemma}
+
+\begin{proof}
+  Follows similarly to Lemma \ref{lem:leadOfProd}.
+\end{proof}
+
+
+\begin{lemma}
+\label{lem:niceCBasis2}
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a finite right chip space,
+let
+$\prec_{\rC}$
+be a $\rC$-order, and let $\prec_{\rC \times \rC}$ be a double $\rC$-order
+induced by $\prec_{\rC}$. Let $I \subset \RR^{1 \times \ell}\axs$ be a left
+module
+generated by polynomials in $\RR\axs_1 \rC$.
+Let $(\{\iota_i\}_{i=1}^{\mu},
+\{\vartheta_j\}_{j=1}^{\sigma})$ be a $\rC$-basis for $I \cap
+\RR\axs_1 \rC$.  Let $\{\tau_1, \ldots, \tau_{\omega}\} = \nonlead{I} \cap
+\RR\axs_1 \rC \setminus \rC$.
+\begin{enumerate}
+ \item Every element of $(\RR^{\ell \times 1} I + I^* \RR^{1 \times
+   \ell}) \cap \rC^*\RR\axs \rC$ can be represented as \begin{align}
+     \label{eq:repOfIIstar} \sum_{i=1}^{\mu}\sum_{j=1}^{\mu}
+     \iota_i^* p_{ij}^* \iota_j +
+     \sum_{i=1}^{\omega}\sum_{j=1}^{\mu} \tau_i^* q_{ij}^* \iota_j +
+     \sum_{i=1}^{\mu}\sum_{j=1}^{\omega} \iota_i^* r_{ij}^*
+     \tau_j\\ \notag + \sum_{i=1}^{\mu} (s_i^*\iota_i +
+     \iota_i^*t_i) + \sum_{i=1}^{\sigma} (\alpha_i^*\vartheta_i +
+   \vartheta_i^*\beta_i), \end{align} where $p_{ij}, q_{ij}, r_{ij}
+   \in \RR\axs$, $s_i, t_i \in \rC$, and $\alpha_{j}, \beta_{j} \in
+   \RR^{1 \times \ell} \cap \rC$.  Further, the $p_{ij}, q_{ij}$ and
+   $r_{ij}$ are unique.
+\item \label{it:canRedC}If (\ref{eq:repOfIIstar}) is in $\rC^* \RR\axs_1 \rC$,
+  then
+  $p_{ab} = q_{cd} = r_{ef} = 0$ for each $1 \leq a,b,d,e \leq \mu$ and $1 \leq
+  c,f \leq \sigma$.
+\item \label{it:lmProdI} If (\ref{eq:repOfIIstar}) is in
+  $\rC^*\RR\axs \rC \setminus \rC^* \RR\axs_1 \rC$,  then its the
+  leading polynomial is of the form $m^*\lead{\iota_i}$ or
+  $\lead{\iota_i}^*m$ for some $\iota_i$ and some monomial $ m \in
+  \RR\axs \rC \setminus \rC$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  It is clear that every element of
+  $(\RR^{\ell \times 1} I + I^* \RR^{1 \times \ell}) \cap \rC^*\RR\axs \rC$ can be
+  represented in the form (\ref{eq:repOfIIstar}).  Item~\ref{it:canRedC} follows since the leading monomials
+  corresponding to the $p_{ij}, q_{ij}, r_{ij}$ are distinct, from
+  which uniqueness of the $p_{ij}, q_{ij}, r_{ij}$ in
+  (\ref{eq:repOfIIstar}) also follows.
+  Item~\ref{it:lmProdI} follows since if
+  at least some of the
+  $p_{ij}, q_{ij}, r_{ij}$ are nonzero, the
+  leading monomial is of the form given by Lemma~\ref{lem:leadCOrder2}.
+\end{proof}
+
+\section{Positive Linear Functionals on \texorpdfstring{$\RR^{\ell \times
+\ell}\axs$}{[R ell times ell x xs]}}
+\label{sect:linFun}
+
+Let $W \subset \RR^{1 \times \ell}\axs$.  We say a linear functional
+$L$ on $W^*W$ is \textbf{positive} if $L(w^*w) \geq 0$ for all $w
+\in W$. We now discuss positive linear functionals and prove some
+important lemmas which will be used in the proof of the main result
+of this paper, Theorem~\ref{thm:mainFromNotes}.
+
+\subsection{The GNS Construction}
+
+Proposition~\ref{prop:GNS} below describes the well-known
+ Gelfand-Naimark-Segal (GNS) construction.
+
+\begin{prop}
+\label{prop:GNS}
+Let $L$ be a positive linear functional on
+$\RR^{\ell \times \ell}\axs$,
+and let
+\[
+  I = \{ \vartheta \in \RR^{1 \times \ell}\axs \mid
+    L(\vartheta^*\vartheta) = 0\}.
+\]
+There exists an inner product on the quotient space
+$\cH := \RR^{1 \times \ell}\axs / I$,
+a tuple of (possibly unbounded) operators $X$ on $\cH$, and a
+vector $v \in \cH^n$ such that for each $p
+\in \RR^{\ell \times \ell}\axs$ we have
+\[\langle p(X)v, v \rangle = L(p).\]
+ and $\cH = \{q(X)v \mid q \in\RR^{1 \times \ell}\axs\}$.
+\end{prop}
+
+
+\begin{proof}
+  The proof follows the classical argument.
+\end{proof}
+
+
+The goal of this section is to find a ``flat'' linear functional to
+which we can apply Proposition~\ref{prop:GNS}, in which case the
+obtained quotient space $\cH$ is finite-dimensional, and $X$ is thus
+simply a tuple of matrices.
+
+\subsection{Non-Commutative Hankel Matrices}
+
+Let $\omega = (\omega_i)_{i=1}^k$ be a vector whose entries form a
+basis for a vector space $W \subset \RR^{1 \times \ell}\axs$. Given
+a linear functional $L$ on $W^*W$, the {\bf non-commutative Hankel
+matrix for $L$ (with respect to $\omega$)} is the matrix $A =
+(L(\omega_i^*\omega_j))_{1 \leq i,j \leq k}$.  This concept is a
+non-commutative analog of moment matrices---see \cite{CF, CF2}, for
+example.
+
+Recall that $\mathbb{S}^{k}$ is the set of $k \times k$ symmetric matrices
+over $\RR$. Define $\langle A, B \rangle := \operatorname{Tr}(AB)$ to be the
+inner product
+on $\mathbb{S}^{k}$.
+
+\begin{lemma}
+  \label{lem:Hankel}
+  Let $\omega = (\omega_i)_{i=1}^k$ be a vector whose entries form a basis for a
+  vector space $W \subset \RR^{1 \times \ell}\axs$.  Let $A \in
+  \mathbb{S}^{k}$
+  be a matrix.  Let $I \subset \RR^{1 \times \ell}\axs$ be a left module, and
+  define $\cZ$ to be
+  \[
+    \cZ := \{ C \in \mathbb{S}^{k} \mid \omega^*C\omega \in \RR^{\ell
+        \times
+    1}I + I^*\RR^{1 \times \ell}\}
+  \]
+  Then $A$ is the non-commutative Hankel matrix for some symmetric linear
+  functional $L$ on
+  $W^*W$ such that $L([\RR^{\ell \times 1}I + I^*\RR^{1 \times \ell}] \cap W^*W)
+  = \{0\}$ if and only if $A \in \cZ^{\bot}$, in which case
+  \begin{equation}
+    \label{eq:defLinFun}
+    L(\omega^* C \omega) = \operatorname{Tr}(AC)
+  \end{equation}
+  for each $C \in \RR^{k \times k}$.
+\end{lemma}
+
+\begin{proof}
+  Let $A = (L(\omega_i^*\omega_j))$.
+  For each $C \in \RR^{k \times k}$,
+  \[
+    L(\omega^*C\omega) = L\left( \sum_{i=1}^k \sum_{j=1}^k c_{ij}
+    \omega_i^*\omega_j \right) = \sum_{i=1}^k \sum_{j=1}^k a_{ij}c_{ij} =
+    \operatorname{Tr}(AC).
+  \]
+  From this the result is clear.
+\end{proof}
+
+\subsection{Flat Extensions of Positive Linear Functionals}
+
+We next turn to flat extensions of positive linear functionals on
+$\RR^{\ell \times \ell}\axs$. The reader is referred to \cite{CF,
+CF2} for the classical theory of flatness on $\RR[x]$.  and to to
+\cite{Pop10, HKM12} for more on flat linear functionals in a free
+algebra.
+
+Let $W \subseteq U \subset \RR^{1 \times \ell}\axs$ be vector
+spaces, and let $V \subset \RR^{\ell \times \ell}\axs$ be such that
+$W^*W \subset V \subset U^*U$ and
+\[
+  W = \{w \in \RR^{1 \times \ell}\axs \mid w^*w \in V\}.
+\]
+An extension $\bar{L}$ of $L$ to $U^*U$ is \textbf{positive} if
+$\bar{L}$ is a positive linear functional and \textbf{flat} if it is
+positive and if its Hankel matrices have the same rank as the Hankel
+matrices of $L$ restricted to $W^*W$. (Note that rank of Hankel
+matrix is independent of choice of basis for.)
+
+\begin{prop}
+  \label{prop:flatExtRC}
+  Let $\rC \subset \RR^{1 \times \ell}\axs$
+  be a finite right chip space.
+  Let $L$ be a positive linear functional on
+  $\rC^*\RR\axs_1 \rC$.
+  \begin{enumerate}
+    \item\label{it:canExtendOne} There exists a positive extension of
+      $L$ to the space $\rC^*\RR\axs_2 \rC$ if and only if whenever
+      $\vartheta \in \rC$ satisfies $L(\vartheta^*\vartheta) = 0$,
+      then $L(b^*\vartheta) = 0$ for each $b \in
+      \RR\axs_1 \rC$.
+    \item \label{it:flat} If there exists a positive extension of $L$ to the space
+      $\rC^*\RR\axs_2 \rC$, then there exists a unique flat
+      extension of $L$ to $\rC^*\RR\axs \rC$.  In this
+      case, the space $\cI(\bar{L})$ defined by
+      \[
+        \cI(L) = \{\theta \in \RR\axs\rC \mid L(\theta^*\theta) = 0\}
+      \]
+      is the left module generated by the set
+      \begin{equation}
+        \label{eq:genOfJRC}
+        \{ \iota \in \RR\axs_1 \rC \mid L(b^*\iota) = 0
+        \text{ for every } b \in \rC\}.
+      \end{equation}
+    \item Given the existence of a flat extension $L$ to
+      $\rC^*\RR\axs\rC$, there exists a flat extension
+      of $L$ to all of $\RR^{\ell \times \ell}\axs$.
+  \end{enumerate}
+
+\end{prop}
+
+\begin{proof}
+  Decompose the vector space $\rC$ as $J \oplus T$, where \[J = \{
+  \vartheta \in \rC \mid L(\vartheta^*\vartheta) = 0\},\] and $T
+  \subset \rC$ is some complementary subspace.  Let
+  ${\vartheta}$ be a vector whose entries form a basis for
+  $J$, let ${t}$ be a vector whose entries form basis for $T$,
+  and let ${w}$ be a vector whose entries are all distinct
+  monomials in $\RR\axs_1 \rC \setminus \rC$.  The Hankel matrix of any possible
+  extension of $L$ to $\rC^* \RR\axs_2 \rC$ is of the form
+  \begin{equation}
+    \label{eq:matRepOfL}
+    \begin{pmatrix}
+      A_{JJ} & A_{TJ} & A_{WJ} \\
+      A_{TJ}^* & A_{TT} & A_{WT} \\
+      A_{WJ}^* & A_{WT}^* & A_{WW}
+    \end{pmatrix}
+  \end{equation}
+  according to the basis $\vartheta, t, w$.
+  Positivity of $L$ on is equivalent to the Hankel matrix being
+  positive semidefinite.  By assumption, the diagonals of $A_{JJ}$
+  are $0$ and so positivity necessarily implies $A_{JJ}, A_{TJ},
+  A_{WJ} = 0$, which is equivalent to $L(b^*\vartheta) = 0$ for each
+  $b \in \RR\axs_1\rC$.
+
+  Conversely, suppose $A_{JJ}, A_{TJ}, A_{WJ} = 0$.  Positivity of
+  $L$ implies that $A_{TT}$ is positive definite since $f^* A_{TT} f
+  > 0$ for any constant vector $f \neq 0$ by construction.
+  Therefore choosing $A_{WW} = A_{WT}^* A_{TT}^{-1} A_{WT}$ gives a
+  positive semidefinite Hankel matrix.  Such a choice is well
+  defined as the entries of $A_{WW}$ are the values of $L$ at each
+  product $w_i^*w_j \in \rC^* \RR\axs_2 \rC \setminus \rC^*
+  \RR\axs_1 \rC$, where the $w_i, w_j$ are entries of ${w}$. Note
+  that Lemma~\ref{lem:repNEW2} implies that each such product is
+  distinct.
+
+  For item (\ref{it:flat}), first note that for an extension
+  to be flat, then the rank of its matrix must
+  be equal to $\operatorname{rank}(A_{TT})$, and so in
+  (\ref{eq:matRepOfL}) we must have
+  $A_{WW} = A_{WT}^* A_{TT}^{-1} A_{WT}$.
+
+  We see that $\RR\axs_1 \rC$ is a also finite right chip space, and
+  so by Item (\ref{it:canExtendOne}), to show there exists a
+  positive linear extension to $\rC^*\RR\axs_4 \rC$ we need to show
+  that we can extend $L$ to $\rC^*\RR\axs_3 \rC$ subject to
+  $L(b^*\vartheta) = 0$ for all $b \in \RR\axs_2 \rC$ and all
+  $\vartheta \in \RR\axs_1 \rC$ such that $L(\vartheta^*\vartheta) =
+  0$.
+
+  Let $\vartheta \in \RR\axs_1 \rC$ with $L(\vartheta^*\vartheta) = 0$.
+  If $b \in \RR\axs_1\rC$, then the
+  semidefinite structure of (\ref{eq:matRepOfL}) implies that
+  $L(b^*\vartheta) = 0$.  If $b \in \RR\axs_2 \rC$ but
+  $b^*\vartheta \in \rC^*\RR\axs_2\rC$, then if we assume WLOG that
+  $b$ is a monomial, we see $b^*\vartheta = b_2^*(b_1^*\vartheta)$
+  such that $b_1^*\vartheta \in \RR\axs_1 \rC$.  Finally, if
+  $b \in \RR\axs_2 \rC \setminus \RR\axs_1 \rC$ and $\vartheta \in
+  \RR\axs_1 \rC \setminus \rC$, then $L(b^*\vartheta)$ is not yet
+  defined; we therefore define it to be $0$.  It is straightforward
+  to show by linearity that such a definition is well-defined.
+  Further note that for each monomial $w \in \RR\axs_1 \rC \setminus
+  \rC$, by flatness there exists such a $\vartheta$ with
+  $\lead{\vartheta} = w$, and so we have uniquely defined an
+  extension to $\rC^*\RR\axs_3 \rC$.
+
+  We apply Item (\ref{it:canExtendOne}) to get a positive extension
+  of $L$ to $\rC^* \RR\axs_4 \rC$; as mentioned above, we can choose
+  this positive extension to be the unique flat extension to $\rC^*
+  \RR\axs_4 \rC$.  We continue this process inductively to get a
+  unique flat extension of $L$ to all of $\rC^* \RR\axs \rC$.
+
+  Given the unique flat extension $L$, we now show that
+  (\ref{eq:genOfJRC}) generates $\cI(L)$.  First, it is clear
+  that $\cI(L)$ is a left module (for example,
+  Proposition~\ref{prop:GNS} implies $\cI(L)$ is the zero set
+  of a pair $(X, v)$).  Further, since each $w \in \RR\axs_1 \rC
+  \setminus \rC$ is the leading monomial of an element of
+  $\cI(L)$, it follows that $\cI(L)$ is generated by
+  elements of $\RR\axs_1 \rC \cap \cI(L)$.  That
+  (\ref{eq:genOfJRC}) is precisely $\RR\axs_1 \rC \cap \cI(L)$
+  is straightforward given that $L$ is flat.
+
+  Finally, we extend $L$ to a flat extension
+  on all of $\RR^{\ell \times \ell}\axs$ as follows.
+  Lemma \ref{lemma:MsFFaxsM} implies that  $\rC^* \RR\axs \rC$ is equal to
+  \[
+    \rC^* \RR\axs \rC =  \bigoplus_{i,j \in \Gamma(\rC)} E_{i,j}
+  \otimes \RR\axs.
+  \]
+  Extend $L$
+  to be $0$ on the set
+  \[
+    \bigoplus_{(k_1,k_2) \not\in  \Gamma(\rC)^2 } E_{k_1k_2}
+  \otimes \RR\axs.
+\]
+\end{proof}
+
+
+\begin{lemma}
+\label{lem:pSd}
+ Let $\cB \subset \mathbb{S}^{k}$ be a vector subspace.
+Then exactly one of the following holds:
+\begin{enumerate}
+ \item\label{item:1} There exists $B \in \cB$ such that $B \succ
+0$, and there exists no nonzero $A \in \cB^{\bot}$ with $A \succeq 0$.
+\item\label{item:2} There exists $A \in \cB^{\bot}$ such that $A \succ 0$, and
+there exists no nonzero $B \in \cB$ with $B \succeq 0$.
+\item There exist nonzero $B \in \cB$ and $A \in \cB^{\bot}$ with
+$A, B \succeq
+0$, but there exist no $B \in \cB$ nor $A \in \cB^{\bot}$ with either $A \succ
+0$ or $B \succ 0$.
+\end{enumerate}
+
+\end{lemma}
+
+\begin{proof}
+  This result is a consequence of the Bohnenblust \cite{Bon48}
+  dichotomy.
+\end{proof}
+
+We now use Lemma~\ref{lem:pSd} to construct positive linear functionals.
+
+\begin{lemma}
+\label{lem:goodSepFun}
+Let
+$\rC \subset \RR^{1
+\times \ell}\axs$
+be a finite right chip space and let $I \subset \RR\axs^{1 \times \ell}$ be
+a real left
+module
+generated by polynomials in $\RR\axs_1\rC$. There
+exists a positive linear functional $L$ on
+$\rC^*\RR\axs_2\rC$ such that
+the following hold:
+\begin{enumerate}
+ \item $L(a^*a) > 0$ for each $a \in \RR\axs_1\rC \setminus I$
+ \item $L(\iota) = 0$ for each $\iota \in (\RR^{\ell \times 1} I + I^*
+\RR^{1 \times \ell} ) \cap \rC^* \RR\axs_2 \rC$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let $\RR\axs_1 \rC = I \oplus T$ for some space $T$.
+Let $\tau$ be a vector whose entries form a basis for $T$.
+Let $\cZ$ be the set of symmetric matrices defined by
+\[
+  \cZ := \left\{ Z \mid \tau^* Z \tau \in \RR^{\ell \times 1}I +
+  I^*\RR^{1 \times \ell} \right\}.
+\]
+Since $I$ is real, the space $\cZ$ contains no $Z \neq 0$ with
+$Z \succeq
+0$.
+By Lemma~\ref{lem:pSd} there exists a positive-definite matrix $A \in
+\widehat{\cZ}^{\bot}$.
+We then apply Lemma~\ref{lem:Hankel} to get the result.
+\end{proof}
+
+\begin{lemma}
+ \label{lem:main}
+ Let  $\rC \subset \RR^{1 \times \ell}\axs$ be a finite right chip
+ space and let $I \subsetneq \RR^{1 \times \ell}\axs$ be a real left
+ module generated by polynomials in $\RR\axs_1 \rC$.  Let $n =
+ \dim(\rC) - \dim(I \cap \rC)$.  There exists $(X,v) \in V(I)^{(n)}$
+ such that $p(X)v \neq 0$ for all $p \in \rC \setminus I$.
+ \end{lemma}
+
+\begin{proof}
+First, $I \neq \RR^{1 \times \ell}\axs$ implies that $n > 0$.  Let $L$ be a
+linear functional with the properties described by Lemma \ref{lem:goodSepFun}.
+We see that $L$ restricts to a functional on $\rC^*\RR\axs_1\rC$,
+which restriction we extend to a flat extension on all of $\rC^*
+\RR\axs \rC$ by Proposition~\ref{prop:flatExtRC}.
+Proposition~\ref{prop:GNS} then gives
+a tuple $(X,v) \in (\RR^{n \times n})^g
+\times \RR^n$, for some $n \in \NN$, such that $v^*p(X)v = L(p)$ for each $p \in
+\rC^*\RR\axs_1 \rC$ and, since $L$ is flat,
+\[
+ \RR^n = \{c(X)v \mid c \in \rC \}.
+\]
+If $p \in \rC$, then
+\[
+ \|p(X)v \|^2 = v^*p(X)^*p(X)v = L(p^*p)
+\]
+which shows $p(X)v \neq 0$ if and only if $p \not\in I$.
+Further, if $\iota \in I \cap \RR\axs_1 \rC$, then $L(c^*\iota) = 0$ for each $c
+\in \rC$, and so $\langle \iota(X)v, c(X) v \rangle = 0$ for each $c
+\in \rC$.  Since the $c(X)v$ span all of $\RR^n$, this implies that
+$\iota(X)v = 0$.  Since $I$ is generated by elements of $\RR\axs_1
+\rC$, this implies that $(X, v) \in V(I)$.
+\end{proof}
+
+\subsection{The Matrix Non-Commutative Left Nullstellensatz}
+\label{sec:mainResults}
+
+
+\begin{prop}
+   \label{thm:lnss}
+If $I \subset \RR^{1 \times \ell}\axs$ is a finitely-generated left module,
+then $\rr{I} = \sqrt{I}$.
+\end{prop}
+
+\begin{proof}
+Let $p \in \RR^{1 \times \ell}\axs$.  Choose $d$ sufficiently large so that
+$\deg(p) \leq d$ and so that $I$ is generated by polynomials with degree
+bounded by $d$. Let $\rC = \RR^{1 \times \ell}\axs_{d}$.  Then Lemma
+\ref{lem:main} implies the existence of a tuple $(X,v) \in V(I)$ such that
+$p(X)v \neq 0$.
+\end{proof}
+
+We now prove Theorem~\ref{thm:mainFromNotes}.
+
+
+\begin{proof}[Proof of Theorem~\ref{thm:mainFromNotes}]
+ Note that $p_i(X)v = 0$ means each row of $p_i(X)v = 0$, i.e. $e_k^*p_i(X)v =
+0$ for each $e_k \in \RR^{1 \times \nu_i}$.  Therefore
+\[ V(I) = V\left( \sum_{i=1}^k
+\RR^{1 \times \nu_i} \axs p_i \right).\]
+The first part of the result follows from Proposition~\ref{thm:lnss}.
+
+Next, if $q$ is an element
+of the real left module (\ref{eq:checkIReal}), then
+\[q = \sum_i^{\finite} \sum_{j=1}^k a_{ij} b_{ij} p_j\]
+for some $a_{ij} \in \RR^{\nu \times 1}$ and $b_{ij} \in \RR^{1 \times
+\ell}\axs$.
+Therefore,
+\[q = \left( \sum_i^{\finite} a_{ij} b_{ij} \right) p_j. \]
+\end{proof}
+
+\section{The Real Radical of a Left Module in \texorpdfstring{$\RR^{1 \times
+\ell}\axs$}{[R 1 times ell x xs]}}
+\label{sec:realRadStuff}
+
+We now use the results of Sections\ref{sec:COrders} and
+\ref{sec:DoubleCOrders} to prove a strong result, Theorem
+\ref{thm:reducedRealTest}, about the real radical of a finitely-generated left
+ideal.  This result is both a generalization of and an improvement upon
+\cite[Corollary 2.6]{chmn}.  We prepare for the proof of Theorem
+\ref{thm:reducedRealTest} with several lemmas.
+
+\begin{lemma}
+\label{lem:leadOfSquare}
+  Let $\prec_0$ be a degree order on $\axs$ such if  $ a = a_1^*a_2$, $b =
+b_1^*b_2$, where $|a_1| = |a_2| = |b_1|
+= |b_2| = d$ for some degree $d$, then $a \prec_0 b$ if one of the following
+holds:
+\begin{enumerate}
+ \item $a_2 \prec_0 b_2$, or
+ \item $a_2 = b_2$ and $a_1 \prec_0 b_1$.
+\end{enumerate}
+Let $\rC \subset \RR^{1 \times \ell}\axs$ be a right chip space,
+and let $\prec_{\rC}$ be a $\rC$-order induced by $\prec_0$, and let
+$\prec_{\rC \times \rC}$ be a double $\rC$-order induced by $\prec_{\rC}$.
+Let $p \in \RR\axs \rC \setminus \rC$.  Then the leading monomial of
+$p^*p$ is $\lead{p}^*\lead{p}$, where $\lead{p}$ is the leading monomial of
+$p$. Further, $\lead{p}^*\lead{p}$ has a positive coefficient in $p^*p$.
+\end{lemma}
+
+\begin{proof}
+  Let $w_0m_0 = \lead{p}$ and let $w_1m_1, w_2m_2$
+  be (not necessarily distinct) monomials appearing in $p$, with
+  $m_i \in \RR\axs_1 \setminus \rC$ and $w_i \in \RR\axs$ for each
+  $i$.  By the properties of $\lead{p}$, we see that
+  \[
+    m_1^*w_1^*w_2m_2 \prec_{\rC \times \rC} m_0^*w_0^*w_0m_0
+  \]
+  since $|w_1|, |w_2| \leq w_0$, $w_1, w_2 \prec_{0} w_0$, and in
+  the case that $w_1 = w_2 = w_0$, then $m_1, m_2 \prec_{\rC} m_0$.
+  There are also possibly terms of $p$ in $\rC$, but these give
+  either elements of $\rC^*\RR\axs_1 \rC$ or give small monomials.
+\end{proof}
+
+\begin{lemma}
+\label{lem:sosInIC}
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a finite right chip space.
+Let $I \subset \RR^{1 \times \ell}\axs$ be a left
+module
+generated by polynomials in $\RR\axs_1 \rC$.
+If
+\begin{equation}
+\label{eq:hereASquare}
+ \sum_i^{\finite} p_i^*p_i \in \RR^{\ell \times 1} I + I^* \RR^{1 \times
+\ell},
+\end{equation}
+for some $p_i \in \RR^{1 \times \ell}\axs$,
+then each $p_i \in I + \rC$.
+\end{lemma}
+
+\begin{proof}
+Suppose (\ref{eq:hereASquare}) holds.
+Let $\Theta$ be the space
+\[\Theta = \sum_{j \not\in \Gamma(\rC)} e_j \otimes \RR\axs,\]
+so that, by Lemma~\ref{lem:gammaC}, $\RR^{1 \times \ell}\axs = \RR\axs \rC
+\oplus \Theta$.  Let $p_i = c_i + \theta_i$ for each $i$, where $c_i \in
+\RR\axs \rC$ and $\theta_i \in \Theta$.  We see that
+\[\sum_i^{\finite} p_i^*p_i
+= \sum_i^{\finite} c_i^*c_i + \sum_i^{\finite} c_i^*\theta_i
++ \sum_i^{\finite} \theta_i^*c_i + \sum_i^{\finite} \theta_i^*\theta_i.\]
+Since (\ref{eq:oplusCTh}) holds and $I \subset \rC$, it must be that
+$\sum_i \theta_i^*\theta_i = 0$, which can only occur if each $\theta_i = 0$.
+Therefore each $p_i \in \RR\axs \rC$.
+
+Choose $\prec_0, \prec_{\rC}, \prec_{\rC \times \rC}$ given by
+Lemma~\ref{lem:leadOfSquare}.  Choose $p_{i_*}$ such that
+$\lead{p_{i_*}}$ is maximal.  If $p_{i_*} \in \rC$, then each $p_i
+\in \rC$ and we are done.  Otherwise, $\lead{p_{i_*}^*p_{i_*}}$ is
+$\lead{p_{i_*}}^*\lead{p_{i_*}}$.  Possibly other polynomials $p_i$
+have $\lead{p_i} = \lead{p_{i_*}}$ too, but in each case
+the coefficient of $\lead{p_{i_*}}^* \lead{p_{i_*}}$ in
+$p_i^*p_i$ is be positive by Lemma~\ref{lem:leadOfSquare}.
+Therefore, the leading monomial of $\sum_i p_i^*p_i$ is
+$\lead{p_{i_*}}^* \lead{p_{i_*}}$.
+
+By Lemma~\ref{lem:niceCBasis2}, the leading
+monomial $\lead{p_{i_*}}^*\lead{p_{i_*}}$
+is of the form $m^*\lead{\iota}$ or $\lead{\iota}^*m$, for some $\iota \in I
+\cap \RR\axs_1 \rC \setminus \rC$ and $m \in \RR\axs \rC \setminus
+\rC$.  Therefore $\lead{p_{i_*}}$ is divisible by
+$\lead{\iota}$.  If we subtract a multiple of $\iota$
+from $p_{i_*}$, we still get a sum of squares in $\RR^{1 \times
+\ell} I + I^* \RR^{\ell \times 1}$.  We can therefore replace
+$p_{i_*}$ by a polynomial with a smaller leading monomial, and so by
+induction we show that each $p_i \in I + \rC$.
+\end{proof}
+
+The following theorem is a key result in computing the
+real radical of a finitely-generated left module.  This result is a
+generalization of \cite[Corollary 2.6]{chmn} to $\RR^{1 \times \ell}\axs$.
+Further, the following result gives
+is more refined than \cite[Corollary 2.6]{chmn} for verifying whether or not
+a left module is real.
+
+\begin{theorem}
+\label{thm:reducedRealTest}
+ Let $\rC \subset \RR^{1 \times \ell}\axs$ be a
+finite right chip space, and let $I \subset \RR^{1 \times \ell}\axs$ be a
+left module generated by polynomials in
+$\RR\axs_1\rC$.
+ Let $(\{\iota_i\}_{i=1}^{\mu},
+\{\vartheta_j\}_{j=1}^{\sigma})$ be
+a $\rC$-basis for $I$.
+Then $I$ is real if and only if whenever
+\begin{equation}
+ \label{eq:reducedRealTest}
+\sum_i^{\finite} p_i^*p_i = \sum_{j=1}^{\mu} (q_j \iota_j + \iota_j^*q_j^*)
++ \sum_{k=1}^{\sigma} (\alpha_k^* \vartheta_k + \vartheta_k^*\alpha_k),
+\end{equation}
+for some $p_i, q_j \in \rC$ and $\alpha_k \in \RR^{1 \times \ell} \cap \rC$,
+then each $p_i \in I$.
+\end{theorem}
+
+Note that Theorem~\ref{thm:reducedRealTest} implies that to test whether a
+left module $I \subset \RR^{1 \times \ell}\axs$ is real, given that $I$ is
+generated by polynomials in $\RR\axs_1 \rC$ a right chip space $\rC$, one
+needs only verify that if $p_i \in \rC$ satisfy
+\[
+ \sum_i^{\finite} p_i^*p_i \in \RR^{\ell \times 1} I + I^* \RR^{1 \times \ell}
+\]
+then each $p_i$ must be in $I$.
+
+\begin{proof}
+Suppose
+\[
+  \sum_i^{\finite} p_i^*p_i \in \RR^{\ell \times 1}I + I^*\RR^{1
+  \times \ell},
+\]
+with $p_i \in \RR^{1 \times \ell}\axs$.
+Lemma~\ref{lem:sosInIC} implies that each $p_i$ is of the form $p_i = \phi_i +
+\psi_i$, where $\phi_i \in I$ and $\psi_i \in \rC$.  Therefore
+\[\sum_i^{\finite} \psi_i^*\psi_i \in \RR^{\ell \times 1}I + I^*\RR^{1 \times
+\ell},\]
+and so $I$ is real if and only if we must have each $\psi_i \in I$.
+We get the righthand side of (\ref{eq:reducedRealTest}) from Lemma
+\ref{lem:niceCBasis2}
+(\ref{it:canRedC}), noting that a sum of squares is necessarily
+symmetric.
+\end{proof}
+
+Note that Theorem~\ref{thm:reducedRealTest} implies degree bounds.  For
+example, if $I \subset \RR^{1 \times \ell}\axs$ is generated by polynomials of
+degree bounded by $d$, one could use $\rC = \RR^{1 \times \ell}\axs_{d-1}$.
+However, Theorem~\ref{thm:reducedRealTest} is more refined since in many cases
+there exists a smaller right chip space $\rC$ such that $I$ is generated by
+polynomials in $\RR\axs_1 \rC$.
+
+\section{Left Gr\"obner Bases}
+\label{sect:LGB}
+
+Classically, Gr\"obner bases are used to verify whether a given polynomial $p$
+belongs to a given ideal $I$.
+We need left Gr\"obner bases for verifying membership in left modules $I
+\subset \RR^{1 \times \ell}\axs$; specifically, we will need them for the Real
+Radical Algorithm in $\S$~\ref{sub:rralg}.
+
+Fortunately, there is a general theory of one-sided Gr\"obner bases for
+one-sided modules
+with coherent bases over algebras with ordered multiplicative basis
+\cite{Gre00}.
+In this section, we give a version of this theory specific to our case and tie
+it in with the $\rC$-basis theory previously presented.
+ Left Gr\"obner bases
+are easily
+computable and are used to algorithmically determine membership in a left
+module.
+
+A {\bf left admissible order} $\prec$ on $\axs$ is a well order on $\axs$ such
+that $a \prec b$ for some $a, b \in \axs$ implies that for each $c \in \axs$ we
+have $ca \prec cb$.
+Given a left module $I \subset \RR^{1 \times
+\ell}\axs$, a subset $\cG \subset I$
+is a {\bf left Gr\"obner basis of $I$ with respect to $\prec$}\index{left
+Grobner basis} if the left module generated by $\lead{\cG}$ equals the left
+module generated by $\lead{I}$.
+We say a polynomial $p$ is {\bf monic} if the coefficient of $\lead{p}$ in $p$
+is $1$.
+We say a left Gr\"obner basis $\cG$ is {\bf reduced} if the following hold:
+\begin{enumerate}
+\item Every element of $\cG$ is monic.
+ \item If $\iota_1, \iota_2 \in \cG$, then $\lead{\iota_1}$ does not divide any
+of the terms of $\iota_2$ on the right.
+\end{enumerate}
+
+\begin{prop}
+ Let $I \subset \RR^{1 \times \ell}\axs$ be a left module and let $\prec$ be a
+left admissible order. Then
+ \begin{enumerate}
+  \item There is a left Gr\"obner basis for $I$ with respect to $\prec$.
+  \item There is a unique reduced left Gr\"obner basis for $I$ with respect to
+$\prec$.
+  \item If $\cG$ is a left Gr\"obner basis for $I$ with respect to $\prec$,
+then $\cG$ generates $I$ as a left module.
+ \item $\RR^{1 \times \ell} = I \oplus \operatorname{Span} \left( \nonlead{I}
+\right)$.
+ \end{enumerate}
+\end{prop}
+
+\begin{proof}
+ See \cite[Propositions 4.2, 4.4]{Gre00}.
+\end{proof}
+
+
+\begin{lemma}
+\label{lem:lGBVerMemOG}
+Let $I \subset \RR^{\nu \times \ell}\axs$ be a left module and let
+$\{\iota_i\}_{i\in \alpha}$ be a reduced left Gr\"obner basis for
+$I$.  Every element $p \in I$ can be expressed uniquely as
+\begin{equation}
+ \label{eq:eltsOfI}
+p = \sum_{i}^{\finite} q_i \iota_i,
+\end{equation}
+for some $q_i \in \RR\axs$.
+In particular,
+the leading monomial of $p$ is divisible on the
+right by the leading monomial of one of the
+$\iota_i$.
+\end{lemma}
+
+\begin{proof}
+Since $\{\iota_i\}_{i\in \alpha}$ generates $I$,
+every element $p \in I$ can be expressed as (\ref{eq:eltsOfI}).
+Consider the leading monomial of such a $p$.
+%Without loss of generality, assume that each $\iota_i$ is monic.
+ If $a$ is a monomial such that $a \prec \lead{\iota_i}$, then for each $r \in
+\axs$,
+we have $ra \prec r\lead{\iota_i}$.
+Therefore the leading monomial of each $q_i \iota_i$ is of the form
+$\tilde{q}_i\lead{\iota_i}$, where $\tilde{q}_i \in \axs$ is some monomial
+appearing in $q_i$.  Further, by the properties of the reduced left
+Gr\"obner basis, we see that $\tilde{q}_i \lead{\iota_i} \neq
+\tilde{q}_j \lead{\iota_j}$ whenever $i \neq j$ for any
+$\tilde{q}_i, \tilde{q}_j$.
+If the $q_j$ are not all $0$, then
+by Lemma~\ref{lem:leadOfSumGen},
+the leading
+monomial of $p$ is the maximal
+nonzero $\tilde{q}_i \lead{\iota_i}$. Uniqueness follows by
+linearity.
+\end{proof}
+
+
+\subsection{Algorithm for Computing Reduced Left Gr\"obner Bases}
+
+Let $\prec$ be a left monomial order on $\RR^{\nu \times \ell}\axs$.
+Let
+$I$ be the left module generated by polynomials $\iota_1, \ldots, \iota_{\mu}
+\in
+\RR^{\nu \times \ell}\axs$.
+It is easy to show that inputing $\iota_1, \ldots, \iota_{\mu}$ into the
+following algorithm computes a
+reduced left
+Gr\"obner basis for $I$.
+
+\subsubsection{Reduced Left Gr\"obner Basis Algorithm}
+
+\label{subsub:LGBAlgOG}
+
+\begin{algorithm}
+  \caption{Reduced Left Gr\"obner Basis}
+  \label{alg:RLGB}
+\begin{algorithmic}[1]
+  \Procedure{RLGB}{$\iota, \prec$}
+  \Comment{$\iota$ is non-empty, non-zero, finite generating set for $I$}
+  \State $\cG \gets \iota$.
+    \If{$0 \in \cG$}
+    $\cG \gets \cG \setminus \{0\}$.
+  \EndIf
+  \ForAll{$\iota_i \in \cG$} $\iota_i \gets \xi \iota_i$ such that
+  $\xi \in \RR \setminus
+  \{0\}$ and $\xi \iota_i$ is monic.
+  \EndFor
+  \While{$\exists$ distinct $\iota_i, \iota_j \in \cG$ where $\lead{\iota_i}$ divides a term of
+  $\iota_j$}
+  \State $\iota_j \gets \iota_j - q \iota_i$, where $q \lead{\iota_i}$
+  is a term of $\iota_j$.
+  \If{$\iota_j = 0$}
+  $\cG \gets \cG \setminus \iota_j$
+  \Else
+  \State $\iota_j \gets \xi \iota_j$ such that $\xi \in \RR \setminus
+  \{0\}$ and $\xi \iota_j$ is monic.
+  \EndIf
+  \EndWhile
+  \State \Return $\cG$.
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Reduced Left Gr\"obner Bases are \texorpdfstring{$\rC$}{[C]}-Bases}
+
+For a well-chosen $\rC$ and $\prec_{\rC}$, a reduced left Gr\"obner basis
+is actually a $\rC$-basis.
+
+\begin{prop}
+\label{prop:LGBisCBasis}
+ Let $I \subset \RR^{1 \times \ell} \axs$ be a finitely-generated left module
+with reduced left Gr\"obner basis $\iota_1, \ldots, \iota_{\mu}$ according to
+some
+left monomial order $\prec$ on $\RR^{1 \times \ell}\axs$.
+Let $\rC$ be the right chip space defined by
+\[\rC:= \operatorname{Span}(\{m \in \RR^{1 \times \ell}\axs \mid m \mbox{
+proper right chip of a term of some } \iota_i \}),\]
+and let $\prec_{\rC}$ be a $\rC$-order induced by $\prec$. Then
+$(\{\iota_i\}_{i=1}^{\mu}, \emptyset)$ is a $\rC$-basis.
+\end{prop}
+
+Note that this algorithm outputs a basis with at most $\mu$ elements whose
+degree is no greater than the inputted elements, that the and that the algorithm
+is guaranteed to terminate in finite time.
+
+\begin{proof}
+First, $\iota_1, \ldots, \iota_{\mu} \in \RR\axs_1 \rC$ by construction.
+Next, each leading monomial $\lead{\iota_i}$ must be in $\RR\axs_1 \rC
+\setminus \rC$ since otherwise $\lead{\iota_i} \in \rC$, which implies that it
+properly divides a term of some other $\iota_j$.  Further, each
+element of $I$ has leading term divisible by some $\lead{\iota_i}$
+by definition of the left Gr\"obner basis,
+so the set of leading monomials of $\iota_i$ is
+maximal.
+\end{proof}
+
+A reduced left Gr\"obner basis is
+a nice $\rC$-basis since it has no elements of $\rC$ in it.
+
+\section{The Real Radical Algorithm}
+\label{sub:rralg}
+
+In some simple cases, as shown in \cite{CHKMN}, it is easy to verify whether a
+left module is real. In general, however, an algorithmic approach is needed.
+In \cite{chmn}, a Real Radical Algorithm is presented for computing the real
+radical of any finitely-generated left ideal $J \subset \RR\axs$.
+We now present a new Real Radical Algorithm, Algorithm
+\ref{alg:rrAlg},
+which extends the previous Real Radical Algorithm to finitely-generated left
+modules $I \subset \RR^{1 \times
+\ell}\axs$.  Further, using right chip spaces,
+the new Real Radical Algorithm is much more efficient.
+
+\begin{algorithm}
+  \caption{The Real Radical Algorithm}\label{alg:rrAlg}
+\begin{algorithmic}[1]
+  \Procedure{RealRadical}{$\cG, \prec$}
+  \Comment{$\cG$ finite, generates left module $I$,
+  $\prec$ a degree lexicographic order on $\RR^{1 \times
+\ell}\axs$}
+  \While{not done}
+  \State $\cG \gets \operatorname{RLGB}(\cG, \prec)$
+    \State $\mbox{ExistsSOS}, \Phi \gets \operatorname{SOS}(\cG)$. \Comment{Test whether $\exists$ a
+    non-trivial SOS in the left module generated by $\cG$; see
+  Algorithm \ref{alg:SOS}.}
+    \If{not ExistsSOS} \Return $\cG$
+    \Else \State $\cG \gets \cG \cup \Phi$.
+    \EndIf
+  \EndWhile
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Sums of Squares}
+
+In Algorithm \ref{alg:rrAlg}, we search for sums of squares in a
+set given by a left module.
+See \cite{kp} for more on how to verify if a NC polynomial is a sum
+of squares, and see \cite{HOSM} and \cite{CKP} for a computer
+algebra package which will do this. Our problem is more
+complicated than a standard sums of squares problem since we are
+dealing with a polynomial with variable coefficients.
+Therefore, we spell out the details of a sum of squares
+algorithm in Algorithm \ref{alg:SOS}.
+
+\begin{algorithm}
+  \caption{SOS Algorithm}\label{alg:SOS}
+\begin{algorithmic}[1]
+  \Procedure{SOS}{$\cG$}
+  \Comment{$\cG$ a finite reduced left Gr\"obner basis}
+  \If{$\cG \subset \RR^{1 \times \ell}$}
+  \Return false
+  \EndIf
+  \State $\rC \gets$ set of proper right chips of terms of a
+  polynomial in $\cG$.
+  \For{$\vartheta_j \in \cG$}
+  \[
+    q_j \gets \sum_{m \in \rC} \alpha_{m,j} m
+  \]
+  where the $\alpha_{m, j}$ are real-valued variables.
+  \EndFor
+  \State $f \gets \sum_{\vartheta_j \in \cG}
+  q_j^*\vartheta_j + \vartheta_j^*q_j$.
+  \For{monomial $w \in \rC^*\RR\axs_1\rC$} $c(w) \gets$
+  coefficient of $w$ in $f$.
+  \EndFor
+  \For{monomial $w \in \rC^*\RR\axs_1\rC \setminus \rC^*\rC$}
+  \State set $c(w) = 0$ and solve for variable $\alpha_{w, j}$
+  \State substitute expression for $\alpha_{w,j}$ in $f$, each
+$c(w^{\prime})$.
+  \EndFor
+  \State $M \gets$ vector with entries all monomials in $\rC$.
+  (If desired, technically we can pick a smaller vector $M$
+  by eliminating monomials of small degree---see \cite{kp}.)
+  \State
+  $\cZ \gets \{Z \mbox{ real symmetric} \mid M^* Z M = 0 \}$,
+  $Z_1, \ldots, Z_n \gets$ basis for $\cZ$.
+  \State $B(\alpha) \gets$ a symmetric matrix such that $f =
+  M^*B(\alpha)M$.
+  \State $L(\alpha, \beta) = B(\alpha) + \sum_{i=1}^n \beta_i
+  Z_i$.
+  \While{$\exists 0$ diagonal of $L(\alpha, \beta)$}
+    \For{entry on row/column of $L(\alpha, \beta)$ with
+    $0$ diagonal}
+      \State set entry equal to $0$ and solve for some
+      $\alpha_{m, j}$
+      \State substitute expression for $\alpha_{w,j}$ in other
+      entries of $L(\alpha, \beta)$
+    \EndFor
+    \If{$L(\alpha, \beta) = (0)$} \Return false
+    \EndIf
+    \State delete $0$ row, column from $L(\alpha, \beta), M$
+  \EndWhile
+  \State find a feasible point satisfying the linear matrix inequality (LMI)
+  \[
+    L(\alpha, \beta) \succeq 0 \quad \mbox{such that} \quad
+    \operatorname{Tr}(L(\alpha, \beta)) = 1
+  \]
+  and $\alpha_*, \beta_* \gets$ be such a feasible point, if it exists.
+    \If{no feasible point} \Return false
+    \Else \State \Return true, $\sqrt{L(\alpha, \beta)} M$.
+    \EndIf
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Properities of the Real Radical Algorithm}
+\label{subsub:propsRrAlg}
+
+We now prove Theorem~\ref{thm:algorStops}, which presents
+some appealing properties of the Real Algorithm
+(Algorithm~\ref{alg:rrAlg}).
+
+
+
+\begin{proof}[Proof of Theorem~\ref{thm:algorStops}]
+  First, (\ref{degreed}) is clear since neither
+  Algorithm~\ref{alg:RLGB} nor Algorithm~\ref{alg:SOS} increase degree.
+  Next, (\ref{stops}) follows since at each stage of the
+  algorithm we either stop or we add elements of $\rC \setminus I$
+  to our generating set, and $\rC$ is finite
+  dimensional.
+
+  Finally, in the algorithm we inductively find a sum
+  of squares inside of $\RR^{\ell \times 1}\rr{I} + (\rr{I})^*
+  \RR^{1 \times \ell}$; since $\rr{I}$ is real by definition, this
+  implies that each polynomial squared in said sum must also be in
+  $\rr{I}$.  By Theorem~\ref{thm:reducedRealTest}, we have a real
+  left module $I$ precisely when there does not exist a sum of squares of the form
+  (\ref{eq:reducedRealTest}), and the Real Radical algorithm
+  terminates when the
+  SOS algorithm verifies this.
+
+\end{proof}
+
+\section{Acknowledgments}
+
+Author was partly supported by J.W.\ Helton's National Science
+Foundation grant DMS 1201498.  Thanks to J.W.\ Helton and Igor Klep for their
+comments and advice.
+
+
+\newpage
+
+\begin{thebibliography}{999}
+
+%\bibitem{A} Amitsur, S. A. A generalization of Hilbert's Nullstellensatz.
+%\emph{Proc.
+%Amer. Math. Soc.} {\bf 8}(4) (1957), 649--656.
+
+\bibitem{bcr} J. Bochnak, M. Coste, M.-F. Roy. \emph{Real Algebraic Geometry},
+volume 95. Springer Berlin, 1998.
+
+\bibitem{Bon48} F. Bohnenblust: Joint positiveness of matrices,
+  technical report, California Institute of Technology, 1948.
+  Available from
+  http://orion.uwaterloo.ca/~hwolkowi/henry/book/fronthandbk.d/Bohnenblust.pdf.
+
+\bibitem{CKP}
+K. Cafuta, I. Klep, J. Povh:
+\href{http://ncsostools.fis.unm.si}{\tt NCSOStools}: a computer algebra system
+for symbolic and numerical computation with noncommutative polynomials,
+{\em Optim. Methods Softw.} {\bf 26} (2011) 363--380.
+ Available from \url{http://ncsostools.fis.unm.si}
+
+\bibitem{Cim13} J. Cimpri\v c, A Real Nullstellensatz for
+Free Modules, {\it preprint}, arXiv:1302.2358.
+
+ \bibitem{CHKMN}
+ J. Cimpri\v c, J. W. Helton, I. Klep, S. McCullough, C. S. Nelson, On real
+one-sided ideals in a free algebra, {\it preprint},
+\url{http://arxiv.org/abs/1208.4837v1}. 1--32.
+
+ \bibitem{chmn}
+J. Cimpri\v c, J.W. Helton, S. McCullough, C. S. Nelson, A non-commutative real
+Nullstellensatz corresponds to a non-commutative real ideal; algorithms,
+%{\em preprint}\\
+to appear in the {\em Proc. Lond. Math. Soc.},
+\url{http://arxiv.org/abs/1105.4150}, 1--35.
+
+\bibitem{Coh} Cohn, P. M.
+\emph{Free ideal rings and localization in general rings}.
+New Mathematical Monographs, 3. Cambridge University Press, Cambridge, 2006.
+
+\bibitem{CF}
+R. Curto, L. Fialkow:
+Solution of the truncated complex moment problem for flat data,
+{\em Mem. Amer. Math. Soc.} {\bf 119} (1996).
+
+\bibitem{CF2}
+R. Curto, L. Fialkow:
+Flat extensions of positive moment matrices: Recursively generated relations,
+{\em Mem. Amer. Math. Soc.} {\bf 136} (1998).
+
+\bibitem{D69} D. W. Dubois, A nullstellensatz for ordered fields, {\em
+Ark.
+Mat.} {\bf 8} (1969), 111--114.
+
+\bibitem{Goo} Goodearl, K. R.
+\emph{Ring theory.
+Nonsingular rings and modules}. Pure and Applied Mathematics, No. 33.
+Marcel Dekker, Inc., New York-Basel, 1976. viii+206 pp.
+
+\bibitem{Gre00}
+E. Green, Multiplicative bases, Gr\"obner bases and right Gr\"obner bases, {\em
+J. Symbolic Computations} {\bf 29} (2000), 601--623.
+
+\bibitem{HKM12} J. W. Helton, I. Klep, and S. McCullough, The convex
+Positivstellensatz in a free algebra, \emph{Adv. Math.} {\bf 231} (2012),  pp.
+516-534
+
+\bibitem{HKN13} J. W. Helton, I. Klep, and C. Nelson, A Perfect
+Positivstellensatz in a Free $\ast$-Algebra, {\it in preparation}.
+
+\bibitem{HM04} J. W. Helton and S. McCullough, A Positivstellensatz for
+Noncommutative
+Polynomials, \emph{Trans AMS}, {\bf 356} (9) (2004), pp.
+3721--3737
+
+\bibitem{HM12} J. W. Helton and S. McCullough, Every convex free basic
+semi-algebraic set has an LMI representation.
+\emph{Annals of Mathematics} {\bf 176} (2012), pp. 979--1013.
+
+\bibitem{HMP}
+ J.W. Helton, S. McCullough, M. Putinar:
+ Strong majorization in a free $*$-algebra,
+{\em Math. Z.} {\bf 255} (2007) 579--596.
+
+\bibitem{HOSM}
+J.W. Helton, M.C. de Oliveira, M. Stankus, R.L. Miller:
+\href{http://math.ucsd.edu/~ncalg}{\tt NCAlgebra}, 2012 release edition.
+Available from
+\url{http://math.ucsd.edu/~ncalg}
+
+
+\bibitem{kp} I. Klep and J. Povh, Semidefinite programming and sums of
+hermitian
+squares of noncommutative polynomials, \emph{J. Pure Appl. Algebra}, {\bf
+214} (2010),
+pp. 740-749.
+
+
+\bibitem{KS}
+I. Klep, M. Schweighofer,
+An exact duality theory for semidefinite programming based on sums of squares.
+To appear in {\em Math. Oper. Res.}, arXiv:1207.1691.
+
+\bibitem{Kri1} J.-L. Krivine, Anneaux pr\'{e}ordonn\'{e}s. \emph{J. Analyse
+Math.} {\bf 12}
+(1964), pp.
+     307--326.
+
+\bibitem{Kri2} J.-L. Krivine, Quelques propri\'{e}t\'{e}s des pr\'{e}ordres dans
+les
+anneaux
+     commutatifs unitaires. \emph{C. R. Acad. Sci. Paris}, {\bf 258} (1964),
+     3417--3418.
+
+\bibitem{L1} Lam, T. Y. \emph{A first course in noncommutative rings}. Second
+edition.
+Graduate Texts
+in Mathematics, 131.
+Springer-Verlag, New York, 2001. xx+385 pp.
+
+\bibitem{L2} Lam, T. Y.
+\emph{Lectures on modules and rings}. Graduate Texts in
+Mathematics, 189.
+Springer-Verlag, New York, 1999. xxiv+557
+
+\bibitem{mm} M. Marshall, $\ast$-orderings on a ring with involution,
+\emph{Comm. Algebra} {\bf 28} (3) (2000), pp. 1157--1173.
+
+\bibitem{mm2} M. Marshall, $\ast$-Ordering and $\ast$-valuations on algebras
+of finite Gelfand-Kirillov dimension. \emph{J. Pure Appl. Algebra}, {\bf
+179} (3) (2003),
+pp. 255-271.
+
+\bibitem{mm3} M. Marshall,
+\emph{Positive polynomials and sums of squares}.
+Mathematical Surveys and Monographs, 146. American Mathematical Society,
+Providence, RI, 2008.
+
+\bibitem{Pop10} S. Popovych: Positivstellensatz and flat functionals
+  on path ∗-algebras, \emph{J. Algebra} 324 (2010) 2418–2431.
+
+\bibitem{P} M. Putinar, Positive polynomials on compact semi-algebraic sets.
+\emph{Indiana
+Univ. Math. J.} {\bf 42} (1993), 969--984.
+
+\bibitem{R70} J.-J. Risler,  Une caract\'{e}risation des id\'{e}aux des
+vari\'{e}t\'{e}s alg\'{e}briques r\'{e}elles. \emph{C. R. Acad. Sci. Paris},
+s\'{e}rie A, {\bf 271} (1970), 1171--1173.
+
+\bibitem{sche} C. Scheiderer, \emph{Positivity and sums of squares: A guide to
+recent
+results}. In Emerging applications of algebraic geometry, ed. by M.
+Putinar and S. Sullivant, IMA Vol. Math. Appl. 149, Springer-Verlag, New
+York 2009, 271--324. Zbl 1156.14328 MR 2500469 MR2500469 (2010h:14092)
+
+\bibitem{sch2} K. Schm\" udgen,
+Noncommutative real algebraic geometry---some basic concepts and first ideas.
+Emerging applications of algebraic geometry, 325--350,
+IMA Vol. Math. Appl., 149, Springer, New York, 2009.
+
+\end{thebibliography}
+
+
+\newpage
+
+
+
+\printindex
+
+\tableofcontents
+
+\end{document}

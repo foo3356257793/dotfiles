@@ -1,0 +1,23 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    N = 5
+
+    n_ways = [1,1]
+
+    for n in range(2,N+1):
+
+        ways = n_ways[n-1] # first is gray
+
+        if n >= 2:
+            ways += n_ways[n-2] # first is red
+        if n >= 3:
+            ways += n_ways[n-3] # first is green
+        if n >= 4:
+            ways += n_ways[n-4] # first is blue
+
+        n_ways.append(ways)
+
+
+    print(n_ways[N])

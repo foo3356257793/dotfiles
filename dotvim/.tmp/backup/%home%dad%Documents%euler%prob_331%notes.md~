@@ -1,0 +1,47 @@
+# Ideas
+
+See if I can do $n=10$ by hand.
+
+## Idea
+
+In a lot of cases the rank is $1$.
+
+***TODO*** Check this
+
+It suffices to find any solution.
+
+Join together thin blocks and solve the smaller subproblem.
+
+Suppose we have
+
+[0 0 1]
+[0 * 0]
+[1 0 0]
+
+Apply some operations on the middle block to get
+
+[0 1 1]
+[1 0 1]
+[1 1 0]
+
+Then flip the corners to get
+
+[0 0 0]
+[0 0 0]
+[0 0 0]
+
+**Problem**. In the $N=10$ example, we can't do the suggested middle transform.
+
+Think about how to solve
+
+[ 0 0 0 ]
+[ 0 1 0 ]
+[ 0 0 0 ]
+
+or
+
+[ 0 0 0 0 ]
+[ 0 1 0 0 ]
+[ 0 0 0 0 ]
+[ 0 0 0 0 ]
+

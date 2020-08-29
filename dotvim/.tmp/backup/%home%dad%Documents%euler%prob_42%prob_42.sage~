@@ -1,0 +1,41 @@
+#!/usr/bin/sage
+
+def my_is_triangular(a):
+
+    # n(n+1)/2 = a
+    # n^2 + n - 2a = 0
+    # n^2 + n + 1/4 = 2a + 1/4
+
+    return is_square(8*a + 1)
+
+
+if __name__ == "__main__":
+
+    fp = open('words.txt', 'r')
+
+    line = fp.readline()
+
+    words = line.split(',')
+    words = [w.strip('"') for w in words]
+
+    fp.close()
+
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+    letter_vals = {}
+
+    for i in range(len(alphabet)):
+
+        letter_vals[alphabet[i]] = i + 1
+
+    num_triangular = 0
+    for word in words:
+
+        word_score = sum([letter_vals[c] for c in word])
+
+        #if is_triangular_number(word_score):
+        if my_is_triangular(word_score)
+
+            num_triangular += 1
+
+    print(num_triangular)

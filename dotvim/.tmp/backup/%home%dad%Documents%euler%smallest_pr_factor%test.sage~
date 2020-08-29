@@ -1,0 +1,42 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+  # store the smallest prime factor of each number
+  # we can then inductively factor with this
+
+  bd = 2**20
+
+  sm_pr_fac_array = [0] * (bd+1)
+
+  sm_pr_fac_array[1] = 1
+
+  for a in range(2,bd+1):
+
+      if sm_pr_fac_array[a] == 0:
+          # a is a prime
+          sm_pr_fac_array[a] = a
+          for m in range(2*a,bd+1,a):
+              if sm_pr_fac_array[m] == 0:
+                  sm_pr_fac_array[m] = a
+
+    set_random_seed(0)
+
+    test_set = [randrange(bd+1) for _ in range(8)]
+
+    for a in test_set:
+
+        print(a)
+        print(factor(a))
+
+        fac_by_set = []
+
+        while a > 1:
+
+            p = sm_pr_fac_array[a]
+            fac_by_set.append(p)
+
+            a //= p
+
+        print(fac_by_set)
+

@@ -1,0 +1,71 @@
+#!/usr/bin/sage
+
+import itertools
+
+if __name__ == "__main__":
+
+    # do small examples thoroughly for testing
+    poly_ZZ.<x> = ZZ[]
+
+    polys = []
+
+    #lb_k = 2 # 32
+    #lb_k = 3 # 171
+    #lb_k = 4 # 1753
+    #lb_k = 5 # 14695
+
+    Z_k = 0
+
+    num_per_root = [0] * 10 # 0 through 9
+    num_per_root_nonzero = [0] * 10
+
+    dbl_root_polys = []
+
+    pair = (1,2)
+    num_pair = 0
+
+    for tup in itertools.product(range(10), repeat=lb_k):
+
+        f = poly_ZZ(list(tup))
+
+        # zero poly doesn't count
+        if f == 0:
+            continue
+
+        if f(x=-pair[0]) == 0 and f(x=-pair[1]) == 0:
+            num_pair += 1
+
+        rts = f.roots()
+
+        if len(rts) > 0:
+            Z_k += 1
+
+        num_nonzero_rts = 0
+        for rt_tup in rts:
+
+            r = rt_tup[0]
+            num_per_root[-r] += 1
+
+            if r != 0:
+                num_nonzero_rts += rt_tup[1]
+
+        if num_nonzero_rts > 1:
+            dbl_root_polys.append(f)
+
+        if f(x=0) != 0:
+
+            for rt_tup in rts:
+
+                r = rt_tup[0]
+
+                num_per_root_nonzero[-r] += 1
+
+    print(num_per_root[1])
+    print(num_per_root[2])
+
+    print('')
+    print('tup', pair)
+    print('ret', num_pair)
+
+    print('')
+    print('result: %d' % Z_k)

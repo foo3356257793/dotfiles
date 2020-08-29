@@ -1,0 +1,112 @@
+\documentclass[letterpaper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage[tmargin=0.5in, bmargin=0.5in]{geometry}
+
+\usepackage{multicol}
+
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Medium Number Maze}
+\author{by Dad Nelson}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+  \begin{enumerate}
+    \item Find a route with a total of $15$.
+    \item Find the route with the highest total.
+    \item Find the route with the lowest total.
+  \end{enumerate}
+
+  \
+
+  \begin{center}
+  \begin{tikzpicture}[
+      > = stealth, % arrow head style
+      shorten > = 1pt, % don't touch arrow head to node
+      auto,
+      node distance = 3cm, % distance between nodes
+      semithick % line style
+    ]
+
+    \tikzstyle{every state}=[
+      draw = black,
+      thick,
+      fill = white,
+      minimum size = 4mm
+    ]
+
+    \node[state] (v00) {start};
+    \node[state] (v01) [right of=v00] {$+4$};
+    \node[state] (v02) [right of=v01] {$+8$};
+    \node[state] (v03) [right of=v02] {$-4$};
+    \node[state] (v10) [below of=v00] {$+7$};
+    \node[state] (v11) [right of=v10] {$+3$};
+    \node[state] (v12) [right of=v11] {$-2$};
+    \node[state] (v13) [right of=v12] {$+3$};
+    \node[state] (v20) [below of=v10] {$-2$};
+    \node[state] (v21) [right of=v20] {$+5$};
+    \node[state] (v22) [right of=v21] {$+7$};
+    \node[state] (v23) [right of=v22] {$+2$};
+    \node[state] (v30) [below of=v20] {$+4$};
+    \node[state] (v31) [right of=v30] {$+6$};
+    \node[state] (v32) [right of=v31] {$-2$};
+    \node[state] (v33) [right of=v32] {end};
+
+    \path[->] (v00) edge node {} (v01);
+    \path[->] (v01) edge node {} (v02);
+    \path[->] (v02) edge node {} (v03);
+    \path[->] (v10) edge node {} (v11);
+    \path[->] (v11) edge node {} (v12);
+    \path[->] (v12) edge node {} (v13);
+    \path[->] (v20) edge node {} (v21);
+    \path[->] (v21) edge node {} (v22);
+    \path[->] (v22) edge node {} (v23);
+    \path[->] (v30) edge node {} (v31);
+    \path[->] (v31) edge node {} (v32);
+    \path[->] (v32) edge node {} (v33);
+
+    \path[->] (v00) edge node {} (v10);
+    \path[->] (v10) edge node {} (v20);
+    \path[->] (v20) edge node {} (v30);
+    \path[->] (v01) edge node {} (v11);
+    \path[->] (v11) edge node {} (v21);
+    \path[->] (v21) edge node {} (v31);
+    \path[->] (v02) edge node {} (v12);
+    \path[->] (v12) edge node {} (v22);
+    \path[->] (v22) edge node {} (v32);
+    \path[->] (v03) edge node {} (v13);
+    \path[->] (v13) edge node {} (v23);
+    \path[->] (v23) edge node {} (v33);
+
+  \end{tikzpicture}
+  \end{center}
+
+\end{document}
+

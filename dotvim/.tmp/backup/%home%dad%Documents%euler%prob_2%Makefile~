@@ -1,0 +1,12 @@
+CC = gcc
+
+all: prob_1.o
+
+%.o: %.c
+	$(CC) $+ -o $@ -g
+
+clean:
+	rm prob_1.o
+
+.PHONY: clean
+

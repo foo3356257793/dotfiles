@@ -1,0 +1,44 @@
+#!/usr/bin/python
+
+import sys
+
+if __name__ == "__main__":
+
+  print ""
+  print "***************"
+  print "*** PUZZBOX ***"
+  print "***************"
+  print ""
+
+  person = raw_input("Enter your name: ")
+  print "\nHello %s." % person
+
+
+  print("\nGuess the password.\nIt is a number between 1 and 10.")
+
+  answer = 7
+  guess = 0
+
+  valid = range(1,11)
+  while guess != answer:
+
+    try:
+      guess = int( raw_input("Guess: ") )
+      if not guess in valid:
+        print("That's not a number between 1 and 10")
+      elif guess != answer:
+        print("No, try again")
+
+    except:
+      print("That's not a number between 1 and 10")
+
+  print ""
+  print "Hooray, %s, you got it correct!" % person
+  print ""
+
+  fp = open('cow.txt', 'r')
+  for line in fp:
+    sys.stdout.write("\t" + line)
+  fp.close()
+
+  print ""

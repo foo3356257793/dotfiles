@@ -1,0 +1,92 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Seven Club.}
+
+Check if these numbers are in the seven club.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[height=1in]{nb_7.jpg}
+    \includegraphics[height=1in]{nb_7.jpg}
+    \includegraphics[height=1in]{nb_7.jpg}
+    \includegraphics[height=1in]{nb_7.jpg}
+    \includegraphics[height=1in]{nb_7.jpg}
+    \includegraphics[height=1in]{nb_7.jpg}
+    \includegraphics[height=1in]{nb_7.jpg}
+  \end{center}
+\end{figure}
+
+\begin{multicols}{2}
+\paragraph{Example.}
+
+Is $49$ in the $7$ club?
+On a computer, in terminal, enter into \texttt{sage}.
+Then, type
+\begin{verbatim}
+49 % 7
+\end{verbatim}
+Terminal says:
+\begin{verbatim}
+0
+\end{verbatim}
+Is $0$ in the seven club?
+Of course!
+
+\paragraph{Example.}
+
+  \textit{None}
+
+Is $55$ in the $7$ club?
+On a computer, in terminal, type \texttt{sage}.
+Then, type
+\begin{verbatim}
+55 % 7
+\end{verbatim}
+Terminal says:
+\begin{verbatim}
+6
+\end{verbatim}
+Is $6$ in the seven club?
+No way!
+\end{multicols}
+
+\paragraph{Problems.}
+
+\begin{enumerate}
+\item Is $3$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $7$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $21$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $28$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $49$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $56$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $72$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $77$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $84$ in the 7 club? {\bf Yes} or {\bf No}.
+\item Is $91$ in the 7 club? {\bf Yes} or {\bf No}.
+\end{enumerate}
+
+
+\end{document}
+

@@ -1,0 +1,65 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    #fp = open('matrix.txt', 'r')
+    fp = open('test_matrix.txt', 'r')
+
+    lines = fp.readlines()
+
+    fp.close()
+
+    N = len(lines)
+
+    mat = matrix(ZZ, N, N)
+
+    for i in range(N):
+
+        arr = lines[i].split(',')
+        for j in range(N):
+
+            mat[i,j] = int(arr[j])
+
+    weight_mat = matrix(ZZ, N, N)
+
+    # add column 0 to the border: have a minimum path for all of these
+
+    for i in range(N):
+        weight_mat[i,0] = mat[i,0]
+
+    border_points = [[weight_mat[i,0], [i,0]] for i in range(N)]
+
+    while len(border_points) > 0:
+
+        border_points.sort()
+
+        wt = border_points[0][0]
+        min_pt = border_points[0][1]
+        i = min_pt[0]
+        j = min_pt[1]
+
+
+        # down
+        if i < (N-1) and weight_mat[i+1,j] == 0:
+
+            weight_mat[i+1,j] = mat[i+1,j] + wt
+            border_points.append([weight_mat[i+1,j], [i+1,j]])
+
+        # up
+        if i > 0 and weight_mat[i-1,j] == 0:
+
+            weight_mat[i-1,j] = mat[i-1,j] + wt
+            border_points.append([weight_mat[i-1,j], [i-1,j]])
+
+        # right
+        if j < (N-1) and weight_mat[i,j+1] == 0:
+
+            weight_mat[i,j+1] = mat[i,j+1] + wt
+            border_points.append([weight_mat[i,j+1], [i,j+1]])
+
+        border_points = border_points[1:]
+
+    #print(weight_mat[-1,-1])
+
+    ans = min([weight_mat[i,(N-1)] for i in range(N)])
+    print(ans)

@@ -1,0 +1,30 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    N = 10**18
+
+    P = floor(N**(1/3))
+
+    ok_primes = []
+    aux_factors = []
+    for p in prime_range(1, P):
+
+        phi_piece = p-1
+
+        aux_part = 1
+
+        for tup in factor(phi_piece):
+
+            if tup[1] == 1:
+                aux_part *= tup[0]
+
+        cofactor_bd = max(4, aux_part^2)
+
+        if p^3 * cofactor_bd <= N:
+            ok_primes.append(p)
+            aux_factors.append(aux_part)
+
+    num_ok = len(ok_primes)
+
+    print("found %d ok primes" % num_ok)

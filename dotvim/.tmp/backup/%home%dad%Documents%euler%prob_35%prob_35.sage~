@@ -1,0 +1,33 @@
+#!/usr/bin/sage
+
+def get_shift(a, n_digits):
+
+    s = a // 10 + (10**(n_digits-1)) * (a % 10)
+
+    return s
+
+
+if __name__ == "__main__":
+
+
+    for n_digits in range(1,7):
+
+        primes = prime_range(10**(n_digits-1), 10**n_digits)
+
+        for p in primes:
+
+            works = True
+
+            q = p
+            for shift in range(n_digits-1):
+
+                q = get_shift(q,n_digits)
+
+                if not is_prime(q):
+
+                    works = False
+                    break
+
+            if works:
+
+                print(p)

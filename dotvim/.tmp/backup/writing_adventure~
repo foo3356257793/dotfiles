@@ -1,0 +1,47 @@
+#!/usr/bin/python
+
+import sys
+
+if __name__ == "__main__":
+
+  print ""
+  print "*************************"
+  print "*** Writing Adventure ***"
+  print "*************************"
+  print ""
+
+  person = raw_input("Enter your name: ")
+  print "\nHello %s." % person
+
+  #words = ['cat', 'dog']
+  words = ['dad', 'sleeping']
+  #words = ['computer', 'fun']
+  #words = ['mario', 'kart', '8']
+  #words = ['draggle', 'penguala']
+
+  for word in words:
+
+    print ""
+    answer = raw_input("Write '%s':\n\n\t" % word)
+    answer = answer.strip().lower()
+    while answer != word:
+      print ""
+      print "That's not correct. Try again\n"
+      answer = raw_input("Write %s:\n\n\t" % word)
+
+    print ""
+    print "That's great!"
+
+  print ""
+
+  print ""
+  print "Hooray, %s, you wrote all the words!" % person
+  print ""
+
+  fp = open('cow.txt', 'r')
+  for line in fp:
+    sys.stdout.write("\t" + line)
+  fp.close()
+
+  print ""
+

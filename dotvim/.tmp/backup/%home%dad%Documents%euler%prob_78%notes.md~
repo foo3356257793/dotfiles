@@ -1,0 +1,11 @@
+# Number of ways to separate into piles
+
+This is the same as the number of ways to
+sum to $n$ with positive integers.
+
+**algorithm**.
+
+Have a table for the number of ways with vals up
+to $k-1$.
+
+Consider adding in $k$.

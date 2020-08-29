@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+typedef struct{
+    uint32_t size;
+    uint32_t *digits;
+} bigInt;
+
+int main(int argc, char *argv[])
+{
+
+    exit(0);
+
+}
+

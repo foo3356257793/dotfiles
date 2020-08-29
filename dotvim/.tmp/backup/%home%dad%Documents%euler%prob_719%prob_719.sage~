@@ -1,0 +1,136 @@
+#!/usr/bin/sage
+
+import itertools
+import time
+
+from multiprocessing import Pool
+
+def check_if_S_num(a):
+
+    # get the square of a
+    a_sq = a*a
+    a_sq_str = str(a_sq)
+    a_sq_digits = [int(c) for c in a_sq_str]
+
+    # meet in the middle to find things which could work mod 10
+    num_digits = len(a_sq_digits)
+
+    len_lhs = (num_digits+1)//2
+    len_rhs = num_digits - len_lhs
+
+    lhs = list(range(len_lhs))
+    rhs = list(range(len_lhs,num_digits))
+
+    lhs = [[] for _ in range(10)]
+    rhs = [[] for _ in range(10)]
+
+    for tup in itertools.product(range(2), repeat=len_lhs):
+
+        tup_positions = [j for j in range(len_lhs) if tup[j] == 1]
+        tup_digits = [a_sq_digits[j] for j in tup_positions]
+        val = sum(tup_digits) % 10
+
+        lhs[val].append(tup_positions)
+
+    for tup in itertools.product(range(2), repeat=len_rhs):
+
+        tup_positions = [j for j in range(len_lhs,num_digits) if tup[j-len_lhs] == 1]
+        tup_digits = [a_sq_digits[j] for j in tup_positions]
+        val = sum(tup_digits) % 10
+        rhs[val].append(tup_positions)
+
+    zero_combos = []
+    for val in range(10):
+
+        complement = (a-val) % 10
+
+        for tup_lhs in lhs[val]:
+            for tup_rhs in rhs[complement]:
+
+                combo = tup_lhs + tup_rhs
+
+                if len(combo) >= 2:
+                    zero_combos.append(tup_lhs + tup_rhs)
+
+
+    # for each possibility, we infer the chunks
+    # check for a hit
+    for tup in zero_combos:
+
+        chunks = [int( a_sq_str[0:tup[0]+1] )]
+        for i in range(1,len(tup)):
+            chunks.append(int( a_sq_str[tup[i-1]+1:tup[i]+1] ))
+
+        if tup[i] < num_digits-1:
+            chunks.append(int( a_sq_str[tup[-1]+1:] ))
+
+        if sum(chunks) == a:
+            return True
+
+    return False
+
+def process_chunk(k_tup):
+
+    S = 0
+
+    for k in range(k_tup[0], k_tup[1]):
+
+        for r in range(2):
+
+            n = 9*k + r
+
+            if check_if_S_num(n):
+
+                S += n*n
+
+    return S
+
+
+if __name__ == "__main__":
+
+    bd = 10**10
+
+    """
+    a_list = [9,82,91,99]
+
+    for a in a_list:
+
+        print(check_if_S_num(a))
+    """
+
+    k_max = floor(sqrt(bd-1)/9)
+
+    num_chunks = 100
+    chunk_width = (k_max+1)//num_chunks
+
+    k_chunks = [[i*chunk_width,(i+1)*chunk_width] for i in range(num_chunks)]
+    k_chunks.append([num_chunks*chunk_width, k_max+1])
+
+
+    start_tm = time.perf_counter()
+
+    S = 0
+    #for n in range(10**2+1):
+    for k in range(k_max+1):
+
+        for r in range(2):
+
+            n = 9*k + r
+
+            if check_if_S_num(n):
+
+                S_nums.append(n*n)
+                S += n*n
+
+    """
+    with Pool(4) as p:
+        data = p.map(process_chunk, k_chunks)
+
+    S = sum(data)
+    """
+
+    end_tm = time.perf_counter()
+    tot_tm = end_tm-start_tm
+    print("TIME = %.3lf" % tot_tm)
+
+    print(S)

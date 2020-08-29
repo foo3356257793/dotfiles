@@ -1,0 +1,59 @@
+Let $a,b,c$ be sides of a triangle,
+and $p,q,r$ the lengths.  If these are all
+integers, this is a Torricelli triangle.
+
+Need the angles less than $120$ degrees.
+
+The suggested solution is that you you can draw
+the diagram of equilateral triangles and get things
+to intersect.
+
+# Example
+
+$$
+a = 399
+b = 455
+c = 511
+$$
+has $p+q+r = 784$.
+
+Place one side on the $x$ axis.  What are the coordinates?
+
+
+$(0,0), (a,0), (x,y)$
+where
+$$
+x^2+y^2 = c^2
+(x-a)^2 + y^2 = b^2
+$$
+
+What are the coordinates of the $T$ point?
+If $(s,t)=T$, then
+$$
+p^2 = s^2+t^2
+q^2 = (a-s)^2 + t^2
+r^2 = (x-s)^2 + (t-y)^2
+$$
+
+## Wikipedia
+
+We can use Lagrange multipliers for this.
+
+We have a triangle with sides $a,b,c$.
+
+Look at the triangle with sides $a,q,r$.  We have
+$$
+a^2 = q^2 + r^2 - 2qr \cos \gamma
+$$
+
+For all three
+$$
+a^2 = q^2 + r^2 - 2qr \cos \gamma_a
+b^2 = p^2 + q^2 - 2qr \cos \gamma_b
+c^2 = r^2 + p^2 - 2qr \cos \gamma_c
+$$
+where
+$$
+\gamma_a + \gamma_b + \gamma_c = 2\pi
+$$
+We want to first solve for $p^2,q^2,r^2$

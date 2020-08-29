@@ -1,0 +1,222 @@
+(supertux-savegame
+  (version 1)
+  (title "Community Island 2016 (11/14)")
+  (tux
+    (bonus "growup")
+    (fireflowers 0)
+    (iceflowers 0)
+    (airflowers 0)
+    (earthflowers 0)
+    (coins 9791)
+    (worldmap-sprite "/images/worldmap/common/tux.sprite")
+    (last-worldmap "")
+  )
+  (state
+    ("worlds"
+      ("/levels/community2016/worldmap.stwm"
+        ("sprite-changes"
+          ("41_32"
+            (show-stay-action #f)
+          )
+          ("41_33"
+            (show-stay-action #t)
+          )
+          ("25_27"
+            (show-stay-action #t)
+          )
+          ("26_27"
+            (show-stay-action #f)
+          )
+        )
+        ("tux"
+          (y 28)
+          (x 41)
+          (back "north")
+        )
+        ("levels"
+          ("Welcome_To_Icy_Island (gelada).stl"
+            (perfect #f)
+            (solved #f)
+          )
+          ("Up_Or_Down (Serano).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 11)
+              (secrets-found 0)
+              (time-needed 86.93728)
+              (secrets-found-total 0)
+              (badguys-killed-total 40)
+              (coins-collected-total 56)
+              (badguys-killed 19)
+            )
+            (solved #t)
+          )
+          ("Entrance_To_Cave (gelada).stl"
+            (perfect #f)
+            (solved #f)
+          )
+          ("Uncontrolled_Lift (gelada).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 2)
+              (secrets-found 0)
+              (time-needed 145.2999)
+              (secrets-found-total 0)
+              (badguys-killed-total 44)
+              (coins-collected-total 52)
+              (badguys-killed 6)
+            )
+            (solved #t)
+          )
+          ("Sunny_Hills (Serano).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 30)
+              (secrets-found 0)
+              (time-needed 168.864)
+              (secrets-found-total 0)
+              (badguys-killed-total 30)
+              (coins-collected-total 40)
+              (badguys-killed 6)
+            )
+            (solved #t)
+          )
+          ("Problem_With_Green (herobrine).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 122)
+              (secrets-found 0)
+              (time-needed 244.3559)
+              (secrets-found-total 0)
+              (badguys-killed-total 89)
+              (coins-collected-total 131)
+              (badguys-killed 87)
+            )
+            (solved #t)
+          )
+          ("The_Mountains (gelada).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 0)
+              (secrets-found 0)
+              (time-needed 187.8682)
+              (secrets-found-total 1)
+              (badguys-killed-total 59)
+              (coins-collected-total 38)
+              (badguys-killed 12)
+            )
+            (solved #t)
+          )
+          ("Into_The_Palace (ThomyW).stl"
+            (perfect #f)
+            (solved #f)
+          )
+          ("Double_Problems (herobrine).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 28)
+              (secrets-found 0)
+              (time-needed 139.1202)
+              (secrets-found-total 1)
+              (badguys-killed-total 34)
+              (coins-collected-total 105)
+              (badguys-killed 21)
+            )
+            (solved #t)
+          )
+          ("Ancient_Ruins (RustyBox).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 59)
+              (secrets-found 0)
+              (time-needed 179.7535)
+              (secrets-found-total 0)
+              (badguys-killed-total 48)
+              (coins-collected-total 119)
+              (badguys-killed 22)
+            )
+            (solved #t)
+          )
+          ("Entrance_To_Lava_Castle (herobrine).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 17)
+              (secrets-found 0)
+              (time-needed 101.6967)
+              (secrets-found-total 0)
+              (badguys-killed-total 38)
+              (coins-collected-total 40)
+              (badguys-killed 15)
+            )
+            (solved #t)
+          )
+          ("HMS_Snowballs_Ahoy (Vellidragon).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 67)
+              (secrets-found 0)
+              (time-needed 249.4257)
+              (secrets-found-total 2)
+              (badguys-killed-total 39)
+              (coins-collected-total 249)
+              (badguys-killed 15)
+            )
+            (solved #t)
+          )
+          ("Is_The_Biggest_Fish (cookie monster).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 154)
+              (secrets-found 1)
+              (time-needed 224.2867)
+              (secrets-found-total 1)
+              (badguys-killed-total 13)
+              (coins-collected-total 175)
+              (badguys-killed 6)
+            )
+            (solved #t)
+          )
+          ("The_Strange_Thing (herobrine).stl"
+            (perfect #f)
+            ("statistics"
+              (coins-collected 37)
+              (secrets-found 0)
+              (time-needed 87.26727)
+              (secrets-found-total 0)
+              (badguys-killed-total 37)
+              (coins-collected-total 67)
+              (badguys-killed 27)
+            )
+            (solved #t)
+          )
+        )
+        ("tilemaps"
+          ("Water"
+            (alpha 1)
+          )
+          ("Castles"
+            (alpha 1)
+          )
+          ("Interactive"
+            (alpha 1)
+          )
+          ("Foreground"
+            (alpha 1)
+          )
+          ("Watereffects"
+            (alpha 1)
+          )
+          ("Trees"
+            (alpha 1)
+          )
+          ("behindpathing"
+            (alpha 1)
+          )
+          ("moretrees"
+            (alpha 1)
+          )
+        )
+      )
+    )
+  )
+)

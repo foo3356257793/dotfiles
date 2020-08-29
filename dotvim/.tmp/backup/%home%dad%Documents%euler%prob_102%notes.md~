@@ -1,0 +1,4 @@
+# how to tell if a point lies in a convex set
+
+One method is to write the origin as a convex combination
+of the points.

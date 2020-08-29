@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <omp.h>
+
+
+#define k ((double) (15))
+#define q (((double) (33554431.0)) / ((double) (33554432.0)))
+
+int main(int argc, char *argv[])
+{
+
+    double S = 0;
+
+    #pragma omp parallel for
+    for(unsigned long n=1; n<(1UL<<34); n++)
+    {
+        double Q = pow(q,((double) (n)));
+        double s = pow((double) n,k) * Q / (((double) 1)-Q);
+        #pragma omp atomic
+        S += s;
+    }
+
+    printf("%.12e\n", S);
+
+}

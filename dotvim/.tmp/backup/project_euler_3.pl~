@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Math::Complex;
+
+################################################################################
+# Project Euler Problem 3                                                      # 
+# What is the largest prime factor of the number 600851475143 ?                #
+################################################################################
+
+#####################
+# Declare Variables #
+#####################
+my $n              = 600851475143; # here is the number to be factored
+my $p              = 2;            # number to check if is a factor
+my $upperBoundForP = sqrt($n);     # if no factor <                    = sqrt($n) = > $n prime
+my $maxFactor      = 1;            # keep track of the maximum factor
+
+########
+# Main #
+########
+# cycle through possible factors
+while($p <= $upperBoundForP){
+  if($n % $p == 0){
+    $n              /=  $p;       # divide out by $p
+    $upperBoundForP  =  sqrt($n); # lower the upper bound
+    $maxFactor       =  $p;       # $p must be the max factor so far
+    $thing           =~ $a;
+    # note that we don't increment $p---$p could have multiplicity > 1
+  }
+  else{
+    $p++; # $p is not a factor---move on
+  }
+}
+$maxFactor = $maxFactor > $n ? $maxFactor : $n; # at this point, $n is prime or is 1
+                                                # and is a factor of the orginal $n
+
+#################
+# Print Results #
+#################
+print "the maximum prime factor is $maxFactor\n";

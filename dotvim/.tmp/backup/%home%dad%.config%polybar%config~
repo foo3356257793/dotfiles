@@ -1,0 +1,459 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+[colors]
+;background = ${xrdb:color0:#222}
+;background = #F20f1217
+background = #5A5475
+;background = #CF5A5475
+background-alt = #444
+;foreground = ${xrdb:color7:#222}
+;foreground = #f7eef5
+foreground = #F8F8F2
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+[bar/tiny]
+;monitor = ${env:MONITOR:HDMI-1}
+width = 410
+height = 30
+;offset-x = 100%:-449
+offset-x = 76.5%
+offset-y = 10
+;offset-y = 100%:-50
+;radius = 2.5
+radius = 0.0
+fixed-center = true
+
+bottom = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 0
+line-color = #f00
+
+border-size = 2
+;border-color = #00000000
+border-color = #ff0080
+
+padding-left = 0
+padding-right = 1
+
+module-margin-left = 1
+module-margin-right = 1
+
+;font-0 = Alte Haas Grotesk:style=Bold:size=12;2
+font-0 = JetBrainsMono Nerd Font Mono:style=Bold:size=10;2
+font-1 = FontAwesome5Free:style=Solid:size=11;1
+font-2 = FontAwesome5Free:style=Regular:size=11;1
+font-3 = FontAwesome5Brands:style=Regular:size=11;1
+font-4 = Droid Sans:style=Regular:size=11
+
+;modules-center = pulseaudio battery date
+modules-left =  date
+modules-center =
+modules-right = pulseaudio battery-combined sysmenu
+
+tray-position = none
+tray-padding = 0
+tray-background = ${colors.background}
+tray-detached = true
+tray-maxsize = 20
+tray-transparent = true
+tray-offset-x = -250
+tray-offset-y = 0
+tray-scale = 1.0
+
+override-redirect = true
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/desktop]
+width = 100%
+height = 30
+offset-x = 100%:-340
+offset-y = 10
+radius = 2.5
+fixed-center = true
+
+bottom = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = Roboto:style=Bold:size=10;2
+font-1 = FontAwesome5Free:style=Solid:size=10;1
+font-2 = FontAwesome5Free:style=Regular:size=10;1
+font-3 = FontAwesome5Brands:style=Regular:size=10;1
+
+modules-left = 
+modules-center = workspaces
+modules-right = 
+
+cursor-click = pointer
+
+[bar/wide]
+;monitor = ${env:MONITOR:HDMI-1}
+width = 100%
+height = 32
+offset-x = 0
+offset-y = 0
+radius = 0
+fixed-center = true
+
+bottom = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 0
+line-color = #f00
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = Roboto:style=Bold:size=10;2
+font-1 = FontAwesome5Free:style=Solid:size=10;1
+font-2 = FontAwesome5Free:style=Regular:size=10;1
+font-3 = FontAwesome5Brands:style=Regular:size=10;1
+font-4 = Droid Sans:style=Regular:size=10
+
+modules-left = full_workspaces xwindow
+modules-center =
+modules-right = pulseaudio date
+
+tray-position = right
+tray-padding = 1
+tray-background = ${colors.background}
+tray-detached = false
+tray-maxsize = 18
+tray-transparent = true
+tray-offset-x = 0
+tray-offset-y = 0
+tray-scale = 1.0
+
+;override-redirect = true
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/battery-combined]
+type = custom/script
+exec = /home/dad/opt/polybar_bat.py
+interval = 10
+
+[module/battery0]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+
+format-charging = <animation-charging><label-charging>
+format-charging-underline = #ffb52a
+format-charging-foreground = #7BFA81
+
+format-discharging = <animation-discharging><label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+format-discharging-foreground = #FFB8D1
+
+format-full-prefix = "B0/"
+;format-full-prefix =  " "
+format-full-prefix-for eground = ${colors.foreground}
+format-full-underline = ${self.format-charging-underline}
+
+;ramp-capacity-0 = 
+;ramp-capacity-1 = 
+;ramp-capacity-2 = 
+
+ramp-capacity-0 = "B0/"
+ramp-capacity-1 = "B0/"
+ramp-capacity-2 = "B0/"
+
+ramp-capacity-foreground = ${colors.foreground}
+
+;animation-charging-0 = 
+;animation-charging-1 = 
+;animation-charging-2 = 
+
+animation-charging-0 = "B0/"
+animation-charging-1 = "B0/"
+animation-charging-2 = "B0/"
+
+animation-charging-framerate = 750
+
+;animation-discharging-0 = 
+;animation-discharging-1 = 
+;animation-discharging-2 = 
+
+animation-discharging-0 = "B0/"
+animation-discharging-1 = "B0/"
+animation-discharging-2 = "B0/"
+
+animation-discharging-framerate = 750
+
+[module/battery1]
+type = internal/battery
+battery = BAT1
+adapter = ADP1
+full-at = 98
+
+format-charging = <animation-charging><label-charging>
+format-charging-underline = #ffb52a
+format-charging-foreground = #7BFA81
+
+format-discharging = <animation-discharging><label-discharging>
+format-discharging-underline = ${self.format-charging-underline}
+format-discharging-foreground = #FFB8D1
+
+;format-full-prefix = " "
+format-full-prefix = "B1/"
+format-full-prefix-for eground = ${colors.foreground}
+format-full-underline = ${self.format-charging-underline}
+
+;ramp-capacity-0 = 
+;ramp-capacity-1 = 
+;ramp-capacity-2 = 
+
+ramp-capacity-0 = "B1/"
+ramp-capacity-1 = "B1/"
+ramp-capacity-2 = "B1/"
+
+ramp-capacity-foreground = ${colors.foreground}
+
+;animation-charging-0 = 
+;animation-charging-1 = 
+;animation-charging-2 = 
+
+animation-charging-0 = "B1/"
+animation-charging-1 = "B1/"
+animation-charging-2 = "B1/"
+
+animation-charging-framerate = 750
+
+;animation-discharging-0 = 
+;animation-discharging-1 = 
+;animation-discharging-2 = 
+
+animation-discharging-0 = "B1/"
+animation-discharging-1 = "B1/"
+animation-discharging-2 = "B1/"
+
+animation-discharging-framerate = 750
+
+[module/workspaces]
+type = internal/xworkspaces
+
+pin-workspaces = false
+enable-click = true
+enable-scroll = true
+
+icon-0 = 1;
+icon-1 = 2;
+icon-2 = 3;
+icon-3 = 4;
+icon-4 = 5;
+icon-default = ♟
+
+format = <label-state>
+format-background = ${colors.background}
+label-active = %icon%
+label-urgent = 
+label-occupied = 
+label-empty = 
+
+label-empty-padding = 1
+label-active-padding = 1
+label-urgent-padding = 1
+label-occupied-padding = 1
+
+label-empty-foreground = ${colors.foreground-alt}
+label-active-foreground = ${colors.foreground} 
+label-urgent-foreground = ${colors.foreground-alt}
+label-occupied-foreground = ${colors.foreground-alt}
+
+[module/full_workspaces]
+type = internal/xworkspaces
+
+pin-workspaces = false
+enable-click = true
+enable-scroll = true
+
+format = <label-state>
+format-background = ${colors.background}
+
+label-active = %name%
+label-urgent = %name%
+label-occupied = %name%
+label-empty = %name%
+icon-default = 
+
+label-empty-padding = 2
+label-active-padding = 2
+label-urgent-padding = 2
+label-occupied-padding = 2
+
+label-empty-foreground = ${colors.foreground-alt}
+label-active-foreground = ${colors.foreground} 
+label-urgent-foreground = ${colors.foreground-alt}
+label-occupied-foreground = ${colors.foreground-alt}
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:60:...%
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-underline = ${colors.secondary}
+
+label-layout = %layout%
+label-layout-underline = ${colors.secondary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+label-indicator-underline = ${colors.secondary}
+
+[module/mpd]
+type = internal/mpd
+;format-online = <label-song> <toggle>
+format-online = <icon-prev> <label-song> <icon-next>
+
+format-playing = ${self.format-online}
+format-paused = ${self.format-online}
+format-stopped = ${self.format-online}
+
+icon-prev = <<
+icon-stop = s
+icon-play = >
+icon-pause = ||
+icon-next = >>
+;
+label-song = %artist% - %title%
+
+label-song-maxlen = 35
+label-song-ellipsis = true
+
+[module/date]
+type = internal/date
+interval = 5
+
+;date = "%{F#f2db55}%{F-}  %A, %B %d "
+date = " %A, %B %d "
+date-alt = 
+
+;time = " %{F#6b90c5}%{F-}  %H:%M"
+time = " %I:%M %p "
+time-alt = 
+
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #0a6cf5
+
+label = %time% %date% 
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume = <label-volume>
+;label-volume = %{F#88bd8d}%{F-}  %percentage%%
+label-volume = V/%percentage%%
+;label-volume-foreground = #55aa55
+label-volume-foreground = ${colors.foreground}
+
+label-muted = MUTED
+label-muted-foreground = #E6C000
+
+[module/spotlight]
+type = custom/script
+
+exec = echo %{F#DD9ACB}%{F-}
+click-left = rofi -modi "Global Search":"~/scripts/rofi-spotlight/rofi-spotlight.sh" -show "Global Search" -width 330 -xoffset -10 -yoffset -50 -location 5 -theme spot -show-icons
+format-padding = 1
+
+[module/menu]
+type = custom/script
+
+exec = echo %{F#ff8080}%{F-}
+click-left = $HOME/scripts/global-menu.sh
+format-padding = 1
+
+[module/powermenu]
+type = custom/menu
+
+format-foreground = #FFFFFF
+;format-background = ${colors.xcolor0}
+
+
+label-open = "⏻"
+;label-open-font = 4
+label-close = "Esc"
+;label-close-foreground = ${colors.lime}
+label-separator = " / "
+;label-separator-foreground = ${colors.xcolor1}
+
+
+; reboot
+menu-0-1 = "logout"
+menu-0-1-exec = openbox --exit
+;menu-0-1-foreground = ${colors.salmon}
+
+; shutdown
+menu-0-0 = "⏻"
+menu-0-0-exec = systemctl poweroff
+;menu-0-0-foreground = ${colors.salmon}
+
+[module/sysmenu]
+type = custom/text
+content = 襤
+
+#content-foreground = ${color.red}
+click-left = ~/.config/polybar/scripts/powermenu
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 10
+margin-bottom = 10
+
+; vim:ft=dosini

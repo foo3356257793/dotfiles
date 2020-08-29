@@ -1,0 +1,45 @@
+\documentclass[20pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\usepackage{enumitem}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+\def\bigblank{\rule{15cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+  \vspace{2em}
+
+
+  {\Large
+  \begin{centering}
+    {\bf Top 10 List}
+    \begin{enumerate}[itemsep=20pt]
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+  \item \bigblank
+\end{enumerate}
+  \end{centering}
+  }
+
+
+\end{document}
+

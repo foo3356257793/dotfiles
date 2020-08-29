@@ -1,0 +1,164 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <gmp.h>
+
+void random_matrix(mpz_t** mat, unsigned char dim, gmp_randstate_t state, mpz_t pi);
+void print_mat(mpz_t** mat, unsigned char dim);
+void nullspace_mat_m(mpz_t** T, mpz_t** mat, unsigned char dim, mpz_t mod);
+
+int main(){
+
+  printf("hi\n");
+
+  mpz_t pi;
+  mpz_init(pi);
+  mpz_set_ui(pi, 2);
+  mpz_t tau;
+  mpz_init(tau);
+  mpz_set_ui(tau, 3);
+
+
+  gmp_randstate_t state;
+  gmp_randinit_default(state);
+
+  unsigned char row;
+  unsigned char col;
+
+  unsigned char dim = 20;
+  mpz_t** mat;
+  mpz_t** T;
+
+  mat = (mpz_t**) malloc(dim * sizeof(mpz_t*));
+  T = (mpz_t**) malloc(dim * sizeof(mpz_t*));
+  for(row=0; row < dim; row++){
+    mat[row] = (mpz_t *) malloc(dim * sizeof(mpz_t));
+    T[row] = (mpz_t *) malloc(dim * sizeof(mpz_t));
+    for(col=0; col < dim; col++){
+      mpz_init(mat[row][col]);
+      mpz_init(T[row][col]);
+    }
+  }
+
+  random_matrix(mat, dim, state, pi);
+
+  //print_mat(mat, dim);
+
+  mpz_t mod;
+  mpz_init(mod);
+  mpz_pow_ui(mod, tau, dim-1);
+  nullspace_mat_m(T, mat, dim, mod);
+
+  exit(0);
+}
+
+
+void random_matrix(mpz_t** mat, unsigned char dim, gmp_randstate_t state, mpz_t pi){
+
+  unsigned char row;
+  unsigned char col;
+
+  mpz_t rand_size;
+  mpz_init(rand_size);
+  mpz_pow_ui(rand_size, pi, dim-1);
+
+  for(row=0; row < dim; row++){
+    for(col=0; col < row; col++){
+      mpz_urandomm(mat[row][col], state, rand_size);
+    }
+    mpz_pow_ui(mat[row][row], pi, dim-1-row);
+  }
+
+}
+
+void print_mat(mpz_t** mat, unsigned char dim){
+
+  unsigned char row;
+  unsigned char col;
+
+  for(row=0; row < dim; row++){
+    for(col=0; col < dim; col++){
+      gmp_printf("%Zd ", mat[row][col]);
+    }
+    printf("\n");
+  }
+
+}
+
+void nullspace_mat_m(mpz_t** T, mpz_t** mat, unsigned char dim, mpz_t mod){
+  // mod must be power of a prime
+
+  unsigned char row;
+  unsigned char col;
+
+  mpz_t** tmp_mat;
+  tmp_mat = (mpz_t**) malloc(dim * sizeof(mpz_t*));
+  for(row=0; row < dim; row++){
+    tmp_mat[row] = (mpz_t *) malloc(dim * sizeof(mpz_t));
+    for(col=0; col < dim; col++){
+      mpz_init(tmp_mat[row][col]);
+      mpz_set(tmp_mat[row][col], mat[row][col]);
+    }
+  }
+
+  // set nullspace_mat = identity
+  for(row = 0; row < dim; row++){
+    for(col = 0; col < dim; col++){
+      if(col == row){
+        mpz_set_ui(T[row][col], 1);
+      }
+      else{
+        mpz_set_ui(T[row][col], 0);
+      }
+    }
+  }
+
+  print_mat(T, dim);
+
+  unsigned char i;
+  unsigned char arg_min;
+  mpz_t min_val;
+  mpz_init(min_val);
+  mpz_t r;
+  mpz_init(r);
+  mpz_t diag_inv;
+  mpz_init(diag_inv);
+  mpz_t working_mod;
+  mpz_init(working_mod);
+  for(row = 0; row < dim; row++){
+    // look at col = row
+    mpz_gcd(min_val, tmp_mat[row][row], mod);
+    arg_min = row;
+    for(i = row+1; i < dim; i++){
+      mpz_fdiv_r(r, tmp_mat[i][row], min_val);
+    }
+    if(mpz_cmp_ui(r, 0) != 0){
+      mpz_gcd(min_val, tmp_mat[i][row], mod);
+      arg_min = i;
+    }
+    if(arg_min > row){
+      // swap rows
+      for(col = 0; col < dim; col++){
+        mpz_set(r, tmp_mat[row][col]);
+        mpz_set(tmp_mat[row][col], tmp_mat[arg_min][col]);
+        mpz_set(tmp_mat[arg_min][col], r);
+        mpz_set(r, T[row][col]);
+        mpz_set(T[row][col], T[arg_min][col]);
+        mpz_set(T[arg_min][col], r);
+      }
+    }
+    mpz_fdiv_q(working_mod, mod, min_val);
+    mpz_fdiv_q(diag_inv, tmp_mat[row][row], min_val);
+    mpz_invert(diag_inv, diag_inv, working_mod);
+    for(i = row+1, i < dim; i++){
+      // add tmp[i][row] * diag_inv times row row to row i
+      for(col = 0; col < dim; col++){
+        mpz_mul(r, tmp_mat[row][row], tmp_mat[row][
+      }
+    }
+  }
+
+  print_mat(T, dim);
+
+  return;
+
+}

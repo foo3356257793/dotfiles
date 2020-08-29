@@ -1,0 +1,19 @@
+#!/usr/bin/sage
+
+prec = ceil(11 * lb(10)) + 1
+
+RF = RealField(2 * prec)
+
+if __name__ == "__main__":
+
+    cdf = lambda x: RF( (1-((1/2)**x)) ** (32) )
+
+    exp_val = cdf(1)
+
+    for i in range(2,100):
+
+        pdf = cdf(i) - cdf(i-1)
+
+        exp_val += i * pdf
+
+    print(exp_val)

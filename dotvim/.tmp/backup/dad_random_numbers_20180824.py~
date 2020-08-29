@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+from random import randrange
+
+if __name__ == "__main__":
+
+  number = randrange(5)
+
+  print("Your number is", number + 1)
+
+  people = ['Mom', 'Dad', 'Anna', 'Leah', 'Sam', 'Julia']
+  number = number
+  print("It's", people[number])

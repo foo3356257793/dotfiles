@@ -1,0 +1,72 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Video Lesson}
+\author{}
+\date{May 3, 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Outline}
+
+The lesson is just a series of questions.
+
+\paragraph{Important.}
+
+Go through the students name by name.
+
+\begin{enumerate}
+  \item Weekly highlight.
+  \item Tell me about how distance learning is going.
+  \item What are you doing for home church?
+  \item How does God fit into your quarantine life?
+  \item Which do you like better, home church or traditional church?
+  \item Scripture and thought
+\end{enumerate}
+
+\subsection{Scripture and Thought}
+
+\paragraph{Mosiah 9:17}
+
+Yea, in the strength of the Lord did we go forth to battle
+against the Lamanites; for I and my people did cry mightily to the
+Lord that he would deliver us out of the hands of our enemies, for
+we were awakened to a remembrance of the deliverance of our fathers.
+
+\paragraph{Thoughts.}
+
+\begin{enumerate}
+  \item We are going through hard times.  Many of us are struggling
+    with being quarantined.
+  \item In the scripture story, they remembered God and tried their
+    hardest to get Him to help.
+  \item Heavenly Father answers prayers.  The Holy Ghost can help us
+    understand God's will.
+\end{enumerate}
+
+\end{document}
+

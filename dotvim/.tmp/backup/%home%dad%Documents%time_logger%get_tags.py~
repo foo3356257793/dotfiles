@@ -1,0 +1,53 @@
+#!/usr/bin/python3
+
+import os
+from datetime import datetime, timedelta
+
+import yaml
+
+def datetime_weekend(dt):
+
+    weekday = dt.weekday()
+
+    return dt + timedelta(days=((5-weekday)%7))
+
+if __name__ == "__main__":
+
+    # get the time now
+    dt_now = datetime.now()
+
+    #######################
+    # what is the filename?
+    #######################
+
+    fname_head = 'time_log'
+
+    # what is the first day in the week?
+    dt_weekend = datetime_weekend(dt_now)
+    week_str = dt_weekend.strftime('%Y%m%d')
+
+    fname = f'{fname_head}_{week_str}.yaml'
+
+    if not os.path.exists(fname):
+
+        print('No time data found for this week')
+        exit(1)
+
+    ###############
+    # load the data
+    ###############
+
+    with open(fname, 'r') as f:
+
+        data = yaml.load(f, Loader=yaml.FullLoader)
+
+    #######################
+    # look through the tags
+    #######################
+
+    tags = set( [it[0] for it in data] )
+
+    for tag in tags:
+
+        print(tag)
+

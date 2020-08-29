@@ -1,0 +1,49 @@
+\documentclass[a4paper,17pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Lesson}
+\author{}
+\date{May 3, 2020}
+
+\begin{document}
+
+%\maketitle
+
+\paragraph{Mosiah 7:19.}
+
+\ldots put your trust in God
+\ldots
+who brought the children of Israel out of the land
+of Egypt,
+and caused that they should walk through the Red Sea on
+dry ground.
+
+\begin{center}
+\includegraphics[height=6.5in]{moses-parting-red-sea-barrett-301889-print.jpg}
+\end{center}
+
+
+\end{document}
+

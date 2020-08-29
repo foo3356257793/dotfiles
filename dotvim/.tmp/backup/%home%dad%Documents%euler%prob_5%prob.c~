@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <ulong_extras.h>
+
+#define UPPER_BOUND (20)
+
+int main(int argc, char *argv[])
+{
+
+    int64_t ans = 1;
+
+    for(int64_t a = 1; a <= UPPER_BOUND; a++)
+    {
+        int64_t g = n_gcd(ans, a);
+        ans *= a / g;
+    }
+
+    printf("%ld\n", ans);
+
+}
+

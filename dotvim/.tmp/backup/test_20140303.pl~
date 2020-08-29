@@ -1,0 +1,66 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+sub primesUpToNumber($);
+
+my $bound = 100;
+
+my $primeInfo = primesUpToNumber($bound);
+my @primes = @{$primeInfo->{primes}};
+print "@primes\n";
+
+my @generalizedFactorial = (1);
+for(my $index = 1; $index <= $bound; $index++){
+  my $value = $generalizedFactorial[$index - 1];
+  for(my $primeIndex = 0; $primeIndex < @primes and $primes[$primeIndex] <= $index + 1; $primeIndex++){
+    my $q = $primes[$primeIndex];
+    my $powQ = 1;
+    while($index % (($q-1)*$powQ) == 0){
+      $value *= $q;
+      $powQ  *= $q;
+    }
+  }
+  push @generalizedFactorial, $value;
+}
+
+my @factorials = (1);
+for(my $index = 1; $index <= $bound; $index++){
+  $factorials[$index] = $factorials[$index - 1] * $index;
+}
+
+for(my $index = 0; $index <= $bound; $index++){
+  print "$index: ", log($generalizedFactorial[$index])/log(2), "\n";
+}
+
+
+################################################################################
+# primesUpToNumber                                                             #
+#   Computes all primes up to a given bound.                                   #
+#                                                                              #
+# Takes    : $number - bound on the list of primes                             #
+#                                                                              #
+# Returns  : $primeInfo - reference to a hash containing:                      #
+#               $primeInfo->{primes}  - reference to list of all primes less   #
+#                                       than or equal to $number               #
+#               $primeInfo->{isPrime} - reference to list which checks whether #
+#                                       an integer is prime                    #
+################################################################################
+sub primesUpToNumber($){
+  my $number  = shift;
+  my @primes  = ();
+  my @isPrime = (1) x ($number + 1);
+  $isPrime[0] = 0;
+  $isPrime[1] = 0;
+  for(my $candidate = 2; $candidate <= $number; $candidate++){
+    if($isPrime[$candidate]){
+      for(my $multiple = $candidate * 2; $multiple <= $number; $multiple += $candidate){
+        $isPrime[$multiple] = 0;
+      }
+      push @primes, $candidate;
+    }
+  }
+  my %primeInfo = ('primes' => \@primes, 'isPrime' => \@isPrime);
+  return \%primeInfo;
+}

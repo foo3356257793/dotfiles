@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <math.h>
+#include <omp.h>
+#include <unordered_set>
+
+int is_square(int64_t n)
+{
+    double sqrt_n = sqrt(n);
+    int64_t sqrt_n_int = (int64_t) round(sqrt_n);
+
+    return n == (sqrt_n_int * sqrt_n_int);
+}
+
+/*
+ * Stuff to optimize:
+ *
+ * make parallel
+ */
+
+int main(int argc, char *argv[])
+{
+
+    int64_t sum = 0;
+
+    std::unordered_set<int64_t> prog_squares_set;
+
+    #pragma omp parallel for
+    for(int64_t p=1; p<=10000; p++)
+    {
+        for(int64_t q=1; q<p; q++)
+        {
+            // a^2*p^3*q + a*q^2
+            int64_t c_2 = p*p*p*q;
+            int64_t c_1 = q*q;
+            int64_t a = 1;
+            int64_t n = c_2*a*a + c_1*a;
+            while(n < 1000000000000)
+            //while(n < 100000)
+            {
+                if(is_square(n))
+                {
+                    if(prog_squares_set.count(n)==0)
+                    #pragma omp critical
+                    {
+                        prog_squares_set.insert(n);
+                        sum += n;
+                    }
+                }
+                a += 1;
+                n = c_2*a*a + c_1*a;
+            }
+        }
+    }
+
+    printf("sum = %ld\n", sum);
+
+
+}
+

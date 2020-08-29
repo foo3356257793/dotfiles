@@ -1,0 +1,154 @@
+#!/usr/bin/python3
+
+import os
+from datetime import datetime, timedelta
+
+def read_reverse_order(file_name):
+    # Open file for reading in binary mode
+    with open(file_name, 'rb') as read_obj:
+        # Move the cursor to the end of the file
+        read_obj.seek(0, os.SEEK_END)
+        # Get the current position of pointer i.e eof
+        pointer_location = read_obj.tell()
+        # Create a buffer to keep the last read line
+        buffer = bytearray()
+        # Loop till pointer reaches the top of the file
+        while pointer_location >= 0:
+            # Move the file pointer to the location pointed by pointer_location
+            read_obj.seek(pointer_location)
+            # Shift pointer location by -1
+            pointer_location = pointer_location -1
+            # read that byte / character
+            new_byte = read_obj.read(1)
+            # If the read byte is new line character then it means one line is read
+            if new_byte == b'\n':
+                # Fetch the line from buffer and yield it
+                yield buffer.decode()[::-1]
+                # Reinitialize the byte array to save next line
+                buffer = bytearray()
+            else:
+                # If last read character is not eol then add it in buffer
+                buffer.extend(new_byte)
+        # As file is read completely, if there is still data in buffer, then its the first line.
+        if len(buffer) > 0:
+            # Yield the first line too
+            yield buffer.decode()[::-1]
+
+def pretty_timedelta(td):
+
+    seconds = td.total_seconds()
+    seconds = round(seconds)
+
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+
+    if hours > 0:
+        return '%2d hr %2d min %2d sec' % (hours, minutes, seconds)
+    elif minutes > 0:
+        return '%2d min %2d sec' % (minutes, seconds)
+
+    return '%2d sec' % (seconds)
+
+
+if __name__ == "__main__":
+
+    datetime_now = datetime.now()
+
+    start = datetime_now - timedelta(days=datetime_now.weekday())
+    start = datetime.combine(datetime_now, datetime.min.time())
+
+    end = start + timedelta(days=7)
+
+    fname = 'time_log.txt'
+
+    entries = []
+
+    for line in read_reverse_order(fname):
+
+        if len(line) == 0 or line.isspace():
+            continue
+
+        line_split = line.split()
+
+        date_str = line_split[0]
+        time_str = line_split[1]
+
+        tag = ""
+        if len(line_split) > 2:
+            tag = " ".join(line_split[2:])
+
+        datetime_obj = datetime.strptime(f'{date_str} {time_str}', '%Y-%m-%d %H:%M:%S.%f')
+
+        if datetime_obj < start:
+            # too early
+            break
+
+        entries.append([datetime_obj, tag])
+
+        """
+        TODO:
+            options:
+                - totals for current week
+                - totals for current day
+                - totals for specified date range
+        """
+
+    entries.reverse()
+
+    # fill in empty tags
+    if entries[0][1] == "":
+        entries[0][1] = "unknown"
+
+    totals_and_states = {}
+
+    for i, entry in enumerate(entries):
+
+        datetime_obj = entry[0]
+        tag = entry[1]
+
+        if tag == "":
+            entries[i][1] = entries[i-1][1]
+            tag = entries[i][1]
+
+        if not tag in totals_and_states:
+            totals_and_states[tag] = [timedelta(0), datetime_obj]
+
+        else:
+
+            tot = totals_and_states[tag][0]
+            state = totals_and_states[tag][1]
+
+            if state != None:
+
+                diff = datetime_obj - state
+
+                totals_and_states[tag][0] += diff
+                totals_and_states[tag][1] = None
+
+            else:
+
+                totals_and_states[tag][1] = datetime_obj
+
+    # go through the tags and close open states
+    # then add to a list
+    totals = []
+    for tag in totals_and_states.keys():
+
+        if totals_and_states[tag][1] != None:
+
+            diff = datetime_now - totals_and_states[tag][1]
+
+            totals_and_states[tag][0] += diff
+
+            totals_and_states[tag][1] = None
+
+        totals.append([totals_and_states[tag][0], tag])
+
+    totals.sort(reverse=True)
+
+    for entry in totals:
+
+        tag = entry[1]
+        time_string = pretty_timedelta(entry[0])
+
+        print(f'{tag:10} {time_string:>20}')

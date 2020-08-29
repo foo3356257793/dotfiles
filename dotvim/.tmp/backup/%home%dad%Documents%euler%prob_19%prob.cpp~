@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+//vector<int> months = { 31,28,31,30,31,30,31,31,30,31,30,31};
+int months[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+
+void prob_19()
+{
+  for(auto&& days: months)
+  {
+    days %= 7;
+  }
+
+  int day = 1;
+  int month = 0;
+
+  int num_sundays = 0;
+
+  int year = 1900;
+
+  while(year <= 2000)
+  {
+    day += months[month];
+
+    if(month == 1)
+    {
+      if((year % 4)==0)
+      {
+        day += 1;
+      }
+    }
+
+    day %= 7;
+
+    month += 1;
+
+    if(month == 12)
+    {
+      month -= 12;
+      year += 1;
+    }
+
+    if(day == 0)
+    {
+      if(year > 1900)
+      {
+        num_sundays += 1;
+      }
+    }
+  }
+
+  cout << num_sundays << endl;
+}
+
+int main(int argc, char *argv[])
+{
+
+  prob_19();
+
+}
+

@@ -1,0 +1,30 @@
+# DONE
+
+## natural scrolling
+
+See i3 file.
+Put commands in ~/.config/lxsession/LXDE/autostart
+
+## caps to escape
+
+See i3 file.
+Put commands in ~/.config/lxsession/LXDE/autostart
+
+# TODO
+
+* launch programs via keyboard
+* keyboard shortcuts for favorite programs
+* panel on top?
+* how to do workspaces
+* snapping windows (include gaps?)
+* make it look a lot nicer
+* move windows with keyboard shortcuts?
+* some tmux commands don't seem to work b/c blocked by the desktop environment
+
+## For kids
+
+One idea is that this setup could be more stable than GNOME
+(which seems to struggle with multiple users)
+
+* dock
+* easy way to find all of the applications (games)

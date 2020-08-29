@@ -1,0 +1,17 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    tot_sum = pi^2/6
+
+    part_sum = 0
+
+    i = 1
+
+    while tot_sum-part_sum > 0.5:
+
+        part_sum += 1/i^2
+
+        i += 1
+
+    print(i)

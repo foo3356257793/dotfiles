@@ -1,0 +1,12 @@
+all: lesson.html
+
+%.pdf: %.tex
+	$(TEX) $+
+
+%.html: %.md
+	pandoc --standalone -c pandoc.css -f markdown -t html -o $@ $+
+
+clean:
+	rm -rf $(NAME).pdf $(NAME).log $(NAME).aux
+
+.PHONY: clean

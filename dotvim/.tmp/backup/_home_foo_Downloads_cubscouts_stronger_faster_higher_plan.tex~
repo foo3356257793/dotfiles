@@ -1,0 +1,103 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{setspace}
+
+\usepackage{color,colortbl}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{multicol}
+
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+
+\usetikzlibrary{shapes,snakes}
+
+\definecolor{Gray}{gray}{0.9}
+
+\def\blank{\rule{2in}{0.15mm}}
+
+\usepackage{wasysym}
+
+\def\bs{\underline{\hspace{5em}}}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Stronger, Faster, Higher\\Exercise Plan}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Physical activities}
+
+Choose at least three physical activities.
+
+\begin{multicols}{2}
+\paragraph{Examples.}
+
+\begin{itemize}
+  \item 20-yard dash
+  \item Vertical jump
+  \item Lifting a 5-pound weight
+  \item Push-ups
+  \item Curls
+  \item Jumping rope
+\end{itemize}
+
+\columnbreak
+
+  \paragraph{My activities.}
+  \begin{enumerate}
+    \item \blank
+    \item \blank
+    \item \blank
+  \end{enumerate}
+
+  \noindent
+  Fill in these activities below on the exercise results
+  table.
+
+\end{multicols}
+
+\vspace{1em}
+
+\hrule
+
+\vspace{1em}
+
+\section*{Exercise results}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+  \hline
+  \multicolumn{1}{|c|}{\bf Skill} & {\bf Week one} & {\bf Week two} & {\bf Week
+  three} & {\bf Week four} \\
+  \hline
+  \hline
+  {\bf 1.} & &&&\\
+  \hspace{2in} & \hspace{1in} & \hspace{1in} & \hspace{1in} &
+  \hspace{1in} \\
+  &&&&\\
+  \hline
+  {\bf 2.} & &&&\\
+  &&&&\\
+  &&&&\\
+  \hline
+  {\bf 3.} & &&&\\
+  &&&&\\
+  &&&&\\
+  \hline
+\end{tabular}
+\end{center}
+
+\end{document}
+

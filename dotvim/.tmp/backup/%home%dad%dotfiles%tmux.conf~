@@ -1,0 +1,162 @@
+##########
+# settings
+##########
+
+# Use zsh by default
+set-option -g default-shell /usr/bin/zsh
+
+# I think you need this to have nice colors in the terminal
+set-option -g default-terminal tmux-256color
+
+# unbind C-b from being the prefix
+# set C-s to the new prefix (don't need the prefix in general)
+unbind C-b
+#set -g prefix C-Space
+#bind C-Space send-prefix
+set -g prefix C-s
+bind C-s send-prefix
+
+# Need this to make things not lag
+set -s escape-time 0
+
+# focus-events for autoread
+set -g focus-events on
+
+# renumber windows sequentially after closing any of them
+set -g renumber-windows on
+
+# store lots of history
+set -g history-limit 10000
+
+###################
+# Window management
+###################
+
+# create new window
+bind-key -n C-M-n new-window -c "#{pane_current_path}"
+
+# window manager uses vertical workspaces
+bind-key -n C-M-l select-window -n
+bind-key -n C-M-h select-window -p
+
+# window manager uses horizontal workspaces
+# bind-key -n C-M-j select-window -n
+# bind-key -n C-M-k select-window -p
+
+# move window
+# the extra part of this command is necessary in tmux version 3+
+bind-key -n M-L swap-window -t +1\; select-window -t +1
+bind-key -n M-H swap-window -t -1\; select-window -t -1
+
+###############
+# split windows
+###############
+
+# Like | and _
+bind -n M-\\ split-window -h -c "#{pane_current_path}"
+bind -n M-- split-window -v -c "#{pane_current_path}"
+
+# resize panes
+bind-key -n M-Left resize-pane -L 10
+bind-key -n M-Right resize-pane -R 10
+bind-key -n M-Up resize-pane -U 10
+bind-key -n M-Down resize-pane -D 10
+
+####################
+# vim tmux navigator
+####################
+
+# Smart pane switching with awareness of Vim splits.
+# See: https://github.com/christoomey/vim-tmux-navigator
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+        | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+        bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+        bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+        bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+        bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+        tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
+        if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1  ]' \
+          "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+          if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1  ]' \
+            "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
+
+bind-key -T copy-mode-vi 'C-h' select-pane -L
+bind-key -T copy-mode-vi 'C-j' select-pane -D
+bind-key -T copy-mode-vi 'C-k' select-pane -U
+bind-key -T copy-mode-vi 'C-l' select-pane -R
+bind-key -T copy-mode-vi 'C-\' select-pane -l
+
+#########################
+# copy and paste like Vim
+#########################
+
+set -g status-keys vi
+setw -g mode-keys vi
+set-window-option -g mode-keys vi
+bind-key -Tcopy-mode-vi 'v' send -X begin-selection
+bind-key -Tcopy-mode-vi Escape send -X cancel
+
+# shortcut to enter copy-mode
+bind-key -n M-k copy-mode
+
+# shortcuts to copy and paste via an external file
+bind-key -Tcopy-mode-vi 'y' send -X copy-pipe 'cat > ~/.clipboard.txt'
+bind-key -n M-v run "tmux set-buffer -b foo \"$(cat ~/.clipboard.txt)\"\; tmux paste-buffer -b foo"
+
+############################
+# other convenient shortcuts
+############################
+
+bind-key -n M-R source-file ~/.tmux.conf \; display "tmux has been reloaded!"
+
+# Can always kill panes by ctrl-d
+bind-key -n M-x kill-pane
+
+# rename windows
+bind-key -n M-r command-prompt -I "" "rename-window '%%'"
+
+############
+# status bar
+############
+
+# Notifications (blindly copied from Internet)
+set -g visual-activity on
+
+# Statusbar (blindly copied from Internet)
+set -g status-style fg=colour15
+set -g status-justify centre
+set -g status-left ''
+set -g status-right ''
+set -g status-interval 1
+
+set -g message-style fg=colour0,bg=colour3
+setw -g window-status-current-style fg=cyan,bold
+setw -g window-status-current-format ' #I '
+#setw -g window-status-current-format ' #W '
+setw -g window-status-style fg=colour250
+#setw -g window-status-format ' #W '
+setw -g window-status-format ' #I '
+setw -g window-status-bell-style fg=colour1
+
+##########################
+# begin a sage/vim session
+##########################
+
+bind-key -n M-s run "tmux splitw -h -p 50 -c \"#{pane_current_path}\" \; tmux send-keys -t right \"sage\" Enter \; tmux send-keys -t left \"vim\" Enter \; tmux selectp -t left \; tmux select-pane -t right -P 'bg=colour124'"
+
+# bind-key -n M-S run "tmux new-window -n \"sage_session\" -c \"#{pane_current_path}\" \; tmux send-keys \"sage\" Enter \; tmux select-pane -P 'bg=colour124' \; tmux select-window -p \; tmux send-keys \"vim\" Enter \; tmux send-keys \":let g:sage_target='sage_session'\" Enter "
+
+# make
+bind-key -n M-m run "tmux send-keys \"m\" \; tmux select-window -n"
+
+#bind-key -n M-m run "tmux send-keys -t left Escape \; tmux send-keys -t left \"m\" "
+
+# open files with fzf in vim fast
+bind-key -n M-e send-keys "vim" Space C-t
+
+########
+# colors
+########
+
+bind-key 1 select-pane -P 'bg=colour95'
+bind-key 0 select-pane -P 'bg=colour60'

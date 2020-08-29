@@ -1,0 +1,15 @@
+CC = gcc
+
+all: prob.o
+
+prob.o: prob.cpp
+	g++ -g $+ -o $@ -fopenmp
+
+cf: prob.cpp
+	clang-format -i --style=Google $+
+
+clean:
+	rm prob.o
+
+.PHONY: clean
+

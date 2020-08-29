@@ -1,0 +1,64 @@
+#!/usr/bin/sage
+
+def find_chain(a,sum_divisors,bd):
+
+    chain = [a]
+
+    while True:
+
+        a = sum_divisors[a]
+
+        if a == 0:
+            return 0, 0
+
+        if a > bd:
+            return 0, 0
+
+        if a in chain:
+
+            if a == chain[0]:
+
+                return len(chain), min(chain)
+
+            else:
+
+                return 0, 0
+
+        chain.append(a)
+
+
+if __name__ == "__main__":
+
+    bd = 10**6
+
+    """
+    sum_divisors = [1] * (bd+1)
+    sum_divisors[0] = 0
+    sum_divisors[1] = 0
+
+    for a in range(2,(bd//2)+1):
+
+        for m in range(2*a,bd+1,a):
+
+            sum_divisors[m] += a
+    """
+
+    """
+    max_chain = 0
+    ans = 0
+    arg_max = 0
+
+    for a in range(2, bd+1):
+
+        if a % 10000 == 0:
+            print('...', a)
+
+        chain, val = find_chain(a, sum_divisors, bd)
+
+        if chain > max_chain:
+            max_chain = chain
+            ans = val
+            arg_max = a
+
+    print(ans)
+    """

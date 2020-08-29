@@ -1,0 +1,60 @@
+$$
+\frac{1}{\sqrt{23}-4}
+=
+\frac{\sqrt{23}+4}{23 - 16}
+=
+\frac{\sqrt{23}+4}{7}
+=
+1 + \frac{\sqrt{23}-3}{7}
+$$
+
+$$
+\frac{7}{\sqrt{23}-3}
+=
+\frac{7(\sqrt{23}+3)}{23-9}
+=
+\frac{\sqrt{23}+3}{2}
+=
+$$
+
+_again_
+
+$$
+\floor{\sqrt{23}} = 4
+$$
+
+$$
+23 = (x+4)^2 = x^2 + 8x + 16
+7 = x^2 + 8x
+7/x = x+8
+$$
+
+_another_
+
+$x_0 = x$,
+$a_n = \floor{x_n}$,
+$x_{n+1} = \frac{1}{x_n - a_n}$.
+
+Then
+$$
+a_0 = \floor{x}
+$$
+
+$$
+a_0 + \frac{1}{a_1}
+$$
+
+$a_0 = \floor{\sqrt{23}} = 4$
+$x_1 = \frac{1}{\sqrt{23}-4}$.
+$$
+a_1
+=
+\floor{
+\frac{1}{\sqrt{23}-4}
+=
+\frac{\sqrt{23}+4}{7}
+=
+1 + \frac{\sqrt{23}-3}{7}
+}
+$$
+This $1$ is given by the floor of our value.

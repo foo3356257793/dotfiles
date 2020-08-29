@@ -1,0 +1,23 @@
+We have an unconcealed message when
+
+$$
+e \log(m) = \log(m)
+$$
+
+mod $p$ and $q$.
+
+If $e \equiv 1 \mod{\lcm{p-1,q-1}}$,
+then all values are unconcealed.
+
+If $e \equiv 1$ modulo a factor of $p-1$,
+
+
+We have $\gcd(e,\phi) = 1$ 
+means $e$ is odd.
+This forces $e=1 mod 2$.
+
+Here is an unconcealed value.
+$$
+m = g^(phi/2)
+$$
+

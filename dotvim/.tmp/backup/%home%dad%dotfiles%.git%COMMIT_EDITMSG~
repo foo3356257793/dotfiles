@@ -1,0 +1,19 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: dad <dad@thinkachu.lan>
+#
+# On branch master
+# Changes to be committed:
+#	modified:   vimrc
+#
+# Changes not staged for commit:
+#	modified:   dotvim/bundle/vim-colorschemes (modified content)
+#	modified:   dotvim/tmp/backup/%home%dad%dotfiles%vimrc~
+#	modified:   dotvim/tmp/undo/%home%dad%dotfiles%vimrc
+#
+# Untracked files:
+#	dotvim/tmp/backup/%home%dad%dotfiles%.git%COMMIT_EDITMSG~
+#	dotvim/tmp/undo/%home%dad%dotfiles%.git%COMMIT_EDITMSG
+#

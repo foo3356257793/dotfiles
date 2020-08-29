@@ -1,0 +1,48 @@
+\documentclass[17pt]{extarticle}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{multicol}
+\usepackage{graphicx}
+
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{rotating}
+
+\pagenumbering{gobble}
+
+\begin{document}
+
+\begin{center}
+{\Large \bf Friday, March 27, 2020}
+\end{center}
+
+\begin{multicols}{2}
+
+\begin{todolist}
+  \item Make video messages
+  \item Anna's piano time
+  \item All about jobs!
+  \item Writing project
+  \item Snack-a-rama
+  \item First in math
+  \item Math homework
+  \item Lunch-a-rama
+  \item Walk around the neighborhood
+  \item Quiet time
+  \item Read-a-rama
+  \item Chore-a-rama
+\end{todolist}
+
+\columnbreak
+
+  %\begin{sidewaysfigure}
+  \includegraphics[height=2.5in]{animals.eps}
+  %\end{sidewaysfigure}
+
+\end{multicols}
+
+\end{document}
+

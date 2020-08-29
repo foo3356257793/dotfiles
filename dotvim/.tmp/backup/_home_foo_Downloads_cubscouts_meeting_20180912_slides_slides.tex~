@@ -1,0 +1,132 @@
+\documentclass[12pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usefonttheme{professionalfonts} % using non standard fonts for beamer
+\usefonttheme{serif} % default family is serif
+
+\usepackage{fontspec}
+
+\setmainfont{Alte Haas Grotesk}
+
+\definecolor{aqua}{RGB}{0,150,255}
+\setbeamercolor{structure}{fg=red}
+
+\newcommand{\ft}[1]{\frametitle{\huge \bf #1}}
+\newcommand{\CB}[1]{{\color{aqua} \bf #1}}
+\newcommand{\CR}[1]{{\color{red} \bf #1}}
+
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[frame number]{}
+
+%gets rid of bottom navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+%gets rid of footer
+%will override 'frame number' instruction above
+%comment out to revert to previous/default definitions
+\setbeamertemplate{footline}{}
+
+\usepackage{multicol}
+
+%opening
+\title{Game Design}
+\date{September 12, 2018}
+
+\begin{document}
+
+\frame{
+
+  \begin{center}
+    {\huge \CR{Game Design}}
+
+    (p.\ 416)
+
+    \
+
+  \includegraphics[height=2in]{game_design.eps}
+  \end{center}
+}
+
+\frame{
+
+  \frametitle{\bf Game Design}
+
+  \CR{Requirements} (p.\ 417)
+
+  \begin{enumerate}
+    \setlength\itemsep{1em}
+    \item Decide on elements for your game.
+    \item (Skip if your Cyber Chip is current.)
+    \item Create your game.
+    \item Teach an adult or another Scout how to play your game.
+  \end{enumerate}
+
+}
+
+
+\frame{
+  \frametitle{\bf Medium}
+
+  Your game could be one of the following types of games:
+  \begin{itemize}
+    \item Physical games and sports
+    \item Board games
+    \item Tile games
+    \item Dice games
+    \item Party games
+    \item Cards
+    \item Electronic or digital games \footnote{
+        We will not program computer games
+        at this meeting.
+      }
+  \end{itemize}
+
+  \
+
+  \CR{Time limit.}
+  Our goal is to finish designing a game at this meeting.
+  You might possibly have to finish at home if the game requires a
+  lot of work to build (like a board game, for example).
+
+}
+
+\frame{
+  \frametitle{\bf What is your game about?}
+
+  \begin{itemize}
+    \item Being a ship captain and searching for buried treasure?
+    \item Being a detective and solving a crime?
+    \item Exploring space or the sea floor?
+    \item About a sport like snowboard racing or mountain biking?
+  \end{itemize}
+
+
+}
+
+\frame{
+  \frametitle{\bf Game mechanics}
+
+  \begin{itemize}
+    \item How many players?
+    \item Competitive or cooperative?
+    \item How do players advance?  Points, race to the finish, a
+      structure to build, etc.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{\bf Aesthetics}
+
+  How will the game look?
+}
+
+\end{document}
+

@@ -1,0 +1,46 @@
+#!/usr/bin/sage
+
+def binary_search(min_val, max_val, test):
+
+    if max_val == min_val:
+
+        return min_val
+
+    if max_val == min_val + 1:
+
+        if test(min_val):
+            return min_val
+        else:
+            return max_val
+
+    mid_val = (max_val+min_val) // 2
+
+    if test(mid_val):
+
+        return binary_search(min_val, mid_val, test)
+
+    else:
+
+        return binary_search(mid_val+1, max_val, test)
+
+
+if __name__ == "__main__":
+
+    bd = 10**9
+    #bd = 10**10
+
+    n = 1
+
+    p = 2
+
+    r = 2*n*p
+
+    while r <= bd:
+
+        p = next_prime(next_prime(p))
+        n += 2
+
+        r = 2*n*p
+
+    print(n)
+

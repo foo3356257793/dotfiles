@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <math.h>
+
+int
+main()
+{
+    long int number        = 600851475143; // starting number
+    long int factor        = 2; // look for potential factors
+    long int factorBound   = sqrt(number); // bound on factors
+
+    // any "small" prime factor is <= sqrt(number)
+    while(factor <= factorBound){
+        if( number % factor == 0 ){ // i.e. factor is actually a factor
+          number /= factor; // divide out by factor and see what's left
+          factorBound = sqrt(number); // update bound
+        }
+        else factor++; // else not a factor; move on
+    }
+
+    printf("%lu\n", number); // the leftover number must be the largest prime factor
+}
+
+factorBound

@@ -1,0 +1,62 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+sub isPandigital($);
+
+my %productFound = ();
+my $sum = 0;
+
+for(my $i = 1; $i <= 9; $i++){
+  my $j = 1000;
+  my $product = $i * $j;
+  my $testString = $i . $j . $product;
+  while(length($testString) <= 9){
+    if(isPandigital($testString)){
+      unless($productFound{$product}){
+        print "$i times $j = $product\n";
+        $productFound{$product} = 1;
+        $sum += $product;
+      }
+    }
+    $j++;
+    $product += $i;
+    $testString = $i . $j . $product;
+  }
+}
+
+for(my $i = 10; $i <= 99; $i++){
+  my $j = 100;
+  my $product = $i * $j;
+  my $testString = $i . $j . $product;
+  while(length($testString) <= 9){
+    if(isPandigital($testString)){
+      unless($productFound{$product}){
+        print "$i times $j = $product\n";
+        $productFound{$product} = 1;
+        $sum += $product;
+      }
+    }
+    $j++;
+    $product += $i;
+    $testString = $i . $j . $product;
+  }
+}
+
+print "sum is $sum\n";
+
+sub isPandigital($){
+  my $number = shift;
+  if(length($number) != 9){
+    return 0;
+  }
+  else{
+    for(my $i = 1; $i <= 9; $i++){
+      unless($number =~ /$i/){
+        return 0;
+      }
+    }
+  }
+  return 1;
+}

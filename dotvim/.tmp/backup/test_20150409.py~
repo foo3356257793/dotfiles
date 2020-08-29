@@ -1,0 +1,48 @@
+#!/usr/bin/python3
+
+from random import *
+
+key_size = 32
+max_key = (1<<key_size)-1
+n = 16
+
+arr = [randint(0,max_key) for r in range(n)]
+
+print(arr)
+
+flag = [0] * n
+
+for i in range(n):
+  a = arr[i]
+  flag[i] = 0
+  #for j in range(0,16,2):
+  #  flag[i] |= (1<<(((a>>j)&3)+2*j))
+  #flag[i] = (1<<(a&31))
+  #flag[i] = (1<<(a&15)) | (1<<((a>>4)&15)+16)
+  #flag[i] = (1<<(a&7)) | (1<<((a>>3)&7)+8) | (1<<((a>>6)&7)+16) | (1<<((a>>9)&7)+24)
+  #flag[i] |= (1<<((a>>12)&7)+32) | (1<<((a>>15)&7)+40) | (1<<((a>>18)&7)+48) | (1<<((a>>21)&7)+56)
+  flag[i] = (1<<(a&1023))
+
+for i in range(n):
+  print(format(flag[i], '#034b'))
+
+# now prefix sum
+sums = [0] * n
+curr = 0
+for i in range(n):
+  tmp = flag[i]
+  sums[i] = curr
+  curr |= tmp
+
+print("sums")
+for i in range(n):
+  print(format(sums[i], '#034b'))
+
+num_collisions = 0
+for i in range(n):
+# simple case
+  check = flag[i] & sums[i]
+  if check:
+      num_collisions += 1
+
+print("collisions = %d" % num_collisions)

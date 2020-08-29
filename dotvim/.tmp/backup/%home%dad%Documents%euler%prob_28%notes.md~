@@ -1,0 +1,31 @@
+It seems like one could write a closed form expression for the diagonal values.
+
+For an $n \times n$ spiral, $n$ odd, the corners are $n^2, n^2 - (n-1), n^2 - 2(n-1), n^2 - 3(n-1)$.
+
+We should have
+
+3^2 + 5^2 + ... + k^2 =
+
+(k+1) * (k+2) * k / 6 - 1
+
+We also have
+
+-6 * (2 + 4 + ... + (k-1))
+
+which should be
+
+$$
+= -12 * (1 + 2 + ... + (k-1)/2)
+= -12 * (1/2) * (k-1)/2 * (k+1)/2
+= -3 * (k-1) * (k+1) / 2
+$$
+
+For $k=5$, we should have
+$$
+-3 * (5-1) * (5+1) = 72
+$$
+I observe
+$$
+- (4 + 8 + 12 + 2 + 4 + 6)
+= (24 + 12) = 36
+$$

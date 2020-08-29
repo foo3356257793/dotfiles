@@ -1,0 +1,38 @@
+#!/usr/bin/sage
+
+def is_palindrome(a):
+
+    a_str = str(a)
+
+    return a_str == a_str[::-1]
+
+def is_lychrel(a):
+
+    num_iter = 0
+
+    while num_iter < 50:
+
+        a = a + int(str(a)[::-1])
+
+        if is_palindrome(a):
+            return False
+
+        num_iter += 1
+
+    return True
+
+
+
+if __name__ == "__main__":
+
+    num_lychrel = 0
+
+    for a in range(10000):
+
+        if is_lychrel(a):
+
+            num_lychrel += 1
+
+    print(num_lychrel)
+
+

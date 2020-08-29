@@ -1,0 +1,35 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    target = 2 * (10**6)
+
+    m_max = floor((-1 + sqrt(1 + 8 * sqrt(target)))/2)
+
+    min_diff = target
+    arg_min = [0,0]
+
+    for m in range(1,m_max+1):
+
+        # find n to make
+        # (m*(m+1)/2) * (n*(n+1)/2) \approx target
+
+        M = m*(m+1)/2
+
+        T = target / M
+
+        n_approx = (-1 + sqrt(1+8*T))/2
+
+        for n in [floor(n_approx), ceil(n_approx)]:
+
+            N = n*(n+1)/2
+
+            val = M * N
+            diff = abs(target - val)
+
+            if diff < min_diff:
+
+                min_diff = diff
+                arg_min = [M,N]
+
+

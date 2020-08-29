@@ -1,0 +1,53 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    n_digits = 8
+
+    found = False
+
+    while not found:
+
+        n_digits += 1
+
+        print("trying %d digits" % n_digits)
+
+        perm_table = {}
+        min_cubes = {}
+        cube_set = {}
+
+        min_val = 10**(n_digits-1)
+        max_val = 10**(n_digits) - 1
+
+        min_cube_root = ceil(min_val^(1/3))
+        max_cube_root = floor(max_val^(1/3))
+
+        for a in range(min_cube_root, max_cube_root):
+
+            c = a^3
+
+            c_str = str(c)
+
+            c_list = [h for h in c_str]
+            c_list.sort()
+
+            c_str_sorted = str(c_list)
+
+            if not c_str_sorted in perm_table:
+
+                perm_table[c_str_sorted] = 0
+                min_cubes[c_str_sorted] = c
+                cube_set[c_str_sorted] = []
+
+            perm_table[c_str_sorted] += 1
+            cube_set[c_str_sorted].append(c)
+
+        for key in perm_table.keys():
+
+            if perm_table[key] == 5:
+
+                found = True
+                print(min_cubes[c_str_sorted])
+                print(cube_set[key])
+                break
+

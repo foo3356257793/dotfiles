@@ -1,0 +1,22 @@
+$$
+(a-1)^n + (a+1)^n \bmod{a^2}
+$$
+Looking for the maximum remainder.
+
+$$
+(a-1)^n + (a+1)^n =
+\sum_i bin(n,i) * (-1)^{n-i} a^i
++
+\sum_i bin(n,i) * a^i
+$$
+The only terms which don't die are
+$$
+(-1)^{n-1} * n * a + n * a + (-1)^n + 1
+$$
+If $n$ is even, this is $2$.
+If $n$ is odd, this is $2na$.
+
+Note that $a$ divides the modulus $a^2$.
+
+**Example**.
+

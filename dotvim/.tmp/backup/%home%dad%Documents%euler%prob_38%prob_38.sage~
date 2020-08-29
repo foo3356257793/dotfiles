@@ -1,0 +1,46 @@
+#!/usr/bin/sage
+
+def gen_pandigital(a):
+
+    k = 2
+
+    str_a = str(a)
+
+    # check if this is pandigital (lazy)
+    str_pan = ''
+    for i in range(len(str_a)):
+
+        c = str_a[i]
+        if c == '0' or c in str_pan:
+            return False, None
+        str_pan += c
+
+
+    while len(str_pan) < 9:
+
+        b = k*a
+
+        str_b = str(b)
+
+        for i in range(len(str_b)):
+
+            c = str_b[i]
+
+            if c == '0' or c in str_pan:
+                return False, None
+
+            str_pan += c
+
+    return True, str_pan
+
+if __name__ == "__main__":
+
+    for len_head in range(1,5):
+
+        for a in range(10**len_head-1,10**(len_head-1),-1):
+
+            works, result = gen_pandigital(a)
+
+            if works:
+                print(result)
+                break

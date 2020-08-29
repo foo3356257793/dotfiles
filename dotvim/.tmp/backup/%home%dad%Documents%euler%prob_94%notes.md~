@@ -1,0 +1,58 @@
+# area of triangle
+
+A triangle
+$$
+n,n,n+1
+$$
+has what area?
+
+The base is $(n+1)$ and the height is given by
+$$
+n^2 + ((n+1)/2)^2 = h^2
+$$
+The area is
+$$
+(1/2) (n+1) h
+$$
+We have
+$$
+4n^2 + (n+1)^2 = 4h^2
+$$
+If $4h^2$ is an integral square, then what?
+If $(n+1)$ is odd, then fail.  We can then
+restrict to $(n+1)$ even.  In this case, just test
+$$
+n^2 + ((n+1)/2)^2 = h^2
+$$
+a square.
+
+Also note, test for
+$$
+5n^2 + 2n + 1
+$$
+a square, $n$ odd.
+
+**Efficiency**.
+
+Need
+$$
+3n+1 \leq 10^9
+$$
+Making $n$ odd pushes the search down to
+$27$ bits.  We would like more savings.
+
+**Again**
+
+$$
+h^2 + ((n+1)/2)^2 = n^2
+$$
+
+$$
+4h^2 + (n+1)^2 = 4n^2
+$$
+
+$$
+4h^2 = 3n^2 - 2n - 1 = (n-1)(3n+1)
+$$
+
+We need $n-1$ to be square or $2$ times a square.

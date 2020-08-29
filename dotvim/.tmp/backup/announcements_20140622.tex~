@@ -1,0 +1,145 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=.5in, bottom=.5in, left=.5in,
+right=.5in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\usepackage{multicol}
+\setlength{\columnsep}{0.5 in}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+\title{Fort Meade Ward Announcements}
+\author{}
+\date{}
+
+\begin{document}
+
+%\maketitle
+
+\begin{multicols}{2}
+
+\begin{center}
+	{\bf \Large Fort Meade Ward Announcements}
+\end{center}
+
+\
+
+Jun 27: Volleyball at the church, 7 pm
+
+Jun 28: Several families will be moving today.  We encourage you and your families to support these efforts.  More details to come with exact times and places.
+
+Jun 28: Sister Sandy Snyder will be teaching an introductory Karate class in her
+home at 9 am. It will be great for all activity levels so come get moving! No men
+or children please.
+
+For the Fall Stake Relief Society Event on Sept 13, along with speakers,
+musicians, and a service project, they are holding a book exchange. This is
+where everyone can bring LDS books, cd's, tapes, and any other type of book
+that has LDS standards. Bring those things that you know you won't read or
+listen to again and exchange them for others. All of this is free. You freely give
+yours and you freely take others. You can bring items each week throughout
+the summer.
+
+Next lesson: Bishop’s discretion
+
+\vspace{1 in}
+
+
+\begin{center}
+	{\bf \Large Fort Meade Ward Announcements}
+\end{center}
+
+\
+
+Jun 27: Volleyball at the church, 7 pm
+
+Jun 28: Several families will be moving today.  We encourage you and your families to support these efforts.  More details to come with exact times and places.
+
+Jun 28: Sister Sandy Snyder will be teaching an introductory Karate class in her
+home at 9 am. It will be great for all activity levels so come get moving! No men
+or children please.
+
+For the Fall Stake Relief Society Event on Sept 13, along with speakers,
+musicians, and a service project, they are holding a book exchange. This is
+where everyone can bring LDS books, cd's, tapes, and any other type of book
+that has LDS standards. Bring those things that you know you won't read or
+listen to again and exchange them for others. All of this is free. You freely give
+yours and you freely take others. You can bring items each week throughout
+the summer.
+
+Next lesson: Bishop’s discretion
+
+\columnbreak
+
+\begin{center}
+	{\bf \Large Fort Meade Ward Announcements}
+\end{center}
+
+\
+
+Jun 27: Volleyball at the church, 7 pm
+
+Jun 28: Several families will be moving today.  We encourage you and your families to support these efforts.  More details to come with exact times and places.
+
+Jun 28: Sister Sandy Snyder will be teaching an introductory Karate class in her
+home at 9 am. It will be great for all activity levels so come get moving! No men
+or children please.
+
+For the Fall Stake Relief Society Event on Sept 13, along with speakers,
+musicians, and a service project, they are holding a book exchange. This is
+where everyone can bring LDS books, cd's, tapes, and any other type of book
+that has LDS standards. Bring those things that you know you won't read or
+listen to again and exchange them for others. All of this is free. You freely give
+yours and you freely take others. You can bring items each week throughout
+the summer.
+
+Next lesson: Bishop’s discretion
+
+\vspace{1 in}
+
+\begin{center}
+	{\bf \Large Fort Meade Ward Announcements}
+\end{center}
+
+\
+
+Jun 27: Volleyball at the church, 7 pm
+
+Jun 28: Several families will be moving today.  We encourage you and your families to support these efforts.  More details to come with exact times and places.
+
+Jun 28: Sister Sandy Snyder will be teaching an introductory Karate class in her
+home at 9 am. It will be great for all activity levels so come get moving! No men
+or children please.
+
+For the Fall Stake Relief Society Event on Sept 13, along with speakers,
+musicians, and a service project, they are holding a book exchange. This is
+where everyone can bring LDS books, cd's, tapes, and any other type of book
+that has LDS standards. Bring those things that you know you won't read or
+listen to again and exchange them for others. All of this is free. You freely give
+yours and you freely take others. You can bring items each week throughout
+the summer.
+
+Next lesson: Bishop’s discretion
+\end{multicols}
+
+\end{document}
+

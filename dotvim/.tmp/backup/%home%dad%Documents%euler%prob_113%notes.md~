@@ -1,0 +1,21 @@
+# TODO
+
+Most numbers are bouncy
+
+both incr and decr: aaa...aa (9 of these for n-digits)
+
+Increasing:
+
+Num of ways to fill out 9 digits (must start with >0)
+in an n-digit number
+
+(n+9-1) \choose (n)
+
+Decreasing:
+
+Num of ways to fill out 10 digits (OK to start with 0)
+in an n-digit number
+
+(n+10-1) \choose (n) - 1
+
+(take away all 0: all others will actually be n-digit numbers)

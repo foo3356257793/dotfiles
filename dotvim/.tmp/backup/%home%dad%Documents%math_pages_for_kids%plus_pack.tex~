@@ -1,0 +1,42 @@
+\documentclass[20pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{4cm}{0.15mm}}
+
+\begin{document}
+
+{\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Plus pack.}
+
+Find lots of plus pack members.
+
+\begin{itemize}
+  \item $4 \times 1 + 1 = 5$
+  \item $4 \times 2 + 1 = \blank$
+  \item $4 \times 3 + 1 = \blank$
+  \item $4 \times 4 + 1 = \blank$
+  \item $4 \times 5 + 1 = \blank$
+  \item $4 \times 6 + 1 = \blank$
+  \item $4 \times 7 + 1 = \blank$
+  \item $4 \times 8 + 1 = \blank$
+  \item $4 \times 9 + 1 = \blank$
+  \item $4 \times 10 + 1 = \blank$
+\end{itemize}
+
+\paragraph{Drawing.}
+
+Draw a plus pack numberblock.
+
+
+\end{document}
+
