@@ -1,3 +1,27 @@
 [submodule "dotvim/bundle/fzf.vim"]
 	path = dotvim/bundle/fzf.vim
 	url = https://github.com/junegunn/fzf.vim.git
+[submodule "dotvim/bundle/goyo.vim"]
+	path = dotvim/bundle/goyo.vim
+	url = https://github.com/junegunn/goyo.vim.git
+[submodule "dotvim/bundle/traces.vim"]
+	path = dotvim/bundle/traces.vim
+	url = https://github.com/markonm/traces.vim.git
+[submodule "dotvim/bundle/rainbow"]
+	path = dotvim/bundle/rainbow
+	url = https://github.com/luochen1990/rainbow.git
+[submodule "dotvim/bundle/supertab"]
+	path = dotvim/bundle/supertab
+	url = https://github.com/ervandew/supertab.git
+[submodule "dotvim/bundle/tabular"]
+	path = dotvim/bundle/tabular
+	url = https://github.com/godlygeek/tabular.git
+[submodule "dotvim/bundle/vim-colorschemes"]
+	path = dotvim/bundle/vim-colorschemes
+	url = https://github.com/flazz/vim-colorschemes.git
+[submodule "dotvim/bundle/vim-fugitive"]
+	path = dotvim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "dotvim/bundle/vim-tmux-focus-events"]
+	path = dotvim/bundle/vim-tmux-focus-events
+	url = https://github.com/tmux-plugins/vim-tmux-focus-events.git
