@@ -1,0 +1,98 @@
+\documentclass[a4paper,10pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{color,colortbl}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{pgf, tikz}
+\usetikzlibrary{arrows, automata}
+
+\usetikzlibrary{shapes,snakes}
+
+\definecolor{Gray}{gray}{0.9}
+
+\def\blank{\rule{1in}{0.15mm}}
+
+\def\milli{\includegraphics[height=0.5in]{milli.jpeg}}
+\def\geo{\includegraphics[height=0.5in]{geo.jpeg}}
+\def\bot{\includegraphics[height=0.5in]{bot.jpeg}}
+
+\usepackage{wasysym}
+
+\def\bs{\underline{\hspace{5em}}}
+
+\def\apple{\includegraphics[height=0.33in]{apple.jpeg}}
+\def\grapes{\includegraphics[height=0.33in]{grapes.jpeg}}
+\def\banana{\includegraphics[height=0.33in]{banana.jpeg}}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Dad Page \#6\\Umicity}
+\author{for Anna Nelson}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+Here is a map of Umicity.
+Between each circle and square is a number to tell
+how many units it takes to go down that path.
+
+\begin{figure}[ht]
+\begin{tikzpicture}
+  [
+    > = stealth, % arrow head style
+    shorten > = 1pt, % don't touch arrow head to node
+    auto,
+    node distance = 5cm, % distance between nodes
+    semithick % line style
+  ]
+  \tikzstyle{ann} = [draw=none,fill=none,right]
+  {
+    \node[circle,draw,minimum size=1.25cm] (v02) {\geo};
+    \node[rectangle,draw,minimum size=1.25cm] (v11) [below left
+    of=v02] {\apple};
+    \node[rectangle,draw,minimum size=1.25cm] (v13) [below right
+    of=v02] {\banana};
+    \node[circle,draw,minimum size=1.25cm] (v20) [below left of=v11]
+    {\bot};
+    \node[rectangle,draw,minimum size=1.25cm] (v22) [below right
+    of=v11] {\grapes};
+    \node[circle,draw,minimum size=1.25cm] (v24) [below right
+    of=v13] {\milli};
+
+    \path[-] (v02) edge node {$3$} (v11);
+    \path[-] (v02) edge node {$4$} (v13);
+    \path[-] (v11) edge node {$7$} (v20);
+    \path[-] (v13) edge node {$1$} (v24);
+    \path[-] (v20) edge node {$5$} (v22);
+    \path[-] (v22) edge node {$2$} (v24);
+
+    \\
+  };
+\end{tikzpicture}
+\end{figure}
+
+\begin{enumerate}
+  \item How many units does it take for \bot to get
+    to the \grapes? \blank
+  \item How many units does it take for \geo to get to \milli?
+    \blank
+  \item What's the least amount of units for \milli to get to
+    \apple? \blank
+  \item What's the least amount of units for \bot to get to
+    \banana? \blank
+  \item What's the least amount of units for \geo to get
+    \apple, \grapes, and \banana? \blank
+\end{enumerate}
+
+\end{document}
+

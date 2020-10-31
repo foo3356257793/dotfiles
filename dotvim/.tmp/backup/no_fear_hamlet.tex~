@@ -1,0 +1,210 @@
+\documentclass[a4paper,10pt]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{multicol}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+\title{No Fear Shakespeare: Hamlet}
+\author{Sparknotes}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Characters}
+
+\subsection*{Hamlet}
+The prince of Denmark, and a student at the University of
+Wittenberg. At the beginning of the play, Hamlet’s father, King
+Hamlet, has recently died, and his mother, Queen Gertrude, has
+married the new king, Hamlet’s uncle Claudius. Hamlet is melancholy,
+bitter, and cynical, full of hatred for his uncle and disgust at his
+mother for marrying him. When the ghost of Hamlet’s father appears
+and claims to have been murdered by Claudius, Hamlet becomes
+obsessed with avenging his father’s death but keeps thinking of
+reasons why he should wait before killing Claudius—then chastizes
+himself for failing to act boldly. Hamlet is a character of
+contradictions. He admires characters like Fortinbras and the Player
+King, who behave passionately and even violently for no good reason,
+but is himself thoughtful, reflective, and philosophical. At times
+Hamlet is indecisive and hesitant, but at other times he is prone to
+rash and impulsive acts of violence.
+
+\subsection*{Claudius}
+The king of Denmark, Hamlet’s uncle. The villain of the play,
+Claudius is a calculating, ambitious politician, adept at
+manipulating others for his own ends and willing to execute,
+assassinate, or murder to stay in power. He doesn’t understand
+Hamlet or Hamlet’s motives, but he is quick to perceive Hamlet as a
+threat and take decisive action against him. Claudius does
+occasionally show signs of remorse and human feeling—his affection
+for Gertrude, for instance, seems sincere.
+
+\subsection*{Gertrude}
+The queen of Denmark, Hamlet’s mother, recently married to Claudius.
+We never get to observe Gertrude on her own, so we know much more
+about how Hamlet feels about her than about how she sees herself.
+She seems clearly to love Hamlet, but Hamlet sees her as a weak,
+even depraved, woman motivated wholly by lust. Hamlet has such
+strong feelings about her sex life that he becomes momentarily
+distracted from his revenge quest, urging her toward a life of
+chastity.
+
+\subsection*{Polonius}
+The Lord Chamberlain of Claudius’s court, and the father of Laertes
+and Ophelia. Polonius has good intentions, but he tends to be
+somewhat conniving and underhanded. He frequently leaps to the wrong
+conclusions, and his speeches are comically pompous and long-winded.
+He is completely incapable of figuring out what Hamlet is up to.
+
+\subsection*{Horatio}
+Hamlet’s close friend, who studied with the prince at the University
+of Wittenberg. Hamlet trusts Horatio above any of the other
+characters, valuing him for his even temper and equanimity—qualities
+that Hamlet seems to despise in himself. Horatio is loyal and
+helpful to Hamlet throughout the play. After Hamlet’s death, Horatio
+remains alive to tell Hamlet’s story.
+
+\subsection*{Ophelia}
+Polonius’s daughter, a beautiful young woman with whom Hamlet has
+been in love. A sweet and innocent young girl, Ophelia dutifully
+strives to obey her father and her brother, Laertes, allowing
+Polonius to use her in his scheme to spy on Hamlet. When her father
+dies, her sanity unravels, and in her madness she paints a scathing
+picture of young men as sexually exploitative and unfaithful, and
+her mad speeches about flowers conceal implied condemnations of
+Claudius and Gertrude.
+
+\subsection*{Laertes}
+Polonius’s son and Ophelia’s brother, a young man who spends much of
+the play in France. Passionate and quick to action, Laertes is a
+foil for the reflective and agonized Hamlet.
+
+\subsection*{Fortinbras}
+The young prince of Norway, whose father the king (also named
+Fortinbras) was killed by Hamlet’s father (also named Hamlet). Now
+Fortinbras wishes to attack Denmark to avenge his father’s honor,
+making him another foil for Prince Hamlet. Hamlet admires Fortinbras
+for his willingness to fight for no good reason.
+
+\subsection*{The Ghost}
+The specter of Hamlet’s recently deceased father. The ghost, who
+claims to have been murdered by Claudius, calls upon Hamlet to
+avenge him. However, it is not entirely certain whether the ghost is
+what it appears to be. Hamlet speculates that the ghost might be a
+devil sent to deceive him and tempt him into murder, and the
+question of what the ghost is or where it comes from is never
+definitively resolved.
+
+\subsection*{Rosencrantz and Guildenstern}
+Two slightly bumbling courtiers, former friends of Hamlet from
+Wittenberg, who are summoned by Claudius and Gertrude to discover
+the cause of Hamlet’s strange behavior.
+
+\subsection*{Osric}
+The foolish courtier who summons Hamlet to his duel with Laertes.
+His speeches are pretentious and difficult to understand.
+
+\subsection*{Voltimand and Cornelius}
+Courtiers whom Claudius sends to Norway to persuade the king to
+prevent Fortinbras from attacking.
+
+\subsection*{Marcellus and Barnardo}
+The officers who first see the ghost walking the ramparts of
+Elsinore and who summon Horatio to witness it. Marcellus is present
+when Hamlet first encounters the ghost.
+
+\subsection*{Francisco}
+A soldier and guardsman at Elsinore.
+
+\subsection*{Reynaldo}
+Polonius’s servant, sent to France by Polonius to check up on and
+spy on Laertes.
+
+\chapter{Act 1}
+
+\section{Scene 1}
+
+\begin{multicols}{2}
+  ORIGINAL TEXT
+
+  \textit{Enter BARNARDO and FRANCISCO, two sentinels}
+
+    
+  Original Text
+  Modern Text
+  Enter BARNARDO and FRANCISCO, two sentinels
+  BARNARDO and FRANCISCO, two watchmen, enter.
+
+  FRANCISCO
+  Nay, answer me. Stand and unfold yourself.
+  FRANCISCO
+  No, who are you? Stop and identify yourself.
+
+  FRANCISCO
+  You come most carefully upon your hour.
+  FRANCISCO
+  You’ve come right on time.
+
+  5BARNARDO
+  'Tis now struck twelve. Get thee to bed, Francisco.
+  BARNARDO
+  The clock’s just striking twelve. Go home to bed, Francisco.
+
+
+  FRANCISCO
+  For this relief much thanks. 'Tis bitter cold,
+  And I am sick at heart.
+  FRANCISCO
+  Thanks for letting me go. It’s bitterly cold out, and I’m
+  depressed.
+
+  FRANCISCO
+  Not a mouse stirring.
+  FRANCISCO
+  I haven’t even heard a mouse squeak.
+
+
+
+  10ptBARNARDO
+      Well, good night.
+  If you do meet Horatio and Marcellus,
+  The rivals of my watch, bid them make haste.
+  BARNARDO
+  Well, good night. If you happen to see Horatio and Marcellus, who
+  are supposed to stand guard with me tonight, tell them to hurry.
+
+  FRANCISCO
+  I think I hear them.—Stand, ho! Who’s there?
+  FRANCISCO
+  I think I hear them. —Stop! Who’s there?
+  Enter HORATIO and MARCELLUS
+  MARCELLUS and HORATIO enter.
+\end{multicols}
+
+
+\end{document}
+

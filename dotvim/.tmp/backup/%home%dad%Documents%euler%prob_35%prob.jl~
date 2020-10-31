@@ -1,0 +1,48 @@
+using Primes
+
+function get_shift(a, n_digits)
+
+    s = a ÷ 10 + (10^(n_digits-1)) * (a % 10)
+
+    return s
+end
+
+
+function prob_35()
+
+    num_hits = Threads.Atomic{Int64}(0)
+
+    for n_digits in 1:6
+
+        my_primes = primes(10^(n_digits-1), 10^n_digits)
+
+        Threads.@threads for p in my_primes
+
+            works = true
+
+            q = p
+            for shift in 0:n_digits-2
+
+                q = get_shift(q,n_digits)
+
+                if !isprime(q)
+
+                    works = false
+                    break
+
+                end
+            end
+            if works
+                #println(p)
+                #num_hits += 1
+                Threads.atomic_add!(num_hits,1)
+            end
+        end
+    end
+
+    return num_hits[]
+end
+
+answer = prob_35()
+
+println(answer)

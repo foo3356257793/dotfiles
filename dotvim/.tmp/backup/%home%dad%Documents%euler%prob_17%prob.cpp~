@@ -1,0 +1,69 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <iostream>
+
+using namespace std;
+
+string first_number_words[19] = {"one",       "two",      "three",   "four",
+                                 "five",      "six",      "seven",   "eight",
+                                 "nine",      "ten",      "eleven",  "twelve",
+                                 "thirteen",  "fourteen", "fifteen", "sixteen",
+                                 "seventeen", "eighteen", "nineteen"};
+
+string tens_words[8] = {"twenty", "thirty",  "forty",  "fifty",
+                        "sixty",  "seventy", "eighty", "ninety"};
+
+string number_to_words(int number) {
+  if (number == 1000) {
+    return "one thousand";
+  }
+
+  string answer = "";
+
+  if (number >= 100) {
+    int top_digit = number / 100;
+
+    answer = first_number_words[top_digit - 1] + " hundred";
+
+    number -= 100 * top_digit;
+
+    if (number > 0) {
+      answer += " and " + number_to_words(number);
+    }
+
+  } else if (number < 20) {
+    return first_number_words[number - 1];
+  } else {
+    int top_digit = number / 10;
+
+    answer = tens_words[top_digit - 2];
+
+    number -= 10 * top_digit;
+
+    if (number > 0) {
+      answer += "-" + first_number_words[number - 1];
+    }
+  }
+
+  return answer;
+}
+
+int main() {
+  int answer = 0;
+
+  for (int number = 1; number <= 1000; number++) {
+    string words = number_to_words(number);
+    for (char const &letter : words) {
+      /*
+       * Note to self: "string" and 'char'
+       */
+      if ((letter != ' ') and (letter != '-')) {
+        answer += 1;
+      }
+    }
+  }
+
+  cout << answer << "\n";
+}

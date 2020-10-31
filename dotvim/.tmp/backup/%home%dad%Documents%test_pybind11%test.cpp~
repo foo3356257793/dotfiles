@@ -1,0 +1,75 @@
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
+
+#include <pybind11/functional.h>
+#include <pybind11/chrono.h>
+
+namespace py = pybind11;
+
+#include <any>
+#include <map>
+#include <string>
+
+using std::map;
+using std::any;
+using std::string;
+using std::any_cast;
+
+typedef struct foo{
+  int a;
+  double b;
+}foo_t;
+
+class MyFoo {
+  private:
+    foo_t *foo;
+  public:
+    MyFoo(int a, double b)
+    {
+      foo = new foo_t;
+      foo->a = a;
+      foo->b = b;
+    }
+
+    MyFoo(map<string,any> params)
+    {
+      foo = new foo_t;
+      foo->a = any_cast<int>(params["a"]);
+      foo->b = any_cast<double>(params["b"]);
+    }
+
+    MyFoo(map<string,string> params)
+    {
+      foo = new foo_t;
+      foo->a = stoi(params["a"]);
+      foo->b = stof(params["b"]);
+
+    }
+
+    int get_a()
+    {
+      return foo->a;
+    }
+
+    double get_b()
+    {
+      return foo->b;
+    }
+
+    ~MyFoo()
+    {
+      delete foo;
+    }
+};
+
+PYBIND11_MODULE(foo, m) {
+  m.doc() = "pybind11 example plugin"; // docstring
+
+  py::class_<MyFoo>(m, "foo")
+    .def(py::init<int,double>())
+    .def(py::init<map<string,string>>())
+    .def("get_a", &MyFoo::get_a)
+    .def("get_b", &MyFoo::get_b);
+
+}

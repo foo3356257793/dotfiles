@@ -1,0 +1,54 @@
+\documentclass[landscape,17pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\def\ma{\includegraphics[height=0.9in]{pet_00.eps}}
+\def\mb{\includegraphics[height=0.9in]{pet_01.eps}}
+\def\mc{\includegraphics[height=0.9in]{pet_02.eps}}
+\def\md{\includegraphics[height=0.9in]{pet_03.eps}}
+\def\me{\includegraphics[height=0.9in]{pet_04.eps}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+  \
+
+  \begin{multicols}{2}
+  \paragraph{Animal Math \#1.}
+
+  \begin{align*}
+    \ma  + 1 &= 5 \\
+    \ma + \mb &= 6 \\
+    \mb + \mc &= 3 \\
+    \mb + \md &= 7 \\
+    \ma + \mb + \mc + \md &= \me
+  \end{align*}
+
+    \columnbreak
+
+  \paragraph{Answers.}
+
+  \begin{align*}
+    \ma &= \blank \\
+    \mb &= \blank \\
+    \mc &= \blank \\
+    \md &= \blank \\
+    \me &= \blank
+  \end{align*}
+  \end{multicols}
+
+\end{document}
+

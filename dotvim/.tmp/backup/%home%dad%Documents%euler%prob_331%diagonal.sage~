@@ -1,0 +1,65 @@
+#!/usr/bin/sage
+
+import itertools
+
+def flip_on_point(mat, i, j):
+
+    for k in range(N):
+
+        mat[k,j] += 1
+
+    for k in range(N):
+
+        mat[i,k] += 1
+
+    mat[i,j] += 1
+
+
+if __name__ == "__main__":
+
+    GF2 = GF(2)
+
+    N = 6
+
+    mat = matrix(GF2,
+            [[0,0,0,0,0,1],[0,0,0,0,1,0],[0,0,0,1,0,0],[0,0,1,1,0,0],[0,1,0,0,0,0],[1,0,0,0,0,0]])
+
+    # try to solve by LA
+    sol_mat = matrix(GF2, N*N, N*N)
+    i = 0
+    for tup in itertools.product(range(N), repeat=2):
+
+        x = tup[0]
+        y = tup[1]
+
+        for k in range(N):
+
+            sol_mat[i, N*x+k] = 1
+            sol_mat[i, N*k+y] = 1
+
+        i += 1
+
+    target_vec = vector(GF2, N*N)
+
+    for i in range(N):
+        for j in range(N):
+            target_vec[N*i+j] = mat[i,j]
+
+    try:
+        sol_vec = sol_mat.solve_left(target_vec)
+
+        sol_vec = matrix(N,N,sol_vec)
+
+        num_moves = 0
+        for i in range(N*N):
+            if sol_vec[i] == 1:
+                num_moves += 1
+
+                pt = [i//N, i%N]
+                #print(pt)
+
+        print('N=%d : takes %d moves' % (N,num_moves))
+
+    except:
+
+        print('N=%d : 0' % (N))

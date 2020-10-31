@@ -1,0 +1,22 @@
+fn sum_multiples(upper_bound: i32, factor: i32) -> i32 {
+
+    let max_multiple = upper_bound/factor;
+    let sum = factor * ((max_multiple * (1+max_multiple))/2);
+
+    return sum;
+}
+
+fn main() {
+
+    let upper_bound = 1000i32 - 1;
+
+    let sum_3 = sum_multiples(upper_bound, 3);
+    let sum_5 = sum_multiples(upper_bound, 5);
+    let sum_15 = sum_multiples(upper_bound, 15);
+
+    let answer = sum_3 + sum_5 - sum_15;
+
+    println!("{}", answer);
+
+}
+

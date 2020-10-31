@@ -1,0 +1,40 @@
+#!/usr/bin/sage
+
+"""
+Project Euler Problem 22 solution.
+"""
+
+if __name__ == "__main__":
+
+    fp = open('names.txt', 'r')
+
+    names_string = fp.readline()
+
+    fp.close()
+
+    # split and strip
+    names = names_string.split(",")
+    names = [name.strip('"') for name in names]
+
+    # sort these
+    names.sort()
+
+    # letters
+    LETTERS_STRING = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    letters = [LETTERS_STRING[i] for i in range(len(LETTERS_STRING))]
+
+    tot_score = 0 # pylint: disable=invalid-name
+
+    for i, name in enumerate(names):
+
+        pos_score = i+1
+
+        letter_score = 0
+
+        for c in name:
+
+            j = letters.index(c)
+
+            letter_score += (j+1)
+
+        tot_score += pos_score * letter_score

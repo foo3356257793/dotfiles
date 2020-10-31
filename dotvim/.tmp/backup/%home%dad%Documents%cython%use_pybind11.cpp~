@@ -1,0 +1,98 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+#include <gmp.h>
+
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
+#include <pybind11/functional.h>
+#include <pybind11/chrono.h>
+
+
+using namespace std;
+
+void mpz_addeq(mpz_t a, mpz_t b)
+{
+  mpz_add(a,a,b);
+}
+
+int64_t long use_mpz_addeq(int64_t a, int64_t b)
+{
+  mpz_t _a, _b;
+
+  mpz_init(_a);
+  mpz_init(_b);
+
+  mpz_set_si(_a, a);
+  mpz_set_si(_b, b);
+
+  mpz_addeq(_a, _b);
+
+  int64_t c = mpz_get_si(_a);
+
+  mpz_clear(_a);
+  mpz_clear(_b);
+
+  return c;
+}
+
+vector<vector<int64_t>> mat_add(vector<vector<int64_t>> a, vector<vector<int64_t>> b)
+{
+  size_t nrows = a.size();
+  size_t ncols = a[0].size();
+
+  vector<vector<int64_t>> result = {};
+
+  for(size_t row=0; row<nrows; row++)
+  {
+    vector<int64_t> row_vec = {};
+    for(size_t col = 0; col<ncols; col++)
+    {
+      row_vec.push_back(a[row][col] + b[row][col]);
+    }
+
+    result.push_back(row_vec);
+  }
+
+  return result;
+}
+
+tuple<vector<vector<int64_t>>,int64_t> mat_add_tr(vector<vector<int64_t>> a, vector<vector<int64_t>> b)
+{
+  size_t nrows = a.size();
+  size_t ncols = a[0].size();
+
+  vector<vector<int64_t>> result = {};
+
+  for(size_t row=0; row<nrows; row++)
+  {
+    vector<int64_t> row_vec = {};
+    for(size_t col = 0; col<ncols; col++)
+    {
+      row_vec.push_back(a[row][col] + b[row][col]);
+    }
+
+    result.push_back(row_vec);
+  }
+
+  int64_t tr = 0;
+  for(size_t row=0; row<min(nrows,ncols); row++)
+  {
+    tr += result[row][row];
+  }
+
+  return make_tuple(result,tr);
+}
+
+PYBIND11_MODULE(use_pybind11, m) {
+  m.doc() = "pybind11 example plugin";
+
+  m.def("use_mpz_addeq", &use_mpz_addeq, "add two numbers");
+  m.def("mat_add", &mat_add, "add two matrices");
+  m.def("mat_add_tr", &mat_add_tr, "add two matrices and also trace");
+}

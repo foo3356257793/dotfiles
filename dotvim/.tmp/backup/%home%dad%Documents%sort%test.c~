@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+typedef struct bucket
+{
+  uint64_t *curr;
+  uint64_t *end;
+  struct bucket *next;
+  uint64_t data[];
+} bucket_t;
+
+typedef struct linked_buckets
+{
+  int64_t num_chains;
+  bucket_t *start_space;
+  bucket_t *end_space;
+  bucket_t *buckets[];
+} linked_buckets_t;
+
+size_t sizeof_bucket(int64_t items_per_bucket)
+{
+  return sizeof(bucket_t) + sizeof(uint64_t) * items_per_bucket;
+}
+
+int64_t ceil_div(int64_t numerator, int64_t denominator)
+{
+  return (numerator + denominator - 1) / denominator;
+}
+
+size_t sizeof_all_buckets(int64_t num_items, int64_t bucket_size, int64_t num_chains)
+{
+
+  size_t max_num_buckets = (num_chains-1) + ceil_div(num_items, bucket_size);
+
+  printf("need %lu pages\n", max_num_buckets);
+
+  return sizeof_bucket(bucket_size) * max_num_buckets;
+}
+
+size_t sizeof_linked_buckets(int64_t num_chains)
+{
+  return sizeof(linked_buckets_t) + num_chains * sizeof(bucket_t *);
+}
+
+
+int main(int argc, char *argv[])
+{
+
+  printf("Hello, world!\n");
+
+  int64_t num_items = 1<<20;
+
+  uint64_t *data = (int64_t *) malloc(num_items * sizeof(int64_t));
+
+  uint64_t mask = num_items-1;
+
+  srand(0);
+  for(int i=0; i<num_items; i++)
+  {
+    data[i] = rand();
+    data[i] &= mask;
+  }
+
+  int64_t bucket_size = 1<<10;
+  int64_t num_chains = 1<<10;
+
+  linked_buckets_t *linked_buckets = (linked_buckets_t *) malloc(sizeof_linked_buckets(num_chains));
+
+  linked_buckets->num_chains = num_chains;
+
+  // layout the linked buckets
+  size_t bucket_bytes = sizeof_bucket(bucket_size);
+  size_t all_buckets_bytes = sizeof_all_buckets(num_items, bucket_size, num_chains);
+
+  bucket_t *buckets = (bucket_t *) malloc(all_buckets_bytes);
+
+  linked_buckets->start_space = buckets;
+  linked_buckets->end_space = (bucket_t *) (((char *) buckets) + all_buckets_bytes);
+
+  printf("start = %p\n", linked_buckets->start_space);
+  printf("end   = %p\n", linked_buckets->end_space);
+
+  printf("I think difference is supposed to be %lu\n", all_buckets_bytes);
+
+
+  // load the data into the linked list
+  for(int i=0; i<linked_buckets->num_chains; i++)
+  {
+    linked_buckets->buckets[i] = linked_buckets->start_space;
+    bucket_t *bucket = linked_buckets->buckets[i];
+
+    linked_buckets->start_space = (bucket_t *) (((char *) linked_buckets->start_space) + all_buckets_bytes);
+
+    //linked_buckets->buckets[i]->num_entries = 0;
+    //linked_buckets->buckets[i]->max_entries = bucket_size;
+    bucket->curr = bucket->data;
+    bucket->end = bucket->data + bucket_size;
+    linked_buckets->buckets[i]->next = NULL;
+  }
+
+  for(int i=0; i<num_items; i++)
+  {
+    uint64_t bin = data[i] >> 10;
+
+    linked_buckets->buckets[bin]->curr++ = data[i];
+
+  }
+
+
+  // clean up
+  free(buckets);
+  free(linked_buckets);
+  free(data);
+
+}
+

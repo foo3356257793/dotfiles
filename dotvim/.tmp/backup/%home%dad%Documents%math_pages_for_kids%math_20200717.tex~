@@ -1,0 +1,45 @@
+\documentclass[17pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\def\ma{\includegraphics[height=0.8in]{minion_04.eps}}
+\def\mb{\includegraphics[height=0.8in]{minion_06.eps}}
+\def\mc{\includegraphics[height=0.9in]{minion_05.eps}}
+\def\md{\includegraphics[height=0.9in]{minion_07.eps}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+  \paragraph{Minion Math \#2.}
+
+\begin{align*}
+  \ma + 3 &=9 \\
+  \ma + \mb &= 9 \\
+  \mb + \mc &= 11 \\
+  \ma + \mb + \mc + \md &= 21
+\end{align*}
+
+\paragraph{Answers.}
+
+\begin{align*}
+  \ma &= \blank \\
+  \mb &= \blank \\
+  \mc &= \blank \\
+  \md &= \blank
+\end{align*}
+
+\end{document}
+

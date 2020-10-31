@@ -1,0 +1,437 @@
+﻿#pragma once
+
+#include <type_traits>
+#include <random>
+#include <iostream>
+#include <algorithm>
+#include <variant>
+#include <array>
+#include <thread>
+#include <vector>
+#include <exception>
+
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
+
+class RangeRandomEngineBase
+{
+protected:
+    static inline std::mt19937 rdEngine{ std::random_device{}() };
+};
+
+template<typename T1, typename T2, typename = void>
+struct CommonValueType
+{
+    using type = std::conditional_t          //when both are integer types
+        <
+        std::is_signed_v<T1> || std::is_signed_v<T2>,
+        std::make_signed_t<std::common_type_t<T1, T2>>, //either is signed, return longer signed integer type
+        std::common_type_t<T1, T2> //none is signed, return the longer unsigned type
+        >;
+};
+
+template<typename T1, typename T2>
+struct CommonValueType<T1, T2, std::enable_if_t<std::is_floating_point_v<T1> || std::is_floating_point_v<T2>>>
+{
+    using type = std::common_type_t<T1, T2>;
+};
+
+enum class RangeType
+{
+    Numeric,
+    Letter,
+    Container
+};
+
+template <
+    RangeType,
+    typename ValueType,
+    typename StepType
+>
+    class Range;
+
+template<typename... Ranges>
+class MultiRange
+{
+    std::tuple<Ranges...> ranges;
+    std::tuple<typename Ranges::value_type...> startValues;
+
+
+    template<size_t I = std::tuple_size_v<decltype(ranges)>-1>
+    void incRange()
+    {
+        if (auto& range = std::get<I>(ranges); (++range).current == range.max)
+        {
+            if constexpr (I != 0)
+            {
+                range.current = std::get<I>(startValues);
+                incRange<I - 1>();
+            }
+        }
+    }
+public:
+    MultiRange(Ranges...ranges) :ranges{ ranges... }, startValues{ ranges.current ... } {}
+
+    MultiRange(std::tuple<Ranges...> ranges) :ranges{ ranges }, startValues{ std::apply(
+        [](auto const&... ranges)
+        {
+            return std::make_tuple(ranges.current...);
+        }, ranges
+    ) } {}
+
+        auto begin()
+        {
+            return *this;
+        }
+
+        auto end()
+        {
+            return std::apply([](auto&... ranges) { return std::make_tuple(ranges.end()...); }, ranges);
+        }
+
+        MultiRange& operator++()
+        {
+            incRange();
+            return *this;
+        }
+
+        bool operator!=(MultiRange const& rhs) const
+        {
+            return std::get<0>(ranges) != std::get<0>(rhs.ranges);
+        }
+
+        template<typename EndValueTuple>
+        bool operator!=(EndValueTuple const& rhs)
+        {
+            return std::get<0>(ranges) != std::get<0>(rhs);
+        }
+
+        auto operator*() const
+        {
+            return std::apply([](auto&... ranges) { return std::make_tuple(*ranges...); }, ranges);
+        }
+
+        template<typename Range>
+        auto operator|(Range rhs)
+        {
+            return MultiRange{ std::tuple_cat(ranges, rhs) };
+        }
+};
+
+template <typename ValueType, typename StepType>
+class Range<RangeType::Numeric, ValueType, StepType> : RangeRandomEngineBase
+{
+protected:
+    ValueType current;
+    ValueType const max;
+public:
+    StepType const step;
+    using value_type = ValueType;
+
+    template<typename T1, typename T2, typename T3 = int>
+    constexpr Range(T1 start, T2 end, T3 step = 1) : current(static_cast<ValueType>(start)), max(static_cast<ValueType>(end)), step(static_cast<StepType>(step)) {
+      if(
+          ((step > 0) && (end - start < 0)) ||
+          ((step < 0) && (end - start > 0)) ||
+          (step == 0))
+      {
+        string ret = "ValueError: Cannot initialze range which doesn't end.";
+        cerr << ret << endl;
+        throw ret;
+      }
+    }
+
+    auto operator*() const { return current; }
+
+    auto begin() { return *this; }
+
+    [[nodiscard]] constexpr auto end() const { return max; }
+
+    [[nodiscard]] constexpr auto steps() const { return (max - current) / step + 1; }
+
+    [[nodiscard]] constexpr auto span() const { return max - current; }
+
+    [[nodiscard]] constexpr auto next() const { return static_cast<value_type>(current + step); }
+
+    template<typename Range>
+    [[nodiscard]] bool include(Range const& rhs) const
+    {
+      return (step > 0) ?
+        (current <= rhs.current && max >= rhs.max) :
+        (current >= rhs.current && max <= rhs.max);
+    }
+
+    constexpr bool operator!=(Range rhs) const
+    {
+        if constexpr (std::is_arithmetic_v<value_type>)
+        {
+          return (step > 0) ? current < rhs.current : current > rhs.current;
+        }
+        else
+            return current != rhs.current;
+    }
+
+    constexpr bool operator!=(value_type value) const
+    {
+        if constexpr (std::is_arithmetic_v<value_type>)
+        {
+          return (step > 0) ? (current < value) : (current > value);
+        }
+        else
+            return current != value;
+    }
+
+    Range& operator++() { current += step; return *this; }
+
+    Range& operator+=(unsigned i) { current += i * step; return *this; }
+
+    using DistType = std::conditional_t <
+        std::is_integral_v<value_type>,
+        std::uniform_int_distribution<std::conditional_t<std::is_same_v<value_type, char> || std::is_same_v<value_type, signed char> || std::is_same_v<value_type, unsigned char>, int, value_type>>,
+        std::uniform_real_distribution<value_type>
+    >;
+
+    [[nodiscard]] auto getDistribution() const
+    {
+        if constexpr (std::is_integral_v<value_type>)
+            return DistType(current, max - 1);
+        return DistType(current, max);
+    }
+
+    [[nodiscard]] static auto& getRandomEngine()
+    {
+        return rdEngine;
+    }
+
+    [[nodiscard]] auto rand() const
+    {
+        return getDistribution()(rdEngine);
+    }
+
+    template<size_t N>
+    [[nodiscard]] auto rand() const
+    {
+        std::array<value_type, N> values;
+        std::generate(values.begin(), values.end(), [dist = getDistribution()]() mutable { return dist(rdEngine); });
+        return values;
+    }
+
+    [[nodiscard]] value_type randFast() const
+    {
+        return static_cast<value_type>(static_cast<double>(::rand()) / RAND_MAX * (static_cast<double>(max) - current) + current);
+    }
+
+    template<typename Container>
+    void fillRand(Container& container)
+    {
+        fillRand(std::begin(container), std::end(container));
+    }
+
+    template<typename Container>
+    void fillRand(Container& container, size_t count)
+    {
+        std::generate_n(container.size() >= count ? std::begin(container) : std::back_inserter(container), count, [dist = getDistribution()]() mutable
+        {
+            return dist(rdEngine);
+        });
+    }
+
+    template<typename InputIt>
+    void fillRand(InputIt begin, InputIt end)
+    {
+        //The maximum value of std::uniform_int_distribution is inclusive so need to -1 to exclude the max value edge case
+        std::generate(begin, end, [dist = getDistribution()]() mutable
+        {
+            return dist(rdEngine);
+        });
+    }
+
+    template<typename Container>
+    void fillRandFast(Container& container) const
+    {
+        std::generate(std::begin(container), std::end(container), [this] {return randFast(); });
+    }
+
+    template<typename Container>
+    void fillRandFast(Container& container, size_t count)
+    {
+        std::generate_n(container.size() >= count ? std::begin(container) : std::back_inserter(container), count, [this]
+            {
+                return randFast();
+            });
+    }
+
+    template<typename InputIt>
+    void fillRandFast(InputIt begin, InputIt end)
+    {
+        std::generate(begin, end, [this] {return randFast(); });
+    }
+
+    template<typename Num, typename = std::enable_if_t<std::is_arithmetic_v<Num>>>
+    bool operator==(Num number) const
+    {
+        return (number >= current) && (number <= max);
+    }
+
+    template<typename Num, typename = std::enable_if_t<std::is_arithmetic_v<Num>>>
+    bool contain(Num number) const
+    {
+        return number == (*this);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, Range const& range)
+    {
+        os << '[' << range.current << ',' << range.max << ']';
+        return os;
+    }
+
+    template<typename...U>
+    friend class MultiRange;
+
+    template<typename Range>
+    auto operator|(Range rhs)
+    {
+        return MultiRange{ *this, rhs };
+    }
+
+};
+
+template <typename Num, typename ValueType, typename StepType, typename = std::enable_if_t<std::is_arithmetic_v<Num>>>
+bool operator==(Num number, Range<RangeType::Numeric, ValueType, StepType> const& rhs)
+{
+    return rhs == number;
+}
+template <typename Num, typename ValueType, typename StepType, typename = std::enable_if_t<std::is_arithmetic_v<Num>>>
+bool operator!=(Num number, Range<RangeType::Numeric, ValueType, StepType> const& rhs)
+{
+    return !(rhs == number);
+}
+
+/*Deduction guides for numerical ranges*/
+template<typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1>&& std::is_arithmetic_v<T2>>>
+Range(T1, T2)->Range<RangeType::Numeric, typename CommonValueType<T1, T2>::type, std::common_type_t<typename CommonValueType<T1, T2>::type, int>>;
+
+template<typename T1, typename T2, typename T3, typename = std::enable_if_t<std::is_arithmetic_v<T1>&& std::is_arithmetic_v<T2>>>
+Range(T1, T2, T3)->Range<RangeType::Numeric, typename CommonValueType<T1, T2>::type, std::common_type_t<typename CommonValueType<T1, T2>::type, T3>>;
+
+
+template<>
+class Range<RangeType::Letter, char, int> :public Range<RangeType::Numeric, char, int>
+{
+
+public:
+    constexpr Range(char start, char end, int step = 1) :Range<RangeType::Numeric, char, int>{ start, end, step } { }
+    using Range<RangeType::Numeric, char, int>::operator++;
+    [[nodiscard]] constexpr auto begin() const
+    {
+        return *this;
+    }
+    auto& operator++()
+    {
+        Range<RangeType::Numeric, char, int>::operator++();
+        if (current == 'Z')
+            current += ('a' - 'Z');
+        return *this;
+    }
+};
+using LetterRange = Range<RangeType::Letter, char, int>;
+
+namespace CommonRanges
+{
+    static LetterRange UpperCaseLetters{ 'A', 'Z' + 1 };
+    static LetterRange LowerCaseLetters{ 'a','z' + 1 };
+    static LetterRange Letters{ 'A', 'z' + 1 };
+}
+
+
+//TODO: Add ton of STL functions
+template <typename Container>
+class Range<RangeType::Container, Container, long long>
+{
+    Container range; //lvalue reference or value type
+public:
+    using value_type = typename std::remove_reference_t<Container>::value_type;
+    template<typename T>
+    explicit Range(T&& container) :range(std::forward<T>(container)) { }
+
+    template <typename Func>
+    auto map(Func&& func)
+    {
+
+    }
+
+    bool operator==(value_type const& value) const
+    {
+        return std::find(std::cbegin(range), std::cend(range), value) != std::cend(range);
+    }
+    bool operator!=(value_type const& value) const
+    {
+        return !((*this) == value);
+    }
+};
+template<typename Container>
+bool operator==(typename Range<RangeType::Container, Container, long long>::value_type const& num, Range<RangeType::Container, Container, long long> const& rhs)
+{
+    return rhs == num;
+}
+
+template<typename Container>
+bool operator!=(typename Range<RangeType::Container, Container, long long>::value_type const& num, Range<RangeType::Container, Container, long long> const& rhs)
+{
+    return rhs != num;
+}
+
+template<typename Container>
+Range(Container&)->Range<RangeType::Container, Container, long long>;
+
+template<typename Container>
+Range(Container&&)->Range<RangeType::Container, Container, long long>;
+
+template<typename RangeType, typename Func>
+auto parallel(RangeType range, Func&& func, unsigned threadCount = std::thread::hardware_concurrency())
+    ->std::enable_if_t< std::is_same_v<std::invoke_result_t<std::remove_reference_t<Func>, RangeType>, void>>
+{
+    /* If there are 7 tasks but 8 threads, we only launch 7 threads
+     *
+     */
+    const auto steps = range.steps();
+    const auto threadNum = std::min<std::common_type_t<decltype(steps), decltype(threadCount)>>(steps, threadCount);
+    const auto perThread = steps / threadNum;
+    std::vector<std::thread> threads;
+    threads.reserve(threadNum);
+
+
+    //for the first (threadNum-1) threads
+    for (auto i = 0; i < threadNum - 1; ++i)
+        threads.emplace_back([&func, &range, perThread] { func(Range{ *range, *(range += perThread), range.step }); });
+    //the last thread
+    threads.emplace_back([&func, &range] {func(Range{ *(++range), range.end(), range.step }); });
+    for (auto& thread : threads)
+        thread.join();
+
+}
+
+
+template<typename RangeType, typename Func>
+auto parallel(RangeType range, Func&& func, unsigned threadCount)
+    ->std::enable_if_t<!std::is_same_v<std::invoke_result_t<std::remove_reference_t<Func>, RangeType>, void>>
+{
+    const auto steps = range.steps();
+    const auto threadNum = std::min<std::common_type_t<decltype(steps), decltype(threadCount)>>(steps, threadCount);
+    const auto perThread = steps / threadNum;
+    std::vector<std::thread> threads;
+    threads.reserve(threadNum);
+
+    using result_type = std::invoke_result_t<std::remove_reference_t<Func>, RangeType>;
+    std::vector<result_type> results;
+    results.reserve(threadNum);
+    for (auto i = 0; i < threadNum; ++i)
+        threads.emplace_back([&func, &range, perThread, &results] { results.emplace_back(std::forward<result_type>(func(Range{ *range, *(range += perThread), range.step }))); });
+    //the last thread
+    threads.emplace_back([&func, &range, &results] {results.emplace_back(std::forward<result_type>(func(Range{ *range, range.end(), range.step }))); });
+    for (auto& thread : threads)
+        thread.join();
+    return results;
+}

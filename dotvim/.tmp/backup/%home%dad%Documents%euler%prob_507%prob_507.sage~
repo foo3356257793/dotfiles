@@ -1,0 +1,124 @@
+#!/usr/bin/sage
+
+import time
+
+M = 10**7
+
+def gen_next_tribonacci(tup):
+
+    vals = copy(tup)
+
+    for i in range(12):
+
+        vals.append((vals[-1] + vals[-2] + vals[-3]) % M)
+
+    return vals[-12:]
+
+    """
+    next_vals = []
+    next_vals.append((tup[9] + tup[10] + tup[11]) % M)
+    next_vals.append((tup[10] + tup[11] + next_vals[0]) % M)
+    next_vals.append((tup[11] + next_vals[0] + next_vals[1]) % M)
+    for i in range(9):
+        next_vals.append((next_vals[i] + next_vals[i+1] + next_vals[i+2]) % M)
+
+    return next_vals
+    """
+
+def get_lattice(trib_vals):
+
+    lat = matrix(ZZ, 2, 3)
+    lat[0,0] = trib_vals[0] - trib_vals[1]
+    lat[0,1] = trib_vals[2] + trib_vals[3]
+    lat[0,2] = trib_vals[4] * trib_vals[5]
+    lat[1,0] = trib_vals[6] - trib_vals[7]
+    lat[1,1] = trib_vals[8] + trib_vals[9]
+    lat[1,2] = trib_vals[10] * trib_vals[11]
+
+    # reduce it while we are at it
+    #return lat.LLL()
+    return lat
+
+def qr_basis(lat):
+
+    Q, R = matrix(RDF,transpose(lat)).QR()
+
+    R = R.transpose()
+
+    for i in range(R.nrows()):
+
+        if R[i,i] < 0:
+            for j in range(i,R.nrows()):
+                R[j,i] *= -1
+
+    return R
+
+def enumerate_sv_lattice(lat, R):
+
+    norm_bd = lat[0].norm(p=1)
+
+    bd_1 = floor(norm_bd/R[1,1])
+
+    d = 1
+    while d <= bd_1:
+
+        r_0 = sqrt(norm_bd**2 - d*R[1,1])
+
+        l_bd = ceil((-r_0 - d*R[1,0])/R[0,0])
+        u_bd = floor((r_0 - d*R[1,0])/R[0,0])
+
+        for c in range(l_bd,u_bd+1):
+
+            vec = c * lat[0] + d * lat[1]
+            nm = vec.norm(p=1)
+
+            if nm < norm_bd:
+                norm_bd = nm
+                bd_1 = floor(norm_bd/R[1,1])
+
+        d += 1
+
+    return norm_bd
+
+
+if __name__ == "__main__":
+
+    #N = 20000
+    N = 20000000 # 24 bits
+
+    trib_vals = [0,0,1]
+    # generate next nine
+    for i in range(10):
+        trib_vals.append((trib_vals[-1] + trib_vals[-2] + trib_vals[-3]) % M)
+
+    trib_vals = trib_vals[1:]
+
+    lat = get_lattice(trib_vals)
+    lat = lat.LLL()
+
+    R = qr_basis(lat)
+
+
+    start_tm = time.perf_counter()
+
+    S = 0
+    for n in range(N):
+
+        if n % 1000 == 0:
+            print(n)
+
+        S += enumerate_sv_lattice(lat, R)
+
+        trib_vals = gen_next_tribonacci(trib_vals)
+        lat = get_lattice(trib_vals)
+        lat = lat.LLL()
+        R = qr_basis(lat)
+
+    end_tm = time.perf_counter()
+    tot_tm = end_tm-start_tm
+    print("TIME = %.3lf" % tot_tm)
+
+    print(S)
+
+
+

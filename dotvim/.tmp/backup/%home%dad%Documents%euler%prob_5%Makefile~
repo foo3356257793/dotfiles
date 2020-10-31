@@ -1,0 +1,15 @@
+CC = gcc
+
+all: prob.o
+
+prob.o: prob.c
+	$(CC) -I/usr/include/flint -lflint -lgmp -g $+ -o $@
+
+prob_rust.o: prob_rust.rs
+	rustc $+ -o $@
+
+clean:
+	rm *.o
+
+.PHONY: clean
+

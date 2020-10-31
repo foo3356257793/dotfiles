@@ -1,0 +1,79 @@
+#!/usr/bin/sage
+
+def is_pentagonal(a):
+
+    if not is_square(1+24*a):
+
+        return False
+
+    k = ZZ(1 + sqrt(1+24*a))
+
+    return k % 6 == 0
+
+if __name__ == "__main__":
+
+    bd = 2**10
+
+    pentagonals = []
+
+    P = lambda x: x*(3*x-1)/2
+
+    go = True
+
+    i = 1
+
+    while go:
+
+        i += 1
+
+        P_j = P(i)
+
+        for k in range(1,i):
+
+            P_k = P(k)
+
+            if is_pentagonal(P_j+P_k) and is_pentagonal(P_j-P_k):
+
+                print(P_j, P_k)
+                print(P_j-P_k)
+
+                go = False
+                break
+
+
+    """
+    d=1
+
+    D = P(d)
+    n_bd = floor((D-1)/3)
+
+    while n_bd == 0:
+        d += 1
+        D = P(d)
+        n_bd = floor((D-1)/3)
+
+    go = True
+
+    while go:
+
+
+        D = P(d)
+        n_bd = floor((D-1)/3)
+
+        print(D)
+
+        for k in range(1,n_bd+1):
+
+            P_k = P(k)
+            P_j = D + P_k
+
+            if is_pentagonal(P_j):
+
+                if is_pentagonal(P_k+P_j):
+
+                    print(D, P_j, P_k)
+                    go = False
+                    break
+
+        d += 1
+    """

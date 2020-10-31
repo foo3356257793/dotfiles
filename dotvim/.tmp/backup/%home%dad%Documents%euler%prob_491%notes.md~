@@ -1,0 +1,54 @@
+Since $10 = -1 \bmod{11}$, divisibility by $11$
+is checked by summing the digits with alternating signs.
+
+**Question**.
+How many pandigital numbers?
+
+$$
+20! / 2^10 \approx 2^{51} \; .
+$$
+
+We cannot just exhaust these.
+
+
+How many partitions into two subsets?
+
+Upper bound
+
+$$
+binomial(20,10) \approx 2^{17}
+$$
+
+We could exhaust these.
+
+*note*.
+The sum of all digits is $0+1+\cdots+9 = 45$.
+Need the sum of each partition to be $45$.
+
+*next*.
+There are not that many valid partitions.
+
+Look through each partition and decide how many reorderings.
+
+## next
+
+I enumerated all pairs.
+Now I need to figure out how many numbers these pairs generate.
+
+_note_ The number of ways to permute one half is equal to the
+number of ways to permute the other half.
+
+## Leading zeros
+
+How do we count the number of permutations which have no leading zero?
+
+If there is one zero, we can place it in $9$ positions.  We then have $9!$
+ways to fill the other positions.
+
+## Error
+
+We have
+
+$O - E = 0 \bmod{11}$.
+
+We have $O + E = 90$.

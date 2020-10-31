@@ -1,0 +1,76 @@
+#!/usr/bin/sage
+
+function palindrome_from_tail(a, tail_digits, double_middle=True)
+
+    a_str = string(a)
+
+    while length(a_str) < tail_digits
+        a_str = "0" * a_str
+    end
+
+    rev_str = reverse(a_str)
+
+    if !double_middle
+        rev_str = rev_str[1:length(rev_str)-1]
+    end
+
+    full_str = rev_str * a_str
+
+    return parse(Int,full_str)
+
+end
+
+function is_palindrome_in_binary(a)
+
+    bin_str = string(a, base=2)
+    len_str = length(bin_str)
+
+    for i in 1:len_str÷2
+
+        if bin_str[i] != bin_str[len_str+1-i]
+            return false
+        end
+    end
+
+    return true
+end
+
+function prob_36()
+
+    a = 123
+
+    pal_numbers = []
+
+    for n_digits in 1:6
+
+        tail_size = (n_digits+1) ÷ 2
+
+        dbl_middle = (n_digits % 2 == 0)
+
+        for a in 0:10^tail_size-1
+
+            if a % 10 == 0
+                continue
+            end
+
+            pal = palindrome_from_tail(a, tail_size, dbl_middle)
+
+            if is_palindrome_in_binary(pal)
+
+                #println("$a, $pal, $(string(pal, base=2))")
+
+                if !(pal in pal_numbers)
+
+                    push!(pal_numbers,pal)
+
+                end
+            end
+        end
+    end
+
+    return sum(pal_numbers)
+end
+
+answer = prob_36()
+
+println(answer)

@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\pagenumbering{gobble}
+
+\usepackage{multicol}
+
+\def\blank{\rule{2in}{0.15mm}}
+
+%opening
+\title{Alphabetizing \#1}
+\author{for Anna Nelson}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{multicols}{2}
+
+  \large
+
+  \begin{tabular}{l}
+    Tools \\[40pt]
+    Saw \\[40pt]
+    Cars \\[40pt]
+    Wrench \\[40pt]
+    Hammer \\[40pt]
+  \end{tabular}
+
+  \columnbreak
+
+  \hspace{-1in}
+  \begin{tabular}{|l|}
+    \hline
+    1. \hspace{1.5in} \hspace{1.5in} \\[40pt]
+    \hline
+    2. \\[40pt]
+    \hline
+    3. \\[40pt]
+    \hline
+    4. \\[40pt]
+    \hline
+    5. \\[40pt]
+    \hline
+  \end{tabular}
+
+\end{multicols}
+
+\Large
+\centering
+
+\end{document}
+

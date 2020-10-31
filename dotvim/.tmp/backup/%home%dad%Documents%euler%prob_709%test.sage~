@@ -1,0 +1,23 @@
+#!/usr/bin/sage
+
+from itertools import accumulate
+
+
+p = 1020202009
+
+if __name__ == "__main__":
+
+    ans, blist = [1,1], [1]
+
+    N = 24680
+
+    for n in range(N-1):
+
+        if n % 100 == 0:
+            print(n)
+
+        blist = list(reversed(list(accumulate(reversed(blist))))) + [0] if n % 2 else [0] + list(accumulate(blist))
+
+        ans.append(sum(blist) % p)
+
+    print(ans[-1])

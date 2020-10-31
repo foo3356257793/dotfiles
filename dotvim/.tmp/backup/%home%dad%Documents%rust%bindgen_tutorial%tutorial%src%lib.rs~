@@ -1,0 +1,22 @@
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+#![allow(improper_ctypes)]
+
+include!("bindings.rs");
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+        let factor:fmpz_factor_t;
+        fmpz_factor_init(factor);
+
+        let x = 600851475143i64;
+        let X:fmpz_t;
+
+        fmpz_factor_clear(factor);
+
+        return true;
+    }
+}

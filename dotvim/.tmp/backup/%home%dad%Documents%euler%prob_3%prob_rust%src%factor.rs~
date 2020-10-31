@@ -1,0 +1,24 @@
+include!("bindings.rs");
+
+extern crate libc;
+
+use std::slice;
+
+fn factor(x: u64) -> [u64] {
+
+    unsafe{
+
+        let mut _factors = my_factor(x);
+        let factor_object = *_factors;
+
+        let num_factors = factor_object.num_factors;
+
+        let answer = slice::from_raw_parts(factor_object.factors, num_factors as usize);
+
+        // do we have to do this?
+        libc::free(_factors as *mut libc::c_void);
+
+        return *answer;
+
+    }
+}

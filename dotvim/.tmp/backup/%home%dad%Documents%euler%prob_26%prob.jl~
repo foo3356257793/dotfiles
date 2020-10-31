@@ -1,0 +1,48 @@
+function find_recurring_cycle(n)
+
+    remainders = [1]
+
+    r = 1
+    while true
+
+        r = (10 * r) % n
+
+        if r in remainders
+
+            index = findfirst(isequal(r), remainders)
+
+            len_cycle = length(remainders) - index
+
+            return len_cycle
+
+        end
+
+        push!(remainders, r)
+    end
+
+end
+
+function prob_26()
+    d = 999
+    answer = d
+
+    max_cycle = find_recurring_cycle(d)
+
+    while d > max_cycle
+
+        d -= 1
+        cycle = find_recurring_cycle(d)
+
+        if cycle > max_cycle
+            answer = d
+            max_cycle = cycle
+        end
+
+    end
+
+    return answer
+
+end
+
+prob_26()
+

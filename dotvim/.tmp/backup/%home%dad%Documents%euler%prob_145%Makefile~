@@ -1,0 +1,12 @@
+CC = gcc -std=gnu11
+
+all: prob_145.o
+
+%.o: %.c
+	$(CC) $+ -o $@ -lm -fopenmp
+
+clean:
+	rm -rf prob_655.o
+
+.PHONY: clean
+

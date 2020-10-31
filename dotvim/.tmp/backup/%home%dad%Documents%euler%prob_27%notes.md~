@@ -1,0 +1,23 @@
+# Notes
+
+$n^2 + an + b$ prime for $0 \leq n \leq k$
+
+Need $b$ to be prime (cutdown of a couple bits).
+
+To have $1 + a + b$ prime, need what?
+
+If $b \neq 2$, then need $a$ to be odd.
+If $b = 2$, then need $a$ even. (Can afford to exhaust these.)
+
+Modulo $3$, need what?
+
+$1 + a + b \neq 0 \bmod{3}$.
+$1 - a + b \neq 0 \bmod{3}$.
+
+This gives $a \neq -1-b$ and $a \neq 1-b$.
+If $b \equiv 1$, then this gives $a \neq 0,1$, so $a \equiv 2$.
+If $b \equiv 2$, then $a \neq 1, 2$, so $a \equiv 0$.
+
+*Idea*.
+For each $b$ value, look at mod $2 \times 3 \times 5 \times 7 \times 11$.
+

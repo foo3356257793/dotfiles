@@ -1,0 +1,137 @@
+//fn gen_candidates(n:i64, digits:&i64) -> &&i64 {
+fn gen_candidates(n:i64, digits:Vec<i64>) -> Vec<Vec<i64>> {
+
+    // TODO
+    let mut ret: Vec<Vec<i64>> = [].to_vec();
+    if n == 1 {
+        for d in digits {
+            let singleton: Vec<i64> = [d].to_vec();
+            ret.push(singleton);
+        }
+    }
+
+    for i in 0..digits.len() {
+        let d = digits[i];
+
+        let mut sub_array: Vec<i64> = [].to_vec();
+        for j in 0..d {
+            sub_array.push(digits[j as usize]);
+        }
+        for j in (d as usize)+1..digits.len() {
+            sub_array.push(digits[j]);
+        }
+        let sub_ret = gen_candidates(n-1, sub_array);
+
+        for tup in sub_ret {
+            let mut new_tup: Vec<i64> = [d].to_vec();
+            for k in tup {
+                new_tup.push(k);
+            }
+            ret.push(new_tup);
+        }
+    }
+
+    return ret;
+}
+
+fn prob_32() -> i64 {
+
+    let all_digits: Vec<i64> = (1..10).collect();
+    let candidates = gen_candidates(5, all_digits);
+
+    let mut products : Vec<i64> = [].to_vec();
+
+    for tup in candidates {
+        let a = tup[0] * 10 + tup[1];
+        let b = tup[2] * 100 + tup[3] * 10 + tup[4];
+
+        let mut c = a * b;
+
+        let full_tup : Vec<i64> = [].to_vec();
+        for t in tup {
+            full_tup.push(t);
+        }
+
+        let mut works = true;
+
+        while c > 0 {
+            let d = c % 10;
+
+            if (full_tup.contains(&d)) || (d == 0) {
+                works = false;
+                break;
+            }
+
+            full_tup.push(d);
+
+            c = c / 10;
+        }
+
+        if full_tup.len() != 9 {
+            works = false;
+        }
+
+        if works {
+            println!("{},{},{}", a, b, a*b);
+
+            if !(products.contains(&(a*b))) {
+                products.push(a*b);
+            }
+        }
+    }
+
+    for tup in candidates {
+        let a = tup[0];
+        let b = tup[1] * 1000 + tup[2] * 100 + tup[3] * 10 + tup[4];
+
+        let mut c = a * b;
+
+        let full_tup : Vec<i64> = [].to_vec();
+        for t in tup {
+            full_tup.push(t);
+        }
+
+        let mut works = true;
+
+        while c > 0 {
+            let d = c % 10;
+
+            if (full_tup.contains(&d)) || (d == 0) {
+                works = false;
+                break;
+            }
+
+            full_tup.push(d);
+
+            c = c / 10;
+        }
+
+        if full_tup.len() != 9 {
+            works = false;
+        }
+
+        if works {
+            println!("{},{},{}", a, b, a*b);
+
+            if !(products.contains(&(a*b))) {
+                products.push(a*b);
+            }
+        }
+    }
+
+    let mut answer = 0;
+    for p in products {
+        answer += p;
+    }
+
+    //return Sum(products);
+
+    return answer;
+}
+
+fn main() {
+
+    let answer = prob_32();
+
+    println!("{}", answer);
+}

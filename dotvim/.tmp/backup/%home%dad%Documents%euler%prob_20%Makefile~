@@ -1,0 +1,19 @@
+CC = gcc
+
+all: prob.o prob_cpp.o
+
+prob.o: prob.sage
+	cython -3 --embed prob.sage -o prob.c
+	gcc prob.c -I/usr/include/python3.8 -L/usr/lib64/python3.8 -lpython3.8 -o prob.o
+
+prob_cpp.o: prob.cpp
+	g++ -g $+ -o $@ -O3
+
+cf: prob.cpp
+	clang-format -i --style=Google $+
+
+clean:
+	rm prob.o
+
+.PHONY: clean
+

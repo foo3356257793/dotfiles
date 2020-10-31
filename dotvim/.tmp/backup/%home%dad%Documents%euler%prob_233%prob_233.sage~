@@ -1,0 +1,128 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    # gather all of the primes we are going to need
+    N_bd = 10**11
+    #N_bd = 2 * 5^3 * 13^2 * 17
+    #N_bd = 38000000
+
+    prime_bd = floor(N_bd / (5^3 * 13^2))
+
+    primes = prime_range(prime_bd)
+
+    good_primes = []
+    for p in primes:
+
+        if p % 4 == 1:
+            good_primes.append(p)
+
+    # make a table of the sum of values up to bound with
+    # no good prime factors
+    sieve_bd = floor(N_bd / (5^3 * 13^2 * 17))
+
+    sieve_counters = [1] * (sieve_bd+1)
+
+    for p in good_primes:
+
+        if p > sieve_bd:
+            break
+
+        m = p
+
+        while m <= sieve_bd:
+            sieve_counters[m] = 0
+            m += p
+
+    sum_good_factors = [0] * (sieve_bd+1)
+
+    for i in range(1,sieve_bd+1):
+
+        sum_good_factors[i] = sum_good_factors[i-1]
+
+        if sieve_counters[i] == 1:
+            sum_good_factors[i] += i
+
+    # idea
+    # exhaust p_1^3 * p_2^2 * p_3
+    # for each, exhaust coefficients coprime to good primes
+    S = 0
+
+    for p_1 in good_primes:
+
+        print("working on p_1 = %d..." % p_1)
+
+        N_1 = p_1^3
+
+        if N_1 > N_bd:
+            break
+
+        for p_2 in good_primes:
+
+            if p_2 == p_1:
+                continue
+
+            N_2 = N_1 * p_2^2
+
+            if N_2 > N_bd:
+                break
+
+            for p_3 in good_primes:
+
+                if p_3 == p_1 or p_3 == p_2:
+                    continue
+
+                N_3 = N_2 * p_3
+
+                if N_3 > N_bd:
+                    break
+
+                max_factor = floor(N_bd / N_3)
+
+                S += N_3 * sum_good_factors[max_factor]
+
+    # next there are other possibilities
+    for p_1 in good_primes:
+
+        N_1 = p_1^7
+
+        if N_1 > N_bd:
+            break
+
+        for p_2 in good_primes:
+
+            if p_2 == p_1:
+                continue
+
+            N_2 = N_1 * p_2^3
+
+            if N_2 > N_bd:
+                break
+
+            max_factor = floor(N_bd / N_2)
+
+            S += N_2 * sum_good_factors[max_factor]
+
+    # next there are other possibilities
+    for p_1 in good_primes:
+
+        N_1 = p_1^10
+
+        if N_1 > N_bd:
+            break
+
+        for p_2 in good_primes:
+
+            if p_2 == p_1:
+                continue
+
+            N_2 = N_1 * p_2^2
+
+            if N_2 > N_bd:
+                break
+
+            max_factor = floor(N_bd / N_2)
+
+            S += N_2 * sum_good_factors[max_factor]
+
+    print(S)

@@ -1,0 +1,30 @@
+# Hardest problem?
+
+Maybe the hardest problem in Project Euler.
+
+# Ideas
+
+Asymptotically, just depends on what the steps are.
+
+A $x \mapsto 3x+1$ must be followed by an
+$x \mapsto x/2$.
+
+There are certainly edge cases, however.
+
+Imagine a series of $x \mapsto (3x+1)/2 \mapsto \cdots$
+followed by $x \mapsto x/2$.  Choose so that $(3/2)^i (2)^{-j} \approx 1$.
+Then we have $x \mapsto cx + (1/2)(3/2)^{i-1}2^{-j} + (1/2)(3/2)^{i-2}2^{-j} + \cdots$.
+
+This gives
+$$
+c(x + 1)
+$$
+If $c < 1$, we could ask when
+$$
+c(x+1) > x
+$$
+when
+$$
+c > \frac{x}{x+1} \; .
+$$
+We can imagine this happening.

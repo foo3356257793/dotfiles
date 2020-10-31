@@ -1,0 +1,19 @@
+using Primes
+
+UPPER_BOUND = 2000000
+
+function prob_10(upper_bound)
+
+    p = 0
+
+    answer = 0;
+
+    while p < upper_bound
+        answer += p
+        p = nextprime(p+1)
+    end
+
+    println(answer);
+end
+
+prob_10(UPPER_BOUND)

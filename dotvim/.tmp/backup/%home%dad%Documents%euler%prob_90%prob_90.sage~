@@ -1,0 +1,49 @@
+#!/usr/bin/sage
+
+import itertools
+
+# replace 9 with 6
+squares = ['01', '04', '06', '16', '25', '36', '46', '64', '81']
+
+def check_cubes(cube_0, cube_1):
+
+    if len(cube_0) != 6 or len(cube_1) != 6:
+        return False
+
+    cube_0_str = [str(c) for c in cube_0]
+    cube_1_str = [str(c) for c in cube_1]
+
+    for cube in [cube_0_str, cube_1_str]:
+        if '9' in cube:
+            index = cube.index('9')
+            cube[index] = '6'
+
+    for s in squares:
+
+        if not( (s[0] in cube_0_str and s[1] in cube_1_str) or (s[0] in cube_1_str and s[1] in cube_0_str) ):
+            return False
+
+    return True
+
+
+if __name__ == "__main__":
+
+
+    digits = list(range(0,10))
+
+    all_cubes = []
+
+    for tup in itertools.combinations(digits, 6):
+
+        all_cubes.append(tup)
+
+    hits = []
+
+    for tup in itertools.combinations(all_cubes, 2):
+
+        if check_cubes(tup[0], tup[1]):
+
+            hits.append(tup)
+
+    print(len(hits))
+

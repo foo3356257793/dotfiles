@@ -1,0 +1,99 @@
+#!/usr/bin/sage
+
+freq_table = {}
+freq_table['E'] = 12.02
+freq_table['T'] = 9.10
+freq_table['A'] = 8.12
+freq_table['O'] = 7.68
+freq_table['I'] = 7.31
+freq_table['N'] = 6.95
+freq_table['S'] = 6.28
+freq_table['R'] = 6.02
+freq_table['H'] = 5.92
+freq_table['D'] = 4.32
+freq_table['L'] = 3.98
+freq_table['U'] = 2.88
+freq_table['C'] = 2.71
+freq_table['M'] = 2.61
+freq_table['F'] = 2.30
+freq_table['Y'] = 2.11
+freq_table['W'] = 2.09
+freq_table['G'] = 2.03
+freq_table['P'] = 1.82
+freq_table['B'] = 1.49
+freq_table['V'] = 1.11
+freq_table['K'] = 0.69
+freq_table['X'] = 0.17
+freq_table['Q'] = 0.11
+freq_table['J'] = 0.10
+freq_table['Z'] = 0.07
+
+num_to_freq = {}
+uppercase_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+for i in range(26):
+    #num_to_freq[65+i] = freq_table[uppercase_letters[i]]
+
+    # ignore capital letters
+    num_to_freq[97+i] = freq_table[uppercase_letters[i]]
+
+def score_key(vals, key):
+
+    score = 0
+    for v in vals:
+
+        p = v ^^ key
+
+        if p in num_to_freq:
+
+            score += num_to_freq[p]
+
+    return score
+
+
+if __name__ == "__main__":
+
+    fp = open('cipher.txt', 'r')
+
+    line = fp.readline()
+
+    fp.close()
+
+    vals = line.split(',')
+    vals = [int(v) for v in vals]
+
+    vals_by_key = [[],[],[]]
+
+    for i in range(len(vals)):
+
+        vals_by_key[i%3].append(vals[i])
+
+    ans_key = []
+
+    for i in range(3):
+
+        max_score = 0
+        arg_max = -1
+
+        for key in range(128):
+
+            score = score_key(vals_by_key[i], key)
+
+            if score > max_score:
+                max_score = score
+                arg_max = key
+
+        ans_key.append(arg_max)
+
+    # check the key
+    text = ''
+    S = 0
+    for i in range(len(vals)):
+
+        val = vals[i] ^^ ans_key[i%3]
+
+        text += chr(val)
+
+        S += val
+
+    print(text)

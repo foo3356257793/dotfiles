@@ -1,0 +1,7 @@
+# Ideas
+
+Have a vector of probabilities of rolls.
+
+Compute a matrix of transition probabilities.
+
+Most likely is an eigenvector?

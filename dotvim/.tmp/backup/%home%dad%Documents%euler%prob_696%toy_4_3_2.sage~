@@ -1,0 +1,223 @@
+#!/usr/bin/sage
+
+import itertools
+
+def _gen_all_hands(hand,S,i,n,T):
+
+    if S==T:
+        return [hand]
+    elif i == n:
+        return []
+
+    branch_hand = copy(hand)
+
+    ret = []
+    for j in range(5):
+
+        ret += _gen_all_hands(copy(branch_hand), S, i+1, n, T)
+
+        branch_hand[i] += 1
+        S += 1
+
+        if S > T:
+            break
+
+    return ret
+
+def gen_all_hands(n,T):
+
+    hand = [0] * n
+
+    return _gen_all_hands(hand, 0, 0, n, T)
+
+# chow is a run of three
+def remove_chow(hand, starting_index):
+
+    if hand == None:
+        return None
+
+    # verify that this is possible
+    if (starting_index + 2 >= len(hand)) or (hand[starting_index] < 1) or (hand[starting_index+1] < 1) or (hand[starting_index+2] < 1):
+        return None
+
+    red_hand = copy(hand)
+    for j in range(3):
+        red_hand[starting_index+j] -= 1
+
+    return red_hand
+
+# pung is a set of three
+def remove_pung(hand, starting_index):
+
+    if hand == None:
+        return None
+
+    if (starting_index >= len(hand)) or (hand[starting_index] < 3):
+        return None
+
+    red_hand = copy(hand)
+    red_hand[starting_index] -= 3
+
+    return red_hand
+
+# pair is a set of two
+def remove_pair(hand, starting_index):
+
+    if hand == None:
+        return None
+
+    if (starting_index >= len(hand)) or (hand[starting_index] < 2):
+        return None
+
+    red_hand = copy(hand)
+    red_hand[starting_index] -= 2
+
+    return red_hand
+
+def reduce_hand(hand,index,len_hand):
+
+    if index == len_hand:
+        return True
+
+    red_hand = copy(hand)
+
+    if hand[index] == 1:
+
+        red_hand = remove_chow(red_hand,index)
+
+    if hand[index] == 2:
+
+        # already removed any pairs
+        red_hand = remove_chow(red_hand,index)
+        red_hand = remove_chow(red_hand,index)
+
+    if hand[index] == 3:
+
+        # can assume a pung is sufficient
+        red_hand = remove_pung(red_hand,index)
+
+    if hand[index] == 4:
+
+        # can assume a pung is sufficient
+        red_hand = remove_pung(red_hand,index)
+        red_hand = remove_chow(red_hand,index)
+
+    if red_hand == None:
+        return False
+
+    return reduce_hand(red_hand,index+1,len_hand)
+
+def is_winning(hand):
+
+    len_hand = len(hand)
+
+    if (sum(hand) - 2) % 3 != 0:
+        return False
+
+    ret = False
+
+    for i in range(len(hand)):
+
+        if hand[i] >= 2:
+
+            red_hand = remove_pair(hand,i)
+
+            ret = reduce_hand(red_hand,0,len_hand)
+
+            if ret:
+                break
+
+    return ret
+
+if __name__ == "__main__":
+
+
+    n = 4
+    s = 3
+    t = 2
+
+    #hands = gen_all_hands(3*n,3*t+2)
+
+    hands = []
+
+    for i in range(t+1):
+
+        hands_i = gen_all_hands(n,3*i+2)
+
+        for j in range((t-i)+1):
+
+            hands_j = gen_all_hands(n,3*j)
+
+            k = t-i-j
+
+            hands_k = gen_all_hands(n,3*k)
+
+            for tup in itertools.product(hands_i,hands_j,hands_k):
+
+                hands.append(tup[0] + [0] + tup[1] + [0] + tup[2])
+
+    print("%d hands" % len(hands))
+
+    n_win_red = 0
+
+    n_print = 8
+    check_hand = hands[0]
+
+    for hand in hands:
+
+        if is_winning(hand[0:n]) and reduce_hand(hand[n+1:2*n+1],0,n) and reduce_hand(hand[2*n+2:3*n+2],0,n):
+
+            n_win_red += 1
+
+    n_win_red *= 3
+
+    print(n_win_red)
+
+    # now I want to gather things nicely
+
+    n_winning_hands_i = []
+
+    for i in range(t+1):
+
+        hands_i = gen_all_hands(n,3*i+2)
+
+        n_win = 0
+
+        for hand in hands_i:
+
+            if is_winning(hand):
+
+                n_win += 1
+
+        n_winning_hands_i.append(n_win)
+
+    n_winning_hands_j = []
+
+    for j in range(t+1):
+
+        hands_j = gen_all_hands(n,3*j)
+
+        n_win = 0
+
+        for hand in hands_j:
+
+            if reduce_hand(hand,0,n):
+
+                n_win += 1
+
+        n_winning_hands_j.append(n_win)
+
+    n_win_condensed = 0
+
+    for i in range(t+1):
+
+        win_i = n_winning_hands_i[i]
+
+        for j in range((t-i)+1):
+
+            k = t-i-j
+
+            win_j = n_winning_hands_j[j]
+            win_k = n_winning_hands_j[k]
+
+            n_win_condensed += win_i * win_j * win_k

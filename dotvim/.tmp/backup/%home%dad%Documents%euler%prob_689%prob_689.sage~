@@ -1,0 +1,162 @@
+#!/usr/bin/sage
+
+import itertools
+
+import time
+
+def binary_search_list(input_list, min_index, max_index, target):
+    """
+    find min index in [min_index, max_index]
+    which is at least 'target'
+
+    Assume at least this at max_index
+    """
+
+    if max_index-min_index == 0:
+        return min_index
+
+    if max_index-min_index == 1:
+        if input_list[min_index] >= target:
+            return min_index
+        else:
+            return max_index
+
+    mid = (max_index+min_index) >> 1
+
+    if input_list[mid] >= target:
+        return binary_search_list(input_list, min_index, mid, target)
+    else:
+        return binary_search_list(input_list, mid, max_index, target)
+
+if __name__ == "__main__":
+
+    tot_sum = pi^2/6
+
+    # first digit = 1 gives a guaranteed hit
+    # look at first digit = 0
+
+    chunk_size = 12
+
+    coeffs_0 = [1/(i+2)^2 for i in range(chunk_size)]
+
+    vals_0 = []
+
+    for tup in itertools.product(range(2), repeat=chunk_size):
+
+        val = sum([tup[i] * coeffs_0[i] for i in range(chunk_size)])
+
+        vals_0.append(val)
+
+    vals_0.sort()
+
+    coeffs_1 = [1/(chunk_size+i+2)^2 for i in range(chunk_size)]
+
+    vals_1 = []
+
+    for tup in itertools.product(range(2), repeat=chunk_size):
+
+        val = sum([tup[i] * coeffs_1[i] for i in range(chunk_size)])
+
+        vals_1.append(val)
+
+    vals_1.sort()
+
+    max_rem = tot_sum - 1 - sum(coeffs_0) - sum(coeffs_1)
+
+    guar_hit = 0.5
+    guar_miss = 0.5 - max_rem
+
+    num_0 = len(vals_0)
+    num_1 = len(vals_1)
+
+    num_hit = 0
+    num_miss = 0
+    pr_mid = 0.0
+
+    # Gaussian approx of the tail
+    tail_start = 2 + 2 * chunk_size
+
+    mean_tail = 0.5 * (zeta(2) - sum([1/i^2 for i in range(1,tail_start)]))
+    var_tail = 0.25 * (zeta(4) - sum([1/i^4 for i in range(1,tail_start)]))
+    std_tail = sqrt(var_tail)
+    
+    T = RealDistribution('gaussian', 1)
+
+    start_new = time.perf_counter()
+
+    for i_0 in range(num_0):
+        v_0 = vals_0[i_0]
+
+        # look through vals_1 to find smallest feasible
+        # and also maximum for guar hit
+
+        if v_0 + vals_1[-1] <= guar_miss:
+
+            # in this case everything fails
+            num_miss += num_1
+
+            # we are done here
+            continue
+
+        j_min = 0
+
+        if v_0 + vals_1[0] <= guar_miss:
+
+            # have ensured that v_0 + vals_1[j] > guar_miss
+            # min at some j > 0
+
+            min_target = guar_miss - v_0
+            j_min = binary_search_list(vals_1, 0, num_1-1, min_target)
+
+        num_miss += j_min
+
+        if v_0 + vals_1[0] >= guar_hit:
+
+            num_hit += num_1
+
+            # we are done here
+            continue
+
+        j_max = num_1
+
+        if v_0 + vals_1[-1] >= guar_hit:
+
+            # have ensured that v_0 + vals_1[j] >= guar_hit
+            # find the minimal such value
+
+            max_target = guar_hit - v_0
+            j_max = binary_search_list(vals_1, j_min, num_1-1, max_target)
+
+        num_hit += (num_1 - j_max)
+
+        # NOTE: below j_min is guar_miss, at j_max or above is guar hit
+        for j in range(j_min, j_max):
+
+            live_val = v_0 + vals_1[j]
+            tail_val = guar_hit - live_val
+
+            z_score = (tail_val - mean_tail) / std_tail
+
+            # approx prob of being over the tail threshold
+            pr_mid += (1/(num_0*num_1)) * (1 -
+                    T.cum_distribution_function(z_score))
+
+
+    end_new = time.perf_counter()
+
+    time_new = end_new - start_new
+
+    print('TIME : %.6lf' % time_new)
+
+    # where are we at?
+    hit_pr = num_hit / (num_0 * num_1)
+    miss_pr = num_miss / (num_0 * num_1)
+
+    # readjust for first digit thing
+    hit_pr = 0.5 + 0.5 * hit_pr
+    miss_pr = 0.5 * miss_pr
+    pr_mid = 0.5 * pr_mid
+
+    print('pr hit already = %.9lf' % hit_pr)
+    print('pr miss already = %.9lf' % miss_pr)
+    print('approx pr hit = %.9lf' % (hit_pr + pr_mid))

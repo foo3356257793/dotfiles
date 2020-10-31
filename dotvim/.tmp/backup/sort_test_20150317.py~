@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+
+from random import *
+from math import sqrt, log
+
+def is_sorted(list):
+  for i in range(1,len(list)):
+    if list[i] < list[i-1]:
+      return False
+  return True
+
+seed()
+
+vN = (1<<4)
+N = 16 * vN
+num_buckets = 16
+bits = 16
+
+a = [None] * N
+b = [None] * N*num_buckets
+
+for tile in range(0,num_buckets):
+  for j in range(0,N):
+    a[j] = getrandbits(bits)
+  a.sort()
+  for j in range(0,N):
+    bucket = j // (N//num_buckets)
+    b[bucket*N + tile*(N//num_buckets) + (j%(N//num_buckets))] = a[j]
+
+for bucket in range(0,num_buckets):
+  for j in range(0,N):
+    a[j] = b[bucket*N+j]
+  a.sort()
+  for j in range(0,N):
+    b[bucket*N+j] = a[j]
+
+# tile up buy halves
+for bucket in range(0,num_buckets-1):
+  for j in range(0,N):
+    a[j] = b[bucket*N + (N//2) + j]
+  a.sort()
+  for j in range(0,N):
+    b[bucket*N+(N//2)+j] = a[j]
+  for j in range(0,N):
+    a[j] = b[bucket*N + (N) + j]
+  a.sort()
+  for j in range(0,N):
+    b[bucket*N+(N)+j] = a[j]
+
+#analyze bucket to see what things are in the right place
+wrong_4_bit = [0] * num_buckets
+for bucket in range(0,num_buckets):
+  for j in range(0,N):
+    digit = b[bucket*N+j] >> 12
+    if digit != bucket:
+      wrong_4_bit[bucket] += 1
+  print("bucket %d -> %d (%f)" % (bucket, wrong_4_bit[bucket],
+    wrong_4_bit[bucket]/N) )
+
+for bucket in range(0,num_buckets):
+  print("")
+  for i in range(0,N):
+    print("%4X" % b[bucket*N+i], end=" ")
+    if(i % 16 == 15):
+      print("")
+
+print("is sorted?")
+print(is_sorted(b))

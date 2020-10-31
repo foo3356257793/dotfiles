@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+typedef struct matrix {
+  int num_rows, num_cols;
+  double *mat;
+  char tail[];
+} matrix_t;
+
+size_t sizeof_matrix_t(int num_rows, int num_cols)
+{
+
+  size_t header = 128;
+  size_t contents = num_rows * num_cols * sizeof(double);
+
+  return header + contents;
+}
+
+matrix_t *matrix_new(int num_rows, int num_cols)
+{
+  size_t bytes = sizeof_matrix_t(num_rows, num_cols);
+
+  matrix_t *mat = (matrix_t *) malloc(bytes);
+
+  mat->num_rows = num_rows;
+  mat->num_cols = num_cols;
+
+  mat->mat = (double *) mat->tail;
+
+  for(int index=0; index<num_rows*num_cols; index++)
+  {
+    mat->mat[index] = 0;
+  }
+
+  return mat;
+}
+
+void matrix_show(matrix_t *mat)
+{
+	for(int row = 0; row < mat->num_rows; row++) {
+		for (int col = 0; col < mat->num_cols; col++) {
+			printf(" %8.3f", mat->mat[row * mat->num_cols + col]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+void matrix_delete(matrix_t *mat)
+{
+  free(mat);
+}
+
+double *get_index(matrix_t *mat, int row, int col)
+{
+  return &(mat->mat[row * mat->num_cols + col]);
+}
+
+double in[][3] = {
+  { 12, -51,   4},
+  {  6, 167, -68},
+  { -4,  24, -41},
+};
+
+int main(int argc, char *argv[])
+{
+
+  printf("Hello, world!\n");
+
+  int num_rows = 3;
+  int num_cols = num_rows;
+
+  printf("%ld bytes\n", sizeof_matrix_t(num_rows,num_cols));
+
+  matrix_t *mat = matrix_new(num_rows, num_cols);
+
+  for(int row=0; row<num_rows; row++)
+  {
+    for(int col=0; col<num_cols; col++)
+    {
+      //mat->mat[row * mat->num_cols + col] = in[row][col];
+      *(get_index(mat,row,col)) = in[row][col];
+    }
+  }
+
+  matrix_show(mat);
+
+  matrix_delete(mat);
+
+}
+

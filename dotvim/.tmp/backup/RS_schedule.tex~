@@ -1,0 +1,283 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[top=0in, bottom=0in, left=0in, right=0in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\usepackage{fontspec}
+% \setmainfont{HelveticaNeue}
+\usepackage{anyfontsize} %For arbitrary font sizes
+
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+\title{ 2014 Melchizedek Priesthood and Relief Society Sunday Lessons}
+\author{}
+\date{}
+
+\begin{document}
+
+\thispagestyle{empty}
+\begin{center}
+	{\fontsize{35}{50}\bf 2014 Melchizedek Priesthood and 
+
+		\vspace{.25 em}
+
+	Relief Society Sunday Lessons}
+\end{center}
+
+\begin{centering}
+	\begin{table}[!ht]
+		\centering
+		\fontsize{19}{25}\selectfont
+		\begin{tabular}{ l l}
+			\hline
+			Jan 5 & Leadership Instruction\\
+			Jan 12 & {\it Teachings of Presidents of the Church:
+		Joseph Fielding Smith}\\
+		&Lesson 1:
+			Our Father in Heaven\\
+			Jan 19 & {\it Teachings of Presidents of the Church:
+		Joseph Fielding Smith}\\
+			& Lesson 2: Our Savior, Jesus Christ\\
+		Jan 26 & {\it Teachings for our Times}\\
+						 & Bishop Gerard Causse, Ye Are No More
+			Strangers\\
+			Feb 2 & Leadership Instruction\\
+			Feb 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+		Smith}\\
+			& Lesson 3: The Plan of Salvation\\
+		Feb 16 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+			& Lesson 4: Strengthening and Preserving the Family\\
+	Feb 23 & {\it Teachings for our Times}\\
+						 & President Peter F. Uchtdorf, You Can
+			Do It Now\\
+			Mar 2 & {\it Teachings of Presidents of the Church: Joseph Fielding
+		Smith}\\
+			& Lesson 5: Faith and Repentance\\
+		Mar 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+	Smith}\\
+			& Lesson 6: The Significance of the Sacrament\\
+			Mar 16 & Stake Conference\\
+	Mar 23 & {\it Teachings for our Times}\\
+						 & President Henry B. Eyring, Bind Up
+			Their Wounds\\
+			Mar 30 & Bishop Discretion\\
+			Apr 6 & General Conference\\
+			Apr 13 & {\it Teachings of Presidents of the Church: Joseph
+		Fielding Smith}\\
+			& Lesson 7: Joseph and Hyrum Smith, Witnesses for Jesus Christ\\
+		Apr 20 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+			& Lesson 8: The Church and Kingdom of God\\
+	Apr 27 & {\it Teachings for our Times}\\
+						 & President Thomas S. Monson, True
+			Shepherds\\
+			\hline
+		\end{tabular}
+	\end{table}
+\end{centering}
+\pagebreak
+
+
+\thispagestyle{empty}
+\begin{center}
+	{\fontsize{35}{50}\bf 2014 Melchizedek Priesthood and 
+	\\ Relief Society Sunday Lessons}
+\end{center}
+
+\begin{centering}
+	\begin{table}[!ht]
+		\centering
+		\fontsize{19}{25}\selectfont
+		\begin{tabular}{ l l}
+			\hline
+			Jan 5 & Leadership Instruction\\
+			Jan 12 & {\it Teachings of Presidents of the Church:
+		Joseph Fielding Smith}\\
+		&Lesson 1:
+		Our Father in Heaven\\
+		Jan 19 & {\it Teachings of Presidents of the Church:
+	Joseph Fielding Smith}\\
+	& Lesson 2: Our Savior, Jesus Christ\\
+	Jan 26 & {\it Teachings for our Times}\\
+							& Bishop Gerard Causse, Ye Are No More
+	Strangers\\
+	Feb 2 & Leadership Instruction\\
+	Feb 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+Smith}\\
+& Lesson 3: The Plan of Salvation\\
+Feb 16 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+	& Lesson 4: Strengthening and Preserving the Family\\
+	Feb 23 & {\it Teachings for our Times}\\
+							& President Peter F. Uchtdorf, You Can
+	Do It Now\\
+	Mar 2 & {\it Teachings of Presidents of the Church: Joseph Fielding
+Smith}\\
+& Lesson 5: Faith and Repentance\\
+Mar 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+	Smith}\\
+	& Lesson 6: The Significance of the Sacrament\\
+	Mar 16 & Stake Conference\\
+	Mar 23 & {\it Teachings for our Times}\\
+							& President Henry B. Eyring, Bind Up
+	Their Wounds\\
+	Mar 30 & Bishop Discretion\\
+	Apr 6 & General Conference\\
+	Apr 13 & {\it Teachings of Presidents of the Church: Joseph
+Fielding Smith}\\
+& Lesson 7: Joseph and Hyrum Smith, Witnesses for Jesus Christ\\
+Apr 20 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+	& Lesson 8: The Church and Kingdom of God\\
+	Apr 27 & {\it Teachings for our Times}\\
+							& President Thomas S. Monson, True
+	Shepherds\\
+	\hline
+\end{tabular}
+	\end{table}
+\end{centering}
+\pagebreak
+
+
+\thispagestyle{empty}
+\begin{center}
+	{\fontsize{35}{50}\bf 2014 Melchizedek Priesthood and
+	\\ Relief Society Sunday Lessons}
+\end{center}
+
+\begin{centering}
+	\begin{table}[!ht]
+		\centering
+		\fontsize{19}{25}\selectfont
+		\begin{tabular}{ l l}
+			\hline
+			Jan 5 & Leadership Instruction\\
+			Jan 12 & {\it Teachings of Presidents of the Church:
+		Joseph Fielding Smith}\\
+		&Lesson 1:
+		Our Father in Heaven\\
+		Jan 19 & {\it Teachings of Presidents of the Church:
+	Joseph Fielding Smith}\\
+	& Lesson 2: Our Savior, Jesus Christ\\
+	Jan 26 & {\it Teachings for our Times}\\
+							& Bishop Gerard Causse, Ye Are No More
+	Strangers\\
+	Feb 2 & Leadership Instruction\\
+	Feb 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+Smith}\\
+& Lesson 3: The Plan of Salvation\\
+Feb 16 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+	& Lesson 4: Strengthening and Preserving the Family\\
+	Feb 23 & {\it Teachings for our Times}\\
+							& President Peter F. Uchtdorf, You Can
+	Do It Now\\
+	Mar 2 & {\it Teachings of Presidents of the Church: Joseph Fielding
+Smith}\\
+& Lesson 5: Faith and Repentance\\
+Mar 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+	Smith}\\
+	& Lesson 6: The Significance of the Sacrament\\
+	Mar 16 & Stake Conference\\
+	Mar 23 & {\it Teachings for our Times}\\
+							& President Henry B. Eyring, Bind Up
+	Their Wounds\\
+	Mar 30 & Bishop Discretion\\
+	Apr 6 & General Conference\\
+	Apr 13 & {\it Teachings of Presidents of the Church: Joseph
+Fielding Smith}\\
+& Lesson 7: Joseph and Hyrum Smith, Witnesses for Jesus Christ\\
+Apr 20 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+	& Lesson 8: The Church and Kingdom of God\\
+	Apr 27 & {\it Teachings for our Times}\\
+							& President Thomas S. Monson, True
+	Shepherds\\
+	\hline
+\end{tabular}
+	\end{table}
+\end{centering}
+\pagebreak
+
+
+\thispagestyle{empty}
+\begin{center}
+	{\fontsize{35}{50}\bf 2014 Melchizedek Priesthood and
+	\\ Relief Society Sunday Lessons}
+\end{center}
+
+\begin{centering}
+	\begin{table}[!ht]
+		\centering
+		\fontsize{19}{25}\selectfont
+		\begin{tabular}{ l l}
+			\hline
+			Jan 5 & Leadership Instruction\\
+			Jan 12 & {\it Teachings of Presidents of the Church:
+		Joseph Fielding Smith}\\
+		&Lesson 1:
+		Our Father in Heaven\\
+		Jan 19 & {\it Teachings of Presidents of the Church:
+	Joseph Fielding Smith}\\
+	& Lesson 2: Our Savior, Jesus Christ\\
+	Jan 26 & {\it Teachings for our Times}\\
+							& Bishop Gerard Causse, Ye Are No More
+	Strangers\\
+	Feb 2 & Leadership Instruction\\
+	Feb 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+Smith}\\
+& Lesson 3: The Plan of Salvation\\
+Feb 16 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+	& Lesson 4: Strengthening and Preserving the Family\\
+	Feb 23 & {\it Teachings for our Times}\\
+							& President Peter F. Uchtdorf, You Can
+	Do It Now\\
+	Mar 2 & {\it Teachings of Presidents of the Church: Joseph Fielding
+Smith}\\
+& Lesson 5: Faith and Repentance\\
+Mar 9 & {\it Teachings of Presidents of the Church: Joseph Fielding
+	Smith}\\
+	& Lesson 6: The Significance of the Sacrament\\
+	Mar 16 & Stake Conference\\
+	Mar 23 & {\it Teachings for our Times}\\
+							& President Henry B. Eyring, Bind Up
+	Their Wounds\\
+	Mar 30 & Bishop Discretion\\
+	Apr 6 & General Conference\\
+	Apr 13 & {\it Teachings of Presidents of the Church: Joseph
+Fielding Smith}\\
+& Lesson 7: Joseph and Hyrum Smith, Witnesses for Jesus Christ\\
+Apr 20 & {\it Teachings of Presidents of the Church: Joseph
+	Fielding Smith}\\
+	& Lesson 8: The Church and Kingdom of God\\
+	Apr 27 & {\it Teachings for our Times}\\
+							& President Thomas S. Monson, True
+	Shepherds\\
+	\hline
+\end{tabular}
+	\end{table}
+\end{centering}
+\pagebreak
+	\end{document}

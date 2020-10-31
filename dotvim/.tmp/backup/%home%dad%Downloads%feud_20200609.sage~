@@ -1,0 +1,50 @@
+#!/usr/bin/sage
+
+import re
+
+def process_group(group):
+
+    vals = [int(tup[1]) for tup in group]
+
+    S = sum(vals)
+
+    scaled_vals = [round( v * 100 / S ) for v in vals]
+    scaled_vals[0] = 100 - sum(scaled_vals[1:])
+
+    for i in range(len(scaled_vals)):
+        print("%s\t%d" % (group[i][0], scaled_vals[i]))
+
+if __name__ == "__main__":
+
+    fp = open('raw.txt', 'r')
+
+    lines = fp.readlines()
+
+    fp.close()
+
+    temp = re.compile("([^0-9]+)([0-9]+)")
+
+    start_group = True
+    group = []
+
+    for line in lines:
+
+        res = temp.match(line)
+
+        if res==None and not start_group:
+
+            print('')
+            print('done with group!')
+
+            process_group(group)
+
+            start_group = True
+            group = []
+
+        if res != None:
+            gps = res.groups()
+            group.append(gps)
+
+            start_group = False
+
+    process_group(group)

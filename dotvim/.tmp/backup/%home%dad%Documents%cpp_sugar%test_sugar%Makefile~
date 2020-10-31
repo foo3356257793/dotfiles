@@ -1,0 +1,15 @@
+CXX = g++ -std=c++20 -O3 -g
+INCLUDE = -I..
+LIBS =
+
+all: test
+
+
+test: test.cpp
+	$(CXX) $(INCLUDE) $+ -o $@ $(LIBS)
+
+clean:
+	rm -rf test
+
+.PHONY: clean
+

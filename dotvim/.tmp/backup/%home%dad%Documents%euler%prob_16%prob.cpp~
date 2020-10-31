@@ -1,0 +1,41 @@
+#include <gmp.h>
+#include <gmpxx.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <iostream>
+
+using namespace std;
+
+/*
+ * 2^1000 digit sum
+ */
+
+const int exponent = 1000;
+
+int main() {
+  mpz_class big_power_of_2 = 1;
+
+  /*
+   * Note to self: in C, would have to call a special function to multiply by
+   * 2^exponent.  This is much easier!
+   */
+  big_power_of_2 <<= exponent;
+
+  mpz_class answer = 0;
+  mpz_class temporary_variable;
+
+  while(big_power_of_2 > 0)
+  {
+    /*
+    answer += big_power_of_2 % 10;
+    big_power_of_2 /= 10;
+    */
+
+    mpz_fdiv_qr_ui(big_power_of_2.get_mpz_t(), temporary_variable.get_mpz_t(), big_power_of_2.get_mpz_t(), 10);
+    answer += temporary_variable;
+  }
+
+  cout << answer << "\n";
+}

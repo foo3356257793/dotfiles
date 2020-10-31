@@ -1,0 +1,18 @@
+CXX = g++ -std=c++20 -O3
+CPPFLAGS =
+INCLUDE =
+LIBS = -fopenmp -lgmp
+
+all: prob_40
+
+prob_40: prob.cpp
+	$(CXX) $(CPPFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+cf: prob.cpp
+	clang-format -i --style=Google $+
+
+clean:
+	rm prob.o
+
+.PHONY: clean
+

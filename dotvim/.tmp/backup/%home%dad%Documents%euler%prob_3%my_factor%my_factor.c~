@@ -1,0 +1,33 @@
+#include "my_factor.h"
+
+
+my_factors_t *my_factor(uint64_t number)
+{
+
+  // initialize the factoring object
+  fmpz_factor_t factor;
+  fmpz_factor_init(factor);
+
+  fmpz_t number_object;
+  fmpz_init_set_ui(number_object, number);
+
+  fmpz_factor(factor, number_object);
+
+  my_factors_t *answer = malloc(sizeof(my_factors_t));
+  answer->num_factors = factor->num;
+  answer->factors = malloc(answer->num_factors * sizeof(uint64_t));
+
+  for(int i=0; i<answer->num_factors; i++)
+  {
+    answer->factors[i] = factor->p[i];
+  }
+
+  // clean up the fmpz_t object
+  fmpz_clear(number_object);
+
+  // clean up the factoring object
+  fmpz_factor_clear(factor);
+
+  return answer;
+
+}

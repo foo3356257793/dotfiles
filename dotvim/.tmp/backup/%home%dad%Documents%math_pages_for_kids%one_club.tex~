@@ -1,0 +1,49 @@
+\documentclass[20pt]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{One Club.}
+
+Check if these numbers are in the one club.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[height=2.5in]{nb_1.jpg}
+  \end{center}
+\end{figure}
+
+
+\paragraph{Problems}
+
+\begin{enumerate}
+  \item Is $1$ in the one club? {\bf Yes} or {\bf No}.
+  \item Is $\pi$ in the one club? {\bf Yes} or {\bf No}.
+  \item Is $13$ in the three club?  {\bf Yes} or {\bf No}.
+  \item Is $57$ in the three club?  {\bf Yes} or {\bf No}.
+  \item Is $123$ in the three club?  {\bf Yes} or {\bf No}.
+\end{enumerate}
+
+
+
+\end{document}
+

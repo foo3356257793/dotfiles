@@ -1,0 +1,40 @@
+#!/usr/bin/sage
+
+""" Project Euler Problem 21 solution. """
+
+# import sage.all # pylint: disable=unused-import
+
+if __name__ == "__main__":
+
+    N = 10000
+
+    sum_divisors = [0] * (N+1)
+
+    for i in range(1, N+1):
+
+        mul_i = 2*i # don't count i for itself b/c proper divisors
+
+        while mul_i <= N:
+
+            sum_divisors[mul_i] += i
+            mul_i += i
+
+    # search over this array to find d[a] = b, d[b] = a
+
+    SUM_AMICABLE = 0
+
+    for a in range(1, N+1):
+
+        b = sum_divisors[a]
+
+        if b < a:
+
+            c = sum_divisors[b]
+
+            if a == c:
+
+                print("%d and %d are amicable" % (b, a))
+
+                SUM_AMICABLE += a + b
+
+    print('sum of amicable is %d' % SUM_AMICABLE)

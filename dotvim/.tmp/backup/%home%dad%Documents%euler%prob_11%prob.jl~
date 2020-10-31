@@ -1,0 +1,70 @@
+using Base
+
+function prob_11()
+
+    grid = Vector{Vector{Int}}()
+
+    lines = readlines("input.txt")
+
+    for line in lines
+
+        row = Vector{Int}()
+
+        parsed = split(line)
+        for d in parsed
+            push!(row, parse(Int,d))
+        end
+
+        push!(grid, row)
+    end
+
+    answer = Base.Threads.Atomic{Int}(1)
+
+    # left to right
+    Base.Threads.@threads for i in 1:20
+        for j in 1:17
+            prod = 1
+            for k in 0:3
+                prod *= grid[i][j+k]
+            end
+            Base.Threads.atomic_max!(answer,prod)
+        end
+    end
+
+    Base.Threads.@threads for j in 1:20
+        for i in 1:17
+            prod = 1
+            for k in 0:3
+                prod *= grid[i+k][j]
+            end
+            Base.Threads.atomic_max!(answer,prod)
+        end
+    end
+
+
+    # diag lu to rd
+    Base.Threads.@threads for i in 1:17
+        for j in 1:17
+            prod = 1
+            for k in 0:3
+                prod *= grid[i+k][j+k]
+            end
+            Base.Threads.atomic_max!(answer,prod)
+        end
+    end
+
+    # diag ru to ld
+    Base.Threads.@threads for i in 1:17
+        for j in 4:20
+            prod = 1
+            for k in 0:3
+                prod *= grid[i+k][j-k]
+            end
+            Base.Threads.atomic_max!(answer,prod)
+        end
+    end
+
+    println(answer[])
+end
+
+prob_11()

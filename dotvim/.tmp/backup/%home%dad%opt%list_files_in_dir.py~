@@ -1,0 +1,17 @@
+#!/usr/bin/python3
+
+import os
+
+if __name__ == "__main__":
+
+    for root, dirs, files in os.walk(".", topdown=True):
+
+        files = [f for f in files if not f[0] == '.']
+        dirs[:] = [d for d in dirs if not d[0] == '.']
+
+        for f in files:
+
+            full_fname = f'{root}/{f}'
+
+            if full_fname[0:2] == './':
+                full_fname = [2:]

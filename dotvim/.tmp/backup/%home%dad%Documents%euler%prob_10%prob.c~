@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <ulong_extras.h>
+
+#define UPPER_BOUND (2000000)
+
+int main(int argc, char *argv[])
+{
+
+    n_primes_t iter;
+
+    n_primes_init(iter);
+
+    int64_t p = 0;
+
+    int64_t sum = 0;
+
+    while(p < UPPER_BOUND)
+    {
+        sum += p;
+        p = n_primes_next(iter);
+    }
+
+    printf("%ld\n", sum);
+
+    n_primes_clear(iter);
+
+}
+

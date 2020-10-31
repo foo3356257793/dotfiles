@@ -1,0 +1,12 @@
+$$
+R(n) = \frac{10^n - 1}{9}
+$$
+
+Sometimes $n-1$ is divisible by $A(n)$.
+
+# Attempt 1
+
+If $A(n)$ is a divisor of $\phi(n)$, then when can it be a
+divisor of $n-1$?
+
+Let $p | n$.  Suppose $A(n)$ contains a factor of $p-1$.

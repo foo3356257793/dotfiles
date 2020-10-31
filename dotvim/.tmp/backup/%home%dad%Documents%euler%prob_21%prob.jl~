@@ -1,0 +1,35 @@
+#!/usr/bin/sage
+
+N = 10000
+
+function prob_21()
+
+    sum_divisors = zeros(Int,N)
+
+    for i in 1:N
+        mul_i = 2*i # don't count i for itself b/c proper divisors
+        for mul_i in 2*i:i:N
+            sum_divisors[mul_i] += i
+        end
+    end
+
+    answer = 0
+
+    for a in 1:N
+
+        b = sum_divisors[a]
+
+        if 0 < b && b < a
+            c = sum_divisors[b]
+
+            if a == c
+                #println("$b and $a are amicable")
+                answer += a+b
+            end
+        end
+    end
+
+    return answer
+end
+
+prob_21()

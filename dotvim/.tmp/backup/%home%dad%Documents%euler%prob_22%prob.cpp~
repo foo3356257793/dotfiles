@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <vector>
+#include <algorithm>
+
+#include <fstream>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+using std::fstream;
+using std::string;
+using std::vector;
+using std::ios;
+using std::remove;
+using std::sort;
+
+const vector<char> letters = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
+int score_word(string word)
+{
+  int score = 0;
+
+  for(int i=0; i<word.size(); i++)
+  {
+    auto it = find(letters.begin(), letters.end(), word[i]);
+
+    if(it != letters.end())
+    {
+      int index = distance(letters.begin(), it);
+
+      score += index+1;
+    }
+
+  }
+
+  return score;
+}
+
+void prob_22()
+{
+
+  fstream myfile;
+  myfile.open("names.txt", ios::in);
+
+  vector<string> names = {};
+
+  if (myfile.is_open()) {
+    string line;
+    while (getline(myfile, line, ',')) {
+
+      // strip off quotation marks
+      line = line.substr(1, line.size() - 2);
+
+      names.push_back(line);
+
+
+    }
+    myfile.close();
+  } else {
+    cout << "Error opening file.\n";
+    exit(EXIT_FAILURE);
+  }
+
+  sort(names.begin(), names.end());
+
+  int score = 0;
+
+  for(int i=0; i<names.size(); i++)
+  {
+    int word_score = score_word(names[i]);
+
+    score += (i+1) * word_score;
+  }
+
+  cout << score << endl;
+
+}
+
+int main()
+{
+
+  prob_22();
+
+}
+

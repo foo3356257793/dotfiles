@@ -1,0 +1,17 @@
+CC = gcc
+
+CFLAGS = -g -lm
+
+all: prob_7.o prob_7_by_hand.o
+
+prob_7.o: prob_7.c
+	$(CC) -I/usr/include/flint -lflint -lgmp -g $+ -o $@ -O3
+
+prob_7_by_hand.o: prob_7_by_hand.c
+	$(CC) -o $@ $< $(CFLAGS) -O3
+
+clean:
+	rm prob_7.o
+
+.PHONY: clean
+	iI/usr/include/flint 

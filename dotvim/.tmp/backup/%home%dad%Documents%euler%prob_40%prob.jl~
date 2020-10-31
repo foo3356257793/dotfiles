@@ -1,0 +1,29 @@
+#!/usr/bin/sage
+
+function prob_40()
+
+    # I'm going to do this the easy, inefficient way
+
+    d = []
+
+    a = 1
+
+    while length(d) < 1000000
+
+        a_str = string(a)
+
+        for c in a_str
+
+            push!(d,parse(Int, c))
+        end
+
+        a += 1
+    end
+
+    ans = prod([d[(10^i)] for i in 0:6])
+
+    return ans
+end
+
+answer = prob_40()
+println(answer)

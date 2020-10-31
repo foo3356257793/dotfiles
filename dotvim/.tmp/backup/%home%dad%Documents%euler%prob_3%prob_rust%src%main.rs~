@@ -1,0 +1,25 @@
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+#![allow(improper_ctypes)]
+include!("factor.rs");
+
+// TODO:
+// wrapper for my_factor to a safe function
+
+fn main() {
+
+    let x = 600851475143u64;
+
+    let factors = factor(x);
+
+    let mut max = 0u64;
+    for a in factors {
+        if *a > max {
+            max = *a;
+        }
+    }
+
+    println!("{}", max);
+
+}

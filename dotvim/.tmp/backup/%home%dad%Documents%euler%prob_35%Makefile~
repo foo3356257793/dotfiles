@@ -1,0 +1,17 @@
+CC = gcc
+
+all: prob.o
+
+INCLUDE = -I/usr/include/flint 
+
+prob.o: prob.cpp
+	g++ -g $(INCLUDE) $+ -o $@ -O3 -fopenmp -lflint
+
+cf: prob.cpp
+	clang-format -i --style=Google $+
+
+clean:
+	rm prob.o
+
+.PHONY: clean
+

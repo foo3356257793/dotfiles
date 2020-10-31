@@ -1,0 +1,16 @@
+CC = gcc -std=c99 -O3
+CXX = g++ -std=c++20 -O3 -Wall
+CFLAGS = -shared -fPIC
+INCLUDES = -I/usr/include/python3.8 -I/home/dad/.local/lib/python3.8/site-packages/pybind11/include
+LIBS = -lgmp
+
+all: use_pybind11.cpython-38-x86_64-linux-gnu.so
+
+use_pybind11.cpython-38-x86_64-linux-gnu.so: use_pybind11.cpp
+	$(CXX) $(CFLAGS) $(INCLUDES) $+ -o $@ $(LIBS)
+
+clean:
+	rm use_pybind11.o
+
+.PHONY: clean
+

@@ -1,0 +1,7 @@
+{
+    "id": "prob_bake",
+    "type": "application",
+    "lang.cpp": {
+        "export-symbols": true
+    }
+}

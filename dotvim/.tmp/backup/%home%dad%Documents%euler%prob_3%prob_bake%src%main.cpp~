@@ -1,0 +1,41 @@
+#include <prob_bake.h>
+
+int main(int argc, char *argv[]) {
+
+  // initialize the factoring object
+  fmpz_factor_t factor;
+  fmpz_factor_init(factor);
+
+  // init the fmpz_t object
+  int64_t x = 600851475143L;
+
+  fmpz_t X;
+  fmpz_init_set_ui(X, x);
+
+  fmpz_factor(factor, X);
+
+  int num_factors = factor->num;
+
+  int64_t max = 1;
+
+  /*
+   * TODO: this works because we know
+   * the factors are machine precision.
+   *
+   * How would one do this in general?
+   */
+  for(int i=0; i<num_factors; i++)
+  {
+    max = MAX(max, factor->p[i]);
+  }
+
+  printf("%ld\n", max);
+
+  // clean up the fmpz_t object
+  fmpz_clear(X);
+
+  // clean up the factoring object
+  fmpz_factor_clear(factor);
+
+    return 0;
+}

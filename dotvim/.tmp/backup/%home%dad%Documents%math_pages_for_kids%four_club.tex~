@@ -1,0 +1,56 @@
+\documentclass[17pt]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Four Club.}
+
+Check if these numbers are in the four club.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[height=2in]{nb_4.png}
+    \includegraphics[height=2in]{nb_4.png}
+    \includegraphics[height=2in]{nb_4.png}
+    \includegraphics[height=2in]{nb_4.png}
+  \end{center}
+\end{figure}
+
+
+\paragraph{Problems.}
+
+\begin{enumerate}
+\item Is $1$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $4$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $5$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $6$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $7$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $8$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $19$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $28$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $29$ in the four club? {\bf Yes} or {\bf No}.
+\item Is $37$ in the four club? {\bf Yes} or {\bf No}.
+\end{enumerate}
+
+
+\end{document}
+

@@ -1,0 +1,4 @@
+# Notes
+
+There are no primes using all the digits once:
+the digit sum is $45 = 0 mod 3$.

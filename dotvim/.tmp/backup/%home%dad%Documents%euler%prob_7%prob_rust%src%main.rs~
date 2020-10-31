@@ -1,0 +1,23 @@
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+#![allow(improper_ctypes)]
+include!("bindings.rs");
+
+fn nth_prime(n: u64) -> u64
+{
+    unsafe
+    {
+        return n_nth_prime(n);
+    }
+}
+
+fn main() {
+
+    const n:u64 = 10001;
+
+    let answer = nth_prime(n);
+
+    println!("{}", answer);
+
+}

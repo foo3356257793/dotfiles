@@ -1,0 +1,12 @@
+$$
+(p_n-1)^n + (p_n+1)^n
+=
+(-1)^{n-1} n p_n + (-1)^n
++
+n p_n + 1
+$$
+If $n$ is even, this is $2$,
+else this is $2np_n$.
+
+Should have $2n < p_n$, so we don't need to worry about
+mod.

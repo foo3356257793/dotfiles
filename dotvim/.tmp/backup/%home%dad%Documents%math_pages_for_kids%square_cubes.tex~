@@ -1,0 +1,50 @@
+\documentclass[20pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+{\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Square Club and Cube Club}
+
+Use a calculator to find these numbers
+which are in both the square club and the
+cube club.
+
+%\begin{wrapfigure}{R}{\textwidth}
+  \begin{figure}[h]
+  \centering
+    \includegraphics[height=2.5in]{kids.jpg}
+\end{figure}
+
+%\begin{multicols}{2}
+
+  \begin{itemize}
+    \item $0 \times 0 \times 0 \times 0 \times 0 \times 0 = \blank$
+    \item $1 \times 1 \times 1 \times 1 \times 1 \times 1= \blank$
+    \item $2 \times 2 \times 2 \times 2 \times 2 \times 2= \blank$
+    \item $3 \times 3 \times 3 \times 3 \times 3 \times 3= \blank$
+    \item $4 \times 4 \times 4 \times 4 \times 4 \times 4= \blank$
+    \item $5 \times 5 \times 5 \times 5 \times 5 \times 5= \blank$
+    \item $6 \times 6 \times 6 \times 6 \times 6 \times 6= \blank$
+    \item $7 \times 7 \times 7 \times 7 \times 7 \times 7= \blank$
+    \item $8 \times 8 \times 8 \times 8 \times 8 \times 8= \blank$
+    \item $9 \times 9 \times 9 \times 9 \times 9 \times 9= \blank$
+    \item $10 \times 10 \times 10 \times 10 \times 10 \times 10 = \blank$
+\end{itemize}
+
+%\end{multicols}
+
+\end{document}
+

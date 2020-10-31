@@ -1,0 +1,56 @@
+#!/usr/bin/sage
+
+def P(k):
+    return k*(3*k-1)/2
+
+if __name__ == "__main__":
+
+    bd = 100000
+
+    M = 10**6
+
+    p = [1,1]
+
+    for n in range(2,bd+1):
+
+        if n % 1000 == 0:
+            print(n)
+
+        pp = 0
+
+        k = 1
+        PP = P(k)
+
+        while PP <= n:
+
+            k += 1
+            pp += (-1)^k * p[n-PP]
+
+            PP = P(k)
+
+        k = -1
+        PP = P(k)
+
+        while PP <= n:
+
+            k -= 1
+            pp += (-1)^k * p[n-PP]
+
+            PP = P(k)
+
+        p.append(pp % M)
+
+    print("checking...")
+    found = False
+
+    for i in range(2,bd+1):
+
+        if p[i] == 0:
+            found=True
+            print(i)
+            break
+
+    if not found:
+        print("increase bd")
+
+

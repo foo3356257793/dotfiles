@@ -1,0 +1,109 @@
+#!/usr/bin/python3
+"""
+Given times in/out yaml file, computes total time spent by project.
+"""
+
+import os
+import argparse
+from datetime import datetime, timedelta
+import yaml
+
+
+def pretty_timedelta(delta):
+    """
+    Print a timedelta in a format I want.
+    """
+
+    seconds = delta.total_seconds()
+
+    # round off microseconds
+    seconds = round(seconds)
+
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+
+    if hours > 0:
+        return '%02d:%02d:%02d' % (hours, minutes, seconds)
+
+    if minutes > 0:
+        return '%02d:%02d' % (minutes, seconds)
+
+    return '%02d' % (seconds)
+
+
+def display_totals(raw_data, now=None):
+    """
+    Calculate the time passed and print it nicely.
+    """
+
+    if now is None:
+        now = datetime.now()
+
+    # add up the times
+    totals = []
+
+    for item in raw_data.items():
+
+        tag = item[0]
+
+        # odd number of items means open
+        if len(item[1]) % 2 == 1:
+            tag = f'*{tag}'
+            item[1].append(now)
+
+        delta = timedelta(0)
+
+        for i in range(0, len(item[1]), 2):
+
+            delta += item[1][i + 1] - item[1][i]
+
+        totals.append([delta, tag])
+
+    totals.sort(reverse=True)
+
+    # how long to make tag col
+    max_len_tag = max([len(entry[1]) for entry in totals])
+
+    # how long to make the time col
+    time_strings = [pretty_timedelta(entry[0]) for entry in totals]
+    max_len_time = max([len(time_string) for time_string in time_strings])
+
+    print('')
+    for entry, time_string in zip(totals, time_strings):
+
+        tag = entry[1]
+
+        print(f'{tag:{max_len_tag}} {time_string:>{max_len_time}}')
+
+
+if __name__ == "__main__":
+
+    #####################################################
+    # get the current time at the beginning of the script
+    #####################################################
+
+    datetime_now = datetime.now()
+
+    ##########
+    # argparse
+    ##########
+
+    # pass in the filename
+    parser = argparse.ArgumentParser(
+        description='Give total times from yaml file.')
+    parser.add_argument('fname', metavar='fname', type=str, help='yaml file')
+
+    args = parser.parse_args()
+
+    if (not args.fname) or (len(args.fname)
+                            == 0) or (not os.path.exists(args.fname)):
+        raise ValueError(f'could not find file {args.fname}')
+
+    ###########################
+    # read the file and compute
+    ###########################
+
+    with open(args.fname, 'r') as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+
+    display_totals(data, now=datetime_now)

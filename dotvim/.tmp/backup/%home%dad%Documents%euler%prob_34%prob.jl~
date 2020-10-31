@@ -1,0 +1,47 @@
+const factorials = [factorial(a) for a in 0:9]
+
+function sum_factorial_digits(a)
+
+    S = 0
+
+    while a > 0
+
+        d = a % 10
+        S += factorials[d+1]
+
+        a = a ÷ 10
+    end
+
+    return S
+end
+
+function prob_34()
+
+    n = 1
+    while n*factorials[9+1] >= ((10^n)-1)
+        n += 1
+    end
+
+    min_val = 10
+    max_val = n*factorials[9+1]
+
+    answer = 0
+
+    for a in min_val:max_val
+
+        # if a % 100000 == 0
+        #     println("--- a = $a ---")
+        # end
+
+        S = sum_factorial_digits(a)
+
+        if S == a
+            #println(a)
+            answer += a
+        end
+    end
+
+    return answer
+end
+
+prob_34()

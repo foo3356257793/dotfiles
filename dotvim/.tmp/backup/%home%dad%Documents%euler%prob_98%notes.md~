@@ -1,0 +1,6 @@
+# Find squares from words
+
+For example, CARE and RACE.
+
+Gather unique letters.
+Use itertools to branch over possible digits.

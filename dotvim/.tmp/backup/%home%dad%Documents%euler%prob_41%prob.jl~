@@ -1,0 +1,68 @@
+using Primes
+
+function branch_pandigital(val, digits, test)
+    """
+    Abort when we find a hit.
+    """
+
+    num_digits = length(digits)
+
+    if num_digits == 0
+
+        if test(val)
+
+            return [val]
+
+        else
+
+            return []
+        end
+    end
+
+    ret = []
+
+    for i in 1:num_digits
+
+        new_val = 10*val + digits[i]
+
+        rest_digits = digits[1:i-1]
+        rest_digits = vcat(rest_digits,digits[i+1:length(digits)])
+
+        ret = branch_pandigital(new_val, rest_digits, test)
+
+        if length(ret) > 0
+            break
+        end
+    end
+
+    return ret
+end
+
+
+function prob_41()
+
+    # TEST n-digital numbers in reverse order
+    for n in 9:-1:1
+
+        digits = [i for i in n:-1:1]
+
+        if sum(digits) % 3 == 0
+            # all pandigitals are divisible by 3 here
+            continue
+        end
+
+        hits = branch_pandigital(0, digits, x -> isprime(x))
+
+        if length(hits) > 0
+
+            println("answer:")
+            return hits[1]
+            break
+
+        end
+
+    end
+end
+
+answer = prob_41()
+println(answer)

@@ -1,0 +1,45 @@
+#!/usr/bin/sage
+
+import time
+
+def check_n(n):
+
+    for d in divisors(n):
+
+        if d <= 2:
+            # already checked this
+            continue
+
+        if not is_prime(d + (n//d)):
+            return False
+
+    return True
+
+if __name__ == "__main__":
+
+    #bd = 100000000
+    bd  = 10000000
+
+    start_tm = time.perf_counter()
+
+
+    primes = prime_range(bd)
+
+    S = 0
+
+    for p in primes:
+
+        n = p-1
+
+        # check one of them w/o computing all divisors
+        if not is_prime(2+(n//2)):
+            continue
+
+        if check_n(n):
+            S += n
+
+    end_tm = time.perf_counter()
+    tot_tm = end_tm-start_tm
+    print("TIME = %.3lf" % tot_tm)
+
+    print(S)

@@ -1,0 +1,57 @@
+\documentclass[14pt]{extarticle}
+
+\usepackage{graphicx}
+
+%\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{4cm}{0.15mm}}
+
+\begin{document}
+
+{\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{More squares!}
+
+Use a calculator to find these squares.
+
+\begin{wrapfigure}{R}{\textwidth}
+  \centering
+  \includegraphics[height=2.5in]{square_club.jpg}
+  %\caption{\label{fig:step}This is an example of the square club.}
+\end{wrapfigure}
+
+\begin{multicols}{2}
+
+\begin{itemize}
+\item $31 \times 31 = \blank$
+\item $32 \times 32 = \blank$
+\item $33 \times 33 = \blank$
+\item $34 \times 34 = \blank$
+\item $35 \times 35 = \blank$
+\item $36 \times 36 = \blank$
+\item $37 \times 37 = \blank$
+\item $38 \times 38 = \blank$
+\item $39 \times 39 = \blank$
+\item $40 \times 40 = \blank$
+\item $41 \times 41 = \blank$
+\item $42 \times 42 = \blank$
+\item $43 \times 43 = \blank$
+\item $44 \times 44 = \blank$
+\item $45 \times 45 = \blank$
+\item $46 \times 46 = \blank$
+\item $47 \times 47 = \blank$
+\item $48 \times 48 = \blank$
+\item $49 \times 49 = \blank$
+\item $50 \times 50 = \blank$
+\end{itemize}
+
+\end{multicols}
+
+\end{document}
+

@@ -1,0 +1,8 @@
+#!/usr/bin/sage
+
+from lcr import API as LCR
+
+if __name__ == "__main__":
+
+    lcr = LCR("sully1234", "crystal5", 209430)
+

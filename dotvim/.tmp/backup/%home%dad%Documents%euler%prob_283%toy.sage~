@@ -1,0 +1,46 @@
+#!/usr/bin/sage
+
+import time
+
+def area_fac_sq(a,b,c):
+
+    return (a+b+c)*(a+b-c)*(a-b+c)*(-a+b+c)
+
+if __name__ == "__main__":
+
+    bd = 200
+
+    ratio_bd = 1000
+
+    solutions = []
+
+    start_tm = time.perf_counter()
+
+    for a in range(1,bd+1):
+        for b in range(a,bd+1):
+            for c in range(b,min(a+b-1,bd)+1):
+
+                if gcd([a,b,c]) > 1:
+                    continue
+
+                A = area_fac_sq(a,b,c)
+
+                if is_square(A):
+
+                    sol = vector([a,b,c])
+
+                    ratio = sqrt(A) / (4*perim)
+
+                    sol *= denominator(ratio)
+
+                    if ratio <= ratio_bd:
+                        solutions.append(sol)
+
+    end_tm = time.perf_counter()
+
+    tot_tm = end_tm - start_tm
+
+    print("time = %lf" % (tot_tm))
+
+    print('found %d solutions' % len(solutions))
+

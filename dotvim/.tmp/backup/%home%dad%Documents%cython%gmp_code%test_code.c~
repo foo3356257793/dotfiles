@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <gmp.h>
+
+#include "test_code.h"
+
+void mpz_addeq(mpz_t a, mpz_t b)
+{
+  mpz_add(a,a,b);
+}
+
+long long use_mpz_addeq(long long a, long long b)
+{
+  mpz_t _a, _b;
+
+  mpz_init(_a);
+  mpz_init(_b);
+
+  mpz_set_si(_a, a);
+  mpz_set_si(_b, b);
+
+  mpz_addeq(_a, _b);
+
+  int64_t c = mpz_get_si(_a);
+
+  mpz_clear(_a);
+  mpz_clear(_b);
+
+  return c;
+}

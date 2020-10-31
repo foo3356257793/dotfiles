@@ -1,0 +1,37 @@
+#include <gmp.h>
+#include <gmpxx.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
+const int number_of_digits = 10;
+
+int main(int argc, char *argv[]) {
+  mpz_class answer;
+
+  fstream myfile;
+  myfile.open("numbers.txt", ios::in);
+
+  mpz_class input_number;
+
+  if (myfile.is_open()) {
+    string number_string;
+    while (getline(myfile, number_string)) {
+      input_number = mpz_class(number_string, 10);
+      answer += input_number;
+    }
+    myfile.close();
+  } else {
+    cout << "Error opening file.\n";
+    exit(EXIT_FAILURE);
+  }
+
+  string answer_string = answer.get_str();
+
+  cout << answer_string.substr(0, number_of_digits) << "\n";
+}

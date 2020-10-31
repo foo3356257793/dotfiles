@@ -1,0 +1,29 @@
+#!/usr/bin/sage
+
+
+if __name__ == "__main__":
+
+    m = 3
+
+    bd = 10**6
+
+    n_ways_to_fill = [1] * m
+
+    n = m-1
+
+    while n_ways_to_fill[n] <= bd:
+
+        n += 1
+
+        print(n)
+
+        # first is red or gray
+        ways = n_ways_to_fill[n-1] # first is gray
+
+        for r in range(m,n):
+            ways += n_ways_to_fill[n-r-1] # first r are red, then one gray
+
+        ways += 1 # all red
+
+        n_ways_to_fill.append(ways)
+

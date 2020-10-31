@@ -1,0 +1,163 @@
+#include "yaml-cpp/yaml.h"
+#include <algorithm>
+#include <ctime>
+#include <exception>
+#include <fmt/core.h> // had to download a library for this
+#include <iostream>
+#include <string>
+#include <tuple>
+#include <vector>
+
+using fmt::format; // had to download a library for this
+using std::cout;
+using std::endl;
+using std::exception;
+using std::get;
+using std::make_tuple;
+using std::max;
+using std::string;
+using std::tie;
+using std::tuple;
+using std::vector;
+
+void usage(int argc, char *argv[]) {
+  cout << format("Usage: {} [filename]", argv[0]) << endl;
+}
+
+time_t parse_datestring(string datestring) {
+
+  struct tm tm;
+  strptime(datestring.c_str(), "%Y-%m-%d %H:%M:%S", &tm);
+  time_t result = mktime(&tm);
+
+  return result;
+}
+
+string pretty_timedelta(int seconds) {
+
+  int minutes = seconds / 60;
+  seconds -= 60 * minutes;
+
+  int hours = minutes / 60;
+  minutes -= 60 * hours;
+
+  if (hours > 0) {
+    return format("{:02d}:{:02d}:{:02d}", hours, minutes, seconds);
+  } else if (minutes > 0) {
+    return format("{:02d}:{:02d}", minutes, seconds);
+  }
+
+  return format("{:02d}", seconds);
+}
+
+void display_totals(YAML::Node data) {
+
+  // record the time now
+  time_t now = time(0);
+
+  vector<tuple<string, int, bool>> totals = {};
+
+  for (YAML::const_iterator it = data.begin(); it != data.end(); it++) {
+    string key = it->first.as<string>();
+
+    vector<string> datestrings = it->second.as<vector<string>>();
+    vector<time_t> dates = {};
+
+    for (auto datestring : datestrings) {
+      dates.push_back(parse_datestring(datestring));
+    }
+
+    bool is_open = false;
+    if (dates.size() & 1) {
+      is_open = true;
+      dates.push_back(now);
+    }
+
+    int total = 0;
+    for (int i = 0; i < dates.size(); i += 2) {
+      total += dates[i + 1] - dates[i];
+    }
+
+    totals.push_back(make_tuple(key, total, is_open));
+  }
+
+  sort(totals.begin(), totals.end(),
+       [](const tuple<string, int, bool> &a,
+          const tuple<string, int, bool> &b) -> bool {
+         return get<1>(a) > get<1>(b);
+       });
+
+  vector<vector<string>> pretty_output = {};
+
+  int max_key_len = 0;
+  int max_timestring_len = 0;
+
+  for (auto tup : totals) {
+    string key;
+    int time_in_seconds;
+    bool is_open;
+
+    tie(key, time_in_seconds, is_open) = tup;
+
+    if (is_open) {
+      key = format("*{}", key);
+    }
+
+    string timestring = pretty_timedelta(time_in_seconds);
+
+    vector<string> line = {key, timestring};
+
+    pretty_output.push_back(line);
+
+    max_key_len = max((int)key.size(), max_key_len);
+    max_timestring_len = max((int)timestring.size(), max_timestring_len);
+  }
+
+  for (auto vec : pretty_output) {
+    string key = vec[0];
+    string timestring = vec[1];
+
+    cout << format("{:<{}} {:>{}}", key, max_key_len, timestring, max_timestring_len)
+         << endl;
+  }
+}
+
+int process_file(string filename) {
+
+  YAML::Node data;
+  try {
+    data = YAML::LoadFile(filename);
+  } catch (exception &e) {
+    cout << format("Error parsing file {}", filename) << endl;
+    cout << e.what() << endl;
+
+    cout << endl;
+    return EXIT_FAILURE;
+  }
+
+  display_totals(data);
+
+  return EXIT_SUCCESS;
+}
+
+int main(int argc, char *argv[]) {
+
+  // options parsing not complicated here
+  if (argc != 2) {
+    cout << "ERROR: only takes one argument!" << endl;
+    cout << endl;
+    usage(argc, argv);
+    return EXIT_FAILURE;
+  }
+
+  string filename = argv[1];
+
+  int result = process_file(filename);
+
+  if (result != EXIT_SUCCESS) {
+    usage(argc, argv);
+    return EXIT_FAILURE;
+  }
+
+  return result;
+}

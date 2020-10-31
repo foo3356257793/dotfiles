@@ -1,0 +1,56 @@
+#!/usr/bin/sage
+
+import itertools
+
+if __name__ == "__main__":
+
+    """
+    set_random_seed(0)
+
+    M = 2**128
+    n = 16
+
+    mat = matrix(ZZ, n, n)
+    mat[0,0] = M
+    for i in range(1,n):
+        mat[i,0] = randrange(M)
+        mat[i,i] = 1
+
+    mat = mat.LLL()
+
+    foo = sorted(list(mat[0]))
+
+    print(foo)
+    """
+
+    good = False
+
+    for i in range(len(foo)-1):
+
+        if foo[i] == foo[i+1]:
+
+            print(f'DOUBLE {foo[i]}')
+
+            good = True
+
+    for tup in itertools.combinations(foo, 2):
+
+        d = tup[0] - tup[1]
+
+        if d in foo:
+
+            print(f'* {tup[0]},{tup[1]} -> {d} -> {tup[0]-tup[1]},{-tup[1]}')
+
+            good = True
+
+        elif -d in foo:
+
+            print(f'* {tup[1]},{tup[0]} -> {-d} -> {tup[1]-tup[0]},{-tup[0]}')
+
+            good = True
+
+    #if not good:
+    if True:
+
+        print(f'? {foo[0]},{foo[1]} -> {foo[0]-foo[1]},{-foo[1]}')
+        print(f'? {foo[-2]},{foo[-1]} -> {foo[-1]-foo[-2]},{-foo[-2]}')

@@ -1,0 +1,87 @@
+\documentclass[landscape,17pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{multicol}
+
+\usepackage{fontspec}
+\setmainfont{Alte Haas Grotesk}
+
+\usepackage[margin=0.5in]{geometry}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{10cm}{0.15mm}}
+
+%opening
+\title{Daily Checklist}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{multicols}{2}
+
+\section*{Daily checklist}
+
+\begin{enumerate}
+  \item[$\square$] Prayer
+  \item[$\square$] Scriptures
+  \item[$\square$] Look at transactions
+  \item[$\square$] Plan day
+  \item[$\square$] Go through emails
+\end{enumerate}
+
+\section*{Plans}
+
+\begin{enumerate}
+  \item[$\square$] \blank
+  \item[$\square$] \blank
+  \item[$\square$] \blank
+  \item[$\square$] \blank
+  \item[$\square$] \blank
+  \item[$\square$] \blank
+  \item[$\square$] \blank
+\end{enumerate}
+
+\columnbreak
+
+  \section*{Schedule}
+
+  \begin{enumerate}
+    \item[08:00] \blank
+    \item[09:00] \blank
+    \item[10:00] \blank
+    \item[11:00] \blank
+    \item[12:00] \blank
+    \item[01:00] \blank
+    \item[02:00] \blank
+    \item[03:00] \blank
+    \item[04:00] \blank
+    \item[05:00] \blank
+    \item[06:00] \blank
+    \item[07:00] \blank
+  \end{enumerate}
+
+\end{multicols}
+
+\end{document}
+

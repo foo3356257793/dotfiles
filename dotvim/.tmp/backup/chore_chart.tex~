@@ -1,0 +1,62 @@
+\documentclass[17pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\usepackage{array}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+\usepackage{fontspec}
+\setmainfont[Ligatures=TeX]{Alte Haas Grotesk}
+\setsansfont[Ligatures=TeX]{Alte Haas Grotesk}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+\def\cs{{\Huge$\square$}}
+\def\checkline{ & \cs &\cs&\cs&\cs&\cs \\}
+
+%opening
+\title{Morning Responsiblity Chart}
+\author{}
+\date{November 12--16}
+
+\begin{document}
+
+%\maketitle
+
+
+\begin{center}
+
+  \begin{tabular}{M{2in}M{0.75in}M{0.75in}M{0.75in}M{0.75in}M{0.75in}}
+  & Mon & Tue & Wed & Thu & Fri \\
+  \includegraphics[height=1.5in]{fig/catalina-bed-j.jpg} &
+  \cs &\cs&\cs&\cs&\cs \\
+  clothes\checkline
+  breakfast\checkline
+  hair\checkline
+  teeth\checkline
+\end{tabular}
+\end{center}
+
+\end{document}
+

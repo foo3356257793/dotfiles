@@ -1,0 +1,149 @@
+#include <iostream>
+using std::cout;
+using std::endl;
+
+// precision for 1000 digit number
+// don't actually need this much precision for this problem
+// const int precision = 3322;
+
+const int num_digits = 1000;
+
+#include <gmpxx.h>
+
+// make these constants global
+//mpf_class A(0,precision);
+//mpf_class B(0,precision);
+//mpf_class target(10,precision);
+
+mpf_class A(0);
+mpf_class B(0);
+mpf_class target(0);
+
+// n-th Fibonacci sequence element
+// use formula (A^n-B^n)/(A-B)
+mpf_class fib_n(int n)
+{
+
+  //mpf_class Ap(0,precision);
+  //mpf_class Bp(0,precision);
+  //mpf_class F(0,precision);
+
+  mpf_class Ap(0);
+  mpf_class Bp(0);
+  mpf_class F(0);
+
+  mpf_pow_ui(Ap.get_mpf_t(), A.get_mpf_t(), n);
+
+  mpf_pow_ui(Bp.get_mpf_t(), B.get_mpf_t(), n);
+
+  F = (Ap-Bp) / (A-B);
+
+  return F;
+}
+
+// find an upper bound for test(n) = true
+// requires answer will be small enough to fit
+// in an int
+int find_upper_bound(int start, bool test (int))
+{
+  int end = 2*start;
+
+  while(!test(end))
+  {
+    end *= 2;
+
+    if(end <= 0)
+    {
+      return end;
+    }
+  }
+
+  return end;
+}
+
+// find the smallest int 'v' in ['min_val', 'max_val'] such that test(v)
+int binary_search(int min_val, int max_val, bool test (int))
+{
+  if(min_val == max_val)
+  {
+    return min_val;
+  }
+
+  if(max_val == min_val+1)
+  {
+    if(test(min_val))
+    {
+      return min_val;
+    }
+    return max_val;
+  }
+
+  int mid_val = (min_val+max_val) / 2;
+
+  if(test(mid_val))
+  {
+    return binary_search(min_val, mid_val, test);
+  }
+  return binary_search(mid_val+1, max_val, test);
+}
+
+int binary_search_start(int start, bool test(int))
+{
+  int end = find_upper_bound(start, test);
+
+  if(end == 0)
+  {
+    return 0;
+  }
+
+  return binary_search(end/2, end, test);
+}
+
+// set the constants
+// declared as global variables above
+void init_constants()
+{
+
+  // A = (1+sqrt(5))/2
+  // B = (1-sqrt(5))/2
+  mpf_sqrt_ui(A.get_mpf_t(), 5);
+  B = (1-A)/2;
+  A = (1+A)/2;
+
+  // target <- 10**(num_digits-1)
+  target = 10;
+  mpf_pow_ui(target.get_mpf_t(), target.get_mpf_t(), num_digits-1);
+
+}
+
+// exec prob_25
+void prob_25()
+{
+
+  init_constants();
+
+  // lambda function
+  auto test = [](int n)
+  {
+    mpf_class F_n = fib_n(n);
+    return F_n >= target;
+  };
+
+  int result = binary_search_start(1,test);
+
+  // could fail if answer too large
+  if(result == 0)
+  {
+    cout << "ERROR: could not find answer" << endl;
+    return;
+  }
+
+  cout << result << endl;
+
+}
+
+int main(int argc, char *argv[]) {
+
+  prob_25();
+
+}

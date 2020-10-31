@@ -1,0 +1,55 @@
+```cpp
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
+
+namespace py = pybind11;
+``
+
+```cpp
+class foo {
+  public:
+    double cost;
+    vector<double> sol;
+};
+
+foo compute_foo(int a, int b)
+{
+  foo my_foo;
+  my_foo.cost = (double) a;
+  my_foo.sol = {(double) a,(double) b};
+
+  return my_foo;
+}
+
+tuple<int,vector<int>> compute_bar(int a, int b)
+{
+  vector<int> bar = {b,-a};
+  return make_tuple(a+b, bar);
+}
+
+PYBIND11_MODULE(prob_functions, m) {
+  m.doc() = "pybind11 example plugin"; // docstring
+
+  m.def("find_boundaries", &find_boundaries, "A function to find boundaries over wheat and tares.");
+  m.def("compute_foo", &compute_foo, "A function which returns a class.");
+
+  py::class_<foo>(m, "foo")
+    .def_readwrite("cost", &foo::cost)
+    .def_readwrite("sol", &foo::sol);
+
+  m.def("compute_bar", &compute_bar, "A function which returns a tuple.");
+}
+```
+
+```makefile
+prob_functions: prob_functions.cpp
+  g++ -O3 -Wall -shared -std=gnu++20 -fPIC `python3 -m pybind11 --includes` $+ -o $@`python3-config --extension-suffix` -fopenmp
+```
+
+```python
+import prob_functions
+
+foo = prob_functions.compute_foo(3,5)
+bar = prob_functions.compute_bar(3,5)
+```

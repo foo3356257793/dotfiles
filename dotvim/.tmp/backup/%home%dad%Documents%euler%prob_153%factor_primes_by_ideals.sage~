@@ -1,0 +1,41 @@
+#!/usr/bin/sage
+
+import time
+
+"""
+Note: this takes way too long!
+"""
+
+if __name__ == "__main__":
+
+    max_n = 10**2
+
+    poly_ring.<x> = ZZ[]
+
+    K.<u> = NumberField(x^2 + 1)
+
+    factors = []
+
+    start_tm = time.perf_counter()
+
+    for p in prime_range(max_n):
+
+        ii = ideal(K(p))
+
+        factors.append(factor(ii))
+
+        # GFp = GF(p)
+        # mring.<v> = GFp[]
+
+        # rts = (v^2+1).roots()
+
+        # if len(rts) <= 0:
+        #     factors.append(p)
+        # else:
+        #     factors.append(ZZ(rts[0][0]))
+
+    end_tm = time.perf_counter()
+
+    tm = end_tm - start_tm
+
+    print("TIME = %.3lf" % tm)

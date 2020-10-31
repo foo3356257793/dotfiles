@@ -1,0 +1,68 @@
+\documentclass[a4paper,17pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Lesson}
+\author{}
+\date{May 17, 2020}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+  \item Highlight of the week
+\end{enumerate}
+
+\paragraph{Mosiah 26:31.}
+
+[you should] forgive one another [when you
+do bad things to each other]
+
+\paragraph{Mosiah 26:30.}
+
+[every time] people repent I [the Lord] forgive them
+
+\paragraph{Role playing.}
+
+\begin{enumerate}
+  \item Pair up.
+  \item One person picks a random bad thing they did.
+  \item That person says sorry.
+  \item The other person forgives them.
+\end{enumerate}
+
+\paragraph{Paper strips.}
+
+\begin{itemize}
+  \item[] I'm sorry that I destroyed that creation you worked hard on.
+  \item[] I'm sorry that I ate your Wednesday donut.
+  \item[] I'm sorry that I put on a creepy wolf mask and scared you
+    at Target.
+  \item[] I'm sorry that I pulled your hair.
+\end{itemize}
+
+
+\end{document}
+

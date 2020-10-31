@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 7
+
+int sum_list(int *list);
+int is_optimal_size_sum(int *list);
+int unique_subset_sums(int *list);
+
+int main()
+{
+
+    int init_list[N] = {20, 20+11, 20+18, 20+19, 20+20, 20+22, 20+25};
+    int min_sum = sum_list(init_list);
+
+    printf("starting sum is %d\n", min_sum);
+
+    printf("passes optimal #1? %u\n", is_optimal_size_sum(init_list));
+    printf("passes optimal #2? %u\n", unique_subset_sums(init_list));
+
+    int pert_index, index, mask;
+    int pert_bd = 3;
+    int big_pert_bd = 
+    int test_list[N];
+
+    for(pert_index = 1; pert_index < (); pert_index++){
+        mask = pert_index;
+        for(index =0; index < N; index++){
+           test_list[index] = init_list[index] + ((mask % (pert_bd*2)
+        }
+    }
+
+}
+
+int sum_list(int *list){
+    int i, sum = 0;
+    for(i = 0; i < N; i++){
+        sum += list[i];
+    }
+    return sum;
+}
+
+int is_optimal_size_sum(int *list){
+
+    //test more elts => larger sum
+    //assume sorted
+    int i, left_sum, right_sum;
+    left_sum = list[0];
+    right_sum = 0;
+    for(i = 1; i < 5; i++){
+       left_sum += list[i];
+       right_sum += list[N-i];
+       if(left_sum < right_sum){
+           return 0;
+       }
+    }
+
+    return 1;
+}
+
+int unique_subset_sums(int *list){
+
+    int bound = 0;
+    int index, pos, sum, mask;
+    for(index = 0; index < N; index++){
+        bound += list[index];
+    }
+
+    char *sum_appeared = calloc(bound, sizeof(char));
+    for(index = 1; index < ((1<<N) - 1); index++){
+        mask = 1;
+        sum = 0;
+        for(pos = 0; pos < N; pos++){
+            if(mask & index){
+                sum += list[pos];
+            }
+            mask = mask << 1;
+        }
+        if(sum_appeared[sum]){
+            free(sum_appeared);
+            return 0;
+        }
+        else{
+            sum_appeared[sum] = 1;
+        }
+    }
+
+    free(sum_appeared);
+    return 1;
+
+}

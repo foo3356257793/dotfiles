@@ -1,0 +1,218 @@
+If $P = 25000000$ is the perimeter bound, we need
+
+$$
+a+b+c = P
+$$
+
+To have a triangle, need
+$$
+a+b > c
+$$
+
+Hence
+$$
+P = a+b+c > 2*c
+$$
+
+so $c < P/2$.
+
+We could look at values of $c$ in this range and determine the
+number of sum of squares adding to $c^2-1$.  We should be able to
+use a sieve to do this.
+
+Next, for
+$$
+a^2 + b^2 = c^2 + 1
+$$
+what is the maximum perimeter?
+$$
+(1,1) - \lambda(2a,2b) = 0
+$$
+This suggests that $a=b$ and we get
+$$
+c/\sqrt{2} + c/\sqrt{2} + c =
+(1 + \sqrt{2}) c = P
+$$
+For $c$ below $P/(1+\sqrt{2})$, we are done.
+For $c$ between $P/(1+\sqrt{2})$ and $P/2$,
+we have to do a larger check.
+
+# Note
+
+$c^2 + 1$ is never divisible by primes $p \equiv 3 \bmod{4}$.
+
+_Proof_.
+$(-1)^{(p+1)/4}$ should be a square root of $(-1) \bmod{p}$,
+if it exists:
+
+If $x^2 = (-1)$, then $x^{(p-1)} = 1$, so $(-1)^{(p-1)/2} = 1$
+However, $\frac{p-1}{2} \equiv \frac{4k+2}{2} = 2k+1$ is odd.
+
+**also**
+It appears that in the contrary case, we _do_ get that $-1$ is a square.
+Square iff $(-1)^(p-1)/2 = 1$.
+
+# Lift
+
+If $r^2 = -1 \mod p$
+we want a lift to $\mod p^2$.
+$$
+(pk + r)^2 + 1 = 2pk + r^2 + 1
+$$
+so
+$$
+k = (-r^2-1)/(2p)
+$$
+
+# Note
+
+$$
+a^2 - 1 = c^2 - b^2
+$$
+gives
+$$
+(a-1)(a+1) = (c-b)(c+b)
+$$
+
+Finding solutions then comes down to choosing values for $c-b, c+b$ from the
+factors of $(a-1)(a+1)$.
+
+An algorithm could be:
+
+1. Exhaust $a$.
+2. Factor $(a-1)$ and $(a+1)$. (Use a sieve to factor all of these?)
+3. Exhaust partitions of the factors.
+4. Count feasible solutions.
+
+If $a \leq b \leq c$, then $a < P/3$.
+Further
+$$
+a^2 + b^2 = (P-a-b)^2 + 1
+$$
+suggests
+$$
+a^2 = P^2 - 2aP  -2bP + a^2 + b^2 + 2ab + 1
+$$
+$$
+a = (P^2 -2bP + b^2 + 1) / (2P - 2b)
+$$
+Optimize
+$$
+\log(P^2 - 2bP + b^2 + 1) - \log(P-b)
+\to
+\frac{-P+2b}{P^2 - 2bP +b^2 + 1} + \frac{1}{P-b} = 0
+(b-P)(2b-P) = P^2 - 2bP + b^2 + 1
+\to
+P^2 - 3bP + 2b^2 = P^2 - 2bP + b^2 + 1
+\to
+b^2 -bP - 1 = 0
+\to
+b = (P \pm \sqrt{P^2 - 5})/2
+$$
+
+**note**.
+
+max $a$ when $a=b$, so
+$$
+2a^2 = (P-2a)^2 + 1
+$$
+$$
+2a^2 = P^2 - 4aP + 4a^2 + 1
+$$
+$$
+0 = 2a^2 + (- 4P)a + (P^2 + 1)
+$$
+so
+$$
+a = (4P +- \sqrt{16P^2 - 4(2)(P^2+1)}) / 4
+$$
+$$
+a = P +- \sqrt{4P^2 - 2P^2 - 2}/2
+a = P +- \sqrt{2P^2 - 2}{2}
+a = P - \sqrt{P^2-1}/\sqrt{2}
+$$
+
+# bounds
+
+Given $A=a^2-1$.  Have
+$F, C = A/F$.
+Require $F \leq C$, so $F \leq \sqrt{A}$.
+$$
+c+b = C
+c-b = F
+$$
+$$
+c = \frac{C+F}{2}
+b = \frac{C-F}{2}
+$$
+Inequalities are
+$$
+a \leq \frac{C+F}{2}
+a+b+c \leq P
+$$
+Make these inequalities on $F$:
+$$
+2a \leq A/F + F
+2aF \leq A + F^2
+0 \leq F^2 - 2aF + A
+$$
+$$
+(2a +- \sqrt{4a^2 - 4(a^2-1)})/2
+$$
+$$
+a +- \sqrt{a^2 - a^2 + 1}
+$$
+$$
+a +- 1
+$$
+This restricts to needing $F$ outside of $[a-1,a+1]$,
+which usually happens.
+
+The other is
+$a + b + c \leq P$.
+This is
+$$
+a + \frac{C+F}{2} + \frac{C-F}{2} \leq P
+a + \frac{A}{F} + F \leq P
+F^2 + (a-P)F + A \leq 0
+$$
+$$
+((P-a) +- sqrt((P-a)^2 - 4A)) / 2
+$$
+
+# New day
+
+Looking for
+$a^2 + b^2 = c^2 + 1$,
+which reduces to
+$$
+(a-1)(a+1) = (c-b)(c+b)
+$$
+
+One idea is to branch over factorizations
+into pairs of $(a-1)(a+1)$.
+For each factorization, check whether this is a valid triangle
+under the perimeter bound.
+
+If easier, could change variables $a \gets a+1$ and
+$$
+a(a+2) = (c-b)(c+b) .
+$$
+
+If
+$$
+M = c+b
+N = a(a+2)/M = c-b
+$$
+then
+$$
+c = \frac{M+N}{2}
+b = M - \frac{M+N}{2} = \frac{M-N}{2}
+$$
+We have $a,a+2$ same parity, so this works.
+
+**other idea**
+
+Exhaust $c$ and use sum of squares equation.
+This seems faster, except we can't account for the perimeter
+unfortunately.

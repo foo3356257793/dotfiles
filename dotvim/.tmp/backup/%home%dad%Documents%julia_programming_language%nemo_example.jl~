@@ -1,0 +1,14 @@
+# include ("nemo_example.jl")
+#
+
+using Nemo
+
+R, x = PolynomialRing(ZZ, "x")
+
+ZZ_mat_3_3 = MatrixSpace(ZZ, 3, 3)
+
+A = ZZ_mat_3_3([2 3 5; 1 4 7; 9 6 3])
+
+B = ZZ_mat_3_3([1 0 0; -1 1 0; 2 0 1])
+
+#C = A * B

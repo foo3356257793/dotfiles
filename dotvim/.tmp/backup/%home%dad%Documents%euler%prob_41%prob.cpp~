@@ -1,0 +1,84 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <tuple>
+#include <vector>
+#include <numeric>
+
+#include <ulong_extras.h> // for primality testing
+
+using namespace std;
+
+vector<int64_t> branch_pandigital(int64_t val, vector<int64_t> digits, function<bool(int64_t)> test)
+{
+  auto num_digits = digits.size();
+
+  if(num_digits == 0)
+  {
+    if(test(val))
+    {
+      return {val};
+    }
+    else
+    {
+      return {};
+    }
+  }
+
+  vector<int64_t> ret;
+
+  for(auto i=0; i<num_digits; i++)
+  {
+    int64_t new_val = 10 * val + digits[i];
+
+    vector<int64_t> rest_digits = digits;
+    rest_digits.erase(rest_digits.begin() + i); // pop out i
+
+    ret = branch_pandigital(new_val, rest_digits, test);
+
+    if(ret.size() > 0)
+    {
+      break;
+    }
+  }
+
+  return ret;
+}
+
+int64_t prob_41()
+{
+
+  for(int n=9; n > 0; n--)
+  {
+    // this is perhaps clunky
+    vector<int64_t> digits = {};
+    for(int i=n; i>0; i--)
+    {
+      digits.push_back(i);
+    }
+
+    // sum of digits mod 3
+    if(accumulate(digits.begin(), digits.end(), 0L) % 3 == 0)
+    {
+      continue;
+    }
+
+    auto hits = branch_pandigital(0, digits, n_is_prime);
+
+    if(hits.size() > 0)
+    {
+      return hits[0];
+    }
+  }
+
+  return {};
+}
+
+int main() {
+
+  auto answer = prob_41();
+
+  cout << answer << endl;
+
+}
+

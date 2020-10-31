@@ -1,0 +1,214 @@
+#!/usr/bin/python3
+
+import argparse
+from datetime import datetime, timedelta
+import yaml
+import os
+import sys
+
+def datetime_weekend(dt):
+
+    weekday = dt.weekday()
+
+    return dt + timedelta(days=((5-weekday)%7))
+
+def datetime_from_string(dt_string):
+
+    try:
+        dt = datetime.strptime(dt_string, '%Y-%m-%d %H:%M:%S.%f')
+    except:
+        raise ValueError(f'Failed to parse this string: {dt_str}')
+
+    return dt
+
+
+def pretty_timedelta(td):
+
+    seconds = td.total_seconds()
+    seconds = round(seconds)
+
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+
+    if hours > 0:
+        return '%2d hr %2d min %2d sec' % (hours, minutes, seconds)
+    elif minutes > 0:
+        return '%2d min %2d sec' % (minutes, seconds)
+
+    return '%2d sec' % (seconds)
+
+
+def get_tags(fname):
+
+    if not os.path.exists(fname):
+
+        raise ValueError('No time data found for this week')
+
+    with open(fname, 'r') as f:
+
+        data = yaml.load(f, Loader=yaml.FullLoader)
+
+    tags = set( [it[0] for it in data] )
+
+    for tag in tags:
+
+        print(tag)
+
+
+def log_tag(dt_now, fname, tag):
+
+    log_str = f'{dt_now}'
+
+    data = [[tag, log_str]]
+
+    with open(fname, 'a') as f:
+
+        yaml.dump(data, f)
+
+    print("")
+    print(f'logged {tag} at time {log_str}.')
+    print("")
+
+
+def display_totals(dt_now, fname):
+
+    if not os.path.exists(fname):
+
+        raise ValueError('No time data found for this week')
+
+    ###############
+    # load the data
+    ###############
+
+    with open(fname, 'r') as f:
+
+        data = yaml.load(f, Loader=yaml.FullLoader)
+
+    ####################
+    # put data into dict
+    ####################
+
+    times_for_tag = {}
+
+    for line in data:
+
+        tag = line[0]
+        dt_string = line[1]
+
+        dt = datetime_from_string(dt_string)
+
+        if not tag in times_for_tag:
+
+            times_for_tag[tag] = [timedelta(0), dt]
+
+        elif times_for_tag[tag][1] == None:
+
+            times_for_tag[tag][1] = dt
+
+        else:
+
+            times_for_tag[tag][0] += dt - times_for_tag[tag][1]
+            times_for_tag[tag][1] = None
+
+    # close tags and add up and stop open tags
+    totals = []
+
+    for item in times_for_tag.items():
+
+        tag = item[0]
+        total_tm, start_tm = item[1]
+
+        if start_tm != None:
+            total_tm += dt_now - start_tm
+            tag = '*' + tag
+
+        totals.append([total_tm, tag])
+
+    totals.sort(reverse=True)
+
+    max_len_tag = max([len(entry[1]) for entry in totals])
+
+    time_strings = [pretty_timedelta(entry[0]) for entry in totals]
+
+    max_len_time = max([len(time_string) for time_string in time_strings])
+
+    print("")
+    print("TIME LOG")
+    print("--------")
+
+    for entry, time_string in zip(totals, time_strings):
+
+        tag = entry[1]
+
+        print(f'{tag:{max_len_tag}} {time_string:>{max_len_time}}')
+
+    print("")
+
+if __name__ == "__main__":
+
+    # get the time now
+    dt_now = datetime.now()
+
+    ##########
+    # argparse
+    ##########
+
+    parser = argparse.ArgumentParser(description='Log a tag')
+    parser.add_argument('tag', metavar='tag', type=str, help='name of tag',
+            nargs='?')
+    parser.add_argument('-d', '--display-totals', action="store_true", help="display times by category this week")
+    parser.add_argument('-g', '--get-tags', action="store_true", help="display the tags currently in the log")
+    parser.add_argument('-l', '--log-time', action="store_true", help="log time and ask for tag")
+
+    args = parser.parse_args()
+
+    #######################
+    # what is the filename?
+    #######################
+
+    fname_head = '/home/dad/Documents/time_logger/time_log'
+
+    # what is the first day in the week?
+    dt_weekend = datetime_weekend(dt_now)
+    week_str = dt_weekend.strftime('%Y%m%d')
+
+    fname = f'{fname_head}_{week_str}.yaml'
+
+    #################################
+    # get the tags in the current log
+    #################################
+
+    if args.get_tags:
+
+        get_tags(fname)
+
+
+    ###########
+    # log a tag
+    ###########
+
+    tag = args.tag
+    log_time = args.log_time
+
+    # for line in sys.stdin:
+    #     print(f'> {line}')
+
+    if log_time and ((not tag) or (len(tag)==0) or
+            (tag.isspace())):
+
+        tag = input('')
+
+    if tag and (len(tag)>0) and (not tag.isspace()):
+        log_time = True
+
+    if log_time:
+        log_tag(dt_now, fname, tag)
+
+
+    ################################
+    # compute total times in the log
+    ################################
+
+    if args.display_totals:
+
+        display_totals(dt_now, fname)

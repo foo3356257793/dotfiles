@@ -1,0 +1,116 @@
+# Summary
+
+$s(n)$ is the sum of divisors (in Gaussian integers) of $n$
+with positive real part.
+
+*note*. We can multiply any divisor by a unit, by which we can get a positive real part.
+
+*note*. If $a+bi$ is a divisor, so is $b-ai$.
+
+*note*. If $a+bi$ is a divisor of $n$, so is $a-bi$.
+
+*note*. Divisors are given by solutions $a^2+b^2=n$.
+
+They give a value of
+
+$$
+\sum_{n=1}^{10^5} s(n) \; .
+$$
+
+What is
+
+$$
+\sum_{n=1}^{10^8} s(n) \; .
+$$
+
+# Notes
+
+This is a sum of $26.6$ bits of numbers.
+It will be slow if I run over all of these choices.
+
+I *could* try this, however.
+
+*Idea*.
+Not crazy to look at all integer primes up to $10^8$.
+
+For each prime, factor into Gaussian integers.
+Compute the number of integers divisible by this prime.
+
+Have to deal with composites here, however.
+
+*Idea*. Can we compute $s(n)$ modulo primes?
+
+Consider a prime $p$.  For a value $n$, we are looking
+at
+$$
+a^2 + b^2 = n \; .
+$$
+
+*Idea*. Loop over primes and find Gaussian factors.
+
+*Idea*. Look at all $(a,b)$ pairs.  Can we restrict to $a > 0$ and
+$0 \leq b < a$.
+
+*Idea*. Look at a given $a$ value.  For a range of $b$ values, we get an estimate of the norm of $a^2+b^2$.  From this, we determine the number of integers such an $a^2+b^2$ is a divisor of.
+
+*Example.* It $a = 10^4$, then $a^2 = 10^8$ and $b=0$ is the only solution.
+
+*Note*. For an integer $n$, $n^2$ is its norm.
+If $a+bi$ is a divisor of $n$, then so are $a-bi$, $b+ai$, $b-ai$.
+Observe that up to units there are only two distinct things here: $a+bi$ and
+$a-bi$, and that these account for a norm $(a^2+b^2)^2$.
+
+*Note*. This approach seems to be undercounting things like $k \times (a+bi)$.
+
+## Example
+
+If we weren't talking about Gaussian integers, then here is what we could do.
+
+For each $k \leq n$, it appears as a factor $\floor{n/k}$ times.  This suggests its contribution.
+
+*toy*. Can we do this for $10^8$ efficiently?
+
+*answer*. Yes, if we are careful.
+
+This involves grouping together integers which have the same value of $\floor{n/k}$ and applying an infinite sum formula.
+
+**Thing that makes this hard to generalize**
+
+The kind of divisors we are considering are inconvenient.
+We want to consider things of the form
+$$
+(a + bi) \times c
+$$
+where $\operatorname{norm}(a+bi) \times c$ is below $n$.
+
+*note*.
+
+For $(a,b)$ with $a^2+b^2 = p$ and $a > b \geq 0$,
+the contribution is $2a + 2b$.  For $a=b > 0$, the contribution is
+$2a$.
+
+*is this something?*.
+The square of the contribution is $4a^2 + 8ab + 4b^2 = 8ab + 4p$.
+
+*note*.
+Consider the divisors of $4$.  We have
+
+$$
+(1+i)^2 = 1 + 2i + i^2 = 2i
+$$
+
+*idea*.
+
+1. compute all coprime tuples (there is an algorithm to do this? farey sequence)
+2. for each coprime tuple, determine integer multiples to apply as well as number of factors.
+
+maybe it's true that given $(a,b)$ coprime, we just need to compute the sum of divisors function up to $M / (a^2 + b^2)$ and this is the contribution.
+
+_Proof?_.
+The plain $(a,b)$ contributes to floor of $M/(a^2+b^2)$ things.  This is like a factor of $1$ contributing.
+
+A way to go about this is to store a table of the 
+
+*solution*.
+
+I did the above.  I didn't use the efficient idea for coprime sequences, which would have been better.  I got it to run at about 4 minutes.

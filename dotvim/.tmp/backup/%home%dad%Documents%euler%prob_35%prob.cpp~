@@ -1,0 +1,125 @@
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+#include <omp.h>
+
+#include <cmath>
+
+#include <ulong_extras.h>
+
+#include <vector>
+using std::vector;
+
+#include <algorithm>
+using std::binary_search;
+
+int64_t get_shift(int64_t a, int n_digits)
+{
+  int64_t s = (a / 10) + (pow(10,n_digits-1) * (a % 10));
+
+  return s;
+}
+
+class Primes
+{
+  private:
+    n_primes_t iter;
+  public:
+    Primes()
+    {
+      n_primes_t iter;
+      n_primes_init(iter);
+    }
+    ~Primes()
+    {
+      n_primes_clear(iter);
+    }
+    ulong next_prime()
+    {
+      return n_primes_next(iter);
+    }
+    ulong next_prime(ulong a)
+    {
+      n_primes_jump_after(iter, a);
+
+      return this->next_prime();
+    }
+    bool is_prime(ulong a)
+    {
+      return n_is_prime(a);
+    }
+
+    vector<ulong> prime_range(ulong min, ulong max)
+    {
+      vector<ulong> answer = {};
+
+      ulong p = this->next_prime(min-1);
+
+      while(p < max)
+      {
+        answer.push_back(p);
+        p = this->next_prime();
+      }
+
+      return answer;
+    }
+};
+
+
+int64_t prob_35()
+{
+  int64_t answer = 0;
+
+  Primes my_primes;
+
+  for(int n_digits=1; n_digits<=6; n_digits++)
+  {
+    int64_t lbound = pow(10,n_digits-1);
+    int64_t ubound = pow(10,n_digits);
+
+    //ulong p = my_primes.next_prime(lbound);
+
+    const vector<ulong> prime_vec = my_primes.prime_range(lbound,ubound);
+
+    #pragma omp parallel for
+    for(auto &p : prime_vec)
+    {
+      bool works = true;
+
+      ulong q = p;
+
+      for(int shift=0; shift<n_digits-1; shift++)
+      {
+        q = get_shift(q,n_digits);
+        if(!my_primes.is_prime(q))
+        {
+          works = false;
+          break;
+        }
+      }
+
+      if(works)
+      {
+        #pragma omp atomic
+        answer += 1;
+      }
+
+      //p = my_primes.next_prime();
+    }
+  }
+
+  return answer;
+
+}
+
+int main(int argc, char *argv[])
+{
+
+  int64_t answer = prob_35();
+
+  cout << answer << endl;
+
+}
+

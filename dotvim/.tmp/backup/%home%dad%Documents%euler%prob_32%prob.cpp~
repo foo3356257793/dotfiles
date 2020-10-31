@@ -1,0 +1,183 @@
+#include <iostream>
+using std::cout;
+using std::endl;
+
+#include <math.h>
+
+#include <vector>
+using std::vector;
+
+#include <numeric>
+using std::iota;
+using std::accumulate;
+
+#include <functional>
+using std::plus;
+
+#include <algorithm>
+using std::find;
+
+#include <iterator> // needed for std::ostram_iterator
+
+template <typename T>
+std::ostream& operator<< (std::ostream& out, const std::vector<T>& v) {
+  if ( !v.empty() ) {
+    out << '[';
+    std::copy (v.begin(), v.end(), std::ostream_iterator<T>(out, ", "));
+    out << "\b\b]";
+  }
+  return out;
+}
+
+vector<vector<int64_t>> generate_candidates(int64_t n, vector<int64_t> digits)
+{
+
+  vector<vector<int64_t>> answer = {};
+
+  if(n==1)
+  {
+    for(auto digit : digits)
+    {
+      answer.push_back({digit});
+    }
+    return answer;
+  }
+
+  for(auto it=digits.begin(); it!=digits.end(); it++)
+  {
+    int64_t digit = *it;
+
+    // TODO
+    vector<int64_t> sub_array = {};
+    sub_array.insert(sub_array.end(), digits.begin(), it);
+    sub_array.insert(sub_array.end(), it+1, digits.end());
+
+    auto sub_return = generate_candidates(n-1,sub_array);
+
+    for(auto vec : sub_return)
+    {
+
+      vector<int64_t> new_vec = {digit};
+      new_vec.insert(new_vec.end(), vec.begin(), vec.end());
+      answer.push_back(new_vec);
+    }
+
+  }
+
+  return answer;
+}
+
+int64_t prob_32() {
+
+  // this sets all_digits to 1:9
+  vector<int64_t> all_digits(9);
+  iota (all_digits.begin(), all_digits.end(), 1);
+
+  //cout << all_digits << endl;
+
+  auto candidates = generate_candidates(5, all_digits);
+
+  vector<int64_t> products = {};
+
+  #pragma omp parallel for
+  for(auto tup : candidates)
+  {
+    int64_t a = tup[0] * 10 + tup[1];
+    int64_t b = tup[2] * 100 + tup[3] * 10 + tup[4];
+
+    int64_t c = a*b;
+
+    // copies
+    vector<int64_t> full_tup = tup;
+
+    bool works = true;
+
+    while(c > 0)
+    {
+      int64_t d = c % 10;
+
+      if((find(full_tup.begin(), full_tup.end(), d) != full_tup.end()) || (d==0))
+      {
+        works = false;
+        break;
+      }
+
+      full_tup.push_back(d);
+
+      c = c / 10;
+
+    }
+
+    if(full_tup.size() != 9)
+    {
+      works = false;
+    }
+
+    if(works)
+    {
+      if(find(products.begin(), products.end(), a*b) == products.end())
+      {
+        #pragma omp critical
+        {
+          products.push_back(a*b);
+        }
+      }
+    }
+  }
+
+  #pragma omp parallel for
+  for(auto tup : candidates)
+  {
+    int64_t a = tup[0];
+    int64_t b = tup[1] * 1000 + tup[2] * 100 + tup[3] * 10 + tup[4];
+
+    int64_t c = a*b;
+
+    // copies
+    vector<int64_t> full_tup = tup;
+
+    bool works = true;
+
+    while(c > 0)
+    {
+      int64_t d = c % 10;
+
+      if((find(full_tup.begin(), full_tup.end(), d) != full_tup.end()) || (d==0))
+      {
+        works = false;
+        break;
+      }
+
+      full_tup.push_back(d);
+
+      c = c / 10;
+
+    }
+
+    if(full_tup.size() != 9)
+    {
+      works = false;
+    }
+
+    if(works)
+    {
+      if(find(products.begin(), products.end(), a*b) == products.end())
+      {
+        #pragma omp critical
+        {
+          products.push_back(a*b);
+        }
+      }
+    }
+  }
+
+  int64_t answer = accumulate(products.begin(), products.end(), 0);
+
+  return answer;
+
+}
+
+int main(int argc, char *argv[]) { 
+  int64_t answer = prob_32(); 
+  cout << answer << endl;
+}

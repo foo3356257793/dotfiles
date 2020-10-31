@@ -1,0 +1,42 @@
+use std::io::{BufRead, BufReader};
+use std::fs::File;
+
+fn main() {
+
+    const NUM_ADJACENT:usize = 13;
+
+    let mut f = BufReader::new(File::open("../../number.txt").expect("Open failed"));
+
+    let mut buf = Vec::<u8>::new();
+    let mut digits = Vec::new();
+
+    while f.read_until(b'\n', &mut buf).expect("read_until failed") != 0 {
+        let s = String::from_utf8(buf).expect("from_utf8 failed");
+        for c in s.chars() {
+            let digit = c.to_digit(10);
+            if digit.is_some() {
+                digits.push(digit.unwrap());
+            }
+        }
+
+        buf = s.into_bytes();
+        buf.clear();
+    }
+
+    let mut answer = 0i64;
+
+    for i in 0..(digits.len()-NUM_ADJACENT+1) {
+
+        let mut product = digits[i] as i64;
+        for j in 1..NUM_ADJACENT {
+            product *= digits[i+j] as i64;
+        }
+
+        if product > answer {
+            answer = product;
+        }
+    }
+
+    println!("{}", answer);
+
+}

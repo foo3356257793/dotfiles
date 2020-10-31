@@ -1,0 +1,7 @@
+all: build
+
+build: main.rs
+	cargo build
+
+.PHONY: clean
+

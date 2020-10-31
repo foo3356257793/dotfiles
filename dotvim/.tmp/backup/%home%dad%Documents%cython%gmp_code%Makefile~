@@ -1,0 +1,22 @@
+CC = gcc -std=c99
+CFLAGS = -shared -fPIC -c
+INCLUDES =
+LIBS = -lgmp
+
+
+all: libtestcode.so helloworld.so
+
+test_code.o: test_code.c
+	$(CC) $(CFLAGS) $(INCLUDES) $+ -o $@ $(LIBS)
+
+libtestcode.so: test_code.o
+	ar rcs libtestcode.so test_code.o
+
+helloworld.so: helloworld.pyx setup.py
+	python3 setup.py build_ext --inplace
+
+clean:
+	rm -rf test_code.o libtestcode.so helloworld.so
+
+.PHONY: clean
+

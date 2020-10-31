@@ -1,0 +1,67 @@
+MAX_DIGITS = 7
+
+function get_digits(a)
+    digits = Vector()
+
+    while a != 0
+        push!(digits, a % 10)
+        a = a ÷ 10
+    end
+
+    return digits
+end
+
+function is_palindrome(a)
+    if a <= 0
+        return false
+    end
+
+    digits = get_digits(a)
+
+    # 1-indexed
+    i=1
+    j = length(digits)
+
+    while i<j
+        if digits[i] != digits[j]
+            return false
+        end
+        i += 1
+        j -= 1
+    end
+
+    return true
+
+end
+
+function prob_4()
+    answer = 1
+    arg_max_max_factor = 1
+    arg_max_min_factor = 1
+
+    max_factor = 999
+
+    while max_factor*max_factor > answer
+
+        min_factor = max_factor
+        prod = max_factor * min_factor
+        if prod <= answer
+            println(answer)
+            return
+        end
+        while (!is_palindrome(prod)) && (prod > answer)
+            min_factor -= 1
+            prod -= max_factor
+        end
+        if prod > answer
+            answer = prod
+            arg_max_max_factor = max_factor
+            arg_max_min_factor = min_factor
+        end
+        max_factor -= 1;
+    end
+
+    println(answer)
+end
+
+prob_4()

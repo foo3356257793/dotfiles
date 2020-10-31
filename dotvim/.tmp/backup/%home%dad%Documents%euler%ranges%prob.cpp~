@@ -1,0 +1,38 @@
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <memory>
+#include <tuple>
+#include <vector>
+
+#include <iterator>
+
+#include <ranges>
+
+using namespace std;
+
+int main()
+{
+
+  cout << "Hello!" << endl;
+
+  auto my_range = ranges::iota_view(0,10);
+
+  for(int64_t a : my_range)
+  {
+    cout << a << endl;
+  }
+
+  auto it = find_if(my_range.begin(), my_range.end(),
+      [](const int64_t &a) -> bool {
+      return a > 5;
+      });
+
+  if(it != my_range.end())
+  {
+    cout << "found something:" << endl;
+    cout << *it << endl;
+  }
+
+}
+

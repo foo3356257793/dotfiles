@@ -1,0 +1,30 @@
+\documentclass[20pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Challenge.}
+
+  Do Mrs.\ Duke's math problem.
+
+  \begin{figure}[h]
+    \begin{center}
+      \includegraphics[height=4.5in]{party_time.jpg}
+    \end{center}
+  \end{figure}
+
+\end{document}
+

@@ -1,0 +1,110 @@
+#!/usr/bin/sage
+
+import itertools
+
+if __name__ == "__main__":
+
+    ##################
+    # Dice probability
+    ##################
+
+    N = 6 # sides on dice
+
+    # roll prob
+    die = list(range(1,N+1))
+    roll_pr = [0] * (2*N+1)
+
+    for pair in itertools.product(die, repeat=2):
+
+        s = sum(pair)
+
+        roll_pr[s] += 1
+
+    roll_pr = [s/(N**2) for s in roll_pr]
+
+    ###############################
+    # Transition probability matrix
+    ###############################
+
+    mat = matrix(QQ, 40, 40)
+
+    # simple probabilities of going to subsequent squares
+    # row represents start, col destination
+    for i in range(40):
+
+        # potential rolls
+        for r in range(2,2*N+1):
+
+            mat[i, (i+r) % 40] = roll_pr[r]
+
+    # go to jail square (30) moves to jail col (10)
+    for i in range(40):
+
+        mat[i,10] += mat[i,30]
+        mat[i,30] = 0
+
+    # adjust effect of CC (2,17,33) and CH (7,22,36)
+    CC = [2,17,33]
+    CH = [7,22,36]
+    for i in range(40):
+
+        for j in CC:
+            mat[i,0] += mat[i,j] * (1/16) # GO
+            mat[i,10] += mat[i,j] * (1/16) # JAIL
+            mat[i,j] *= (14/16)
+
+        # next railroad
+        mat[i,15] += mat[i,7] * (2/16)
+        mat[i,25] += mat[i,22] * (2/16)
+        mat[i,5] += mat[i,36] * (2/16)
+
+        # next utility
+        mat[i,12] += mat[i,7] * (1/16)
+        mat[i,28] += mat[i,22] * (1/16)
+        mat[i,12] += mat[i,36] * (1/16)
+
+        for j in CH:
+            mat[i,0] += mat[i,j] * (1/16) # GO
+            mat[i,10] += mat[i,j] * (1/16) # JAIL
+            mat[i,11] += mat[i,j] * (1/16) # C1
+            mat[i,24] += mat[i,j] * (1/16) # E3
+            mat[i,39] += mat[i,j] * (1/16) # H2
+            mat[i,5] += mat[i,j] * (1/16) # R1
+            mat[i,(j-3) % 40] += mat[i,j] * (1/16) # back 3 spaces
+            mat[i,j] *=(6/16)
+
+    # test that rows sum to 1
+    works = True
+    for i in range(40):
+        s = sum([mat[i,j] for j in range(40)])
+        if s != 1:
+            works = False
+
+    print('works? %s' % works)
+
+    r_mat = matrix(RDF, mat)
+
+    eig_vecs = r_mat.eigenvectors_left()
+
+    # find vector closest to 1
+    min_diff = abs(1-eig_vecs[0][0])
+    arg_min = 0
+
+    for i in range(1,len(eig_vecs)):
+
+        diff = abs(1-eig_vecs[i][0])
+        if diff < min_diff:
+            min_diff = diff
+            arg_min = i
+
+    pr_vec = eig_vecs[arg_min][1][0]
+
+    pr_vec /= sum(pr_vec)
+
+    pr_vec_tups = [[pr_vec[j], j] for j in range(40)]
+    pr_vec_tups.sort(reverse=True)
+
+    ans = '%02d' % pr_vec_tups[0][1]
+    ans += '%02d' % pr_vec_tups[1][1]
+    ans += '%02d' % pr_vec_tups[2][1]
+

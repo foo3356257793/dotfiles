@@ -1,0 +1,83 @@
+#!/usr/bin/sage
+
+import itertools
+
+def are_anagrams(w0,w1):
+
+    if len(w0) != len(w1):
+        return False
+
+    return sorted(list(w0)) == sorted(list(w1))
+
+def exhaust_for_squares(w0,w1):
+
+    letters = []
+    for c in w0:
+        if not c in letters:
+            letters.append(c)
+
+    num_letters = len(letters)
+
+    min_val = 10**(num_letters-1)
+
+    ret = []
+
+    for tup in itertools.permutations(range(10), num_letters):
+
+        n0_str = ''
+        for c in w0:
+            i = letters.index(c)
+            n0_str += '%d' % tup[i]
+
+        n0 = int(n0_str)
+
+        if n0 < min_val or not is_square(n0):
+            continue
+
+        n1_str = ''
+        for c in w1:
+            i = letters.index(c)
+            n1_str += '%d' % tup[i]
+
+        n1 = int(n1_str)
+
+        if n1 >= min_val and is_square(n1):
+            ret.append([n0,n1])
+
+    return ret
+
+
+if __name__ == "__main__":
+
+    fp = open('words.txt', 'r')
+
+    line = fp.readline()
+
+    fp.close()
+
+    words = line.split(',')
+    words = [w.strip('"') for w in words]
+
+    anagram_pairs = []
+
+    for pair in itertools.combinations(words, 2):
+
+        if are_anagrams(pair[0], pair[1]):
+            anagram_pairs.append(pair)
+
+    max_square = 0
+
+    num_iter = 0
+    for pair in anagram_pairs:
+
+        num_iter += 1
+        print(num_iter)
+
+        poss_square_pairs = exhaust_for_squares(pair[0], pair[1])
+
+        if len(poss_square_pairs) > 0:
+
+            m = max(flatten(poss_square_pairs))
+
+            if m > max_square:
+                max_square = m

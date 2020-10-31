@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <gmp.h>
+
+#include "test_code.h"
+
+void mpz_addeq(mpz_t a, mpz_t b)
+{
+  mpz_add(a,a,b);
+}
+
+long long use_mpz_addeq(long long a, long long b)
+{
+  mpz_t _a, _b;
+
+  mpz_init(_a);
+  mpz_init(_b);
+
+  mpz_set_si(_a, a);
+  mpz_set_si(_b, b);
+
+  mpz_addeq(_a, _b);
+
+  int64_t c = mpz_get_si(_a);
+
+  mpz_clear(_a);
+  mpz_clear(_b);
+
+  return c;
+}
+
+void do_mpz_add_mat(int64_t *c, int64_t *a, int64_t *b, size_t nrows, size_t ncols)
+{
+  mpz_t **A = (mpz_t **) malloc(nrows * sizeof(mpz_t *));
+  mpz_t **B = (mpz_t **) malloc(nrows * sizeof(mpz_t *));
+
+  for(size_t row = 0; row < nrows; row++)
+  {
+    A[row] = (mpz_t *) malloc(ncols * sizeof(mpz_t));
+    B[row] = (mpz_t *) malloc(ncols * sizeof(mpz_t));
+
+    for(size_t col = 0; col < ncols; col++)
+    {
+      mpz_init(A[row][col]);
+      mpz_init(B[row][col]);
+
+      mpz_set_si(A[row][col], a[row*nrows + col]);
+      mpz_set_si(B[row][col], b[row*nrows + col]);
+
+      mpz_addeq(A[row][col], B[row][col]);
+    }
+  }
+
+  for(size_t row = 0; row < nrows; row++)
+  {
+
+    for(size_t col = 0; col < ncols; col++)
+    {
+      c[row*ncols + col] = mpz_get_si(A[row][col]);
+    }
+  }
+
+
+  for(size_t row = 0; row < nrows; row++)
+  {
+
+    for(size_t col = 0; col < ncols; col++)
+    {
+      mpz_clear(A[row][col]);
+      mpz_clear(B[row][col]);
+    }
+
+    free(A[row]);
+    free(B[row]);
+  }
+
+
+  free(A);
+  free(B);
+
+}

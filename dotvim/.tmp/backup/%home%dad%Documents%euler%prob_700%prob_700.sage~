@@ -1,0 +1,63 @@
+#!/usr/bin/sage
+
+import time
+
+if __name__ == "__main__":
+
+    coeff   = 1504170715041707
+    modulus = 4503599627370517
+
+    # suspected eulercoins?
+
+    lat = matrix(ZZ, [[modulus, 0], [coeff, 1]])
+
+    lat = lat.LLL()
+
+    eulercoins = [[coeff,1]]
+
+    val = coeff
+
+    min_val = coeff
+
+    index_bd = lat[0,1]
+
+    start_tm = time.perf_counter()
+
+    for index in range(2,index_bd+1):
+
+        val += coeff
+        if val >= modulus:
+            val -= modulus
+
+        if val < min_val:
+            eulercoins.append([val,index])
+            min_val = val
+
+
+    end_tm = time.perf_counter()
+    tot_tm = end_tm-start_tm
+    print("TIME = %.3lf" % tot_tm)
+
+    start_tm = time.perf_counter()
+
+    min_index = inverse_mod(coeff, modulus)
+
+    tail_eulercoins = [[1,min_index]]
+
+    val_bd = lat[0,0]
+
+    for val in range(2,val_bd):
+
+        index = inverse_mod(val, modulus)
+
+        if index < min_index:
+            tail_eulercoins.append([val, index])
+            min_index = index
+
+    end_tm = time.perf_counter()
+    tot_tm = end_tm-start_tm
+    print("TIME = %.3lf" % tot_tm)
+
+    tail_eulercoins.reverse()
+
+    eulercoins = eulercoins + tail_eulercoins

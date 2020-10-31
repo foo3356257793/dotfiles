@@ -1,0 +1,53 @@
+#!/usr/bin/sage
+
+def score_layer_n(a,b,c,n):
+
+    return 2*(a*b+b*c+c*a) + 4*(a+b+c+n-2)*(n-1)
+
+if __name__ == "__main__":
+
+    target = 1000
+
+    max_n_covered = 20000
+
+    n_vals = [0] * ((max_n_covered//2)+1)
+
+    a = 1
+
+    while score_layer_n(a,a,a,1) <= max_n_covered:
+
+        print(a)
+
+        b = a
+
+        while score_layer_n(a,b,b,1) <= max_n_covered:
+
+            print('  ',a,b)
+
+            c = b
+
+            while score_layer_n(a,b,c,1) <= max_n_covered:
+
+                n = 1
+
+                score = score_layer_n(a,b,c,n)
+
+                while score <= max_n_covered:
+
+                    n_vals[score//2] += 1
+
+                    n += 1
+                    score = score_layer_n(a,b,c,n)
+
+                c += 1
+
+            b += 1
+
+        a += 1
+
+    for i in range(max_n_covered+1):
+
+        if n_vals[i] == 1000:
+
+            print(2*i)
+            break

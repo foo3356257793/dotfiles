@@ -1,0 +1,286 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=0.5in, bottom=0.5in, left=0.5in, right=0.5in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{multicol}
+\setlength\parindent{0pt}
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\usepackage{fontspec}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+\title{Visiting Teaching}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{multicols}{3}
+\begin{itemize}
+	\item Smith/Matthews
+		\begin{itemize}
+			\item Aleman
+			\item Davis (Focus Five)
+			\item Dawkins
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Wightman/ (Werkeiser)
+		\begin{itemize}
+			\item Anderson
+			\item Jones
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Haslam/Himminghoefer
+		\begin{itemize}
+			\item Austin
+			\item Murrell-Ford
+			\item Bridger
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Holyoak/Jacobson
+		\begin{itemize}
+			\item Barfuss
+			\item Berger (Focus Five)
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Nelson/Hartung
+		\begin{itemize}
+			\item Chabries
+			\item Ebersohl
+			\item White, Sarah
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Barnum/Snook
+		\begin{itemize}
+			\item Blair
+			\item Milligan
+			\item Syphert
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Vest/Wallace, Amber
+		\begin{itemize}
+			\item Bonniksen
+			\item Jackson, Mckell
+			\item Snyder
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Wallace, Janye/Aleman
+		\begin{itemize}
+			\item Boston, Megan
+			\item Himminghoefer
+			\item White, Sarah
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Martinez/Butzin
+		\begin{itemize}
+			\item George, Chelsea
+			\item Horr
+			\item Schalk, Hannah
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Dorman/Chabries
+		\begin{itemize}
+			\item Butzin
+			\item Nielson
+			\item Hartung
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item FIllmore/Snyder
+		\begin{itemize}
+			\item Chi (Laura and Yvette)
+			\item Simuluh
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Dawkins/Foutz
+		\begin{itemize}
+			\item Dorman
+			\item Matheson
+			\item Dorsey
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Milligan/Moore
+		\begin{itemize}
+			\item Fewkes
+			\item Wallace, Amber
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Ebersohl/Fewkes
+		\begin{itemize}
+			\item Foutz
+			\item Snook
+			\item Vennard
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Jones/Thomas
+		\begin{itemize}
+			\item Hansen
+			\item Walther
+			\item Fillmore
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Anderson/Austin
+		\begin{itemize}
+			\item Laird
+			\item Luedtke
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Bridger/Wetzel
+		\begin{itemize}
+			\item Holyoak
+			\item Jacobson
+			\item Jackson, Ruby
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Simuluh/Savage
+		\begin{itemize}
+			\item Kuehn
+			\item Richardson
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Roach/Robertson
+		\begin{itemize}
+			\item Martinez
+			\item Contratto (Focus five)
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Luedtke/Laird
+		\begin{itemize}
+			\item Barnum
+			\item Mathews
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Blair/Bonniksen
+		\begin{itemize}
+			\item Martin, Bailey and Sara (Focus Five)	
+			\item Mecham
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Jackson, Mckell/Horr
+		\begin{itemize}
+			\item Moore
+			\item Wallace, Amber
+			\item Haslam
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Barfuss/Shorr
+		\begin{itemize}
+			\item Nelson
+			\item Porter
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Porter/Richardson
+		\begin{itemize}
+			\item Roach
+			\item Savage
+			\item Ward
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Hansen/Murrell-Ford
+		\begin{itemize}
+			\item Robertson
+			\item Smith
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Matheson/Lewis
+		\begin{itemize}
+			\item Simpson
+			\item Shorr
+			\item Jorgensen
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Walther/Ward
+		\begin{itemize}
+			\item Vest, Jeanine
+			\item Wetzel
+			\item Wightman
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item George, Linda/Simpson
+		\begin{itemize}
+			\item Werkeiser
+	\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+	\item Jorgensen/Syphert
+		\begin{itemize}
+			\item Lewis, Amber	
+			\item McGee, Adrian
+\end{itemize}
+\end{itemize}
+\end{multicols}
+
+\end{document}

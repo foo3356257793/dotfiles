@@ -1,0 +1,74 @@
+#!/usr/bin/sage
+
+import time
+
+if __name__ == "__main__":
+
+    max_n = 10**7
+
+    """
+    S = 0
+
+    start_tm = time.perf_counter()
+
+    for a in range(1,max_n+1):
+
+        num_times = floor(max_n/a)
+
+        S += num_times * a
+
+    end_tm = time.perf_counter()
+
+    tm = end_tm - start_tm
+
+    print("TIME = %.3lf" % tm)
+
+    print("S = %d" % S)
+    """
+
+
+    start_tm = time.perf_counter()
+
+    a = 1
+    num_times = max_n
+
+    S = num_times
+
+    #print("cleared S: %d" % S)
+
+    while a < max_n:
+
+        a += 1
+
+        new_num_times = floor(max_n/a)
+
+        if new_num_times == num_times:
+            break
+
+        num_times = new_num_times
+
+        S += num_times * a
+
+    # readjust
+    a -= 1
+    S -= num_times * a
+
+    while num_times > 0:
+
+        a_min = a
+
+        a_max = floor(max_n/num_times)
+
+        S += num_times * (a_max+a_min) * (a_max-a_min+1) // 2
+
+        a = a_max + 1
+
+        num_times -= 1
+
+    end_tm = time.perf_counter()
+
+    tm = end_tm - start_tm
+
+    print("TIME = %.3lf" % tm)
+
+    print("S = %d" % S)

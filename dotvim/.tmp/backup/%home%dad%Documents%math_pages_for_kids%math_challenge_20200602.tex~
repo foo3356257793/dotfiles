@@ -1,0 +1,33 @@
+\documentclass[17pt,landscape]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+  \vspace{1em}
+
+  \begin{center}
+    \includegraphics[height=5.5in]{20200602_math_challenge.png}
+  \end{center}
+
+
+\end{document}
+

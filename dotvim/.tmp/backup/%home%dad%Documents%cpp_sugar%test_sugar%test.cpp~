@@ -1,0 +1,47 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+#include <enumerate.hpp>
+#include <in.hpp>
+#include <range.hpp>
+
+using namespace std;
+
+int main() {
+
+  cout << "Hello, world!" << endl;
+
+  vector<string> fruit_list = {"apple", "banana", "strawberry"};
+
+  for(auto [i,fruit] : Enumerate(fruit_list))
+  {
+    cout << i << " " << fruit << endl;
+  }
+
+  auto has_banana = in(fruit_list) == "banana";
+
+  cout << "banana? " << has_banana << endl;
+
+  auto has_mango = in(fruit_list) == "mango";
+
+  cout << "mango? " << has_mango << endl;
+
+  for(int i : Range(0,50,-1))
+  {
+    cout << i << endl;
+  }
+
+  auto my_range = Range(0,50,2);
+
+  auto it = find_if(my_range.begin(), my_range.end(), [](const int &a) -> bool {
+      return a > 10;
+      });
+
+  cout << *it << endl;
+
+}
+

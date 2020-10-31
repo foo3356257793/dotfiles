@@ -1,0 +1,48 @@
+#!/usr/bin/sage
+
+import time
+
+if __name__ == "__main__":
+
+    #bd = 2**50
+    bd = 12
+
+    sm_bd = ceil(sqrt(bd))
+
+    primes = prime_range(sm_bd)
+
+    """
+    moebius_vals = [1] * (sm_bd+1)
+    moebius_vals[0] = 0
+
+    start_tm = time.perf_counter()
+
+    for p in primes:
+
+        for m in range(p,sm_bd+1,p):
+
+            moebius_vals[m] *= -1
+
+        for m in range(p^2,sm_bd+1,p^2):
+
+            moebius_vals[m] = 0
+
+    end_tm = time.perf_counter()
+
+    print('took %lf' % (end_tm-start_tm))
+    """
+
+    start_tm = time.perf_counter()
+
+    ans = 0
+
+    for p in range(2,sm_bd):
+
+        ans += moebius_vals[p] * floor(bd / p^2)
+
+    end_tm = time.perf_counter()
+
+    print('took %lf' % (end_tm-start_tm))
+
+    print(ans)
+

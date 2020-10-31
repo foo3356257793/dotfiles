@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <gmp.h>
+
+int main()
+{
+
+    mpz_t a;
+    mpz_init(a);
+
+    mpz_set_ui(a, 1);
+
+    for(int i=0 ; 1000>i; i++)
+    {
+        mpz_mul_ui(a, a, i+1);
+        gmp_printf("i=%d: a = %Zd\n", i, a);
+    }
+
+    gmp_printf("%d! = %Zd\n", 1000, a);
+
+    mpz_clear(a);
+
+}
+

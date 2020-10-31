@@ -1,0 +1,66 @@
+#!/usr/bin/python
+
+import sys
+
+if __name__ == "__main__":
+
+  print ""
+  print "***************"
+  print "*** PUZZBOX ***"
+  print "***************"
+  print ""
+
+  person = raw_input("Enter your name: ")
+  print "\nHello %s." % person
+
+
+  print "\nToday the password is a number between 1 and 100."
+  print "I'll make it easier on you."
+  print "Whenever you guess wrong, I'll tell you whether you were"
+  print "too HIGH or too LOW\n"
+
+  answer = 26
+
+  prev_low = 0
+  prev_high = 101
+
+  guess = 0
+
+  while guess != answer:
+
+    try:
+      guess = int( raw_input("\tGuess: ") )
+
+      if (guess < 1) or (guess > 100):
+        print "\nThat's not a number between 1 and 100."
+        print "\nTry again.\n"
+        continue
+
+      if (guess < answer):
+        print "\nNo, that's too LOW.\n";
+        if prev_low >= guess:
+          print "Didn't I already tell you that %d was too LOW?\n" % prev_low
+        else:
+          prev_low = guess
+      if (guess > answer):
+        print "\nNo, that's too HIGH.\n";
+        if prev_high <= guess:
+          print "Didn't I already tell you that %d was too LOW?\n" % prev_high
+        else:
+          prev_high = guess
+
+    except:
+      print "\nThat's not a number between 1 and 100"
+      print "\nTry again.\n"
+      continue
+
+  print ""
+  print "Hooray, %s, you got it correct!" % person
+  print ""
+
+  fp = open('cow.txt', 'r')
+  for line in fp:
+    sys.stdout.write("\t" + line)
+  fp.close()
+
+  print ""

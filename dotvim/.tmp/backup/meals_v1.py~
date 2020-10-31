@@ -1,0 +1,49 @@
+#!/usr/bin/python
+
+import random
+
+days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+    'Friday', 'Saturday']
+max_len_day = max([len(day) for day in days])
+
+mexican = [ 'Tacos', 'Enchiladas', 'Nachos', 'Fajitas', 'Fideos', 'Bean dip',
+    'Burritos', 'Taquitos', 'Flautas', 'Taco Salad' ]
+
+soup = [ 'Broccoli/veggie', 'Tomato', 'Corn chowder', 'Chicken noodle ', 'Lemon orzo', 'Loaded potato' ]
+
+italian = [ 'Lemon cream sauce', 'Beef cream sauce', 'Marinara sauce', 'Lasagna rolls', 'Spaghetti ', 'Pizza', 'Chicken parm' ]
+
+meatless = [ 'Rice and beans' ]
+
+crockpot = [ 'Chili', 'White chili']
+
+american = [ 'burgers', 'Hot dogs', 'Grilled cheese', 'Hobo dinners', 'BBQ chicken sandwiches', 'Wings' ]
+
+kid_friendly = []
+
+categories = {'Mexican' : mexican, 'Soup' : soup, 'Italian' : italian,
+    'Meatless' : meatless, 'Crockpot' : crockpot, 'American' : american,
+    'Kid friendly' : kid_friendly}
+
+
+#categories_for_the_week = ['Mexican', 'Soup', 'Italian', 'Meatless', 'Crockpot', 'American', 'Kid friendly']
+categories_for_the_week = ['Mexican', 'Italian', 'Meatless', 'American', 'Kid friendly', 'Mexican', 'Italian']
+
+max_len_cat = max([len(cat) for cat in categories_for_the_week])
+
+template = "{0:%d} | {1:%d} | {2:15}" % (max_len_day,max_len_cat)
+print template.format("Day", "Category", "Dish")
+print template.format("=" * max_len_day, "=" * max_len_cat, "=" * 15)
+
+for i in range(7):
+
+  day = days[i]
+  cat = categories_for_the_week[i]
+
+  poss = categories[cat]
+
+  dish = '???'
+  if len(poss) > 0:
+    dish = random.choice(poss)
+
+  print template.format(day, cat, dish)

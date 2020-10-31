@@ -1,0 +1,9 @@
+10^n is an (n+1)-digit number
+
+Restrict to a^n for a < 10.
+
+looking for
+
+a^n >= 10^(n-1)
+
+n log(a) >= (n-1) log(10)

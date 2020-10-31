@@ -1,0 +1,14 @@
+TEX = xelatex
+
+NUM = 5
+
+#NAME = page_$(NUM)
+NAME = alphabetizing_page$(NUM)
+
+all: $(NAME).pdf
+
+%.pdf: %.tex
+	$(TEX) $+
+
+.clean:
+	rm -rf $(NAME).log $(NAME).aux $(NAME).pdf

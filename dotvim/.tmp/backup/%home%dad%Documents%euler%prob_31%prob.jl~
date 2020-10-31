@@ -1,0 +1,28 @@
+function num_poss(coins, index, target)
+
+    if index == length(coins)
+        # can complete
+        return 1
+    end
+
+    ret = 0
+
+    t = target
+    c = coins[index]
+
+    while t >= 0
+        ret += num_poss(coins, index+1, t)
+        t -= c
+    end
+
+    return ret
+end
+
+function prob_31()
+
+    coins = [200,100,50,20,10,5,2,1]
+
+    return num_poss(coins, 1, 200)
+end
+
+prob_31()

@@ -1,0 +1,61 @@
+
+# n*(n+1)/2
+#
+# n and n+1 are coprime, so num divisors is product
+# of divisors of n and (n+1)/2 or
+# n/2 and (n+1)
+
+function divisor_chart(bd::Int)
+    # get a table of the number of divisors of
+    # the numbers in 1:bd
+
+    chart = Array{Int}(undef,bd)
+
+    # initialize; 1 is a divisor of everything
+    for i in 1:bd
+        chart[i] = 1
+    end
+
+    # mark off numbers for which i is a divisor
+    for i in 2:bd
+        for j in i:i:bd
+            chart[j] += 1
+        end
+    end
+
+    return chart
+end
+
+function search_for_solution(bd::Int)
+
+    chart = divisor_chart(bd)
+
+    for i in 1:bd-1
+        n_div = 1
+        if i&1 != 0
+            n_div = chart[i] * chart[(i+1)÷2]
+        else
+            n_div = chart[i÷2] * chart[i+1]
+        end
+        if n_div > 500
+            println( (i*(i+1)) ÷ 2 )
+            return true
+        end
+    end
+
+    return false
+end
+
+function prob_12()
+    bd = 512
+
+    success = search_for_solution(bd)
+
+    while !success
+        bd *= 2
+        success = search_for_solution(bd)
+    end
+
+end
+
+prob_12()

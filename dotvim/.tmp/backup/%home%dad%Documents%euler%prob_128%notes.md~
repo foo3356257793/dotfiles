@@ -1,0 +1,108 @@
+What is a formula for the difference set?
+
+The length of the rings:
+
+$$
+1,
+6,
+12,
+18,
+$$
+The pattern looks like multiples of $6$.
+
+There are $6$ sides.  Each ring has the same number of tiles
+per side.  There are $6$ corners.  This gives the multiples of $6$.
+
+
+# Differences
+
+What is the formula of differences?
+
+The ring starts are
+
+$1, 2, 8, 20, ...$
+
+$1, 2, 2 + 6, 2 + 6 + 2*6, ..., 2 + 3*n*(n+1)$
+
+Two of the neighbors are things on the same ring (mostly consecutive numbers).
+
+We have corners and non-corners.
+
+There are $6$ kinds of non-corners.
+
+
+ A B
+F   C
+ E D
+
+Examine the neighbors of the non-corners:
+
+A:
+$$
+k-1, k+1, k - lower_ring_length, k + ring_length, k+1+ring_length, k-1-lower_ring_length
+$$
+B:
+$$
+k-1, k+1, k - ring_length, k + upper_ring_length, k + 1 - ring_length, k-1+upper_ring_length
+$$
+C:
+$$
+k-1, k+1, k-1-ring_length, k-2-ring_length, k-1-upper_ring_length, k-2-upper_ring_length
+$$
+D:
+
+## Brute force?
+
+Maintain a list of nodes and neighbors.
+
+Have a list of ring starting points.  Start by stacking a node on top of the starting point.  Then move counter-clockwise adding new nodes.  These nodes attach to the previous as well as to the node below them.
+
+This is actually simple; the node which gets attached to the below node simply increments.  At a corner, we don't increment.
+
+## Results
+
+I wrote code to go through it with brute force.  It is too slow to get up to the level required.
+
+
+### Things we can rule out
+
+A side connection is connected to consecutive values in the outer ring, middle ring, inner ring.  This ends up with a max of $2$.  We can ignore these.
+
+The only exception is the one next to the first corner.
+
+On the corners, what happens?  Except for the first corner, rule out neighbors on the same ring.
+
+The connection of the corner to the inner ring increments by $1$.
+
+Here are the pairs of these
+$$
+(6,12), (7,13), (8,14), (9,15), (10,16), (11,17)
+$$
+So we are looking at pairs $(i, 6+i)$.
+
+*Cases*.
+
+Sides (not along start): no
+Corners (not along start):
+$(n,n+5,n+6,n+7)$
+How many of these can be prime?
+If $2|n$, then only $n+5,n+7$ can work, which rules it out.
+If $1|n$, then only $n,n+6$ can work, which rules it out.
+
+Starts:
+The above and below are multiples of $6$.
+We have a connection $6n-1$.
+Also $6n+1$, $6n+1+6(n+1)-2=12n+5$.
+
+Example: $8$ at $n=2$ has $11,13,29$.
+
+Ends:
+Have a connection $6n-1$.
+$6(n-1)+6n-1 = 12n-7$.
+We have $6n$ which is not prime.
+we have $1$ which is not prime.
+We have $6(n+1)$ and $6(n+1)-1$.
+So we are looking for
+$$
+6n-1, 6n+5, 12n-7 \; .
+$$

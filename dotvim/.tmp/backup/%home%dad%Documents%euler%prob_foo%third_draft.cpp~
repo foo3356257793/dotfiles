@@ -1,0 +1,367 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <assert.h>
+
+// C++ stuff to use
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <iterator>
+#include <iostream>
+
+using std::vector;
+using std::sort;
+using std::max_element;
+using std::distance;
+using std::min;
+using std::accumulate;
+
+using std::ostream;
+using std::cout;
+using std::endl;
+using std::string;
+
+// parameters to test
+const int32_t num_wheat = 16;
+const int32_t target_num_wheat = num_wheat/2;
+const int32_t num_tares = num_wheat;
+const int32_t num_rounds = 3;
+
+// for truncating values
+const uint32_t mask = (1U<<16)-1;
+
+// print vectors by <<
+template <typename T>
+std::ostream& operator<< (std::ostream& out, const std::vector<T>& v) {
+  if ( !v.empty() ) {
+    out << '[';
+    std::copy (v.begin(), v.end(), std::ostream_iterator<T>(out, ", "));
+    out << "\b\b]";
+  }
+  return out;
+}
+
+// vector with labels and cut info
+class MyObservation {
+  public:
+    vector<int32_t> values;
+    string label;
+    int index_bound;
+    friend ostream& operator<<(ostream& os, const MyObservation& observation);
+
+    MyObservation(vector<int32_t> input_values, string input_label, int input_index_bound)
+    {
+      values = input_values;
+      label = input_label;
+      index_bound = input_index_bound;
+    }
+
+};
+
+// boundary for a round: value and location in sorted list for round
+class RoundBoundary {
+  public:
+    int32_t value;
+    int index;
+    vector<MyObservation *>::iterator location;
+
+    RoundBoundary()
+    {
+    }
+
+    // also updates the cut information
+    RoundBoundary(vector<MyObservation *>::iterator it, vector<MyObservation *>::iterator end, int round_index)
+    {
+
+      index = round_index;
+
+      while(it != end && (**it).label != "wheat")
+      {
+        (*it)->index_bound = min((*it)->index_bound, index);
+        it++;
+      }
+      assert(it != end);
+
+      value = (*it)->values[index];
+      location = it;
+    }
+
+    // doesn't update cut information, but computes score_delta
+    RoundBoundary(vector<MyObservation *>::iterator it, vector<MyObservation *>::iterator end, int round_index, int &score_delta)
+    {
+
+      index = round_index;
+
+      score_delta = (*it)->index_bound - index;
+
+      while(it != end && (*it)->label != "wheat")
+      {
+        it++;
+        score_delta += (*it)->index_bound - index;
+      }
+      assert(it != end);
+
+      value = (*it)->values[index];
+      location = it;
+    }
+};
+
+// sorted data, boundaries, and score info for a round
+class MyRound {
+  public:
+    vector<MyObservation*> sorted_data;
+    int index;
+    int score_delta = 0;
+    RoundBoundary boundary;
+    RoundBoundary next_boundary;
+
+    MyRound(vector<MyObservation *> input_data, int round_index)
+    {
+      sorted_data = {};
+      for(auto obs : input_data)
+      {
+        sorted_data.push_back(obs);
+      }
+
+      index = round_index;
+
+      // sort the data
+      sort( sorted_data.begin(), sorted_data.end(),
+          [round_index](const MyObservation *a, const MyObservation *b) -> bool
+          {
+          return a->values[round_index] > b->values[round_index];
+          });
+
+      // compute the boundaries
+      boundary = RoundBoundary(sorted_data.begin(), sorted_data.end(), index);
+
+    }
+
+    // the next boundary after the current one
+    void compute_next_boundary()
+    {
+      next_boundary = RoundBoundary(boundary.location+1, sorted_data.end(), index, score_delta);
+    }
+
+    // get the next boundary after this one and update index_bounds for
+    // observations in betweeen
+    void step_boundary()
+    {
+
+      vector<MyObservation *>::iterator it = boundary.location;
+
+      (*it)->index_bound = min((*it)->index_bound, index);
+
+      it++;
+
+      boundary = RoundBoundary(it, sorted_data.end(), index);
+    }
+
+};
+
+// everything we are going to use to analyze what boundaries to pick
+class MyDataInRounds {
+  public:
+    vector<MyObservation *> data;
+    int num_rounds;
+    vector<MyRound *> rounds;
+    int score;
+    int num_wheat;
+
+    MyDataInRounds(vector<MyObservation *> input_data, int input_num_rounds)
+    {
+      data = input_data;
+      num_rounds = input_num_rounds;
+      rounds = {};
+
+      for(int round=0; round<num_rounds; round++)
+      {
+        rounds.push_back(new MyRound(input_data,round));
+      }
+
+      // reprocess rounds to set next_boundary
+      for(auto round_ptr : rounds)
+      {
+        (*round_ptr).compute_next_boundary();
+      }
+
+      score = accumulate(data.begin(), data.end(), 0,
+          [](int score, MyObservation *b) -> int
+          {
+          return score + b->index_bound;
+          });
+      num_wheat = count_if(data.begin(), data.end(),
+          [](MyObservation *a) -> bool
+          {
+          return a->label == "wheat";
+          });
+
+    }
+
+    // figure out where to make the next cut
+    void cut_wheat()
+    {
+      // find max score delta
+      vector<MyRound *>::iterator arg_max = max_element(rounds.begin(), rounds.end(), [](const MyRound* a, const MyRound *b) -> bool
+          {
+          return a->score_delta < b->score_delta;
+          }
+          );
+
+      // set the boundary
+      (**arg_max).step_boundary();
+
+      // recompute all score_deltas
+      // maybe inefficient, maybe not
+      for(auto round_ptr : rounds)
+      {
+        (*round_ptr).compute_next_boundary();
+      }
+
+      num_wheat--;
+
+    }
+
+};
+
+// generate random data
+vector<int32_t> gen_random_vector(const int vector_length)
+{
+  vector<int> values = {};
+
+  for(int index=0; index<vector_length; index++)
+  {
+    values.push_back((int) (rand() & mask));
+  }
+
+  return values;
+}
+
+// generate random data
+vector<vector<int32_t>> gen_random_vector_of_vectors(const int num_vectors, const int vector_length)
+{
+  vector<vector<int>> vec = {};
+
+  for(int observation = 0; observation < num_vectors; observation++)
+  {
+    vec.push_back(gen_random_vector(vector_length));
+  }
+
+  return vec;
+}
+
+// find the boundaries given wheat and tares
+vector<int32_t> find_boundaries(vector<vector<int32_t>> wheat, vector<vector<int32_t>> tares, int num_rounds, int target_num_wheat)
+{
+
+  // label and put into data object
+  vector<MyObservation *> data = {};
+  for(auto vec : wheat)
+  {
+    data.push_back(new MyObservation(vec, "wheat", num_rounds));
+  }
+  for(auto vec : tares)
+  {
+    data.push_back(new MyObservation(vec, "tares", num_rounds));
+  }
+
+  // put into the MyDataInRounds class
+  MyDataInRounds my_data(data, num_rounds);
+
+  // cut out wheat until done
+  while(my_data.num_wheat > target_num_wheat)
+  {
+    my_data.cut_wheat();
+  }
+
+  // look at boundary
+  vector<int32_t> result = {};
+  for(auto round_ptr : my_data.rounds)
+  {
+    result.push_back(round_ptr->boundary.value);
+  }
+
+  return result;
+
+}
+
+// is this vector below the boundaries
+bool test_vector(vector<int32_t> vec, vector<int32_t> boundaries)
+{
+
+  for(int i=0; i<vec.size(); i++)
+  {
+    if(vec[i] > boundaries[i])
+    {
+      return false;
+    }
+  }
+
+  return true;
+
+}
+
+int main(int argc, char *argv[])
+{
+
+  srand(0);
+
+  // generate random data
+  vector<vector<int32_t>> wheat = gen_random_vector_of_vectors(num_wheat, num_rounds);
+  vector<vector<int32_t>> tares = gen_random_vector_of_vectors(num_tares, num_rounds);
+
+  cout << endl << "INPUT DATA" << endl;
+  cout << "printing wheat..." << endl;
+  for(auto vec : wheat)
+  {
+    cout << vec << endl;
+  }
+  cout << "printing tares..." << endl;
+  for(auto vec : tares)
+  {
+    cout << vec << endl;
+  }
+
+  // find the boundaries
+  vector<int32_t> boundaries = find_boundaries(wheat, tares, num_rounds, target_num_wheat);
+
+  cout << endl;
+  cout << "boundaries:" << endl;
+  cout << boundaries << endl;
+
+  cout << endl;
+  cout << "printing wheat now" << endl;
+
+  // go through our datasets and see which things are below the boundaries
+  int new_num_wheat = 0;
+  for(auto vec : wheat)
+  {
+    if(test_vector(vec, boundaries))
+    {
+      cout << vec << endl;
+      new_num_wheat++;
+    }
+  }
+
+  cout << endl;
+  cout << "num_wheat = " << new_num_wheat << endl;
+
+  cout << endl;
+  cout << "printing tares now" << endl;
+
+  int new_num_tares = 0;
+  for(auto vec : tares)
+  {
+    if(test_vector(vec, boundaries))
+    {
+      cout << vec << endl;
+      new_num_tares++;
+    }
+  }
+
+  cout << endl;
+  cout << "num_tares = " << new_num_tares << endl;
+
+}
+

@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <iostream>
+#include <vector>
+
+using std::vector;
+using std::cout;
+using std::endl;
+
+class Tile {
+  public:
+    int label;
+    vector <int> neighbors;
+};
+
+std::ostream& operator<< (std::ostream &out, Tile const& tile) {
+  out << "Tile " << tile.label << endl;
+  out << "  " << tile.neighbors.size() << " neighbors" << endl;
+  for(int i=0; i<tile.neighbors.size(); i++)
+  {
+    out << "    " << tile.neighbors[i] << endl;
+  }
+
+  return out;
+}
+
+int main(int argc, char *argv[])
+{
+
+  vector < Tile > tiles;
+
+  Tile tile_1;
+  tile_1.label = 1;
+
+  tiles.push_back(tile_1);
+
+  int inner_label = 1;
+  int outer_label = 2;
+  int side_len = 2;
+
+  for(int side = 0; side < 6; side++)
+  {
+
+    cout << "pushing... " << outer_label << endl;
+
+    tiles[inner_label-1].neighbors.push_back(outer_label);
+
+    Tile new_tile;
+    new_tile.label = outer_label;
+    new_tile.neighbors.push_back(inner_label);
+
+    tiles.push_back(new_tile);
+
+    outer_label += 1;
+
+    for(int i=1; i < side_len-1; i++)
+    {
+      // do a thing
+    }
+
+  }
+
+  cout << tiles[0].label << "\n";
+  cout << tiles[0].neighbors.size() << "\n";
+
+  cout << tiles[0] << endl;
+
+}
+

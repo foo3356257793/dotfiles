@@ -1,0 +1,15 @@
+all: languages.html languages_printout.html
+
+%.pdf: %.tex
+	$(TEX) $+
+
+%.html: %.md
+	pandoc --standalone -c pandoc.css -f markdown -t html -o $@ $+
+
+%.pdf: %_printout.md
+	pandoc $+ --pdf-engine=xelatex -o $@
+
+clean:
+	rm -rf $(NAME).pdf $(NAME).log $(NAME).aux
+
+.PHONY: clean

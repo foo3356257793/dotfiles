@@ -1,0 +1,150 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=0.5in, bottom=0.5in, left=0.5in,
+right=0.5in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\usepackage{multicol}
+\usepackage[parfill]{parskip}
+\usepackage{mdwlist}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+\title{Visiting Teaching Responses}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\subsection*{Linda George}
+
+I would prefer a daytime schedule.  And a fire lit under my rear
+end ;)
+
+\subsection*{Debbie Keuhn}:
+
+RS Presiency, I stink at visiting teaching. I like serving others
+but I am far from accomplishing one assignment. Emails would be a
+potential glimmer of hope for me to complete the assignment. (Don't
+hold your breath). 
+
+I start school in a week and my husband will have surgery at the
+end of my first week in school. Visiting Teachers don't work out
+for me right now. Between family and school, a visit from anyone
+generally doesn't work. I'd rather email for the message. 
+
+There you have it. 
+
+\subsection*{Denise Matheson}
+
+Thank you for this thoughtful email.  I would like to have
+different sisters to VT me b/c I haven't received any visits in a
+gooooooood while.  I also would like to either visit sister Jeanine
+Vest or have her visit me. She is a great person that I know I
+would benefit a lot from interacting with in a monthly basis.
+
+Everything else to me is fine.
+
+Thank you!!!!
+
+\subsection*{Terri Dawkins}
+
+Hello ladies!!
+
+While I really hate to loose the women I've been visit teaching, I
+want them to be able to have all the blessings of being visit
+taught on a regular basis.
+
+Since January, I have only been able to dedicate my time to my son,
+his treatments, and the rest of my family with the rest of my
+time.  :-)  So, I was wondering if you have any women on a letter
+route??  Maybe I could do that??
+
+Thanks so much!!
+
+\subsection*{McKell Jackson}
+
+Hello! Visiting Teaching is so needed when you're in primary! I
+love getting to know the ladies I visit and serving where I can. My
+current companion, Nel Horr, is having a tough time with her
+husband being deployed. She doesn't feel able to go on visits at
+all, so I've been going solo--sometimes. (Truthfully, I have some
+social anxiety and going without a companion for back up is
+difficult for me.) I want to be successful at this, and crave the
+connection and friendship that stems from VT. I want to make sure
+Nel has the support she needs as well. So, I'm not really sure what
+my point is, but I felt you should be aware of the situation. I
+trust your inspiration. 
+
+\subsection*{Amber Wallace}
+
+Hello! I did want to make one request when it comes to my new
+route... The ladies I've been visiting are wonderful, but they have
+only been able to meet in the evenings and that gets really tricky
+for me what with Young Women's and my husband's work/school
+schedule. I would love to be able to visit sisters who wouldn't
+mind visits during the daytime. I hope that's not too much to ask.
+Thanks for all you do!
+
+\subsection*{Jenn Richardson}
+
+Kym Porter and I have been able to successfully complete our
+assignment as is visiting Claire Roach, Janelle Savage, and Moni
+Ward.  (We should probably get better at reporting though)
+
+\subsection*{Chrissy Barnum}
+
+I just wanted to respond regarding the Vteaching changes! I need to
+make visits mainly in the evenings/weekends right now- so that I
+don't have to bring all my children with me! My companion and I get
+along great- I just hope she's not annoyed with my visiting
+schedule since she is home during the day without kids and could
+probably visit then?! 
+
+Also- on another note- I'm still new to this whole compassionate
+service calling. I have had somewhat of a hard time with feeling
+like I am stepping on vteacher's toes as I lovingly suggest that
+they set up meals for the sisters that they are over. I have
+offered to bring a meal with each sister as well- but don't always
+hear back from the companionship in a timely manner on this.I just
+want to make sure I am going about this right as well-- the way I
+understand it the visiting teachers should be setting up meals for
+these sisters?  OR am I the one who should be coordinating that-
+because that's kind of what I have been doing?? Megan Fewkes just
+messaged me today that they could use a meal when she comes home
+tomorrow and said she hadn't heard from her vteachers. So- I will
+most likely be taking that- which I don't mind- I am just wondering
+if the vteachers should be first on scene?!  Thanks for your
+guidance!!! Have a great night!
+
+\subsection*{Elke Martinez}
+
+I love visiting Sister Horr.  My partner Sis Butzen is pretty much
+not wanting to go to church anymore.  She won’t respond to any
+effort to get a hold of her.  I think Sister Snook is the only
+sister she talked with.  I would like to visit ladies on post
+only.  I don’t really want visiting teachers so you can use them
+where they are needed more.  
+
+
+\end{document}
+

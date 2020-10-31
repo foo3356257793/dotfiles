@@ -1,0 +1,49 @@
+Num cubes is
+$$
+ab + bc + ca
+$$
+
+We want to determine the number of solutions to
+$$
+n = ab+bc+ca
+$$
+
+**Idea**.
+Maybe this is just an exhaust.
+We will have exhausted when we have all $B \geq a,b,c$
+for $n \leq 3B^2$.
+
+**Adjustment**.
+
+We then have to account for layering.
+
+The first layer is
+$$
+ab+bc+ca
+$$
+
+The second layer is what?
+
+In the $3 \times 2 \times 1$ example,
+it is supposed to be $46$.
+
+$$
+2(3 \times 2 + 2 \times 1 + 1 \times 3)
++
+4(3 + 2 + 1)
+$$
+This gives
+$$
+2(ab+bc+ca) + 4(a+b+c)
+$$
+
+The third layer?
+
+**Help**.
+
+Higher order of the form
+$$
+2(ab+bc+ca) + 4(a+b+c+n-2)(n-1)
+$$
+
+**Next.**

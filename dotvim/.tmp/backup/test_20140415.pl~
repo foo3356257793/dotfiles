@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+my $bound = 1 << 27;
+
+my @list;
+
+for(my $index = 0; $index < $bound; $index++){
+  push @list, $index;
+}
+
+print "here\n";
+print $bound/2, ' ', @list[int($bound/2)], "\n";

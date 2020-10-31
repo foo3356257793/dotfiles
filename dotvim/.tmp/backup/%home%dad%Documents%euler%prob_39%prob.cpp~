@@ -1,0 +1,64 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <tuple>
+#include <vector>
+#include <cmath>
+
+#include <gmpxx.h>
+
+using namespace std;
+
+int64_t prob_39()
+{
+  int64_t max_sols = 0;
+  int64_t arg_max = 0;
+
+  int64_t p = 120;
+
+  int64_t a = 20;
+
+  mpq_class b = p * (2*a-p);
+  b /= (2*a-2*p);
+
+  #pragma omp parallel for shared(max_sols)
+  for(int64_t P=1; P<=1000; P++)
+  {
+    int64_t num_sols = 0;
+
+    int64_t A_max = (int64_t) floor(P/(2+sqrt(2)));
+
+    for(int64_t A=1; A<A_max; A++)
+    {
+      mpq_class B = P * (2*A-P);
+      B /= (2*A-2*P);
+
+      if(A>B)
+      {
+        break;
+      }
+
+      if(B.get_den() == 1)
+      {
+        num_sols += 1;
+      }
+    }
+    if(num_sols > max_sols)
+    {
+      #pragma omp critical
+      {
+        max_sols = num_sols;
+        arg_max = P;
+      }
+    }
+  }
+
+  return arg_max;
+}
+
+int main() {
+
+  cout << prob_39() << endl;
+
+}
+

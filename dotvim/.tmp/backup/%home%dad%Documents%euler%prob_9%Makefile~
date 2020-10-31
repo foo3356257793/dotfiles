@@ -1,0 +1,14 @@
+CC = gcc
+
+CFLAGS = -g -lm
+
+all: prob.o
+
+prob.o: prob.cpp
+	g++ -g $+ -o $@ -O3
+
+clean:
+	rm prob.o
+
+.PHONY: clean
+

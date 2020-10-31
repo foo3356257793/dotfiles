@@ -1,0 +1,16 @@
+CC = gcc
+CFLAGS = -g
+
+all: factorial.o ex_gmp.o ex_omp.o
+
+factorial.o: factorial.c
+	$(CC) -o $@ $< $(CFLAGS)
+
+ex_gmp.o: ex_gmp.c
+	$(CC) -o $@ $< $(CFLAGS) -lgmp
+
+clean:
+	rm factorial.o
+
+.PHONY: clean
+

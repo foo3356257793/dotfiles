@@ -1,0 +1,26 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+
+    apostles = ['Ballard', 'Holland', 'Uchtdorf', 'Bednar', 'Cook', 'Christofferson', 'Andersen', 'Rasband', 'Stevenson', 'Renlund', 'Gong',
+    'Soares']
+
+    most_pop = ['Holland', 'Uchtdorf', 'Bednar', 'Oaks']
+    scale = [29,24,24,23]
+
+    prop = [round(s * 75/100) for s in scale]
+
+    for i in range(len(most_pop)):
+
+        print('%s\t%d' % (most_pop[i], prop[i]))
+
+    next_pop = ['Ballard', 'Christofferson', 'Andersen', 'Soares']
+
+    for i in range(4):
+        print('%s\t%d' % (next_pop[i],4))
+
+    for name in apostles:
+
+        if not name in most_pop and not name in next_pop:
+            print("%s\t1" % name)

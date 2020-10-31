@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+
+import argparse
+from datetime import datetime, timedelta
+import yaml
+
+import subprocess
+
+def datetime_weekend(dt):
+
+    weekday = dt.weekday()
+
+    return dt + timedelta(days=((5-weekday)%7))
+
+
+if __name__ == "__main__":
+
+    # get the time now
+    dt_now = datetime.now()
+
+    ##########
+    # argparse
+    ##########
+
+    parser = argparse.ArgumentParser(description='Log a task')
+    parser.add_argument('task', metavar='task', type=str, help='name of task',
+            nargs='?')
+
+    args = parser.parse_args()
+
+    ###########
+    # data file
+    ###########
+    fname_head = '/home/dad/Documents/time_logger/time_log'
+
+    # what is the first day in the week?
+    dt_weekend = datetime_weekend(dt_now)
+    week_str = dt_weekend.strftime('%Y%m%d')
+
+    fname = f'{fname_head}_{week_str}.yaml'
+
+    task = args.task
+
+    if not task:
+
+        task = input('')
+
+        # # need to open the file to see what the last tag was
+        # with open(fname, 'r') as f:
+
+        #     data = yaml.load(f, Loader=yaml.FullLoader)
+
+        # task = data[-1][0]
+
+    log_str = f'{dt_now}'
+
+    print(f'TASK = {task}')
+
+    data = [[task, log_str]]
+
+    with open(fname, 'a') as f:
+
+        yaml.dump(data, f)
+
+    print(f'logged {task} at time {log_str}')

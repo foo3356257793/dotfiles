@@ -1,0 +1,15 @@
+function prob_28()
+
+    n = 1001
+
+    sum_of_odd_squares = (n * (n+1) * (n+2)) ÷ 6 - 1
+
+    sum_of_linear_terms = -3 * ((n-1) * (n+1)) ÷ 2
+
+    answer = 4 * sum_of_odd_squares  + sum_of_linear_terms + 1
+
+    return answer
+
+end
+
+prob_28()

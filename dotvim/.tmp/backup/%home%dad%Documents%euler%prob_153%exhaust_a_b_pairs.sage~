@@ -1,0 +1,30 @@
+#!/usr/bin/sage
+
+import time
+
+if __name__ == "__main__":
+
+    max_n = 10**8
+
+    S = 0
+
+    max_a = floor(sqrt(max_n))
+
+    pairs = []
+
+    start_tm = time.perf_counter()
+
+    for a in range(1,max_a+1):
+
+        for b in range(1,a+1):
+
+            if gcd(a,b) > 1:
+                continue
+
+            pairs.append([a,b])
+
+    end_tm = time.perf_counter()
+
+    tm = end_tm - start_tm
+
+    print("TIME = %.3lf" % tm)

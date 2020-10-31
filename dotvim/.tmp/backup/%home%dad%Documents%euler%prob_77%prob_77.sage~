@@ -1,0 +1,49 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    bd = 100
+
+    primes = prime_range(bd)
+
+    # how many ways with 2 and 3
+    n_ways_arr = [0] * (bd+1)
+
+    # empty sum
+    n_ways_arr[0] = 1
+
+    for i in range(2,bd+1):
+
+        # i = 2a + 3b
+        # even => b even
+        # odd => b odd
+        if i&1 == 0:
+            n_ways_arr[i] = floor(i/6)+1
+        else:
+            n_ways_arr[i] = floor((i-3)/6)+1
+
+    p = 5
+
+    while p <= bd:
+
+        new_arr = copy(n_ways_arr)
+
+        for m in range(p,bd+1,p):
+
+            for i in range(m,bd+1):
+                new_arr[i] += n_ways_arr[i-m]
+
+        n_ways_arr = new_arr
+
+        p = next_prime(p)
+
+    found = False
+    for i in range(bd+1):
+
+        if(n_ways_arr[i] > 5000):
+            print(i)
+            found = True
+            break
+
+    if not found:
+        print('increase n')

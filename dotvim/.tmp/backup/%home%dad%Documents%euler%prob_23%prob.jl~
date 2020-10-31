@@ -1,0 +1,55 @@
+#Sum of all positive integers which cannot be written as the sum of two abundant
+#numbers.
+
+function prob_23()
+    # Execute solving prob_23.
+
+    # how to find these: can bound down to <= 28123
+    bound = 28123
+
+    sum_of_divisors = ones(bound)
+    sum_of_divisors[1] = 0
+
+    for divisor in 2:bound÷2
+        for emm in 2*divisor:divisor:bound
+            sum_of_divisors[emm] += divisor
+        end
+    end
+
+    abundant_numbers = []
+    for value in 1:bound
+        if sum_of_divisors[value] > value
+            push!(abundant_numbers,value)
+        end
+    end
+
+    num_abundant = length(abundant_numbers)
+
+    is_sum = falses(bound)
+
+    for i in 1:num_abundant
+        for j in i:num_abundant
+
+            ess = abundant_numbers[i] + abundant_numbers[j]
+
+            if ess > bound
+                break
+            end
+
+            is_sum[ess] = true
+        end
+    end
+
+    answer = 0
+
+    for ess in 1:bound
+        if !is_sum[ess]
+            answer += ess
+        end
+    end
+
+    return answer
+
+end
+
+prob_23()

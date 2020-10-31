@@ -1,0 +1,64 @@
+#include <iostream>
+using std::cout;
+using std::endl;
+
+#include <algorithm>
+#include <vector>
+using std::vector;
+using std::find;
+using std::distance;
+
+const int d_max = 999;
+
+int find_recurring_cycle(int n)
+{
+
+  vector<int> remainders = {1};
+
+  int r = 1;
+  while(1)
+  {
+    r = (10*r) % n;
+    auto it = find(remainders.begin(), remainders.end(), r);
+    if(it == remainders.end())
+    {
+      remainders.push_back(r);
+    }
+    else
+    {
+      return distance(it, remainders.end());
+    }
+  }
+
+
+}
+
+void prob_26()
+{
+  int d = d_max;
+  int arg_max_d = d;
+
+  int max_cycle = find_recurring_cycle(d);
+
+  while((d > max_cycle) and (d > 0))
+  {
+    d -= 1;
+    int cycle = find_recurring_cycle(d);
+
+    if(cycle > max_cycle)
+    {
+      arg_max_d = d;
+      max_cycle = cycle;
+    }
+  }
+
+  cout << arg_max_d << endl;
+}
+
+int main(int argc, char *argv[])
+{
+
+  prob_26();
+
+}
+

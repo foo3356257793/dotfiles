@@ -1,0 +1,61 @@
+$k$ is pentagonal when
+
+$$
+k = n(3n-1)/2
+3n^2 - n - 2k = 0
+$$
+
+Test whether
+$$
+1 - 4(3)(-2k)
+= 1 + 24 k
+$$
+is a square.
+
+If this is a square, then
+$$
+n = (1 + \sqrt(1+24k) / 6)
+$$
+
+**Pentagonal differences**.
+
+Let $D$ be under consideration.
+
+$D + P_j$ is pentagonal.
+What must happen for this?
+
+D + n(3n-1)/2 = m(3m-1)/2
+
+If
+
+D + n(3n-1)/2 = (n+k)(3(n+k)-1)/2
+
+then
+
+2D = 3(n+k)^2 - (n+k) - 3n^2 + n
+   = 3n^2 + 6nk + 3k^2 - n-k - 3n^2 + n
+   = 6nk + 3k^2 -k
+
+Note that for a fixed n
+
+2D >= 6n + 2
+D >= 3n+1
+
+**again**.
+
+D = pentagonal
+
+D = (n+k)(3(n+k)-1)/2 - n(3n-1)/2
+2D = 3(n+k)^2 - (n+k) - 3n^2 + n
+2D = 3n^2 + 6nk + 3k^2 - n-k - 3n^2 + n
+2D = 6nk + 3k^2 -k
+
+k=1 at least, so
+
+2D >= 6n + 2
+
+so
+
+D >= 3n+1
+
+This gives a maximum for what n can be with this D

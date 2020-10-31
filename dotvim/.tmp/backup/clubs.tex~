@@ -1,0 +1,92 @@
+\documentclass[17pt]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+\paragraph{Two, Three, Five.}
+
+Circle which clubs these numbers are in?
+
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[height=1in]{nb_terrible_twos.jpg}
+    \includegraphics[height=1in]{three_threes.jpg}
+    \includegraphics[height=1in]{nb_five.jpg}
+    \includegraphics[height=1in]{nb_five.jpg}
+    \includegraphics[height=1in]{nb_five.jpg}
+    \includegraphics[height=1in]{nb_five.jpg}
+    \includegraphics[height=1in]{nb_five.jpg}
+  \end{center}
+\end{figure}
+
+\begin{center}
+  \begin{tabular}{ccccc}
+    $0$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $1$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $2$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $3$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $4$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $5$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $6$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $7$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $8$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $9$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $10$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $11$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $12$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $13$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $14$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $15$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $16$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $17$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $18$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $19$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+    \\
+    $20$ & : &{\bf two club}? & {\bf three club}? & {\bf five club}?
+  \end{tabular}
+\end{center}
+
+
+
+
+\end{document}
+

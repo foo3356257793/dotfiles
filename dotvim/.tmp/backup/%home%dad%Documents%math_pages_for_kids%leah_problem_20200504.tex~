@@ -1,0 +1,76 @@
+\documentclass[17pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{3cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+  \vspace{0.5em}
+
+    \begin{center}
+      \includegraphics[width=6.5in]{leah_problem_20200504.jpg}
+
+      \vspace{1em}
+
+    \begin{tabular}{|c|c|c|}
+      \hline
+      Number of Spots
+      &
+      $4$-Spotted Ladybugs
+      &
+      $7$-Spotted Ladybugs
+      \\
+      \hline
+      4 & & \\
+      \hline
+      5 & & \\
+      \hline
+      6 & & \\
+      \hline
+      7 & & \\
+      \hline
+      8 & & \\
+      \hline
+      9 & & \\
+      \hline
+      10 & & \\
+      \hline
+      11 & & \\
+      \hline
+      12 & & \\
+      \hline
+      13 & & \\
+      \hline
+      14 & & \\
+      \hline
+      15 & & \\
+      \hline
+      16 & & \\
+      \hline
+      17 & & \\
+      \hline
+      18 & & \\
+      \hline
+      19 & & \\
+      \hline
+      20 & & \\
+      \hline
+    \end{tabular}
+    \end{center}
+
+
+%\end{multicols}
+
+\end{document}
+

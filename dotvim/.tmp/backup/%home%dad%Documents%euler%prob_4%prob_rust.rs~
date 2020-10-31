@@ -1,0 +1,66 @@
+fn get_digits(mut a: i32) -> Vec<i32> {
+
+    let mut answer = Vec::new();
+
+    while a != 0 {
+        answer.push(a % 10);
+        a = a/10;
+    }
+
+    return answer;
+}
+
+fn is_palindrome(a: i32) -> bool {
+
+    if a <= 0 {
+        return false;
+    }
+
+    let digits = get_digits(a);
+
+    let mut i = 0;
+    let mut j = digits.len()-1;
+
+    while i < j {
+        if digits[i] != digits[j] {
+            return false;
+        }
+        i += 1;
+        j -= 1;
+    }
+
+    return true;
+
+}
+
+fn main() {
+
+    let mut max = 1i32;
+
+    let mut max_factor = 999i32;
+
+    while max_factor*max_factor > max {
+        let mut min_factor = max_factor;
+
+        let mut product = max_factor * min_factor;
+
+        if product <= max {
+            break;
+        }
+
+        while (!is_palindrome(product)) && (product > max) {
+            min_factor -= 1;
+            product -= max_factor;
+        }
+
+        if product > max
+        {
+            max = product;
+        }
+
+        max_factor -= 1;
+    }
+
+    println!("{}", max);
+}
+

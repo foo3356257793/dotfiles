@@ -1,0 +1,44 @@
+#Problem
+
+Finding
+
+$(k-m)^2 + ... + k^2 = (n+1)^2 + .. + (n+m)^2$
+
+for $m > 0$ and $n \geq k$.
+
+Find the sum of all of these up to $10^{10}$.
+
+# Ideas
+
+Look at sum of squares formula.
+
+$$
+(n/3)(n+1)(n+1/2)
+=
+n(n+1)(2n+1)/6 \; .
+$$
+
+We want
+
+$$
+-m(m+1)(2m+1)/6
++
+k(k+1)(2k+1)/6
+=
+-n(n+1)(2n+1)/6
++
+(n+m)(n+m+1)(2(n+m)+1)/6
+$$
+
+**Observation**.
+
+Modulo $m$, we have
+$$
+k(k+1)(2k+1)/6
+= 0 \bmod{m} \; .
+$$
+For example,
+$$
+3^2 + 4^2 = 25 = 0 \bmod{1}
+$$
+

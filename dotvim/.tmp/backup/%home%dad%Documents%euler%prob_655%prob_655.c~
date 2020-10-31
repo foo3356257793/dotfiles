@@ -1,0 +1,137 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <math.h>
+#include <omp.h>
+
+int64_t fill_val(int64_t index, int64_t *mod_p_val, int64_t p)
+{
+
+    int64_t val = 0;
+    int i=0;
+    while(index > 0)
+    {
+        val += (index % 10) * mod_p_val[i];
+        val %= p;
+
+        index /= 10;
+        i++;
+    }
+
+    return val;
+}
+
+int64_t count_num_at_digits(int num_digits, int64_t p)
+{
+
+    /*
+     * mod p values for the palindrome basis
+     */
+
+    int64_t *pow_10_mod_p = (int64_t *) malloc(num_digits * sizeof(int64_t));
+
+    pow_10_mod_p[0] = 1;
+
+    for(int i=1; i<num_digits; i++)
+    {
+        pow_10_mod_p[i] = pow_10_mod_p[i-1] * 10;
+        pow_10_mod_p[i] %= p;
+    }
+
+    int head = 0;
+    int tail = num_digits-1;
+
+    while(head < tail)
+    {
+        pow_10_mod_p[head] += pow_10_mod_p[tail];
+        if(pow_10_mod_p[head] >= p)
+        {
+            pow_10_mod_p[head] -= p;
+        }
+        head++;
+        tail--;
+    }
+
+    int half_digits = (num_digits+1)/2;
+
+    int *counts_small = (int *) calloc(p+1, sizeof(int));
+    int *counts_large = (int *) calloc(p+1, sizeof(int));
+
+    int quarter_digits = (half_digits+1)/2;
+    int64_t sqrt_val=1;
+    for(int i=0; i<quarter_digits; i++)
+    {
+        sqrt_val *= 10;
+    }
+
+    int64_t *ptr = pow_10_mod_p;
+
+    #pragma omp parallel for
+    for(int i=0; i<sqrt_val; i++)
+    {
+        int64_t val = fill_val(i, ptr, p);
+
+        if(i%10 == 0)
+        {
+            val = p;
+        }
+
+        #pragma omp atomic
+        counts_small[val]++;
+    }
+
+    ptr += quarter_digits;
+
+    if(half_digits & 1)
+    {
+        sqrt_val /= 10;
+    }
+
+    #pragma omp parallel for
+    for(int i=0; i<sqrt_val; i++)
+    {
+        int64_t val = fill_val(i, ptr, p);
+        #pragma omp atomic
+        counts_large[val]++;
+    }
+
+    int64_t ct = counts_small[0] * counts_large[0];
+
+    #pragma omp parallel for
+    for(int i=1; i<p; i++)
+    {
+        int64_t update = counts_small[i] * counts_large[p-i];
+        #pragma omp atomic
+        ct += update;
+    }
+
+    free(counts_small);
+    free(counts_large);
+    free(pow_10_mod_p);
+
+    return ct;
+}
+
+int main(int argc, char *argv[])
+{
+
+    int64_t p = 10000019;
+    //int64_t p = 109;
+    //int num_digits = 5;
+    int num_digits=32;
+
+    int64_t num = 0;
+
+    for(int i=8; i<= num_digits; i++)
+    //for(int i=3; i<=3; i++)
+    {
+        printf("working on %2d\n", i);
+        //int64_t ct_i = count_num_at_digits(i, p);
+        //num += ct_i;
+
+        num += count_num_at_digits(i, p);
+    }
+
+    printf("%ld\n", num);
+
+}

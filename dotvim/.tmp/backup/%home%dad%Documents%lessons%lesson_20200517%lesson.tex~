@@ -1,0 +1,77 @@
+\documentclass[a4paper,14pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Lesson}
+\author{}
+\date{May 17, 2020}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+  \item Highlight of the week
+  \item What is this picture?
+\end{enumerate}
+
+
+\begin{figure}
+\begin{center}
+  \includegraphics[height=4.5in]{baptism.jpg}
+\end{center}
+\end{figure}
+
+
+\begin{figure}
+\begin{center}
+  \includegraphics[height=4.5in]{alma_waters_mormon.jpg}
+\end{center}
+\end{figure}
+
+\begin{figure}
+  \caption{A (sheep) fold}
+\begin{center}
+  \includegraphics[height=4.5in]{Sheep_Fold.jpg}
+\end{center}
+\end{figure}
+
+
+\paragraph{Mosiah 18:8.}
+\ldots come unto the fold of God,
+and be called his people.
+
+\paragraph{Mosiah 18:9.}
+\ldots willing to mourn with those
+that mourn \ldots
+
+\paragraph{Mosiah 18:9.}
+
+\ldots stand as witnesses of God
+at all times
+and in all things
+and in all places \ldots
+
+\end{document}
+

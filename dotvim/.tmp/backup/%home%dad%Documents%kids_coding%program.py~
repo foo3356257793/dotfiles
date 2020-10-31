@@ -1,0 +1,30 @@
+#!/usr/bin/python
+
+import os
+
+os.system("cat three_threes.txt")
+
+print("")
+print("This program tells you whether a number is in the three club.")
+
+print("")
+print("Try a number:")
+print("")
+
+x = input()
+
+print("")
+
+try:
+    xx = int(x)
+
+    if xx % 3 == 0:
+        print("%d is in the three club!" % xx)
+    else:
+        print("%d is NOT in the three club!" % xx)
+
+except:
+    print("I don't think that that's a number.")
+
+print("")
+print("Goodbye.")

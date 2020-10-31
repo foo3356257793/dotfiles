@@ -1,0 +1,13 @@
+#!/usr/bin/python3
+
+if __name__ == "__main__":
+
+    fp = open("data.txt", "r")
+
+    for line in fp.readlines():
+        fields = line.split()
+
+        for email in fields:
+            if '@' in email:
+                print(email)
+

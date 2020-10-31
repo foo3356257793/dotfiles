@@ -1,0 +1,112 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+#include <fstream>
+#include <sstream>
+
+#include <cmath>
+
+using namespace std;
+
+bool is_square(int64_t a)
+{
+  int64_t sqrt_a = round(sqrt(a));
+
+  return (a - sqrt_a*sqrt_a) == 0;
+}
+
+bool my_is_triangular(int64_t a)
+{
+  return is_square(8*a + 1);
+}
+
+vector<string> parse_comma_delimited_string(string words)
+{
+  stringstream ss(words);
+
+  vector<string> result = {};
+
+  while( ss.good() )
+  {
+    string w;
+    getline( ss, w, ',');
+
+    // strip surrounding punctuation
+    if(ispunct(w[0]))
+    {
+      w.erase(0,1);
+    }
+    if(ispunct(w[w.size()-1]))
+    {
+      w.erase(w.size()-1,1);
+    }
+
+    result.push_back(w);
+  }
+
+  return result;
+}
+
+int64_t prob_42(vector<string> words)
+{
+
+  int64_t answer = 0;
+
+  for(auto word : words)
+  {
+    int64_t score = 0;
+    for(auto c : word)
+    {
+      score += ((int64_t) (c-'A')) + 1;
+    }
+
+    if(my_is_triangular(score))
+    {
+      answer++;
+    }
+  }
+
+  return answer;
+}
+
+int main() {
+
+  ifstream fp("words.txt", ifstream::in);
+
+  if(!fp.is_open())
+  {
+    cout << "Could not open file!" << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  string line;
+
+  vector<string> words = {};
+
+  while(getline(fp, line))
+  {
+    words.push_back(line);
+  }
+
+  fp.close();
+
+  if(words.size() > 1)
+  {
+    cout << "Didn't expect multiple lines" << endl;
+    exit(EXIT_FAILURE);
+  }
+
+  auto my_words = parse_comma_delimited_string(words[0]);
+
+  auto answer = prob_42(my_words);
+
+  cout << answer << endl;
+
+
+  exit(EXIT_SUCCESS);
+}
+

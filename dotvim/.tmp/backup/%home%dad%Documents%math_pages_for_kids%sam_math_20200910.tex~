@@ -1,0 +1,56 @@
+\documentclass[landscape,20pt]{extarticle}
+
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+
+\usepackage[margin=0.5in]{geometry}
+
+\usepackage{wrapfig}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{6cm}{0.15mm}}
+
+\begin{document}
+
+  {\Large Name: \rule{4cm}{0.15mm}}
+
+  \
+
+  \begin{multicols}{2}
+  \paragraph{Sam Math \#2.}
+
+  Write down prime numbers:
+
+    \begin{enumerate}
+      \item \blank
+      \item \blank
+      \item \blank
+      \item \blank
+      \item \blank
+      \item \blank
+      \item \blank
+      \item \blank
+      \item \blank
+      \item \blank
+    \end{enumerate}
+
+    \columnbreak
+
+    \includegraphics[height=3in]{google.jpg}
+
+    \
+
+    Try ``Ok Google, is $2$ a prime number?''.
+
+    \
+
+    \includegraphics[height=1.5in]{google_answer.eps}
+
+  \end{multicols}
+
+\end{document}
+

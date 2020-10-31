@@ -1,0 +1,56 @@
+#!/usr/bin/sage
+
+import itertools
+
+def check_ans(val):
+
+    sq_str = str(val**2)
+
+    if len(sq_str) != 17:
+        return False
+
+    for j in range(9):
+
+        if sq_str[10] != '6':
+            return False
+
+        if sq_str[12] != '7':
+            return False
+
+        if sq_str[14] != '8':
+            return False
+
+        if sq_str[16] != '9':
+            return False
+
+    return True
+
+
+if __name__ == "__main__":
+
+    # divisible by 10
+    # since a square, we get the first fill in digit
+
+    base = 10203040506070809
+
+    max_low = 90909090
+
+    digit_coeffs = [10**15, 10**13, 10**11, 10**9]
+
+    # exhaust the high 4 digits
+    for tup in itertools.product(range(10), repeat=4):
+
+        min_sq = base + sum([digit_coeffs[i] * tup[i] for i in range(4)])
+        max_sq = min_sq + max_low
+
+        min_val = ceil(sqrt(min_sq))
+        max_val = floor(sqrt(max_sq))
+
+        for guess in range(min_val, max_val+1):
+
+            #print(guess^2)
+
+            works = check_ans(guess)
+
+            if works:
+                print(guess)

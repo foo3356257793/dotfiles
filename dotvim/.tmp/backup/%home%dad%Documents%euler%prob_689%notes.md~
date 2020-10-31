@@ -1,0 +1,183 @@
+For $0\leq x<1$, define $d_i(x)$ to be the $i$-th digit after the binary point of the binary representation of xx.
+For example $d_2(0.25)=1$, $d_i(0.25)=0$ for $i \neq 2$.
+
+Let
+$$
+f(x) = \sum_{i=1}^{\infty} \frac{d_i(x)}{i^2} \; .
+$$
+
+Let $p(a)$ be probability that $f(x)>a$, given that $x$ is uniformly distributed between $0$ and $1$.
+
+Find $p(0.5)$. Give your answer rounded to $8$ digits after the decimal point.
+
+# Ideas
+
+The $i$-th digit is presumably uniform random in $\{0,1\}$.
+
+If $d_1(a) = 1$, then we get $1/1^2 = 1$ and we are good.
+We have a probability of $0.5$ of being in this case.
+
+Note that
+$$
+\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6} \; .
+$$
+
+As a first stab at this, we could compute the digit $i$
+such that we must have at least one nonzero before $i$
+to have a chance at this.
+
+**next idea**. Suppose we did an exhaust over something like $10$ digits.
+
+**note**.
+* First digit one gives it.
+* If not, second digit one required.  This case reduces to prob rest at least $1/4$.
+* Next, need at least one of the next two.
+
+## 20200605
+
+Idea to branch through solutions.
+
+A lot of branches give a clear yes or no, so maybe not that bad.
+
+### Attempt
+
+I wrote simple branching code.
+It got too slow and the accuracy didn't get anywhere close to the required level.
+
+*by hand*.
+
+If the first digit is $1$, we are good.
+
+*other ideas*.
+
+We can get better bounds by the following.
+For a stretch $\{1/i^2,\ldots, 1/j^2\}$,
+think about $\{1/i^2, \ldots, 1/i^2\}$
+and $\{1/j^2, \ldots, 1/j^2\}$.
+
+*idea*.
+
+Go through a stretch of digits.
+Exhaust the possible $f$ values and sort.
+
+Compare two lists.
+For each list $0$ value, we compute the probability
+of:
+1. getting above $0.5$ with a list $1$ value,
+2. getting below $0.5-\mbox{max rem}$ value,
+
+We could also get a table of values in between these
+to evaluate further.
+
+*idea*.
+
+Approximate the tail with a Gaussian.
+This is increasingly reasonable.
+
+**tail var**.
+
+What is the variance of $c/n^2$
+for $c \in \{0,1\}$ uniform random?
+
+The mean is $(1/2) (1/n^2)$.
+The expected square is $(1/2) ((1/n^2)) = (1/2) (1/n^4)$.
+The variance is hence $(1/4) (1/n^4)$.
+
+The tail variance should then be a sum of these $(1/4) (1/n^4)$
+because the variance of the sum of variables works this way.
+
+# SOLVED
+
+I got it to work, submitted, and it was correct.
+
+## Alternate solutions
+
+### Simple
+
+Make a table of possible values.  Clump together values which are close and call it good.
+
+### Characteristic functions
+
+The characteristic function is
+$$
+\varphi_X(t) = \EE[ \exp(itX) ] \; .
+$$
+
+Consider the characteristic function for this example:
+$$
+\EE \exp(it (\sum_k x_k/k^2) ) \; .
+$$
+The characteristic function of a sum is the product of characteristic functions.
+We get
+$$
+\EE \exp(it x_i/k^2)
+=
+(1/2) \exp(0)
++ (1/2) \exp(it/k^2)
+=
+(1/2) (1 + \exp(it/k^2))
+$$
+Take a product
+$$
+\prod_k (1/2)(1 + \exp(it/k^2))
+$$
+
+We have
+$$
+\cos \theta = (\exp(i\theta) + \exp(-i\theta))/2
+$$
+so
+$$
+(1 + \exp(it/k^2))/2
+=
+\cos(t/2k^2) (\exp(it/2k^2))
+$$
+When we take a product of the coefficients here
+$$
+\prod \exp(it/2k^2)
+=
+\exp((it/2) \sum_k 1/k^2)
+=
+\exp(it\pi^2/12) \; .
+$$
+
+Maybe the idea is next to invert this thing to get a CDF.
+The density function is
+$$
+\frac{1}{2\pi} \int \exp(-itx) \varphi_X(t) dt \; .
+$$
+
+Gil-Pelaez gives
+$$
+F_X(x) = \frac{1}{2} - \frac{1}{\pi} \int_0^{\infty}
+\Im (\exp(-itx) \varphi_X(t))/t dt \; .
+$$
+We compute
+$$
+\int_0^{\infty} 
+\exp(-itx)
+(\exp(it\pi^2/12) \prod_k \cos(t/2k^2))
+$$
+
+The Fourier series of the function $1_{\{x\} \leq 1/2}$ is
+
+## Characteristic function
+
+Go back and trace over how to compute the characteristic function
+for the first $n$ terms.
+
+For a single term, we get
+$$
+\EE(\exp(it(x_i/k^2)))
+=
+\frac{1 + \exp(it/k^2)}{2}
+=
+\exp(it/2k^2) \cos(t/2k^2)
+$$
+The sum is then the product of these
+$$
+\exp((it/2) \sum_k 1/k^2)
+\prod \cos(t/2k^2)
+$$
+We then compute the CDF.
+One could do this numerically

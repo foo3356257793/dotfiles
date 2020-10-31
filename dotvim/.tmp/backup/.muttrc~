@@ -1,0 +1,11 @@
+set from = "cnelson125@gmail.com&quot;
+set realname = &quot;Christopher Nelson&quot;
+
+set imap_user = &quot;cnelson125@gmail.com&quot;
+set imap_pass = &quot;sekshatgzlmscfot&quot;
+
+set smtp_url = &quot;smtp://cnelson125@gmail.com:587//&quot;
+set smtp_pass = &quot;sekshatgzlmscfot&quot;
+
+set move = no
+set imap_keepalive = 900

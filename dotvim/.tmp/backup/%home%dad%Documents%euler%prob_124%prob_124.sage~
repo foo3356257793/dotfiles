@@ -1,0 +1,22 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    bd = 100000
+
+    rad_values = [1] * (bd+1)
+
+    primes = prime_range(bd+1)
+
+    for p in primes:
+
+        for m in range(p,bd+1,p):
+
+            rad_values[m] *= p
+
+
+    data = [[rad_values[a],a] for a in range(1,bd+1)]
+
+    data.sort()
+
+    print(data[10000-1][1])

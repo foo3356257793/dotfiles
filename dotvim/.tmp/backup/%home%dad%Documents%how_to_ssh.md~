@@ -1,0 +1,16 @@
+# make the ssh daemon start on boot
+
+```bash
+sudo systemctl enable sshd
+```
+
+# make it start
+
+```bash
+sudo systemctl start sshd
+sudo systemctl status sshd
+```
+
+# what is the address?
+
+ifconfig

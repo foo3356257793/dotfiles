@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\pagenumbering{gobble}
+
+\usepackage{multicol}
+
+\def\blank{\rule{2in}{0.15mm}}
+
+%opening
+\title{Alphabetizing \#3}
+\author{for Anna Nelson}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{multicols}{2}
+
+  \large
+
+  \begin{tabular}{l}
+    Akita \\[30pt]
+    Avocat \\[30pt]
+    Aye-aye \\[30pt]
+    Alligator \\[30pt]
+    Australian Terrier \\[30pt]
+    Ant \\[30pt]
+    Aardvark \\[30pt]
+    African elephant \\[30pt]
+    Axolotl \\[30pt]
+    Armadillo \\[30pt]
+  \end{tabular}
+
+  \columnbreak
+
+  \hspace{-1in}
+  \begin{tabular}{|l|}
+    \hline
+    1. \hspace{1.5in} \hspace{1.5in} \\[30pt]
+    \hline
+    2. \\[30pt]
+    \hline
+    3. \\[30pt]
+    \hline
+    4. \\[30pt]
+    \hline
+    5. \\[30pt]
+    \hline
+    6. \\[30pt]
+    \hline
+    7. \\[30pt]
+    \hline
+    8. \\[30pt]
+    \hline
+    9. \\[30pt]
+    \hline
+    10. \\[30pt]
+    \hline
+  \end{tabular}
+
+\end{multicols}
+
+\Large
+\centering
+
+\end{document}
+

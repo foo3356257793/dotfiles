@@ -1,0 +1,17 @@
+#include <iostream>
+using std::cout;
+using std::endl;
+
+void prob_28() {
+  const int64_t n = 1001;
+
+  int64_t sum_odd_squares = ((n * (n + 1) * (n + 2)) / 6) - 1;
+
+  int64_t sum_linear_terms = (-3 * (n - 1) * (n + 1)) / 2;
+
+  int64_t answer = 4 * sum_odd_squares + sum_linear_terms + 1;
+
+  cout << answer << endl;
+}
+
+int main(int argc, char *argv[]) { prob_28(); }

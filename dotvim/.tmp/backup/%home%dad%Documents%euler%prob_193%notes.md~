@@ -1,0 +1,2 @@
+For primes, look at $p^2 k$.
+For $p$, there are $\floor{N/p^2}$ of these.

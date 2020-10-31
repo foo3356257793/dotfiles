@@ -1,0 +1,57 @@
+function gen_pandigital(a)
+
+    k = 2
+
+    str_a = string(a)
+
+    # check if this is pandigital (lazy)
+    str_pan = ""
+    for i in 1:length(str_a)
+
+        c = str_a[i]
+        if c == '0' || c in str_pan
+            return false, Nothing
+        end
+        str_pan *= c
+    end
+
+    while length(str_pan) < 9
+
+        b = k*a
+
+        str_b = string(b)
+
+        for i in 1:length(str_b)
+
+            c = str_b[i]
+
+            if c == '0' || c in str_pan
+                return false, Nothing
+            end
+
+            str_pan *= c
+        end
+    end
+
+    return true, str_pan
+
+end
+
+function prob_38()
+
+    for len_head in 1:4
+
+        for a in 10^len_head-1:-1:10^(len_head-1)-1
+
+            works, result = gen_pandigital(a)
+
+            if works
+                return(result)
+            end
+        end
+    end
+end
+
+answer = prob_38()
+
+println(answer)

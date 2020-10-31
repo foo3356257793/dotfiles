@@ -28,3 +28,6 @@
 [submodule "dotvim/bundle/vim-tmux-navigator"]
 	path = dotvim/bundle/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule "dotvim/bundle/julia-vim"]
+	path = dotvim/bundle/julia-vim
+	url = https://github.com/JuliaEditorSupport/julia-vim.git

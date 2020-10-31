@@ -1,0 +1,14 @@
+#!/usr/bin/python3
+
+import os
+
+if __name__ == "__main__":
+
+    for root, dirs, files in os.walk("/home/dad/", topdown=True):
+
+        files = [f for f in files if not f[0] == '.']
+        dirs[:] = [d for d in dirs if not d[0] == '.']
+
+        for f in files:
+
+            print(f'{root}/{f}')

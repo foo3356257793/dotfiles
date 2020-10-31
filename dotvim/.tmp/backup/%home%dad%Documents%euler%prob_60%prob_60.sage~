@@ -1,0 +1,176 @@
+#!/usr/bin/sage
+
+import itertools
+
+import time
+
+if __name__ == "__main__":
+
+    curr_min = 34427
+
+    # find small triples
+
+    small_primes = prime_range(3,curr_min//5)
+
+    good_tups = []
+
+    print("sets of 2...")
+
+    start = time.perf_counter()
+
+    for tup in itertools.combinations(small_primes, 2):
+
+        good = True
+
+        for pr_tup in itertools.permutations(tup, int(2)):
+
+            p = pr_tup[0]
+            q = pr_tup[1]
+
+            pq = int( str(p) + str(q) )
+
+            if not is_prime(pq):
+                good = False
+                break
+
+        if good:
+            good_tups.append(tup)
+
+    end = time.perf_counter()
+
+    print("TIME = %lf" % (end-start))
+
+    print("found %d sets" % len(good_tups))
+
+    print("sets of 3...")
+
+    start = time.perf_counter()
+
+    tups_3 = []
+
+    for tup in good_tups:
+
+        p = tup[-1]
+
+        good = False
+
+        bd = (curr_min - sum(tup)) // 3
+
+        while p <= bd:
+
+            p = next_prime(p)
+
+            good = True
+
+            for q in tup:
+
+                pq = int( str(p) + str(q) )
+
+                if not is_prime(pq):
+                    good = False
+                    break
+
+                qp = int( str(q) + str(p) )
+
+                if not is_prime(qp):
+                    good = False
+                    break
+
+            if good:
+                tups_3.append(list(tup) + [p])
+
+    end = time.perf_counter()
+
+    print("found %d sets" % len(tups_3))
+
+    print("TIME = %lf" % (end-start))
+
+    print("sets of 4...")
+
+    start = time.perf_counter()
+
+
+    # for each tup, look for primes which complete the set
+    tups_4 = []
+
+    for tup in tups_3:
+
+        p = tup[-1]
+
+        good = False
+
+        bd = (curr_min - sum(tup)) // 3
+
+        while p < bd:
+
+            p = next_prime(p)
+
+            good = True
+
+            for q in tup:
+
+                pq = int( str(p) + str(q) )
+
+                if not is_prime(pq):
+                    good = False
+                    break
+
+                qp = int( str(q) + str(p) )
+
+                if not is_prime(qp):
+                    good = False
+                    break
+
+            if good:
+                tups_4.append(list(tup) + [p])
+
+
+    print("found %d sets" % len(tups_4))
+
+    end = time.perf_counter()
+
+    print("TIME = %lf" % (end-start))
+
+    print("sets of 5...")
+
+    start = time.perf_counter()
+
+    # for each tup, look for primes which complete the set
+    tups_5 = []
+
+    for tup in tups_4:
+
+        p = tup[-1] + 1
+
+        good = False
+
+        bd = curr_min - sum(tup)
+
+        while p < bd:
+
+            p = next_prime(p)
+
+            good = True
+
+            for q in tup:
+
+                pq = int( str(p) + str(q) )
+
+                if not is_prime(pq):
+                    good = False
+                    break
+
+                qp = int( str(q) + str(p) )
+
+                if not is_prime(qp):
+                    good = False
+                    break
+
+            if good:
+                tups_5.append(list(tup) + [p])
+
+    end = time.perf_counter()
+
+    print("found %d sets" % len(tups_5))
+
+    print("TIME = %lf" % (end-start))

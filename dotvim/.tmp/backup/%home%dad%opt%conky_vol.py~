@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+
+import os
+
+if __name__ == "__main__":
+
+    data = os.popen('amixer -c 0 get Master | grep Mono: | cut -d " " -f6').read()
+
+    data = data.strip()
+    data = data.lstrip('[')
+    data = data.rstrip(']')
+
+    """
+    fields = data.split()
+
+    all_index = fields.index('All')
+
+    val = fields[all_index+3]
+    val = val.rstrip(",")
+    val = val.rstrip("%")
+    val = int(round(float(val)))
+    print("B: %d%%" % val)
+
+    """

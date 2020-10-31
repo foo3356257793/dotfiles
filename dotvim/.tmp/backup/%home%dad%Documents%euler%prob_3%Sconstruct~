@@ -1,0 +1,7 @@
+env=Environment(CPPPATH="/usr/include/flint",
+                CPPDEFINES=[],
+                LIBS=["-lflint", "-lgmp"],
+                SCONS_CXX_STANDARD="c++20"
+                )
+
+env.Program("prob.cpp")

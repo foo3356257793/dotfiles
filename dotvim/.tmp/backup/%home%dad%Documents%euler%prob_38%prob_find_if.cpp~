@@ -1,0 +1,105 @@
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <memory>
+#include <tuple>
+#include <vector>
+#include <iterator>
+
+#include <ranges>
+
+#include <execution>
+
+using namespace std;
+
+template < class T > class RangeIterator;
+
+template < class T > class Range {
+  friend RangeIterator<T>;
+};
+
+tuple<bool,int64_t> gen_pandigital(int64_t a)
+{
+  int64_t k=2;
+
+  auto str_a = to_string(a);
+
+  string str_pan = "";
+  for(int i=0; i<str_a.size(); i++)
+  {
+    char c = str_a[i];
+    if((c=='0') || (str_pan.find(c) != string::npos))
+    {
+      return make_tuple(false,0);
+    }
+    str_pan += c;
+  }
+
+  while(str_pan.size() < 9)
+  {
+    int64_t b = k*a;
+
+    auto str_b = to_string(b);
+
+    for(int i=0; i<str_b.size(); i++)
+    {
+      char c = str_b[i];
+
+      if((c=='0') || (str_pan.find(c) != string::npos))
+      {
+        return make_tuple(false,0);
+      }
+
+      str_pan += c;
+    }
+  }
+
+  int64_t result = stoi(str_pan);
+
+  return make_tuple(true,result);
+
+}
+
+int64_t prob_38()
+{
+  int64_t answer = 0;
+  for(int len_head = 1; len_head < 5; len_head++)
+  {
+    int64_t start = pow(10,len_head)-1;
+    int64_t end = pow(10,len_head-1);
+
+    auto data = vector<int64_t>();
+    for(int64_t a = start; a > end; a--)
+    {
+      data.push_back(a);
+    }
+
+    auto answer_it = find_if(execution::par, data.begin(), data.end(), [](int64_t &a)
+        {
+        bool works;
+        int64_t result;
+        tie(works, result) = gen_pandigital(a);
+        return works;
+        });
+
+    if(answer_it != data.end())
+    {
+      bool works;
+      int64_t result;
+      tie(works, result) = gen_pandigital(*answer_it);
+      answer = max(answer, result);
+    }
+  }
+
+  return answer;
+}
+
+int main()
+{
+
+  int64_t answer = prob_38();
+
+  cout << answer << endl;
+
+}
+

@@ -1,0 +1,11 @@
+TEX = xelatex
+
+NAME = plan
+
+all: $(NAME).pdf
+
+%.pdf: %.tex
+	$(TEX) $+
+
+.clean:
+	rm -rf $(NAME).log $(NAME).aux $(NAME).pdf

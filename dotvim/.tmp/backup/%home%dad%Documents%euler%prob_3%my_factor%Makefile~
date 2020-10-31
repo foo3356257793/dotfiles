@@ -1,0 +1,13 @@
+CC = gcc
+
+all: libmyfactor.a
+
+libmyfactor.a: my_factor.c
+	$(CC) -fPIC -c -I/usr/include/flint -lflint -lgmp -g $+ -o my_factor.o
+	ar -cvq libmyfactor.a my_factor.o /usr/lib64/libflint.so /usr/lib64/libgmp.so
+
+clean:
+	rm -rf my_factor.o libmyfactor.a
+
+.PHONY: clean
+

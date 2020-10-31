@@ -1,0 +1,39 @@
+# Sparse
+
+The binary representation is sparse.
+
+What if we have $1000B$.
+
+If we use a top power, we reduce to $B$.
+
+If we don't we must use at least one next power to get
+$0100B$.
+In this case, we reduce to $100B$.  Note that the limit of
+$2$ doesn't matter on the top digit.
+
+If we have a $10B$,
+then cases:
+
+Eliminate the top digit directly and get $B$.
+
+Use the next digit to get $1B$.
+
+If we have a $11B$, cases:
+
+Eliminate the top digit directly and get $B$.
+
+Rule out only using one from below:
+
+$10B$ and the highest is $011...$
+
+Hence need $2$ and we get
+
+$01B$.  We then need to use at least one of the next ones
+and branch depending.
+
+# Idea
+
+Each representation corresponds uniquely to a decomposition
+$n = a+b$ where $a&b=a$:
+
+$b$ is sum of powers used at all, $a$ is sum of powers used twice.

@@ -1,0 +1,15 @@
+CC = gcc
+
+all: prob.o prob_rust.o
+
+prob.o: prob.c
+	$(CC) $+ -o $@ -g
+
+prob_rust.o: prob_rust.rs
+	rustc $+ -o $@
+
+clean:
+	rm prob.o prob_rust.o
+
+.PHONY: clean
+

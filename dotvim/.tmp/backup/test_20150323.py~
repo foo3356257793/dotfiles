@@ -1,0 +1,41 @@
+#!/usr/bin/python3
+
+from random import *
+
+def print_vecs(a,num_vecs):
+  for i in range(num_vecs):
+    for j in range(16):
+      print("%4X " % a[16*i+j], end = "")
+    print("")
+
+n = 16*16
+
+array = [randint(0, 15) for r in range(n)]
+
+counts = [0] * (16)
+
+for i in range(0,n,16):
+  counts[array[i]] += 1
+
+a = [0] * 16
+b = [0] * 16
+p = 0
+for i in range(16):
+  a[i] = p
+  p += 16*counts[i]
+  b[i] = p
+
+for i in range(0,16):
+  while a[i] < b[i]:
+    x = array[a[i]]
+    while x != i:
+      for s in range(16):
+        if(array[a[i]+s] == x):
+          y = array[a[x]+s]
+          array[a[x]+s] = x
+          array[a[i]+s] = y
+        a[x] += 16
+        x = array[a[i]]
+    a[x] += 16
+
+print_vecs(array,16)

@@ -1,0 +1,45 @@
+#!/usr/bin/sage
+
+function sum_of_fifth_powers_of_digits(a)
+
+    S = 0
+
+    while a > 0
+
+        S += (a % 10)^5
+
+        a = a ÷ 10
+
+    end
+
+    return S
+
+end
+
+function prob_30()
+
+    n=4
+
+    while n * 9^5 > (10^n-1)
+        n += 1
+    end
+
+    bd = 10^n - 1
+
+    tot = 0
+
+    for a in 10:bd
+
+        S = sum_of_fifth_powers_of_digits(a)
+
+        if S == a
+
+            tot += S
+        end
+    end
+
+    return tot
+
+end
+
+prob_30()

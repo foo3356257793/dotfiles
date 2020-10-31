@@ -1,0 +1,1 @@
+tmux set-buffer -b foo "cat ~/.clipboard.txt" ; tmux paste-buffer -b foo -t 1

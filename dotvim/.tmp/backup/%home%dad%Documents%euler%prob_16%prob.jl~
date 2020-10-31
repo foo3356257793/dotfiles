@@ -1,0 +1,6 @@
+big_pow = (BigInt(2))^1000
+big_pow = string(big_pow)
+
+answer = sum([parse(Int,c) for c in big_pow])
+
+println(answer)

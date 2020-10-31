@@ -1,0 +1,118 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Ongoing Monthly Agenda}
+\author{}
+\date{May 6, 2020}
+
+\begin{document}
+
+\maketitle
+
+\begin{itemize}
+  \item Opening Prayer: Andrea
+  \item Scripture/Thought: Allison
+  \item Training From Handbook: Kim
+  \item Closing Prayer: Laurie
+\end{itemize}
+
+\begin{enumerate}
+  \item Calendar:
+    \begin{enumerate}
+      \item Next Meeting:
+      \item Birthdays in May: Kacy Simmons (5), Katie Stalker (7), Amy Wing
+        (12), Kennedy Bradshaw (26), Charlotte Stevens (27), Lily Jarvis
+        (29), Hailey Tweed (31)
+      \item May Activities: May 26th?
+      \item YW Lesson on May 10th
+    \end{enumerate}
+
+  \item Introduce New Google Account:
+    \begin{enumerate}
+      \item Email: \texttt{Broadneckwardyw@gmail.com}, Password:
+        \texttt{Broadneck!young!women!}
+      \item Google Calendar
+      \item Google Drive/Documents
+    \end{enumerate}
+
+
+  \item Callings:
+    \begin{enumerate}
+      \item MS Adviser
+      \item Activity Specialist
+    \end{enumerate}
+
+  \item Girls Camp June 23--26 Via Zoom
+
+  \item Activities Calendar/Lessons for June
+
+  \item New Presidency Training/Folders
+
+  \item ``Thank You'' Gift Ideas for Old Presidency
+
+  \item Ideas to Meet/Introduce Ourselves to YW:
+
+    \begin{enumerate}
+      \item Drop off baked goodies
+      \item Mail cards
+      \item Make calls
+    \end{enumerate}
+
+  \item Focus Girls- visits w/presidencies
+
+    \begin{enumerate}
+      \item Seaman girls (Hollee)
+      \item *Isabelle Weaver
+      \item Katie Kilber
+      \item Karen Millett
+      \item *Raleigh Kerst
+      \item Carolyn Mish
+    \end{enumerate}
+
+
+  \item Seniors:
+
+    \begin{enumerate}
+      \item May 21st Surprise Car Parade (Joanna Bradshaw)
+      \item Goodie Bags
+      \item Introduction into RS
+      \item YW: Ann Marie Seaman, Lily Jarvis, Emily Kibler, Malia Giroux, and
+        Alyssa Loe (Linda is in contact). YM: Peter Cope, Tanner Bradshaw,
+        David Wing, Matt Hong (?)
+    \end{enumerate}
+
+
+  \item Budget \$1300
+
+  \item Other
+\end{enumerate}
+
+
+
+
+
+
+\end{document}
+

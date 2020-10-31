@@ -1,0 +1,47 @@
+#!/usr/bin/python3
+
+import requests
+import json
+
+if __name__ == "__main__":
+
+
+    fnames = ["class_pres_mid.json", "class_pres_high.json", "leaders.json"]
+    # send it to myself to check the see the formatting
+    emails = []
+    emails.append('cnelson125@gmail.com')
+
+    non_emails = ['apet5012@student.dodea.edu', 'chloewalz2003@gmail.com',
+            'nsd4f@yahoo.com' ]
+    #non_emails = []
+
+    for fname in fnames:
+
+        with open(fname) as json_file:
+            data = json.load(json_file)
+
+        members = data['members']
+
+        for member in members:
+
+            if 'emailAddress' in member:
+                email = member['emailAddress']
+                if email != None and not email in emails:
+                    emails.append(email)
+
+                if email in non_emails:
+                    print("bad email %s for %s" % (email, member['name']))
+
+
+    emails.sort()
+
+    fp = open("help_emails.txt", "w")
+
+    for email in emails:
+
+        if email in non_emails:
+            continue
+
+        fp.write("%s\n" % email)
+
+    fp.close()

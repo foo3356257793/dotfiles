@@ -1,0 +1,10 @@
+#!/usr/bin/python3
+
+if __name__ == "__main__":
+
+  print("Hello, world!")
+  print("It's me dad!")
+  print("")
+  print("Here's a picture of a dog:")
+  print(" o____ ")
+  print("  |||| ")

@@ -1,0 +1,12 @@
+CC = gcc -O0 -g
+
+all: qr.o
+
+qr.o: qr.c
+	$(CC) -o $@ $+ -lm
+
+clean:
+	rm qr.o
+
+.PHONY: clean
+

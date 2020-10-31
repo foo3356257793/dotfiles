@@ -1,0 +1,85 @@
+#!/usr/bin/sage
+
+def num_sols(a):
+
+    div_a = divisors(a**2)
+
+    unique_pairs = [d for d in div_a if d <= a]
+
+    return len(unique_pairs)
+
+def branch_through_divisors(lb_curr_num_div, lb_target_num_div, p, lb_current,
+        current, lb_bd, bd):
+
+    """
+    print("---")
+    print("branching at p    = %d" % p)
+    print("lb_curr_num_div   = %.3lf" % lb_curr_num_div)
+    print("lb_target_num_div = %.3lf" % lb_target_num_div)
+    print("lb_current        = %.3lf" % lb_current)
+    print("lb_bd             = %.3lf" % lb_bd)
+    """
+
+    q = next_prime(p)
+
+    lb_p = lb(p)
+
+    index_bd = floor(lb_bd/lb_p)
+
+    lb_new = lb_current
+
+    new = current
+
+    for i in range(1,index_bd+1):
+
+        lb_new += lb_p
+
+        new *= p
+
+        if lb_new > lb_bd:
+            break
+
+        lb_new_num_div = lb(2*i+1) + lb_curr_num_div
+
+        if lb_new_num_div > lb_target_num_div:
+            lb_bd = lb_new # new best
+            bd = new
+            print("p=%d: lowered bd to %.3lf" % (p,lb_bd))
+            break # can't do better
+
+        lb_bd, bd = branch_through_divisors(lb_new_num_div, lb_target_num_div,
+                q, lb_new, new, lb_bd, bd)
+
+    return lb_bd, bd
+
+
+
+if __name__ == "__main__":
+
+    targ_num_div = 2 * (4 * 10**6) - 1
+    lb_targ_num_div = lb(targ_num_div)
+    # construct a solution
+    p = 2
+    lb_Pi = 0
+    lb_num_sol = 0
+    Pi = 1
+
+    while lb_num_sol < lb_targ_num_div:
+
+        lb_Pi += lb(p)
+        lb_num_sol += lb(3)
+
+        Pi *= p
+
+        p = next_prime(p)
+
+
+    #lb_val, val = branch_through_divisors(0, lb(199), 2, 0, 1, 12, 2**12)
+    lb_val, val = branch_through_divisors(0, lb_targ_num_div, 2, 0, 1, lb_Pi)
+
+    #val = round(2**lb_val)
+
+    print("")
+    print(val)
+
+    print(num_sols(val))

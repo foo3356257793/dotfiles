@@ -1,0 +1,2034 @@
+\documentclass[10pt]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{url}
+\usepackage{ulem}
+\usepackage{multicol}
+%\usepackage{makeidx}
+%\makeindex
+\usepackage{enumerate}
+\usepackage{tabularx}
+
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\newcommand{\hvt}{\fontspec[BoldFont= HelveticaNeueBold.ttf, ItalicFont=
+HelveticaNeueItalic.ttf, BoldItalicFont =
+HelveticaNeueBoldItalic.ttf]{HelveticaNeue.ttf}}
+\titleformat*{\section}{\Large\bfseries\hvt}
+\titleformat*{\subsection}{\large\bfseries\hvt}
+\titleformat*{\subsubsection}{\bfseries\hvt}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{idea}[thm]{Idea}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{quest}[thm]{Question}
+\newtheorem{guess}[thm]{Guess}
+\newtheorem{alg}[thm]{Algorithm}
+\newcommand{\Sp}{\mathrm{Sp}}
+\def\R{\mathbb{R}}
+\def\RR{\mathbb{R}}
+\def\CC{\mathbb{C}}
+\def\FF{\mathbb{F}}
+\def\NN{\mathbb{N}}
+\def\N{\mathbb{N}}
+\def\eps{\varepsilon}
+\def\fin{\mathrm{fin}}
+\def\z{\mathcal{Z}}
+\def\x{\mathcal{X}}
+\def\l{\mathcal{L}}
+\def\A{A}
+\def\P{\mathcal{P}}
+\def\tr{\mathrm{Tr}}
+\def\spn{\mathrm{span}}
+\def\cone{\mathrm{cone}}
+\def\id{\mathrm{Id}}
+\def\A{\CC\langle t,t^*\rangle}
+\def\cM{\mathcal M}
+\def\G{G}
+
+
+\numberwithin{equation}{subsection}
+
+
+\begin{document}
+
+\title{\hvt \Huge 2012}
+\author{\hvt \Large Christopher S. Nelson}
+\date{}
+
+\maketitle
+
+\section{}
+
+\subsection*{January 4, 2012}
+
+I am travelling to Boston today to attend a math conference and to present a 30
+minute talk on my work on the left nullstellensatz.
+
+I am not excited about having to do this.  (1) I dread math conferences. (2) It
+is lonely being away from my family; I have come to depend on them, and I love
+them dearly. (3) Travel is hard, especially since I have been under the weather
+the past couple of days; I am now sure that I have a sinus infection.
+
+My dread in having to make this trip has really shifted my focus onto my family.
+
+Before this vacation, I had been wondering about what could have been if my
+talents in math had been better utilized.  As I saw it, I was born with great
+gifts, yet I had been placed (or later on placed myself) in average/below
+average educational environments.  I thought that if I had just had the right
+advising, or if I hadn't had had certain negative influences in my childhood, I
+could have done a lot more.  Going into this vacation, I was sorry that instead
+of reaching for greatness and glory in the mathematics world I was reaching for
+an easy yet unremarkable life as an actuary.
+
+Over this vacation, especially early on, I have worked on math in intense
+spurts.  The benefit of this was that I was able to prove the left
+nullstellensatz; in my own small world view, this is a great result.  This
+shifted how I view my time as a PhD student.
+
+Up to that, I had solved one problem which took me approximately a month to
+solve during my second year.  This result was good enough for a dissertation.  I
+wasted a lot of time simply revising my work.  In addition I had solved a couple
+of minor things which I was not going to publish and I had worked on the left
+nullstellensatz paper.  As it was, the left nullstellensatz paper was to be
+published even without my latest result.  Basically, I had scratched the surface
+of the left nullstellensatz, and that was to be a paper.  Other than that, I saw
+that I had a lot of time where I wasn't thinking about research.  Over the past
+year, I had basically given up on research all together.  I viewed even my time
+as a PhD student as me not truly maximizing my potential, and as such, I didn't
+have great results to show for it.
+
+During the time when I was originally working on the left nullstellensatz paper,
+I viewed that problem as ``the big one''.  I felt that if I could just solve the
+left nullstellensatz that I would somehow be validated.  In hindsight, I
+probably had a false view of the importance of the problem, but it is still a
+good result.  Still in my view, the left nullstellensatz is a much more
+impressive result than what I previously have proven.   Therefore, in my inner
+narrative, after having not done research for about a year, I took a week to
+solve the biggest math problem of my life.
+
+This experience really gave me a taste of life doing serious mathematical
+research.  I got to experience what it was like to achieve solving a significant
+(at least in my head) problem.  For that I felt like my talent was validated.  I
+am smart enough to do math research.  On the other hand, I didn't feel
+fulfilled.  My family is more important to me than wordly success.  As I worked
+on my math problem, I took myself away from my family mentally.  No success
+outside the home can make up for failure in the family.
+
+\subsection*{January 6, 2012}
+
+I spent the afternoon with my old mission companion, Elder Viriato.  I got to
+spend time with his whole family, including 3 kids and his wife.  We went to a
+Brazilian restaurant in my beloved Framingham, which was good.  I am glad to be
+able to be friends with an old mission companion.
+
+Also, I blew off the afternoon session of the conference.
+
+I had more thoughts about my future career path.
+
+To my surprise, I enjoyed the math conference.  I had results to share; I didn't
+have to rely on my lame work on harmonic polynomials; it made me feel like I
+belonged there; also, I enjoyed working out my results with my advisor's
+collaborators; through explaining my results, I was stretched and even thought
+of new angles for making my results even more polished.  It was a better taste
+of how being a professor is.
+
+This gave me some pause to think of whether I am making the correct choice to
+pursue a career outside of academia.  I will say that I have not gone about
+mathematical research in the right way.  First, I didn't read mathematical
+papers, nor did I care much about them.  Second, I didn't seek out open problems
+for me to work on; I could have been the master of the situation and picked
+things that I wanted to do; in doing this, I would have needed to read up on the
+field I was studying, going over papers to see what had been done and, if
+necessary, how it had been done.  Third, I could have time blocked more
+effectively.  As I see it, a big stumbling block was that I didn't give myself
+enough help or outside ideas so that I was just figuring out everything for
+myself.
+
+Included in the things to do differently is talking to people.  I dislike
+talking to people much more than I do reading mathematical papers.  I just
+realize that it is important.
+
+Therefore, through this conference I have caught a vision of what a career in
+mathematical research could be, and I felt the excitement of making new
+mathematical discoveries.  In a way it will be sad to give it up.
+
+Why must I give it up.  I haven't forgotten all of the nights that I have been
+in agony thinking about some math problem.  I haven't forgotten about all of the
+lousy tasks that go with the joy of mathematical discovery.  I prefer to make
+more money.  I prefer to work less hours so that I have more time with my
+family.
+
+
+
+\section{}
+
+\subsection*{February 9, 2012}
+
+Today Allison and I completed a digital fast.  We decided for a whole day that
+we would avoid our usual round of Internet and television consumption.  I found
+the day to be invigorating.  I have been, for a while now, wanting to do
+something about my out of control digital consumption, but I haven't been able
+to commit myself to anything.  I hope that as a result of today that I will be
+even more motivated to curb my digital diet.
+
+\section{}
+
+\subsection*{March 30, 2012}
+
+For the past almost two weeks we have been in Utah seeing both of our families.
+I appreciated the time I was able to spend with my mom and brother Craig, and
+now we are on the second stint in St. George at Allison's family's home.  I love
+how much everyone loves lil' Anna.  I am really enjoying raising Anna.
+
+I have spent the past while in a stupor over gadgets.  Here is my story.
+
+Over a month ago Allison and I performed a ``digital fast''.  We took the day to
+essentially not comsume digital media.  I, in particular, was sick of being
+addicted to digital media.  I loved it and wanted to cut back the next day too.
+However things have devolved since then.
+
+The first interesting event was that when Allison went to bed after our digital
+fast, I decided to get things done.  In the midst of this, I carelessly broke my
+laptop screen.  In light of the day's events, my reaction was to immediately
+regret purchasing the laptop.  It turned out that I was able to buy a screen
+replacement (for about \$100) and my brother Craig kindly did the work of
+replacing the screen last week.  In the meantime, I brought out my old laptop --
+nicknamed ``The Beast'', it has a broken hinge and can only be used if the
+screen
+is propped up against a wall -- and used it to complete my school work.  This
+made me further regret my laptop purchase because the Beast worked for what I
+needed, and further, I enjoyed using its larger keyboard to type out my
+assignments.  I also note that if I were to take the SSD from my newer laptop
+and put it in the Beast, the Beast would be even better.
+
+The second thing that happened was that I got around to selling some stuff on
+Craigslist.  I remembered that it is possible to sell things on eBay and
+Craigslist and get money.  For example, I recently sold my convertible
+netbook/tablet for almost what my mom paid for it.
+
+The third thing is that I became aware that I am eligible for a phone upgrade.
+
+The final thing that really tipped me over the edge was my tablet.  A few
+different things happened with my tablet.
+
+First, after about a week of owning my tablet, I installed an update from
+Samsung to the tablet which made it, in my opinion, uglier and worse.  I tried
+out a bunch of different custom roms to make the tablet better, but the only
+ones that I really liked were the ones that were based on the newest version of
+the Android operating system.  This came with some drawbacks: the camera doesn't
+work; depending on the rom, the operating system can be unstable; there are apps
+which simply don't work on the tablet; I haven't been able to change the font to
+a font I like; I haven't been able to connect my tablet directly to my laptop.
+
+Second, I sometimes pop by the UCSD bookstore to look at the Apple electronics.
+I began to notice how the iPad did some things a lot better than my tablet.  The
+web browsing exerience was night and day.  Apps are made for the iPad, whereas
+on Android they are just stretched out phone apps; also, there are simply a lot
+more apps -- like note taking apps or video apps -- which Android doesn't have.
+The iPad has a beautiful Helvetica aethsetic.  This comparison was further
+brought to light when I brought my tablet to my mom's and saw firsthand all of
+these great points.
+
+Third, I became somewhat addicted to certain games on my tablet.  Of course
+these games are better on the tablet than on the phone.
+
+Adding all this together, what happened is that in my mind I had a giant choice
+presented to me as to whether or not I should sell all my gadgets and get new
+ones or not.  More specifically, a line of reasoning presented itself.  I can
+now see that the iPad is a better tablet than any Android tablet on the market.
+Also, the iPad just had a refresh, which is the best time to buy an Apple device
+(I can get the newest one at the normal price, or I can get the old one for less
+than ever).  However, the biggest thing which would hinder my owning an iPad is
+that one needs the iTunes music player in order to successfully set up an
+``iDevice''.  For most people this is not a problem, however i use Linux, which
+doen't have iTunes, and I do not want to use Windows.  Well, I have had
+thoughts about selling my laptop anyway.  It then becomes feasible to buy a
+Macbook.  In fact, there is a not so bad deal on a refurbished Macbook Air that
+I would enjoy having.  Doing this wouldn't be too bad because (a) I can dual
+boot to Linux and (b) I like certain parts of OS X, including the multitouch
+gestures, stability of the operating system, and the increased availability of
+apps.  So now, if I am on this route and I now own an Apple computer, there is
+one phone which works best with Apple computers: the iPhone.  Certainly there
+are things that I like about the iPhone: it is attractive, the metal casing
+makes it feel premium compared to plastic Android phones, and it has the same
+pleasing qualities the iPad has.  Sure, Android is cheaper, syncs better to
+Google apps, which I use extensively, and lacks a built in GPS, lacks 4G, but
+the one more thinks about it, the more one sees that one could get buy just fine
+with one.  And then, while I am at it, Apple TV is only \$99 and allows any of
+these Apple devices to stream to it wirelessly.
+
+This is why Apple is the largest company right now.  Basically, with their
+consumer lock-in strategy, I went from considering trading one of my gadgets to
+get one of theirs to trading my three biggest gadgets to get three of theirs.
+The total cost of this?  Estimating things out, I might spend \$1000 or more to
+do this replacement.  That's crazy!  True, Apple products depreciate at a lower
+rate than competing electronics, but \$1000 is a lot to spend considering I was
+considering a low cost option of trading a tablet for a similarly-priced tablet.
+ Especially crazy is that this started out with me doing a digital fast and
+actually enjoying it.  Making this even more crazy is my preference for free and
+open computing; I like not being tied down to one company (Apple), compelled by
+my past spending to rely on their products and services; I like Linux.
+
+This has led me to conclude that I need to get rid of my tablet.  I know this
+will be disappointing to my wife, however there are two big reasons for this:
+(1) the tablet only increases my time wasting and really I don't do anything
+productive with it; (2) I went from being more than satisfied with my gadgets
+when I had a laptop and a phone to being totally dissatisfied with all of my
+gadgets -- the laptop and phone are the same, and I only added to what I have.
+
+As a footnote, I probably will get a new phone, and it's going to be Android.
+
+\section{}
+
+\subsection*{April 20, 2012}
+
+\subsubsection*{Events}
+
+My mom and Paul are in town to visit because it is Spring break for the kids.
+So far we have gone out to eat some, Allison made a Sunday dinner, and my mom
+has enjoyed taking care of Anna for us.
+
+\subsubsection*{Problem}
+
+I have had a rough time the past while.
+I feel the way I feel after I have fasted and have needed to make a big change.
+
+On a low level, I felt like it might be all related to the issue of which
+phone I should get.  I felt like I should get an Android phone.  I got an
+Android phone, one of the best ones on the market.  I still feel lousy.
+So it could be something larger.  Or it could be that secretly I still wanted
+to justify getting an iPhone instead. (The iPhone is ``more beautiful'', it has
+the best selection of apps, and Apple keeps it up to date---i.e., it is cutting
+edge all of the time without having to be tinkered with---and it has the best
+camera; however, it doesn't have 4G, I'm more afraid of them breaking, and I am
+invested in Google's cloud---which, by the way, is better than Apple's cloud.)
+
+On a higher level, I felt like it could be my gadget addiction.  I have tried
+harder to not idle around with my gadgets.  Still I feel lousy.
+
+
+My next idea is that the thing I can do is to live better in every way I can:
+go to bed and wake up early; eat healthily and regularly; exercise vigorously;
+do better scripture studies; etc.
+
+\subsubsection*{Night Thoughts}
+
+Here is a list (for my own sake) to help me remember why I want an Android
+phone instead of an iPhone:
+
+\begin{itemize}
+ \item Free turn-by-turn navigation.
+ \item Gmail is better on Android (and I like Gmail).
+ \item You can look at the file system.
+ \item You don't have to use iTunes.
+ \item More resistant towards drops.
+\end{itemize}
+
+\subsection*{April 12, 2012}
+
+I have had a rough while being distraught over my gadgets.
+Today I decided to take back the Galaxy Nexus.
+I decided to get instead the iPhone 4S.
+I immediately knew that I needed to sell it.
+Allison was also not pleased with my choice.
+In hindsight, this might work out fine because I am pleased with my current
+phone, so by selling the iPhone, I can make a profit, thereby capitalizing on
+the subsidy which Verizon offers on the iPhone.
+
+\subsubsection*{iPhone Experience}
+
+I was mostly underwhelmed with the iPhone experience as I played with it
+tonight.  Here is what stood out to me, both pro and con:
+
+
+\begin{itemize}
+ \item Google apps are lousy on the iPhone.  On the other hand, they are the
+best thing about Android.  Gmail is the best mail service (in my opinion); on
+iPhone the Gmail app doesn't have all the same features. Google Voice saves me
+from having a texting plan; on iPhone, I found the Google Voice app to be
+lacking.  Google Maps Navigation is the best free GPS app.
+\item While Mobile Safari on the iPad is, from what I've seen, far superior to
+tablet Android browsing, I found that on the iPhone I didn't like Safari as
+well as Android's browser.  The main thing that bugged me was that for some
+reason on iPhone one cannot scroll quickly.
+\item The camera on the iPhone performed well.
+\item Every app in the App Store works.  On my wonky devices, the same cannot
+be said.
+\item The glass and metal iPhone didn't necessarily feel any nicer than the
+plastic phones I have been using.
+\item I wouldn't feel comfortable using an iPhone without a home computer on
+which iTunes was installed.  I have no such computer available.
+\item As far as everything else, the iPhone was useable.  There are nice things
+about it.
+\end{itemize}
+
+Given the cons of the iPhone, and given that my old phone ``just works'' when
+it comes to my core needs (Making phone calls, Gmail, Google Voice, Music,
+Internet, etc.), I believe that my old phone will continue to serve me well.
+
+\subsubsection*{Galaxy Nexus Experience}
+
+While I am at it, here are my pros and cons of the Samsung Galaxy Nexus
+
+\begin{itemize}
+ \item Phone service would drop from time to time.  This was an epic fail from
+my perspective given that the primary responsibility of a smarphone is to be a
+phone.
+\item Apps worked on it.
+\item It was light.
+\item This goes for the iPhone too, but I felt uneasy carrying around such an
+expensive gadget.  I always was afraid it would break.
+\item The phone was super fast.  The 4G was super fast.
+\item The camera was worse than my old phone.
+\end{itemize}
+
+\subsection*{April 13, 2012}
+
+I am probably going to sell the iPhone 4S I now own.  I went to Verizon
+yesterday to reactivate my old HTC Droid Incredible.
+Although I like things about the iPhone, I am underwhelmed with it, and in
+contrast, I appreciate better the things my Droid does.
+I think I am going to go low cost, low distraction as far as my gadgets go.  I
+need to focus on other things in my life other than gadgets.
+
+I listed it on Craigslist last night and didn't get any hits.  I will lower the
+price on it.  I would settle for \$450 to \$500 for it.
+
+\subsection*{April 15, 2012}
+
+I am still in my phone dilemma.
+
+It would have been easier if I didn't buy any new phone.
+I would have spent no money, and I would have a simple, cheap phone which does
+everything necessary for me.
+I can still take back the iPhone, but then I won't be able to get a subsidized
+new phone.  This might be a good option if I want to not have a smartphone once
+my contract is up.
+
+I now have the iPhone, and I basically \textit{have to} sell it.  Craigslist is
+not panning out right now, and so I might have to do eBay.  I prefer not to do
+eBay because (a) they take a cut of the sale and (b) I have to figure out
+shipping on it.
+
+The other option is to simply start using the iPhone.  I will say that as I
+have dinked around with the iPhone as it has been sitting on my table for the
+past few days, I have found the following:
+\begin{itemize}
+ \item I have gotten used to Mobile Safari.  I figured out the trick to type in
+an address or a search.  The reading mode option is right up my alley.  I am an
+irrational fan of Helvetica, which iPhone uses, and on the other hand, Android
+uses Droid Sans or now Roboto as its default sans-serif font.  All mobile sites
+are optimized for the iPhone, whereas on Android some fail.  I also have become
+more accepting that Mobile Safari doesn't do super fast scrolling because how
+can one see everything on a page if one scrolls past it super fast.
+
+\item I inadvertently plugged the iPhone into Ubuntu and much to my surprise
+the iPhone's file folder opened.  In Ubuntu, I would be able to import my
+pictures with no hassle.  I did not realize this was an option.  To do music,
+however, one still needs iTunes.
+
+\item I haven't changed my opinion of Google apps on the iPhone, but I have
+softened my stance about how well I would be able to integrate Google with the
+iPhone.
+
+\item I noticed the iPhone won't let me run an app with sound and play music at
+the same time.
+\end{itemize}
+Basically, I have found more and more reasons to convince myself to just use
+the iPhone.  There is, however, an irrational force compelling me to stay with
+Android: peer pressure.  (Actually, whether or not it is irrational is
+debatable.)  Allison, despite having said that she would let me do what I want,
+clearly likes Android better, and would love me to like Android better.  All of
+Allison's family uses Android as well, which makes our ties to it even
+stronger.  My brother Craig uses Android, and one of the things we can actually
+bond over is using Android and hating Apple.  Finally, there is just something
+uncool about liking Apple.  (For a certain subset of society, the opposite is
+true---Apple is cool---but for the rest of us, Android is cooler.)  One
+of the main reasons is that Apple is locked down and takes advantage of
+things for their profit.  (They are a business, and the purpose of a
+business is to make money, but still.)  Socially, I want to be squarely in
+Android camp. In practice, when it comes down to picking a device and actually
+using it, I am torn. I am disappointed with Android.  The Galaxy Nexus was cool
+in some ways, but in a lot of ways it bugged me; every other new phone had
+bloatware, out of date operating systems, and ugly custom skins slapped all over
+them; my Android tablet has been a letdown; I am very uninspired by anything
+Android.
+
+Putting aside the social reasons, it is still somewhat of a tricky decision.
+The social aspect makes it impossible.  I am planning on taking my old Android
+and leaving the new iPhone to Utah for sure because I can't handle anyone
+knowing that I have the iPhone now.
+
+\subsection*{April 16, 2012}
+
+I tried to be more productive today.  I ended up doing a lot of paper writing.
+I have a paper I am working on by myself.  My professor asked me a couple weeks
+ago a question about matrices of non-commutative polynomials.  I somewhat
+quickly found out that I could extend my Left Nullstellensatz result to
+matrices of polynomials.  I have been trying to write this up.  It is not a big
+priority, and perhaps I ought not spend too much time on it, however, I do want
+to finish it soon because I figure I won't be writing math papers for much
+longer.
+
+I have pondered somewhat more on the social aspects of the brands I use.
+Here are some thoughts:
+\begin{itemize}
+ \item Above all, I need to seek the Spirit in my Android vs. iPhone decision.
+I will note that I may need to go back to Android, which also happens to be the
+socially acceptable decision.
+\item Unfortunately, I have looked down on iPhone users over the time in which
+I have been an Android user.  I did it even today.  I am glad that I am now
+aware of it, but I ought not judge others over their brand usage.  (A case can
+be made that brand usage correlates with personality characteristics, but
+that's not something I need to read into.)  
+\item I also have been biased over the past two years towards Android and have
+not seen the benefits of iPhone. (After playing around with the iPhone, I see
+the benefits of Android more clearly as well though.)
+\end{itemize}
+
+\subsection*{April 18, 2012}
+
+I had a dream last night in which we were going to visit a pair of converts
+from my mission in Brazil (Daiane and Liliane).  I really would like to find
+out what has become of them.  I am impressed with the feeling that I was
+treated well on my mission by them.  I am grateful for the opportunity I had to
+serve a mission and to have been called to where I was called to.  There are
+negative spins I can put on things about my mission (certain lousy companions,
+my lack of social skills, getting in a car accident, etc.) but I was really
+blessed by it.
+
+\subsubsection*{Poetry}
+
+I just had a thought about my last semester of Utah State.
+I had a poetry class where I wrote poetry.
+I had an odd point of view at Utah State.
+Is that what brought out my weird poetry?
+It almost makes me want to write about it;
+the only thing is I mostly don't like poetry anymore
+to want to write about it.
+(I don't really connect with poetry;
+I just liked my weird poems.)
+
+Here are some of my poems:
+
+\subsubsection*{The Sixth Sense}
+
+\noindent I love technology.
+
+\
+
+\noindent See all the things you can do now:
+
+\noindent Every day you can watch Law and Order reruns for hours;
+
+\noindent Every day you can play hearts online.
+
+\
+
+\noindent Daybreak. When I check my
+
+\noindent E-mail I see that the crocodile hunter died last night;
+
+\noindent A candle in the wind‰ÛÓI would've liked to have known you*;
+
+\noindent Dead at age 44.
+
+\
+
+\noindent People see me as I
+
+\noindent Empty out garbage
+
+\noindent Out in the street for mechanical
+
+\noindent Pick up; as I walk across the
+
+\noindent Lawn, up the steps, and
+
+\noindent Enter the house, I wipe blades of grass off my bare feet.
+
+\subsubsection*{Commentary}
+
+I wrote this as an acrostic because I thought that was fun.
+Half of the things here were sparked by memories of the summer of 2006;
+I was home recovering from my broken leg.
+The other half are from when I was at school that fall.
+
+\subsection*{The Mathematician}
+
+\noindent I have a one-centimeter-tall gremlin inside my head;
+
+\noindent Reminds me of problems I have to solve;
+
+\noindent Religiously chants numbers in my ear (4, 8, 15, 16, 23, 42...)
+
+\
+
+\noindent As I write this poem,
+
+\noindent I imagine some soft, pleasing background music; 5
+
+\noindent I invite you, gentle reader, to do the same;
+
+\noindent Music like ‰ÛÏCandle in the Wind (1997)‰Û? by Elton John;
+
+\noindent I heard that song on the radio the other day‰ÛÓ
+
+\noindent That's a really good song.
+
+\
+
+\noindent If you have to take a lower salary 10
+
+\noindent To get a job with Internet access,
+
+\noindent I suggest in the strongest possible terms you do it;
+
+\
+
+\noindent Where have you gone, O. J. Simpson?
+
+\noindent What have you been doing?
+
+\noindent I heard somewhere you sold your 15
+
+\noindent Heisman trophy (1968) and took up golf;
+
+\noindent Did you kill your wife?
+
+\noindent Probably‰ÛÓwe all think so. \footnote[1]{O.J. confirmed our beliefs
+recently with the announcement of his book \textit{If I Did
+It.}}
+
+\
+
+\noindent I fell out of the top bunk today (7:00 am),
+
+\noindent I tried to grab a pillow which had fallen 20
+
+\noindent (My most comfortable pillow),
+
+\noindent But in my dreamy state I overestimated my reach;
+
+\noindent As I lay on the carpet looking upward,
+
+\noindent I realized I had another pillow in my bed.
+
+\
+
+\noindent A random walk, 25
+
+\noindent Sometimes called a ‰ÛÏdrunkard's walk‰Û?,
+
+\noindent is a simple stochastic process,
+
+\noindent Where one takes a step to the right with probability p,
+
+\noindent Or a step to the left with probability 1 ‰öÕ p. \footnote[2]{$"$Random
+Walk,$"$ Wikipedia.org, $<$http://en.wikipedia.org/wiki/Random\_walk$>$}
+
+
+\noindent Obla-Di, Obla-Da 30
+
+\noindent What words do I most want to repeat in my life?
+
+\noindent Happiness, Luck, Serenity, Silliness;
+
+\noindent Except the gremlin inside my head eats words
+
+\noindent And spits numbers.
+
+\subsubsection*{Commentary}
+
+This is basically a mashup of things that happened to me (falling out of my bed
+at college), pop culture that ``hit me'' the right way (``Candle in the Wind'',
+  O.J. Simpson, \textit{Lost}, ``Obla-Di, Obla-Da'', and a line from the
+Brazilian song ``Palavras Repetidas''), and just random things (Internet at
+your job, the mathematical concept of a random walk).
+
+\subsection*{Think Weekend at Bernie's}
+
+\noindent I tore open a pillow from his bed
+
+\noindent And filled his chest with the insides‰ÛÓ
+
+\noindent Feathers, straw, wood chips‰ÛÓ
+
+\noindent To stop up the blood.
+
+\noindent Merlin reentered the room with a girdle
+
+\noindent Pulled it onto Arthur‰Ûªs wide torso
+
+\noindent Squeezed as tightly as he could
+
+\noindent Closing the wound.
+
+\
+
+\noindent I complained to Merlin that this wouldn't work.
+
+\noindent I told him that people would find out what we had done.
+
+\noindent I told him that people would eventually find out that dragons don't
+really exist.
+
+\noindent Merlin laughed: ‰ÛÏPeople will believe whatever we tell them, my boy!‰Û?
+
+\
+
+\noindent As Arthur's court poet,
+
+\noindent I recently wrote about how the king had slain a mighty dragon
+
+\noindent Which had come to Camelot to make trouble;
+
+\noindent Arthur ran Excalibur through the dragon's throat and lungs,
+
+\noindent Causing the vile beast to choke on his own smoke.
+
+\
+
+\noindent Merlin spread some strong-smelling potion over the undershirt
+
+\noindent To cover the smell of blood and death.
+
+\noindent I found some ladies‰Ûª powder
+
+\noindent Applied it to his face to make it appear artificially white.
+
+\noindent His limp body fit into the armor fairly easily.
+
+\noindent We topped his head with a crown
+
+\noindent And placed that famous sword at his side;
+
+\noindent Arthur was ready to lead us into battle.
+
+\
+
+\noindent We could hear the party starting,
+
+\noindent In commemoration of Arthur slaying the dragon:
+
+\noindent Feet stomping,
+
+\noindent A harp and lute playing softly,
+
+\noindent Young squires bragging,
+
+\noindent Young maidens gossiping;
+
+\
+
+\noindent When we came down the stairs with Arthur,
+
+\noindent His arms extended over our shoulders,
+
+\noindent The party stopped, stared,
+
+\noindent Then bowed reverently to their king,
+
+\noindent That mighty dragon slayer.
+
+\noindent We couldn't help but smile.
+
+\subsection*{Commentary}
+
+This one is the last poem I could actually find.
+It is the least personal, but as such, is the most understandable by regular
+people.
+I didn't really have anything to say here.
+I put in things that sounded important (``People will believe whatever
+we tell them, my boy!'')
+How would I revise this if I had to do it today?
+Would I give it more meaning?
+Would I give it a sharper edge?
+\noindent
+
+\subsection*{April 19, 2012}
+
+I had a hard time getting motivated to do productive things.
+It looks like I will go interview with the NSA to be a mathematician.
+
+Allison asked me what I was going to do with the iPhone I have had for a week
+and if I was going to keep it; I told her I didn't know; I don't really
+understand what I was supposed to do; at first, I concluded I needed to go with
+a new Android phone; after a gut-wrenching spiritual week, I concluded that I
+was wrong; then when I bought the iPhone I felt to sell it; as I continued with
+intentions to sell it, I felt good about keeping my old phone around, but I
+felt uneasy about selling it on Craigslist or eBay; based on what was told to
+me at Verizon, there wasn't much point in taking it back to them; the past
+couple days I have felt neutral spiritually (which is normal for me).
+
+Am I to conclude that I don't understand spiritual promptings as well as I
+thought I did?  Or am I to understand that I was given promptings to try out
+things that, although they weren't long-term solutions, were necessary for me
+for my own knowledge and experience?  (I had at least one dating experience
+which I felt was of this class.) (In terms of the phones, did I need to try out
+a new, premium, but ultimately flawed Android phone to better appreciate an
+iPhone?)  Or am I to conclude that through bad choices (i.e. buying the iPhone
+and backing myself into a corner) I limited my options, so I now get different
+spiritual promptings leading me to salvage my situation?
+
+I don't really know right now what the answer is.
+
+\subsection*{April 22, 2012}
+
+I'm still having problems getting to a good place spiritually.
+
+A huge problem for me is thoughts.  I get obsessed with unimportant (but
+fun) things.  I dwell on topics for a long time.  Right now, the topic has been
+the iPhone saga.  (This is not to mention that I have killed a lot of time by
+playing games on my iPhone.)
+
+The devil's advocate side of this (literally) is that my focus is also what
+has allowed me to succeed in school.  I have attacked math problems with the
+full force of my obsessive attention until I solved them.  I do recognize that
+there is a time and a place for focusing on vocationally important problems;
+however, balance is a valuable thing to have in one's life.
+
+At church, we had a good topic for a lesson, following the promptings of the
+Holy Ghost, which ties along with this.  How can I cultivate the Spirit in my
+life if I am filling my thoughts with other things.  It doesn't matter that my
+``other things'' are typically benign and good in moderation, in excess they
+crowd out the most important things in my life.
+
+Here is something I pulled up from scripture study about the Savior (Stephen
+Robinson, \textit{Believing
+Christ}, 115):
+
+\begin{quote}
+ Do not misunderstand me.  I am not suggesting here that Jesus in any way
+indulged in unclean thoughts, for that would be sin, and he indulged in nothing
+sinful.  I do not believe that he ‰Û÷struggled‰Ûª or ‰Û÷wrestled‰Ûª with temptations.
+My only point is that he was as vulnerable to suggestions and impulses coming
+into his mind from his mortal nature, a nature inherited from his mortal mother,
+as any of us.  He simply paid no attention to those suggestions, and he
+immediately put them out of his mind.  The ability of the flesh to suggest, to
+entice, was the same for him as it is for us, but unlike the rest of us, he
+never responded to it.  He didn‰Ûªt ponder, deliberate, or entertain the sinful
+options even as theoretical possibilities--‰Û?he gave no heed unto them.‰Û?
+\end{quote}
+
+\subsection*{April 24, 2012}
+
+I am having a really hard time staying on task today.
+I have two conflicting desires.
+The first is the pure desire to do what is right, useful, and productive.
+The second is the desire to make myself feel good through entertainment,
+devices, etc.
+I know in my mind that I ought not give in to entertaining myself.
+However, it seems hard to make the lifestyle switch to doing just that.
+
+Yesterday I tried to keep my thoughts on important things and off of
+unimportant things.  I did well at this for a while.  As the night wore on,
+however, I realized that if I lived according to this one principle, I would
+have to give up most of my entertainment.  As I see it, my daytime hours are
+best spent on work.  My nighttime hours are best spent on family.  This leaves
+no time for alone time.
+
+Another way of looking at this is that I am addicted to procrastinating,
+entertainment, technology, etc.  Time spent feeding that addiction is bad for
+me right now.  Yet, because I am addicted, I don't know how to stop.
+
+\subsection*{April 25, 2012}
+
+I didn't have a very productive day.
+As a result, I felt lousy.
+
+I was glad to finish my math homework (which is due next week).
+In class today, we were told that we would be responsible for presenting a
+problem from the homework.  I was assigned to the only problem which I had not
+completed.  I was able to find a hint on the Internet (not a solution, just a
+hint) and with that I completed the assignment.
+
+I still am having dark feelings now that the iPhone is reactivated.  I am
+strongly considering returning it, getting out of my smartphone plan in a few
+months, and then going to a ``dumbphone''.
+I realize that my time and energy at home is best spent with my family and not
+spent on playing with my gadgets.
+
+\subsection*{April 26, 2012}
+
+From my scripture study (``Beware of Pride''):
+\begin{quote}
+ Our will in competition to God‰Ûªs will allows desires, appetites, and passions
+to go unbridled. (See Alma 38:12; 3 Ne. 12:30.)...The proud wish God would agree
+with them. They aren‰Ûªt interested in changing their opinions to agree with
+God‰Ûªs.
+\end{quote}
+I have had a problem letting certain desires, appetites, and passions go
+unbridled.  Further, I have been somewhat unwilling to agree with God on my
+phone situation; instead, I have wanted God to agree with me.
+
+\subsection*{April 27, 2012}
+
+I have had a spiritual attack again.
+My stomach is once again in knots.
+It started when I reactivated the iPhone.
+I need to deactivate it and switch back to what I had.
+
+\subsection*{April 28, 2012}
+
+I woke up today still with a bad stomach.
+I am wondering if I simply have stomach problems.
+I spent the day trying to soothe my stomach.
+Milk helped.  Pesto Bismol didn't.
+I have tried a lot of different permutations of phone choice, and I haven't
+found anything that really let me get back to normal; maybe it's not the phone.
+
+\section{}
+
+\subsection*{May 1, 2012}
+
+I am going to have to break it to my brother Craig that I now have an iPhone.
+I think he is going to be upset about it because he is hardcore anti-Apple.
+I am trying to think of what to say to him:
+
+\subsubsection*{Problems with Android}
+
+The biggest problem with Android for me is lack of support.
+I'll break it down into a few cases.
+
+\subsubsection*{Most Android Phones}
+
+The large majority of Android phones don't get regular updates.
+I would be especially skeptical of owning one that was a year old or older
+because I don't think it would get more updates.
+Also they have skins over the software which I hate.
+They are ugly and make the phone slower.
+
+\subsubsection*{Nexus Phones}
+
+In theory the solution to this problem is the Nexus line.
+I bought a Nexus phone.
+It had bad reception; the Internet thought this was a software problem, but
+Verizon wasn't authorizing updates to it yet.  It also had relatively bad
+battery life (because it was 4G) and a subpar camera.
+Also, instead of just being able to open it like a USB device
+(which was nice for me)
+it had a funky protocol which made file transfers slower; also, it didn't work
+well on Linux so I ended up having to use Windows to transfer files.
+
+\subsubsection*{Custom Roms}
+
+So in theory the solution to this is rooting and installing a custom rom.
+I do prefer this method to using the stock software on the phone, but it has
+its downsides.
+I have to wipe my phone and manually install the updates and hope it doesn't
+brick my phone.
+Further, depending on the phone, the developer community may not have all the
+available drivers, so I may not be able to get that great of a rom.
+
+\subsubsection*{Android Is Closed}
+
+In theory the iPhone is ``closed'' and Android is open.
+But as a comparison, I can get timely updates for my laptop on Linux (which is
+open), but I can't get (important) updates on Android in a timely manner because
+it is controlled by the hardware manufacturer and the wireless provider.
+Further, on Linux I can install any kind of crazy distro I want whereas on
+Android I have to stick with stock or with what the developer community was
+able to come up with based on availability of drivers.
+
+\subsubsection*{The Trade-off}
+
+So Android is supposed to be great because it is more open, hence more
+customizable, and is better on the price to harware quality ratio.
+Do these still hold for me?
+
+First, I think that Android is closed too.
+As far as customizing my phone, after using Android for almost two years, my
+workflow naturally has gravitated towards just using the stock settings and
+focusing on a grid of icons.
+For this iPhone is actually better because it only has a grid of icons instead
+of a more complex two-layered approach of a home screen and app drawer.
+
+Second, with a contract, the newest iPhone is \$200.  Top of the line
+Android phones are \$300. The iPhone has great all-around hardware (including
+perhaps the best camera on a phone).  The iPhone is actually a pretty good deal
+financially for what you get.  Also, it is worth noting that in the used market
+iPhones hold their value better than Android phones and are easier to sell.
+
+What else is better about iPhone?
+
+People generally make apps for iPhone before Android.
+Virtually any app in the App Store will work on a new iPhone because there are
+literally only a few iPhones and they all run the same exact OS.  Often,
+if an app is on both iPhone and Android, it is better on iPhone (for example,
+every app from the Church). On Android, an app may not be supported on every
+device; if an app is only supported on a select number of devices, then you
+pretty much can count on never having support for that app.
+
+Mobile Safari is also a more plesant experience than the Android Browser.
+Pinch to zoom is better.
+Tap to zoom works better.
+I like the features it has.
+Also, websites tend to do a better job at building mobile versions of their
+site for iPhone than for Android.
+
+I also reiterate the support issue.
+It is nicer knowing that your phone will work, will get bug fixes, and will run
+the latest version of the OS.
+
+I will mention there are things that are better about Android still, but I
+in a lot of cases I don't care or I actually prefer the iPhone alternative.
+
+\subsection*{May 13, 2012}
+
+I screwed up Mother's Day.
+I failed to plan anything special.
+I had to spend all day trying to fix it.
+
+\subsection*{May 17, 2012}
+
+We had been planning on visiting Allison's family
+this week.
+Last night, I felt stress because I knew that by doing this trip,
+I would lose a few days of working.
+Seeing that there are only a few weeks left of school before I graduate,
+this seemed like too hard to handle.
+I therefore came to the difficult decision to stay home while
+Allison travelled.
+I will miss her and Anna so much.
+I really love the family I have here.
+
+\subsection*{May 18, 2012}
+
+It was mostly an uneventful day.
+I got some work done.
+I also did a lot of procrastinating.
+Hopefully I will do better tomorrow.
+
+\subsection*{May 19, 2012}
+
+I slept in really late, did some work,
+and then watched TV.
+
+\subsection*{May 20, 2012}
+
+I went to Stake Conference today.
+Here are some thoughts.
+
+\begin{itemize}
+ \item Listening to everything really motivated me to improve my scripture
+study.
+\item I got an invitation in my email to sing in the stake choir a couple of
+days ago, but I didn't reply to it because I didn't want to sing because I
+don't like singing in choirs.
+\item I missed my family.
+\end{itemize}
+
+\subsection*{May 21, 2012}
+
+I did math today.
+
+\subsection*{May 29, 2012}
+
+I have had a stressful past few days.
+
+\begin{enumerate}
+ \item First, the NSA sent me an email a couple weeks ago saying that they were
+sending me a packet with informations and some envelopes to mail back some
+forms.  I didn't get the packet so over the weekend I was frazzled that we
+weren't receiving mail (there were other examples of things we didn't get.)  I
+finally got the packet today, however, and I sent everything off.
+\item I have also been in a dilemma about graduation.
+My professor suggested not turning in my final forms so that I wouldn't
+graduate until summer.  Therefore, I would be able to work for him in the
+summer, which would be convenient seeing how I don't have a job lined up.
+Long story short, it is scary both ways, especially since I am already in a
+rush to get my defense done.
+\item I still have to find a job and possibly move soon.
+These are big things.
+\end{enumerate}
+
+\subsection*{May 30, 2012}
+
+I changed my mind about graduating in the summer, and am now thinking about
+graduating this quarter as originally planned.
+I just need to find a job.
+
+\section{}
+
+\subsection*{June 1, 2012}
+
+\begin{enumerate}
+ \item I am still wondering about whether or not we will move right away.  As
+it is now, signs point to yes, however, I feel like it is a no.
+\item I have been considering giving up sports fandom for a while.  The main
+thing that brings me back to it is that it is a common interest between me and
+so many people, so it makes it easier for me to make conversation with people
+who like sports if I also like sports.  The main thing that makes me question
+my sports fandom is the absurdity of it.  What is the point for cheering on one
+group of people who I don't know over another group of people in a contest that
+has no tangible effect on my life?
+\end{enumerate}
+
+\subsection*{June 8, 2012}
+
+I had my thesis defense today.  It went really well.
+Everyone seemed to enjoy my talk.
+I am now officially shooting for summer graduation.
+I am also not going to walk in graduation.
+I was also appreciative of Allison for her coming, taking pictures, and just
+generally supporting me.
+
+\subsubsection*{NSA Forms}
+
+I received an email from the NSA a few days ago requesting more information for
+my security forms.  The bulk of my work was to contact tons of people to get
+them to give me their contact information so that I could list them as a
+reference.  It was a pain.
+
+\subsection*{June 9, 2012}
+
+I had a day mostly free from working.
+I spent a lot of time with Anna.
+In the afternoon the whole family went out shopping.
+
+I am pondering about two topics: (1) sports fandom and (2) brand loyalty.  Both
+are phenomena where one decides to root for something which tangibly has no
+connection to one's interests.  With my gadgets, I am getting past it (to a
+point) by having switched my brand loyalty; this in addition to knowing that
+what brand of gadgets one uses is not worth worrying about much.
+
+\subsection*{June 15, 2012}
+
+I had a few thoughts over the past couple days.
+
+I read an article on a blog I read describing a star researcher who has had
+success by mastering techniques.  One of the things that has been
+limiting in my academic career---although, depending on my future career
+choices, this could be a moot point---has been that I don't read mathematical
+papers.  I seem to rely on my limited store of knowledge to solve the limited
+set of research problems of which I am aware.
+In another life, I would change this habit and regularly read papers, learn
+techniques, and in general build my store of mathematical knowledge.
+
+Lately I have been spending a lot of time on research.  I have done the
+following:
+\begin{itemize}
+ \item Worked a lot on the so-called Lance-Tapper conjecture.  I proved it in
+at least one special case.
+\item Worked on a problem my advisor put forth to me.  I have come up with some
+results, but there is still more work to be done.
+\item Worked on a paper we are putting together on real ideals based on some
+work I have done.
+\end{itemize}
+
+In the meantime, here are things I haven't done which I should be doing:
+\begin{itemize}
+ \item Put out more resumes.
+ \item Worked on getting a version of my dissertation published.
+\end{itemize}
+
+Of my job prospects, given my current enjoyment of mathematics, I have
+been more excited about those opportunities which are more mathematical
+(specifically the NSA).  I got a call from FICO about a consultant position,
+and I was a little bit unexcited about it because it would be a transition
+away from the work I have been doing (lately) towards a more social and
+statistical realm.  This leads me to wonder if I want a postdoc in the future.
+The problem with that is that I couldn't get a postdoc for another year, plus it
+is a bump down in salary.
+
+\subsection*{June 22, 2012}
+
+My mom and Paul came into town on Sunday and stayed until early this morning.
+It was nice to have my mom in town.
+I really appreciate all the support she has given me over the years.
+
+\subsubsection*{Randoms}
+
+I had a thought about combinatorics.
+Combinatorics is a field of mathematics which is very popular at UCSD.
+I was thinking about it the other day and thought to myself that I might have
+done well at it and enjoyed it.
+
+\subsubsection*{Job Search}
+
+I have been offered on-site interviews with FICO in San Rafael, CA and with
+the NSA in Ft. Meade, MD.  My interview with FICO is next week whereas my
+interview with the NSA is in a month.
+
+I feel like the NSA job will be more interesting and that it will take care of
+me.  I am going into the FICO job, however, willing to hear them out and see if
+the money will be better with them.  I just hope that I don't have to make a
+quick decision between the two but that I can have both of them play out.  I am
+confident however that the Spirit will be with me throughout all of it.
+
+\subsection*{June 26, 2012}
+
+I had my interview with FICO postponed until next week.
+This is a relief since I now have more time to prepare,
+and I also like it because the interview will now be spaced closer
+to my scheduled interview with the NSA.
+
+I have been working a lot on mathematical research lately.
+I don't know if this is prudent, but it just is.  Somehow,
+I now have a lot of results floating in the air which could potentially be
+written up as papers.
+
+\subsection*{July 7, 2012}
+
+Let me cover various topics from the past couple weeks.
+
+\subsubsection*{FICO}
+
+I flew out to San Rafael, California, on Tuesday (July 3, 2012) to interview
+for a consultant position.  My feeling going into and coming out of the
+experience was apprehension.  I still went and did it on the basis of wanting
+interview experience.
+
+As for the interview itself, I did not really feel that the position was a good
+fit for me.  The position called for a lot of talking to clients about
+projects, and it was different from the research background I am used to.
+Also, I am not a statistics person, yet this position called for a lot of
+statistics.  Finally, the position called for leadership on projects, and I am
+just starting out.
+
+Ultimately, however, they called back on Friday to say that I did not get the
+job.  The comment I received was that they went with someone with more
+optimization experience.
+I will say that I am relieved for a couple reasons.  First, I wanted the NSA
+job more; I likely would have turned down the position if I did get it.
+Second, which is a larger issue, is that I am refocusing my interests on
+mathematics itself.
+
+\subsubsection*{Mathematics}
+
+I have spent the last months working on
+mathematical research problems.  I have somehow found a renewed joy of
+mathematics.  I am digging in deep into writing up some results that I have.  I
+am frantically trying to solve a couple more problems (the Lance-Tapper
+conjecture principal of those).  In this rush, I started to realize some things.
+Especially after submitting my NC harmonics paper for publication (it was
+accepted, incidentally),
+I realize that I can write papers with results I publish.
+I realized that one can site others' results in papers.
+I realized that I can read mathematical papers in order to find out more about
+topics I am researching and to look for potential techniques I can use. (And I
+have read through more papers in the past week than I had the past year or two
+combined.)  Basically, I am all of the sudden figuring out how to be a proper
+mathematician.
+
+Here is the problem: I figured it all out \textit{after} I finished graduate
+school.  I am rounding into a proper mathematician too late.
+I have been going forward with my plan to get a job
+outside of academia.  I felt a spiritual confirmation of said plan.  I'm down to
+one job prospect where being a mathematician and working outside of academia are
+feasible, the NSA position.  The logical part of me wonders whether or not I
+would be better off with a postdoc.  I chose to have a family, however, and as
+such I need a job now instead of next year when I could possibly get a postdoc.
+
+In hindsight, I like my life as it is.
+I feel like if I could just be strict about keeping a schedule of when I study
+and when I don't think about math, I could have a well-balanced life doing math
+and raising a family.
+
+\subsubsection*{Talking to People}
+
+So tonight it came to a point where Allison confronted me about my not being
+friendly with people.  Frankly, I gave up on being friendly with people a long
+time ago.  In most social situations, I simply don't try to make friends.  I
+realized in talking to her the extent of how much this hurts her.  I need to
+do better.  Honestly, however, the first major hurdle is wanting to do better.
+Sincerely, I like not having to talk to people.  It suits me.
+
+\subsection*{July 14, 2012}
+
+I have an interesting life dilemma.
+
+Over the past while I have been obsessed with doing mathematics.
+I solved a problem which my advisor posed to me, and I am feverishly trying to
+write it up.
+I also might have solved an open conjecture; I need to go through things more
+closely to see; in my possible solution, I actually solve a stronger problem
+which is a hard Nullstellensatz for NC polynomials.
+All of the sudden, my mathematics portfolio is blossoming.  I am finding a
+passion for mathematics that I didn't have before.
+
+On the other hand, I am surrounded by people in my life who don't feel the same
+way about mathematics as I do and hence are not as understanding of my newly
+found obsession for mathematics.  I keep feeling like I just don't have enough
+time to do math with all of the demands on my attention from my family.  It
+sounds ridiculous to put math over my family, and it is ridiculous.
+
+I now have to (still) find a job.
+I rejected academia.  Did I make the wrong choice?
+Now that I have found some self-confidence and success with my mathematics, I
+am at the end of my academic career, and I won't get to build on it.
+
+\subsection*{July 27, 2012}
+
+\subsubsection*{NSA Interview}
+
+On Sunday July 22 I flew to Maryland for my interview with the NSA.
+I stayed in a Courtyard Marriott during the course of my stay.
+
+On the first day I had a polygraph test.  It was horrible.
+For some reason, I became uncomfortable during the latter part of the
+examination and I started failing the test.  The examiner took a very hostile
+turn towards me and accused me of lying to him, of having committed some
+serious crimes.  I did not take it well.  They offered to schedule a do-over
+for Thursday of this week.  I accepted the do-over, and as such I had to stay
+in Maryland for an additional day.
+
+The second day was an interview with the mathematics group at the NSA.
+I got to go on the main NSA campus, which was cool.  The mathematicians I
+interviewed with were nice (including that the first person I interviewed with
+was a member of the church, which put me at ease).  I gave a talk, as planned,
+and I felt that it went well, although it's hard to gauge how well my talks
+ever go.  It was a more positive experience than before.
+
+The third day was a psychological interview.  It was fine.
+
+The last day was my do-over on the polygraph.  I eventually passed it as I was
+able to be more calm and have more conviction in my answers.  Still, I found
+the polygraph process to be aggravating.
+
+\subsubsection*{Keith}
+
+My brother Keith is stationed at the NSA.  We have not been close ever since he
+became an angry person during our adolescence.  My mom made me email him so that
+we could do something during my stay.  He ended up wanting to do stuff every
+night until bedtime.  I was grateful for the opportunity to reach out to him.  I
+let him talk about a lot of things that he is personally interested in, and I
+felt a lot of positive energy from that experience.  I also felt for him because
+it seemed like he doesn't have a lot of people he hangs out with because he was
+very eager to hang out with me every day.  I am grateful that, if nothing else,
+to have been pushed into spending time with him.
+
+\subsubsection*{Pondering My Future}
+
+I don't know what to think about my future career.
+
+The NSA position has a lot of good points to it.
+I would be making about as much money as I could reasonably expect to make out
+of college (nearly \$90,000 be year, plus great benefits, plus other moneysaving
+perks).  I would be forced to spend exactly 40 hours a week on my work, which is
+positive for my family and church life.
+I would be doing mathematics---other jobs I have looked at haven't had the
+title mathematician, and I have become increasingly pessimistic about such jobs.
+ These are three great qualities.
+
+What is wrong with that then?  
+
+First, I am being presumptuous to assume that I would even get the job at this
+point; I felt good about my interviews, but I don't know if I passed; I don't
+know how I compare to the other mathematicians who are applying; I don't know
+how hard it is to pass a background check.
+
+Second, I don't have the clear spiritual feeling about it that I had when I
+made other life decisions---for example, going to UCSD, getting married, etc.  I
+have actually been feeling a little lousy.  This is confusing because I did have
+a clear feeling about not becoming a professor; I had a clear feeling about not
+becoming a quant; I thought I had a good feeling about becoming an actuary, but
+I have given it up after (a) getting a clear feeling to not go to an interview
+for an actuarial internship and (b) seeing how hard it was to get looked at for
+entry-level actuarial positions as an over-qualified Ph.D.  Also, I feel good
+about mathematics now.  I have had some good successes these past few months.  I
+don't necessarily think that that implies that I ought to pursue academia.  I
+do, however, want to follow the spirit and figure out what is right for our
+family.
+
+Finally, the big tradeoff is that I have to become super-secretive about my
+professional life.  I can't bring gadgets to work or (probably) email home
+during the day.  I won't have the flexibility to work from home.  I have to go
+through the government to travel outside of the country or make foreign friends.
+ It feels like I am selling out my freedom. 
+
+As of now, I am really confused as to what I should do.  I want to take care of
+my family, and the paycheck would make things much easier for me on that front,
+yet ultimately I need to do what the spirit dictates.
+
+\subsection*{June 28, 2012}
+
+Today was Saturday.
+I have had a lousy feeling about the NSA position, hence I have been thinking
+more and more about going for a position in academia (starting with a postdoc
+likely).  As such, I then became franctically fixated on coming up with a
+mathematical result.  Today I wanted to prove a powerful non-commutative
+nullstellensatz, and I ended up working most of the day on that.
+I think this was bad for me, and I think that I need to stop working at home so
+much.
+
+\section{}
+
+\section{}
+
+\subsection*{August 6, 2012}
+
+I am trying to be better.
+
+\subsection*{August 10, 2012}
+
+Today I got the news that I passed the preliminary meeting of the
+NSA mathematics hiring committee.  If I am approved on my security check and by
+the second committee, I will get a job offer.
+This has got me thinking about my future.
+
+First of all, I can't really justify a way I don't take the job if offered it
+given my family's needs.  Allison especially has been putting a lot of pressure
+on me to be applying for more jobs (I haven't in a long time).  Given that the
+NSA position pays so well (almost \$90 K per year), it would solve all of my
+financial problems.
+
+Next, I have been complusively trying to get my research done.
+I have lots of material that I am just trying to get typed up so that I can
+ship it out.  Most of it will futurely be published in journals I hope.  I
+have, to date, had two of my papers now accepted for publication, and another
+one has now been submitted.  I have enjoyed being able to get so many
+mathematical results.
+
+Therefore, what about that career in academia?
+I think I could do it.
+However, where would the money come from?
+Also, I have had a hard time meeting the demands of my work and meeting the
+demands of my family.  It has really been tearing me apart.
+
+\subsection*{August 12, 2012}
+
+I will reflect on my life in this post.
+
+\subsubsection*{I Am Inherently Lazy}
+
+I have thought about and felt guilty about various aspects of this during this
+past week.  In a lot of what I do, I take the path of least resistance.  I
+specifically feel guilty about shirking my church responsibilities and about not
+being a good roommate/person to live with because I don't do housework.
+
+How have I gotten by while being so lazy?  I have a few ideas.
+
+First, I was
+blessed in this life to have a talent for schoolwork.  I have no concept of how
+hard people have to work in school.  Today I was thinking about a couple of
+past experiences.
+
+One was a psychology class I took my first year of college.
+I took it seriously, so I new I needed to read the assigned textbook chapters.
+As far as I can remember, all I did to study for the test was read the chapters
+once through, and then review them shortly before the exams.  As we had exams,
+I aced them.  By contrast, many people in the class for some reason felt that
+the exams were difficult (including an old friend from high school who was an
+honors student.) A related experience to this was getting the highest grades in
+the class in my history of opera class because I had the best memory in the
+class.
+
+A final example to share is my first year of graduate school.  My
+method of study for the most part was to do my homework, do some review before
+the exams, and nothing else.  My topology teacher decided we needed to do some
+work together, so he had us present our solutions to problems.  On many
+occasions I was the only one to come up with solutions to specific problems,
+and I always solved every problem.  Before that, I had no idea I was doing so
+much better at the homework than everyone else. (If I remember correctly, I
+wasn't actually scoring that well due to tough grading and due to my writing up
+of the answers.)  I also recall comments from people in my program about how
+difficult the first year was, even though I didn't feel like it was that
+difficult.
+
+My point is, I have been allowed to complete school---that is, the most
+important vocational activity in my life---with relative ease.  As a byproduct,
+I haven't been forced to struggle to succeed at much in life, hence I can be
+lazy.
+
+My second point, however, is that sometimes I am not lazy.  If I get excited
+about something, I put in work to do well at it.  For example, in my math
+research, I have had breakthroughs after intensely working on problems.
+In my first-year graduate-school courses, I mentioned that I did my homework
+and not much else; what I should note is that my homework was intense and that
+I put in the focused effort to do it because I was excited about it. (It was so
+hard, as I mentioned, most people did not complete all of it.)  Letting my
+excitement spur on an intense focus in me has been a successful strategy for
+succeeding at school.  On the other hand, I can name things I am not excited
+about: cleaning the apartment, talking to people in my callings at church,
+waking up early, etc.  It also might come back to haunt me with my job search
+(I am basically banking on getting a position with the NSA at this point.)
+
+How can I overcome laziness?
+
+\subsection*{August 15, 2012}
+
+I am spending my working hours revising mathematical papers.
+Today I spent a lot of time on a postivstellensatz paper
+I have had in the works for a couple months.
+
+\subsection*{August 23, 2012}
+
+I am still working a lot on mathematical papers.
+One bit of progress is that it looks like I will be a part of a two-sided
+nullstellensatz paper with the same professors who were on the left
+nullstellensatz paper.  Also, a left nullstellensatz examples paper was
+recently completed and posted to Arxiv.  It will soon be submitted for
+publication as well.  I also don't remember if I posted news about this, but my
+NC harmonics paper was accepted for publication in Integral Equations and
+Operator Theory, and the left nullstellensatz paper was accepted for
+publication in the Proceedings of the London Mathematicial Society.
+Finally, my positivstellensatz paper is rounding into shape.  I got some good
+results the past couple of days.  All in all, that makes five potential papers,
+which is pretty good I think.
+
+\subsection*{August 28, 2012}
+
+I woke at 6:30 this morning.
+I was inspired by the blessings I have received as a member of the church for
+living a clean lifestyle, and I wanted to take it to the next level to get even
+more blessings.
+
+\section{}
+
+\subsection*{September 13, 2012}
+
+We are in Utah for the next few days.
+We are visiting both families, and will be spending tomorrow
+with my mom for Anna's first birthday.
+(We have already been here for a few days already.)
+
+The NSA got back to me and said that I have been approved for work
+subject to budget constraints.
+I will find out more in October.
+This is frustrating because I want to have the job search taken care of already.
+I am trying to follow the spirit and do what is right.
+
+\subsubsection*{My Mathematics Education}
+
+I have had occasion to think about my past mathematics education.
+Jonan is taking Algebra 1 as a $7^{\mbox{\tiny th}}$ grader,
+and I have had to help him complete his homework each day.
+He has had a lot of trouble doing his work correctly.
+
+In contrast, when I was in $7^{\mbox{\tiny th}}$ grade, I had to take
+Pre-Algebra.  In $6^{\mbox{\tiny th}}$ grade, my teacher had us work
+independently through our mathematics curriculum.  I got through a sizable
+chunk of the book by myself over the first part of the year.  Then for some
+reason I never did much with mathematics for the rest of the year (see below
+for a guess). We were given placement test for mathematics at the end of the
+year and I placed into Pre-Algebra.  I remember not having been exposed to
+algebra, and hence getting a lot of the algebra questions wrong.
+
+In $7^{\mbox{\tiny th}}$ grade, I had my worst year academically.  I was also
+going through my parents' divorce in $6^{\mbox{\tiny th}}$ and $7^{\mbox{\tiny
+th}}$ grade, so I had a hard time.  My last semester I pulled horrible grades.
+However, during this time, we started covering some simple algebra in my math
+class.  I was in a ``gifted'' program, so everyone in my class was advanced,
+however I started noticing that where others were having a hard time getting
+some of the material, I found it to be easy.  I remember being able to do
+algebra problems very quickly in my head while others had to sit down and work
+it out.  I latched onto mathematics at that point.  I started doing extra
+credit mathematics assignments---it was the only thing I liked to do.  My
+$7^{\mbox{\tiny th}}$ grade year I must have pulled all C's and D's except for
+an A in Pre-Algebra and a B-something in gym.
+
+In $8^{\mbox{\tiny th}}$ grade we moved to Utah and my mom managed to get me
+placed into Geometry, in effect skipping Algebra 1.  I dominated that class as
+well, which boosted my self-confidence.  I remember, however, my teacher doing
+a few things which irk me as I look back on them.  One was separating me from
+working with the brighter students in the class, instead urging me to help the
+slower students in the class; I believe this was
+harmful to my development and has contributed to my difficulties in talking
+about mathematics with fellow students in graduate school.
+There are other things that annoyed me as well.
+
+In $9^{\mbox{\tiny th}}$ grade I had a good mathematics teacher.
+I also placed in the top 50 for $9^{\mbox{\tiny th}}$ graders in the Utah State
+Mathematics Competition.  I don't remember ``dominating'' the class, although I
+felt I did well.
+
+In $10^{\mbox{\tiny th}}$ grade, I really started to dominate my classes again.
+I remember scoring perfect scores on virtually every exam.
+I also remember that I finished reading our textbook halfway through the year
+and started studying calculus independently.
+I also remember an episode where my misguided guidance counselor told me
+calculus would be too hard for me and that I ought not take calculus.
+
+In $11^{\mbox{\tiny th}}$ grade, I really dominated my calculus class.  We
+would take lots of days where we would not learn new material but would work on
+our homework.  I would have nothing to do in these days but study other
+subjects because I could finish my homework quickly the first day I got it.
+I passed the Calculus AB test with a 5, which is the top grade.
+
+My $12^{\mbox{\tiny th}}$ grade class was a missed opportunity for me because I
+took ``independent study'' Calculus BC and Statistics.  In hindsight, I would
+have been better served by taking college mathematics that year.  I passed the
+Calculus BC test with a 5 (easily) as well as the AP Statistics test.  I had
+gotten to the point where I realized I new more than my teachers about
+mathematics.
+
+\subsection*{September 16, 2012}
+
+We drove to St. George yesterday.  We arrived safely.
+
+Today, unfortunately, I realized that I had no church pants.
+I think what happened was that I packed them on the Saturday before we left
+for Utah, but on the next day, Sunday, I unpacked them to go to church.  Oh
+well.
+
+\subsubsection*{Sports Addiction}
+
+I pondered on my addiction to following sports.
+I read an article by someone who quit following sports.
+Here are some thoughts.
+
+\begin{itemize}
+ \item The thing I hate about it is having an emotional investment in the
+outcome of something to which I have no tangible connection.
+\item The other thing which I don't like about it is the time I waste on it.
+\item The positive is that it is the great equalizer---I can talk to most any
+guy about sports.
+\end{itemize}
+
+\section{}
+
+\subsection*{October 1, 2012}
+
+My advisor Dr. Helton got me a teaching visitor position at the university.
+This quarter I will be teaching Math 20B.  I am getting paid about what I was
+getting for being a TA.
+
+\subsection*{October 7, 2012}
+
+We had general conference this weekend.
+My faith really grew and I have a great desire to improve.
+
+My teaching is going well.
+
+I am still waiting to see what my job and housing situation will be.
+
+Anna is walking now and she is a delight to have in our home.
+
+I love my wife Allison and am really grateful for her.
+
+I want to record my testimony of the gospel.
+I know that tht \textit{Book of Mormon} is true.
+It is from God.  It has the power to change lives.
+I know that Joseph Smith was a prophet and that he saw
+God, the Father, and His Son, Jesus Christ.
+I know that the Church of Jesus Christ of Latter-Day Saints is the church of
+God on the earth today.  In the name of Jesus Christ, amen.
+
+\subsection*{October 8, 2012}
+
+I know that I do better when I do all of the standard daily items:
+wake early, exercise, eat breakfast, morning scripture study, and write in my
+journal.  I need to get back to that.
+
+I had a teaching day today.
+In some sense it went poorly because I failed to teach the material well.
+I have a missionary attitude when it comes to teaching, however, and I hope to
+resolve any doubts about today's material in my next lecture.
+
+\subsection*{October 11, 2012}
+
+I have been working a lot on my midterm coming up.  I wrote two practice
+midterms and one actual midterm.  I have been obsessing over getting the
+details just right.  I even spent the extra time to get the design of the exams
+to be the same as the design of the course website---lots of Helvetica, light
+blue MATH 20B in large, bold, capital letters as the title, margins at 66 ex.
+I probably didn't record this, but I also spent an inordinate amount of time
+polishing my course web page before the course started.  I easily could have
+made a basic, but ugly, web page and a basic, but bland, layout for my midterm,
+but I chose not to.  I like learning how to do things---in this case, writing a
+web page in html with style and expanding my \LaTeX\ capabilities---and when I
+get into something I like to do it well.
+
+\subsection*{October 13, 2012}
+
+A mostly uneventful Saturday.
+We are still living not knowing (a) if and when I will get a job and
+(b) when we will have to move from our apartment.
+
+\subsection*{October 14, 2012}
+
+We had a normal Sunday.
+I am becoming more motivated to change my habits: have better Sunday
+observance, wake earlier, eat better, etc.
+
+\subsection*{October 15, 2012}
+
+I taught class today and we had family time after I got home.
+
+\subsection*{October 16, 2012}
+
+I worked somewhat on my non-teaching work.
+I met with my advisor in the afternoon about our papers.
+
+\subsection*{October 23, 2012}
+
+We went to Birch Aquarium and out to dinner.
+It was a nice day with the family.
+
+\subsection*{October 26, 2012}
+
+Another week about news on jobs or housing.
+I really hope everything works out.
+
+I had a lousy week because I spent too much time typing up lecture slides for
+my class.  I realize now that this is an inefficient task.
+
+\section{}
+
+\subsection*{November 3, 2012}
+
+I am fasting today.
+
+I tried to get in some work on mathematics, but I feel like the day went poorly.
+
+I am increasingly worried about my job prospects.
+I still haven't heard any news from the NSA, and it has been a month since I had originally been expecting news about it.
+Therefore, I have been forced to earnestly plan and begin to execute a backup plan.
+I am now applying for more jobs.
+Included in this is academic jobs; however, to get those jobs I have to put in a lot more effort in a short amount of time; I still have to write a research statement and a teaching statement even though I have only a faint idea of how to do these things.
+
+Also, this week we were informed that we would have to move out of our student housing.
+We have looked into places to move to.
+I am now going to be teaching a class Winter Quarter at UCSD.
+
+Most of all, I want to be able to provide for my family.
+I want to be able to go in to work and be able to just work without
+having the constant worry hanging over me of how I am going to get money for my family.
+It is frustrating that I don't have any job offers.
+I hate having things be beyond my control.
+
+\subsection*{November 4, 2012}
+
+Church was good today.
+
+I completed a fast.
+I am hoping for some greater insight because of my fast on my predicament.
+I really want a job.
+It could be that I need to improve my job search, put more time into it,
+and by so doing nail down a job by the sweat of my brow.
+
+\subsection*{November 6, 2012}
+
+Today was election day.
+I didn't do much other than await election results.
+
+I left the election cycle with a bad taste in my mouth.
+I didn't like how I felt going out of it.
+In particular, I didn't like the sense of contention I got from other people
+posting conflicting views to mine on social media.
+
+I have stewed on many occasions during this election cycle on various issues,
+explaining in my head why I hold the positions that I do.  This was
+unproductive at best.  I felt bad doing it.  Probably, I don't need to do that,
+and I can just rest on the positions I already hold.
+
+In the midst of this, I also found that people were posting opinions
+questioning the church.  This was in part because a member of the church was
+one of the two candidates.  In stewing over those things, I similarly was not
+uplifted.  In these matters, however, I was led back to my core knowledge that
+the church is true.  I know that through my witness of the Holy Ghost.  Because
+of that, I have lived the gospel.  As far as I can see, it has made me a better
+person.  It has shaped me to make good choices.
+
+\subsection*{November 8, 2012}
+
+I worked on things.
+In the evening I went on splits with the elders.
+
+I still am getting hung up on political comments.
+For some reason I have been taking it very personally.
+
+\subsection*{November 11, 2012}
+
+On Friday I learned that the NSA, which cut their math hiring budget in half,
+decided I didn't make the upper half of their potential hires.
+Possibly I could get that job at a later date if more money is added to their
+budget, but as of now I do not have a position with them.
+
+I feel fine about things.  I have faith that things will work out.
+It is just hard for me to sit still while it seems like my hopes for being a
+strong provider for my family are being dashed.  I hate living from small
+opportunity to small opportunity.
+
+\subsection*{November 12, 2012}
+
+I did some work and some play.
+I figured out last week that I don't have an office mate.
+I was standing outside my advisor's office and saw that the person who was
+originally assigned to me was sharing an office with someone else.  I am
+decided that I will use my office much more now.
+
+\subsection*{November 20, 2012}
+
+I just wanted to say that I think it important to maximize my time with my
+family and not let work consume me.
+
+As far as school, one of my teaching assistants has been annoyed with me.
+It bugs me to not be liked, but all I can do is learn from the experience.
+
+In other news, the test results came back and the exam scores were pretty close
+to the marks a typical exam should be at.  My students leaving the exam had me
+believe that the scores were horrible and that I would need to curve it.
+The thing I finally got about writing exams is that they are not meant for
+everyone to pass them.  Sometimes, there are hard questions.  My aforementioned
+TA seemed to complain about some of the tough problems on the exam, but it
+turned out that there were people who got them correct.  Because I have been
+afraid of not being able to curve the class because the grades are so high, I
+see the value in having a test where different levels of people score
+differently on them.
+
+\subsection*{November 26, 2012}
+
+Over the extended weekend we drove to Utah and back.  I took Anna to
+Springville while Allison stayed in St. George to participate in her family's
+holiday gift show.  I appreciated the time spent with family.
+
+Now that I am back and deadlines are approaching, I am focused on applying for
+(academic) jobs.  At the same time, we are moving houses this week.
+
+\subsection*{November 27, 2012}
+
+I worked into the afternoon typing up my teaching statement.
+My goal has been to prepare my application materials for submission by December
+1.
+
+I am disappointed that the NSA position didn't work out for me; in my view, it
+would have been easy (I have a lot of confidence in myself) and I would have
+made lots of money; I would have been set for life, I thought. (There is still
+a chance for me there in the future, but I am not holding my breath.)  It made
+me sad today to find one of the letters I got from them of a conditional job
+offer.
+
+At the
+same time I am scared of entering academia.  I feel that no matter what I could
+have done over the past month or so, my applications are doomed to fail.  After
+googling my peers who got jobs, I notice that their publication records aren't,
+on average, any better than mine. Normally this would inspire
+hope, but I just don't feel right about it.  I am also scared of
+the money involved---if I follow an academic career we will be poor for the
+rest of our lives.
+
+At the same time there is a part of me which wants to prove that I can make it
+in academia, that I am good enough.
+
+I am still wondering what Heavenly Father has in store for me.
+
+\section{}
+
+\subsection*{December 1, 2012}
+
+We had our moving day.  A lot of unfortunate things happened:
+\begin{itemize}
+ \item We had to find a babysitter at the last minute after our previously
+arranged babysitter was MIA.
+ \item After a miscommunication, I came home from a grocery trip with Anna in
+my arms, expecting Allison to be home.  She was not inside, and I left my phone
+in the car, so I proceeded to carry Anna up and down the stairs to the car and
+back, bringing up my phone and a bunch of groceries.  This was the beginning of
+a long day of lifting.
+ \item Only one brother showed up to help us move. (Bless his heart.)
+ \item We were locked out after moving the first item.  The brother who came to
+help stayed with us for 20 minutes while we waited for someone to let us in.
+As a result we moved only two items with him.
+ \item We scratched the door with the couch.  If we had waited a few more
+minutes we would have had help with the couch and could have avoided it.
+ \item We foolishly decided that I could move everything else large alone.  It
+turned out that I couldn't really.  I will never move our mattress alone again.
+ \item Allison needed to come to get the U-haul, so I had planned to drive over
+to the new place where she was watching Anna and switch.  It turned out the car
+was at U-haul, so Allison had to find a babysitter again.
+ \item We thought we could take the crib out of the door as is.  We couldn't
+because it was too wide.  We spent most of the rest of the day planning on
+trashing the crib.  At the end of the day, I figured out how to unscrew the
+crib and move it piece by piece.  This would have been easier, however, with
+the U-haul and not my car.
+ \item In summation, I had to carry most everything big out of our apartment
+alone.
+ \item When cable was installed, I told the repairman we had not ordered an HD
+box when it turned out that Allison had.  There was a lot of confusion among
+the two of us about it.
+ \item I went to get lunch and there was no parking.  I got lunch at another
+place instead.
+ \item We missed our ward party because there was still too much to do.
+ \item I went to KFC for dinner, and in the car I spilled virtually my entire
+soda on myself.
+\end{itemize}
+It was a hard day, but I appreciated it.
+
+\subsection*{December 2, 2012}
+
+In the morning I figured out how to put Anna's crib together.  I was grateful
+it worked out.  We went to church and it was good.  At night we were able to
+clean out the apartment.  Unfortunately I could not get our shower head off of
+the shower.
+
+\subsection*{December 7, 2012}
+
+Allison and I went to a Killers concert.
+
+\subsection*{December 8, 2012}
+
+Not having a job is really hanging over my head.  I have a few different
+tangents off of this.
+
+\begin{enumerate}
+ \item I could, in theory, be offered the NSA job somewhere down the
+line---maybe in a few months, maybe in a year.  Would I take it, no questions
+asked?
+ \item I have been applying to academic jobs. My feeling about it all is that I
+won't get one.  From a logical perspective, I feel that I need to apply for
+these jobs.  From a dreamer's perspective, I feel drawn to academic jobs; it
+would be like I could have another chance to prove that I can cut it in
+academia.  However, I know that I would be happier having the free time that a
+normal job provides.
+ \item The other option is a normal job.  Getting a normal job didn't work out
+so well the last time I tried.  My tentative plan is to plug away at normal
+jobs after I am done applying for academic jobs this month.
+\end{enumerate}
+
+\subsection*{December 9, 2012}
+
+Went to church.
+
+\subsection*{December 12, 2012}
+
+I gave my students their final exam.  The exam was more conceptual than
+the midterms.  In the class, the first midterm was way too easy and most
+of the class aced it.  The second midterm was at a proper difficulty
+level and scores fell along a proper curve.
+
+Students were frustrated that the difficulty of the exams varied so
+dramatically.  I agree that this wasn't good and I have gained an appreciation
+for how hard it is to write an exam.
+
+It seems that plenty of students struggled mightily with the conceptual
+material.  I have started to realize why it is important to test the
+students on this.  On the students' homework the ``harder'' problems are the
+ones where the students have to think about how to setup a problem.
+Arguably developing the skill of setting up a problem is as important as
+learning the specific material, if not more so.
+I wonder how many students navigated the course by relying on others to help
+them set up a problem for them; if there were any such students taking the
+final, they must have struggled on this exam.
+
+On this vein, I also started to see that a lot of students came into my class
+expecting it to be like high school math.  In high school, you go to class
+every day, the teacher tells you how to do a type of problem, and then you do
+20 of those.  My stereotype of it is that it is all straightforward.  Students
+comments showed they did not like that they couldn't just pick everything up
+from the lecture.  
+
+As someone who just gets how to set things up, who just gets conceptual
+material, I didn't have an appreciation for the difference in difficulty
+between calculus and what came before it.
+
+I also understand the other side.  Students also need a rock solid foundation
+of basic technical skills.  They can learn concepts as they go through their
+career.  There should be a balance though.  I want students to think.
+
+\subsection*{December 16, 2012}
+
+I was able to finish up my class work so that we could head out to Utah on
+Saturday.  We went to church in St. George, and then we drove to Springville.
+
+I had my students comment about what they liked and didn't like about the
+class.  It was interesting to read the responses because there are always those
+people who say crazy things.
+
+\includegraphics[scale=0.1]{photo_5.jpeg}
+
+This one was interesting because the student seemed to blame me for not making
+her go to class.  You should always go to class if you want a good grade.  This
+student ended up with a C-.
+
+\includegraphics[scale=0.1]{photo_4.jpeg}
+
+This one was interesting for a few reasons.
+First, the student attacks the test itself as being bad; that accomplishes
+nothing; ironically, I thought the test was wonderful because it fit in a ton
+of material yet was short enough for everyone to have it be graded quickly and
+avoid a mad rush at the end of the exam period.
+Second, in class I explained to my
+students about the multi-part format; if the student (a) attended lecture,
+which I doubt, and (b) payed attention, he could have known this; once again,
+even though I put my lecture notes online, it turned out that you need to go to
+class. Third, the student claims he had an A going into the final; out of
+curiosity I checked back and saw that he didn't have an A going into the final;
+he had an 87\% which is over the cusp of a B; this, however, included a below
+average score on the easy midterm; that midterm score was technically an A, but
+everything else about his performance suggested B- or C+.  The poor final
+pushed him down to a C, however.
+
+\includegraphics[scale=0.1]{photo_3.jpeg}
+
+This one was interesting because I set out a final review and specifically
+included things in it which would be in some way on the final.  The so-called
+old midterms and other classes' tests were actually dissimilar to the actual
+final. I wonder if the student would have done better on the final had he
+completed the practice problems I set out.
+
+\subsection*{December 18, 2012}
+
+I am frustrated that I can't seem to get work done; I write this not meaning
+today but meaning over the past months.
+
+The biggest problem is trying to work from home.
+If I am really motivated to work on something I can manage to work at home.
+If I am searching for the motivation to do something, I cannot get it done at
+home.
+
+The biggest conflict is between Allison and me.  When I am home, she does not
+want me to work all the time.  She would rather have me interact with her.
+When I try to do work despite it, I feel that she is frustrated with me.  This
+past week she also urged me to stay home and try to work instead of going to
+school to work.  I need to figure out a way to resolve this.
+
+\subsection*{December 21, 2012}
+
+Negative feedback started coming to my page on ``Ratemyprofessors.com''.  It
+has made me change my plans for how I would administer my classes this quarter.
+ It has also made me question the resurgent desire to be a teacher.  I am
+thinking I will go hard for industry jobs as of now.
+
+\subsection*{December 25, 2012}
+
+We had Christmas Eve last night with my family, and then we woke early, drove
+to St. George, and had Christmas with Allison's family.  My mom gave me an iPad
+Mini, which Allison thinks is completely superfluous given that I have a
+regular-sized iPad already.
+
+Hopefully I can get some work done over the days to come---I haven't done much
+of anything work related since Friday.
+
+\subsection*{December 27, 2012}
+
+I worked on some math research, but it felt empty to me.
+I need to be in tune with the spirit to figure out what my priorities should be
+each day.  One method I plan on using to accomplish this is a daily planning
+session.
+
+\subsection*{December 29, 2012}
+
+We went to Las Vegas for a Killers concert.
+Honestly, I felt like concerts aren't my thing;
+it was exhausting;
+it was important for me to go,
+however, to support Allison.
+
+\subsection*{December 30, 2012}
+
+Sunday in St. George.
+
+{\em Funniest Funny}: Anna was throwing her food to the dogs from her high
+chair. Allison took away a piece of roll from her, and then gave it back.  Anna
+took the roll, put it to her mouth like she was going to eat it, and then
+sneakily went to give it to the dogs.
+
+\end{document}

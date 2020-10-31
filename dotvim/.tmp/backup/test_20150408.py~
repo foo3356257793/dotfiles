@@ -1,0 +1,164 @@
+#!/usr/bin/python3
+
+from random import *
+from statistics import median
+
+def print_vecs(arr,height,depth):
+  for i in range(height):
+    for j in range(depth):
+      print("%4X " % (arr[depth*i+j]), end = "")
+    print("")
+
+def dynamic_swap_vecs(arr, depth, row_0, row_1, mean_0, mean_1):
+  for j in range(depth):
+    no_swap = min(abs(arr[row_0*depth+j]-mean_0),abs(arr[row_1*depth+j]-mean_1))
+    swap = min(abs(arr[row_1*depth+j]-mean_0),abs(arr[row_0*depth+j]-mean_1))
+    if swap < no_swap:
+      arr[row_0*depth+j], arr[row_1*depth+j] = arr[row_1*depth+j], arr[row_0*depth+j]
+
+def weak_dynamic_swap_vecs(arr, depth, row_0, row_1, mean_0, mean_1):
+  for j in range(depth):
+    swap = (arr[row_0*depth+j] > arr[row_1*depth+j]) and (arr[row_0*depth+j] !=
+        row_0) and (arr[row_1*depth+j] != row_1)
+    if swap:
+      arr[row_0*depth+j], arr[row_1*depth+j] = arr[row_1*depth+j], arr[row_0*depth+j]
+
+def cas_swap_vecs(arr, depth, row_0, row_1):
+  for j in range(depth):
+    if arr[row_0*depth+j] > arr[row_1*depth+j]:
+      arr[row_0*depth+j], arr[row_1*depth+j] = arr[row_1*depth+j], arr[row_0*depth+j]
+
+def oddeven_merge(lo, hi, r):
+  step = r * 2
+  if step < hi - lo:
+    yield from oddeven_merge(lo, hi, step)
+    yield from oddeven_merge(lo + r, hi, step)
+    yield from [(i, i + r) for i in range(lo + r, hi - r, step)]
+  else:
+    yield (lo, lo + r)
+
+def oddeven_merge_sort_range(lo, hi):
+  """ sort the part of x with indices between lo and hi.
+
+  Note: endpoints (lo and hi) are included.
+  """
+  if (hi - lo) >= 1:
+    # if there is more than one element, split the input
+    # down the middle and first sort the first and second
+    # half, followed by merging them.
+    mid = lo + ((hi - lo) // 2)
+    yield from oddeven_merge_sort_range(lo, mid)
+    yield from oddeven_merge_sort_range(mid + 1, hi)
+    yield from oddeven_merge(lo, hi, 1)
+
+def oddeven_merge_sort(length):
+  """ "length" is the length of the list to be sorted.
+  Returns a list of pairs of indices starting with 0 """
+  yield from oddeven_merge_sort_range(0, length - 1)
+
+def compare_and_swap(x, a, b):
+  if x[a] > x[b]:
+    x[a], x[b] = x[b], x[a]
+
+seed()
+
+depth = 16
+keysize = 6
+max_key = (1<<keysize) - 1
+height = (1<<keysize)
+n = depth*height
+
+num_iter = 100
+num_placed = [0] * num_iter
+distance = [0] * num_iter
+total_steps = [0] * num_iter
+
+pairs_to_compare = list(oddeven_merge_sort(height))
+
+for iter in range(num_iter):
+  arr = [randint(0,max_key) for r in range(n)]
+# actually sort
+  offset = round(0.75*height)
+  dir = 0
+  num_swaps = 0
+  for pair in pairs_to_compare:
+    #dynamic_swap_vecs(arr, depth, pair[0], pair[1], pair[0], pair[1])
+    #weak_dynamic_swap_vecs(arr, depth, pair[0], pair[1], pair[0], pair[1])
+    #cas_swap_vecs(arr, depth, pair[0], pair[1])
+    num_swaps += 1
+  total_steps[iter] = num_swaps
+
+  #cal pct in correct spot
+  num_cor = 0
+  for i in range(height):
+    for j in range(depth):
+      if arr[depth*i+j] == i:
+        num_cor += 1
+  num_placed[iter] = num_cor
+
+  #calc mean distance
+  dists = [abs(arr[i] - i//depth) for i in range(n)]
+  distance[iter] = sum(dists)/n
+
+  if iter == 0:
+    print("")
+    print_vecs(arr,height,depth)
+    print("num_swaps = %d" % (num_swaps))
+
+    print("%d/%d = %lf correct" % (num_cor, n, num_cor/n))
+
+  #finish the job
+  p = 0
+  counts = [0] * height
+  for p in range(height):
+    while arr[p*depth+counts[p]] == p and counts[p] < 16:
+      counts[p] += 1
+  while p < height:
+    while counts[p] < 16:
+      x = arr[p*depth+counts[p]]
+      while x != p:
+        if counts[x] == 16:
+          counts[p] += 1
+          if counts[p] == 16:
+            x = p
+        else:
+          arr[p*depth+counts[p]] , arr[x*depth+counts[x]] = arr[x*depth+counts[x]] , arr[p*depth+counts[p]]
+          num_swaps += 1
+          while arr[x*depth+counts[x]] == x and counts[x] < 16:
+            counts[x] += 1
+          x = arr[p*depth+counts[p]]
+      if counts[p] != 16:
+        counts[p] += 1
+    p += 1
+
+  if iter == 0:
+    print("")
+    print_vecs(arr,height,depth)
+    print("num_swaps = %d" % (num_swaps))
+
+# print("num_placed:")
+# print(num_placed)
+
+# print("pct placed:")
+# print([a/n for a in num_placed])
+
+print("ave num_placed:")
+print(sum(num_placed)/num_iter)
+
+print("ave pct placed:")
+print(sum(num_placed)/(n*num_iter))
+
+# print("distance:")
+# print(distance)
+
+print("ave distance (compared to %d):" % (max_key // 2))
+print(sum(distance)/num_iter)
+
+# print("num steps:")
+# print(total_steps)
+
+place_per_step = [num_placed[iter] / total_steps[iter] for iter in range(num_iter)]
+# print("place_per_step:")
+# print(place_per_step)
+print("ave place per step:")
+print(sum(place_per_step)/num_iter)

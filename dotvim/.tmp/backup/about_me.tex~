@@ -1,0 +1,82 @@
+\documentclass[a4paper,12pt,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+
+\usepackage{setspace}
+
+\usepackage[a4paper,margin=0.5in,landscape]{geometry}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\usepackage{multicol}
+
+\pagenumbering{gobble}
+
+%opening
+\title{All about me!}
+\author{}
+\date{}
+
+\def\blank{\rule{4in}{0.15mm}}
+
+\begin{document}
+
+\begin{multicols}{2}
+  \begin{center}
+  {\Huge \bf All about me!}
+  \end{center}
+
+  \begin{center}
+\framebox(300,200){}
+
+Picture of me
+  \end{center}
+
+  \vspace{0.5in}
+
+  \noindent{\large \bf Questions.}
+  \begin{enumerate}
+
+    \item If you could visit anywhere, where would it
+      be? \\ \\ \blank
+    \item What makes you happy? \\ \\ \blank
+    \item What is your favorite thing to wear? Draw a picture of it.
+      \\ \\ \blank
+    \item What is something you’re proud of? \\ \\ \blank
+    \item If I could change my name it would be: \\ \\
+      \blank
+    \item What is the funnest thing you’ve done this summer?\\  \\
+      \blank
+    \item What do you like to do with your friends? \\ \\ \blank
+    \item What is your favorite treat? \\ \\ \blank
+    \item Describe yourself in three words.  \\ \\ \blank
+    \item If you had a super power, what would it be? \\ \\ \blank
+    \item What is something you want to learn? \\ \\ \blank
+    \item What would you buy if you had \$1000? \\ \\ \blank
+    \item What is your favorite thing to do outside?\\  \\ \blank
+    \item What is your favorite season? Why? \\ \\ \blank
+
+  \end{enumerate}
+
+\end{multicols}
+
+
+\end{document}
+

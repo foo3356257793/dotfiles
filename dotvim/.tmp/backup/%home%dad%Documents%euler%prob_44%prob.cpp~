@@ -1,0 +1,65 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+#include <cmath>
+
+using namespace std;
+
+bool is_square(int64_t a)
+{
+  int64_t sqrt_a = round(sqrt(a));
+
+  return (a - sqrt_a*sqrt_a) == 0;
+}
+
+bool is_pentagonal(int64_t a)
+{
+  if(!is_square(1+24*a))
+  {
+    return false;
+  }
+
+  int64_t k = 1 + ((int64_t) round(sqrt(1+24*a)));
+
+  return k%6 == 0;
+}
+
+int64_t prob_44()
+{
+  const int64_t bd = 1<<10;
+
+  auto P = [](const int64_t &x){
+    return (x*(3*x-1))/2;
+  };
+
+  int i=1;
+
+  while(true)
+  {
+    i++;
+
+    int64_t P_j = P(i);
+
+    for(int k=1; k<i; k++)
+    {
+      int64_t P_k = P(k);
+
+      if(is_pentagonal(P_j+P_k) && is_pentagonal(P_j-P_k))
+      {
+        return P_j-P_k;
+      }
+    }
+  }
+}
+
+int main() {
+
+  auto answer = prob_44();
+
+  cout << answer << endl;
+}
+

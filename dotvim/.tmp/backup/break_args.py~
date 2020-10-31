@@ -1,0 +1,18 @@
+#!/usr/bin/python3
+
+import sys
+from subprocess import call
+
+print('Number of arguments:', len(sys.argv), 'arguments')
+print('Argument list:', str(sys.argv), 'arguments')
+
+x = int(sys.argv[1])
+
+command = ["./ex10"]
+for i in range(0, x):
+  command.append(str(i))
+
+print(command)
+
+call(["./ex10", "0"])
+#subprocess.call(command)

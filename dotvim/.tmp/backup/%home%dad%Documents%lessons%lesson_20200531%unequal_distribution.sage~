@@ -1,0 +1,21 @@
+#!/usr/bin/sage
+
+def random_name(names, prev):
+
+    index = randrange(len(names))
+    name = names[index]
+
+    while (not name in prev) and (len(prev)+1 >= len(names)):
+        index = randrange(len(names))
+        name = names[index]
+
+    if not name in prev:
+        prev.append(name)
+
+    return name
+
+if __name__ == "__main__":
+
+    names = ['Anna', 'Leah', 'Sam', 'Juju']
+
+    prev = []

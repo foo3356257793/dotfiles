@@ -1,0 +1,78 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+%opening
+\title{Script Idea for Twix Commercial}
+\author{}
+\date{}
+
+\begin{document}
+
+
+\maketitle
+
+\paragraph{News reporter.}
+I'm here asking people around the world which they like better,
+Kit-Kat or Twix.
+
+\paragraph{Person.}
+I like Twix because it has a cookie in it.
+
+\paragraph{Person.}
+I like Twix better because it has everything Kit-Kat has, plus
+caramel.
+
+\paragraph{Person.}
+Twix, easily.
+The Kit-Kat is bland; a tasteless wafer covered in subpar chocolate.
+No thank you.
+
+\paragraph{Person.}
+I like Twix better.
+
+
+\paragraph{Twins.}
+We like Twix because there is one for each of us.
+
+\paragraph{Goat.}
+I'll eat anything.
+
+\paragraph{Person.}
+I don't always eat candy bars, but when I do,
+I eat Twix.
+
+\paragraph{Person.}
+Kit-kats seem to melt much faster.
+
+\paragraph{Astronaut.}
+I like Twix because it is out of this world!
+
+\paragraph{Person.}
+I. Love. Twix.
+
+\paragraph{News reporter.}
+There you have it: Twix is the winner.
+
+\end{document}
+

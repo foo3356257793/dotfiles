@@ -1,0 +1,249 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=0.5in, bottom=0.5in, left=0.5in,
+right=0.5in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\usepackage{multicol}
+\usepackage[parfill]{parskip}
+\usepackage{mdwlist}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+%opening
+% Remove the author and date fields and the space associated with them
+% from the definition of maketitle!
+\makeatletter
+\renewcommand{\@maketitle}{
+\newpage
+ \null
+ \vskip 2em%
+ \begin{center}%
+  {\LARGE \@title \par}%
+	\vskip 1em%
+	{\large \@date \par}%
+ \end{center}%
+ \par} \makeatother
+\title{Visiting Teaching}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Visiting Teaching Assignments}
+\begin{multicols}{4}
+
+Aleman/Wallace, Janye
+\begin{itemize*}
+\item 	Boston
+\item 	Himmighoefer
+\end{itemize*}
+Anderson/Austin
+\begin{itemize*}
+\item 	Laird
+\item 	Luedtke
+\end{itemize*}
+Barfuss/Shorr
+\begin{itemize*}
+\ubtem 	Nelson
+\item 	Porter
+\end{itemize*}
+Barnum/Snook
+\begin{itemize*}
+\item 	Blair
+\item 	Milligan
+\item 	Syphert
+\end{itemize*}
+Berger/Jones
+\begin{itemize*}
+\item 	Hansen
+\item 	Lewis
+\end{itemize*}
+Blair/Bonniksen
+\begin{itemize*}
+\item 	Martin
+\item 	Mecham
+\end{itemize*}
+Boston/Foutz
+\begin{itemize*}
+\item 	Dorman
+\item 	Matheson
+\end{itemize*}
+Bridger/Wetzel
+\begin{itemize*}
+\item 	Jacobsen
+\item 	Wallace, Janye
+\end{itemize*}
+Butzin/Martinez
+\begin{itemize*}
+\item 	George, Chelsea
+\item 	Horr
+\end{itemize*}
+Chabries/Dorman
+\begin{itemize*}
+\item 	Butzin
+\item 	Nielsen
+\item 	George, Linda
+\item Chi/Nelson
+\item 	Ebersohl
+\item 	Chabries
+\end{itemize*}
+Dawkins/Dorsey
+\begin{itemize*}
+\item 	Holyoak
+\end{itemize*}
+Dawkins
+\begin{itemize*}
+\item 	Dorsey
+\end{itemize*}
+Ebersohl/Fewkes
+\begin{itemize*}
+\item 	Foutz
+\item 	Snook
+\item 	Vennard
+\end{itemize*}
+Fillmore/Snyder
+\begin{itemize*}
+\item 	Chi
+\item 	Simuluh
+\end{itemize*}
+George/George
+\begin{itemize*}
+\item 	Fillmore
+\item 	Werkeiser
+\end{itemize*}
+Hansen/Murrell-Ford
+\begin{itemize*}
+\item 	Robertson
+\item 	Smith
+\end{itemize*}
+Hartung/Simpson
+\begin{itemize*}
+\item 	Dawkins
+\item 	Haslam
+\end{itemize*}
+Haslam/Himmighoefer
+\begin{itemize*}
+\item 	Austin
+\item 	Murrell-Ford
+\end{itemize*}
+Holyoak/Jacobsen
+\begin{itemize*}
+\item 	Barfuss
+\item 	Berger
+\item 	Jackson, Ruby
+\end{itemize*}
+Horr/Jackson
+\begin{itemize*}
+\item 	Moore
+\item 	Bridger
+\item Jorgensen/Syphert
+\item 	McGee
+\item 	Walther
+\end{itemize*}
+Laird/Luedtke
+\begin{itemize*}
+\item 	Barnum
+\item 	Mathews
+\end{itemize*}
+Lewis/Matheson
+\begin{itemize*}
+\item 	Jorgenson
+\item 	Shorr
+\item 	Simpson
+\end{itemize*}
+Mathews/Smith
+\begin{itemize*}
+\item 	Aleman
+\item 	Davis
+\end{itemize*}
+Mecham/Nielson
+\begin{itemize*}
+\item 	Hartung
+\item 	Jackson, McKell
+\end{itemize*}
+Milligan/Moore
+\begin{itemize*}
+\item 	Burke
+\item 	Burke
+\item 	Fewkes
+\item 	Wallace
+\end{itemize*}
+Porter/Richardson
+\begin{itemize*}
+\item 	Roach
+\item 	Savage
+\item 	Ward	
+\end{itemize*}
+Roach/Robertson
+\begin{itemize*}
+\item 	Contratto
+\item 	Martinez
+\end{itemize*}
+Savage/Simuluh
+\begin{itemize*}
+\item 	Keuhn
+\item 	Richardson
+\end{itemize*}
+Vest/Wallace 
+\begin{itemize*}
+\item 	Bonniksen
+\item 	Snyder
+\end{itemize*}
+Ward/Walther
+\begin{itemize*}
+\item 	Vest
+\item 	Wetzel
+\item 	Wightman
+\end{itemize*}
+Werkeiser/Wightman
+\begin{itemize*}
+\item 	Anderson
+\item 	Jones
+\end{itemize*}
+\end{multicols}
+
+\subsection*{Not Currently Assigned}
+
+\begin{multicols}{2}
+\begin{itemize*}
+\item Baker, Andrea - moved
+\item Brown, Georgina
+\item Chi, Yvette 
+\item Cooper, Jaimie - moved
+\item Davis, McKenzie - ?
+\item Harper, Jennifer - 
+\item Kikocho, Ashley - moved
+\item Maese, Tracy 
+\item Minster, Chelsea - 302 Oatley Ct \#902
+\item Nixon, Aubrie
+\item Pittman, Erin - moved?
+\item Ritterby, Ashley
+\item Saunders, Sara
+\item Velazquez, Yahaira - moved
+\item Vest, Rebecca
+\item Williams, Charlene
+\end{itemize*}
+\end{multicols}
+
+\maketitle
+
+\end{document}
+

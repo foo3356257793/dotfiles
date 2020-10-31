@@ -1,0 +1,3 @@
+#!/usr/bin/zsh
+
+$HOME/Documents/time_logger/time_logger.py -g | fzf-tmux | $HOME/Documents/time_logger/time_logger.py -d -l

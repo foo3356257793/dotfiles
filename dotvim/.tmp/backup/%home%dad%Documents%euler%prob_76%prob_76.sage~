@@ -1,0 +1,18 @@
+#!/usr/bin/sage
+
+
+if __name__ == "__main__":
+
+
+    n = 100
+
+    n_ways_array = [1] * (n+1)
+
+    for k in range(2,n+1):
+
+        for i in range(k,n+1):
+
+            n_ways_array[i] += n_ways_array[i-k]
+
+    print(n_ways_array[n]-1)
+

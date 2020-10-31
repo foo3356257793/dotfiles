@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+
+# from auxilliary_file import foo
+# 
+# print("1+1 = %d" % foo(1,1))
+
+import os
+import sys
+sys.path.append(os.path.abspath('..'))
+
+print("%s" % os.path.abspath('..'))
+
+from foo.foo_add import *
+
+print("%d" % (foo_add(1,1)))

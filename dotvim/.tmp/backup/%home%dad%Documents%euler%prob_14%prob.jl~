@@ -1,0 +1,34 @@
+BOUND = 1000000;
+
+function collatz_step(input_number)
+    if ((input_number % 2) == 1)
+        return 3 * input_number + 1
+    end
+
+    return input_number ÷ 2;
+end
+
+function prob_14(bound::Int)
+
+    chain_length = zeros(bound)
+
+    chain_length[1] = 1
+
+    for starting_number in 2:bound
+        test_number = collatz_step(starting_number)
+
+        while (test_number >= starting_number)
+            test_number = collatz_step(test_number)
+            chain_length[starting_number] += 1
+        end
+
+        chain_length[starting_number] += chain_length[test_number]
+    end
+
+    answer = argmax(chain_length)
+
+    println(answer)
+
+end
+
+prob_14(BOUND)

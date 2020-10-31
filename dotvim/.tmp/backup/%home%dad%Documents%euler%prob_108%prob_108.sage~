@@ -1,0 +1,28 @@
+#!/usr/bin/sage
+
+def num_sols(a):
+
+    div_a = divisors(a**2)
+
+    unique_pairs = [d for d in div_a if d <= a]
+
+    return len(unique_pairs)
+
+
+if __name__ == "__main__":
+
+    Pi = prod(prime_range(19))
+
+    print(num_sols(Pi))
+
+    t = Pi
+
+    for t in range(Pi):
+
+        if t % 10 == 0:
+            print(t)
+
+        if num_sols(t) > 1000:
+
+            print(t)
+            break

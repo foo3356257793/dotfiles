@@ -1,0 +1,6 @@
+set window-height 1000
+set window-width 800
+
+set font "Inconsolata 14"
+
+set recolor "true"

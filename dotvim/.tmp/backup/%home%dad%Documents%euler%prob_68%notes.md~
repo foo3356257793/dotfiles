@@ -1,0 +1,52 @@
+Searching for $16$ digit strings.
+
+There are $10$ entries, so we get at least a $10$ digit string
+from using one digit entries.
+
+If the sum is at least $100+2(99)$, each triple needs at least $4$ digits.
+This at least pushes to $13$ digits.
+
+# Exhaust
+
+ X
+   X  .
+ X   X
+? . . .
+   .
+
+# Exhaust
+
+  0
+   \
+    1   3
+     \ /
+8     2
+ \   /
+  6-4-5
+  \
+   7
+
+# Algorithm
+
+Given a perp vector to the matrix, compute the maximal $k$
+such that we have a $16$ digit string.  If there is no such feasible
+$k$, what can we conclude?
+
+# Actually
+
+We can only fill in the numbers $1$ through $10$.
+
+Try the following.
+Fill in in order.
+
+[0,1,2,3] imply [4].  Check that this works.
+Fill in [5].  Implies [6] (check).
+Fill in [7]. Implies [8] (check).
+Check [9].
+
+**note**.
+
+If they were all $1$ digit, we would get a $15$ digit string.
+Having $10$ be one of the choices gives $16$ digits.  If $10$ is in
+a choice used twice, we get $9$ digits.
+

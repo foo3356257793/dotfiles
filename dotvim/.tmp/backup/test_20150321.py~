@@ -1,0 +1,47 @@
+#!/usr/bin/python3
+
+from random import *
+
+def print_vec(a):
+  num_vecs = len(a)//16
+  for i in range(num_vecs):
+    for j in range(16):
+      print("%4d " % a[16*i + j], end = "")
+    print("")
+
+seed()
+
+bin_bits = 8
+num_bins = (1<<bin_bits)
+n = (1<<14)
+num_trials = 1
+
+for trial in range(num_trials):
+  histogram = [0] * num_bins
+  for i in range(n):
+    j = randint(0,num_bins-1)
+    histogram[j] += 1
+
+#for i in range(num_bins):
+#  print("%d %d" % (i, histogram[i]))
+
+print_vec(histogram)
+
+mean = n/num_bins
+max_val = max(histogram)
+min_val = min(histogram)
+print("mean = %f, max = %d, min = %d" % (mean, max_val, min_val))
+
+for i in range(len(histogram)//16):
+  num_vecs = max(histogram[16*i:16*(i+1)])
+  num_items = sum(histogram[16*i:16*(i+1)])
+  print("vec %d has %d/%d items -> %f" % (i, num_items, 16*num_vecs,
+    (16*num_vecs)/num_items))
+
+maxes = [max(histogram[16*i:16*(i+1)]) for i in range(len(histogram)//16)]
+total_num_vecs = sum(maxes)
+print("in total, we got %d/%d -> %f" %(n, total_num_vecs*16,
+  (total_num_vecs*16)/n))
+
+
+
