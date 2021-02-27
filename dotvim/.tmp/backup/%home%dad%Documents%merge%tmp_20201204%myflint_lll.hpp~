@@ -1,9 +1,0 @@
-#include "myflint_ZZ_mat.hpp"
-
-#include <flint/fmpz_lll.h>
-
-ZZ_mat LLL(const ZZ_mat A);
-ZZ_mat LLL(const ZZ_mat A, const fmpz_lll_t);
-
-ZZ_mat& LLL_inplace(ZZ_mat& A);
-ZZ_mat& LLL_inplace(ZZ_mat& A, const fmpz_lll_t);

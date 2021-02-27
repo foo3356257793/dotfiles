@@ -1,5 +1,0 @@
-```
-autoreconf -fi
-automake
-./configure --prefix=[path to local folder] --enable-cxx
-```

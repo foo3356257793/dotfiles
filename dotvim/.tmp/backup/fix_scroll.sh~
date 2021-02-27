@@ -1,4 +1,0 @@
-#!/bin/bash
-
-synclient VertScrollDelta=-73
-synclient HorizScrollDelta=-73

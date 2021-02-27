@@ -1,8 +1,0 @@
-# How to examine the cycle of digits?
-
-1/n -> first digit $0$
-
-$10 \times 1/n$ : digit given by $\floor{10/n}$
-and next step is $10 \times 1$ mod $n$.
-
-Keep iterating until we find a repeat

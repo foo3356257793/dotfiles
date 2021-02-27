@@ -1,9 +1,0 @@
-QQ_ptr QQ_vec_ptr::operator[](const slong col)
-{
-  return data + col;
-}
-
-const QQ_ptr QQ_vec_ptr::operator[](const slong col) const
-{
-  return data + col;
-}

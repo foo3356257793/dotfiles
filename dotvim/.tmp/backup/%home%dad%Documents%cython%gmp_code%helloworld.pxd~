@@ -1,3 +1,0 @@
-cdef extern from "test_code.h":
-
-     longlong use_mpz_addeq(long long, long long)

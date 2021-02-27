@@ -1,9 +1,0 @@
-QQ_mat translate(const std::function<void(fmpq_mat_t,const fmpq_mat_t,const ulong)> &fun,
-    const _QQ_mat_1 &in_1, const _UI in_2);
-
-QQ_mat translate(const std::function<void(fmpq_t,const fmpq_t,const ulong)> &fun,
-    const _QQ_mat_1 &in_1, const _UI in_2);
-
-QQ_mat operator*(const _QQ_mat_1 &in_1, const _UI in_2);
-QQ_mat operator*(const _UI in_1, const _QQ_mat_1 &in_2);
-QQ_mat operator/(const _QQ_mat_1 &in_1, const _UI in_2);

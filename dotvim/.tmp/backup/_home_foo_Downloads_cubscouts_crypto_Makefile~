@@ -1,9 +1,0 @@
-TEX = xelatex
-
- 
-
-%.pdf: %.tex
-	$(TEX) $+
-
-.clean:
-	rm -rf $(NAME).log $(NAME).aux $(NAME).pdf

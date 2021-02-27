@@ -1,3 +1,0 @@
-ZZ_mat::ZZ_mat(const _ZZ_mat_1 &in) : ZZ_mat(in.nrows(), in.ncols()) {
-  fmpz_mat_set(data,in.data);
-}

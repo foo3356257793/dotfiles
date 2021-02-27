@@ -1,7 +1,0 @@
-#!/usr/bin/sage
-
-load("prob_19.spyx")
-
-if __name__ == "__main__":
-
-    prob_19()

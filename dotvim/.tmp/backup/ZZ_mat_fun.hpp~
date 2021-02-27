@@ -1,7 +1,0 @@
-#include "ZZ_mat_fun_ZZ_mat.hpp"
-#include "ZZ_mat_fun_ZZ_mat_ZZ_mat.hpp"
-#include "ZZ_mat_fun_ZZ_mat_ZZ.hpp"
-#include "ZZ_mat_fun_ZZ_mat_UI.hpp"
-
-ZZ_mat identity_matrix(int dim);
-ZZ_mat zero_matrix(int rows, int cols);

@@ -1,1 +1,0 @@
-explicit operator _CAST() const;

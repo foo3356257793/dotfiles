@@ -1,5 +1,0 @@
-print("Hello world!")
-
-cdef extern from "test_code.h":
-
-    int use_mpz_addeq(int a, int b)

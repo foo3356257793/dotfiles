@@ -1,5 +1,0 @@
-env=Environment(CXXFLAGS='-O3 -std=c++20 -fopenmp'
-                )
-
-t = env.Program(target="prob_38", source=["prob.cpp"])
-Default(t)

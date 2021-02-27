@@ -1,9 +1,0 @@
-_ZZ_mat &translate(const std::function<void(fmpz_mat_t,fmpz_mat_t,const fmpz_t)> &fun,
-    const _ZZ &in);
-
-_ZZ_mat &translate(const std::function<void(fmpz_t,fmpz_t,const fmpz_t)> &fun,
-    const _ZZ &in);
-
-_ZZ_mat &operator*=(const _ZZ &in);
-_ZZ_mat &operator%=(const _ZZ &in);
-_ZZ_mat &divexact_eq(const _ZZ &in);

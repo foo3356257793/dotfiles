@@ -1,7 +1,0 @@
-ZZ_mat translate(const std::function<void(fmpz_mat_t,const fmpz_mat_t,const fmpz_mat_t)> &fun,
-    const _ZZ_mat_1 &in_1, const _ZZ_mat_2 &in_2);
-
-
-ZZ_mat operator+(const _ZZ_mat_1 &in_1, const _ZZ_mat_2 &in_2);
-ZZ_mat operator-(const _ZZ_mat_1 &in_1, const _ZZ_mat_2 &in_2);
-ZZ_mat operator*(const _ZZ_mat_1 &in_1, const _ZZ_mat_2 &in_2);

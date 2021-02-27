@@ -1,3 +1,0 @@
-_TYPE_OUT &_TYPE_OUT::_funname_eq(const _TYPE_IN in){
-  return _funname_eq(_TYPE_NEW(in));
-}

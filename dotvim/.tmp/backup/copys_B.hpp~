@@ -1,4 +1,0 @@
-#ifndef _isptr
-_TYPE(const _TYPE_IN in);
-#endif
-_TYPE &operator=(const _TYPE_IN in);

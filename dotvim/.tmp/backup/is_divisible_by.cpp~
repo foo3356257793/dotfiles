@@ -1,3 +1,0 @@
-bool _TYPE::is_divisible_by(const _TYPE_IN &in) const{
-  return _fun_paster(_ftype,divisible)(data,in.data);
-}

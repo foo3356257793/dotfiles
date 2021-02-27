@@ -1,7 +1,0 @@
-_TYPE::operator std::string() const{
-  std::stringstream ss;
-  char *tmp = _getfun(NULL, 10, data);
-  ss << tmp;
-  free(tmp);
-  return ss.str();
-}

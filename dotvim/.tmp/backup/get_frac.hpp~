@@ -1,2 +1,0 @@
-explicit operator std::tuple<ZZ,ZZ>();
-

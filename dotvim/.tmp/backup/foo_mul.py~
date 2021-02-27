@@ -1,4 +1,0 @@
-#!/usr/bin/python3
-
-def foo_mul(a,b):
-  return a * b

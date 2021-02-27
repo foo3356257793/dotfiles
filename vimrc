@@ -166,7 +166,6 @@ nnoremap k gk
 " au Syntax * RainbowParenthesesLoadSquare   " []
 " au Syntax * RainbowParenthesesLoadBraces   " {}
 " au Syntax * RainbowParenthesesLoadChevrons " <>
-let g:rainbow_active = 1
 " }}}
 " Use clipboard {{{
 set clipboard=unnamedplus
@@ -531,7 +530,6 @@ augroup pythonSettings
   au!
   au bufnewfile *.py 0r $HOME/.vim/python_template.py
   au bufnewfile *.py exe 'normal G'
-  au bufnewfile,Bufread Sconstruct :set ft=python
   au FileType python setlocal softtabstop=4|set shiftwidth=4|set expandtab
   au FileType python setlocal autoindent|set smartindent
   au FileType python setlocal tw=80 " good coding practice
@@ -585,10 +583,8 @@ augroup END
 " Settings  {{{
 augroup cSettings
   au!
-  au bufnewfile *.c 0r $HOME/.vim/c_template.c
-  au bufnewfile *.cpp 0r $HOME/.vim/cpp_template.cpp
+  au bufnewfile *.c,*.cpp 0r $HOME/.vim/c_template.c
   au bufnewfile *.c exe 'normal 5G'
-  au bufnewfile *.cpp exe 'normal 10G'
   au bufnewfile,bufread *.cuh setlocal ft=cpp
   au FileType c,cpp setlocal softtabstop=2|set shiftwidth=2|set expandtab
   au FileType c,cpp setlocal autoindent|set smartindent
@@ -629,13 +625,11 @@ augroup rustSettings
   au!
   au bufnewfile *.rs 0r $HOME/.vim/rust_template.rs
   au bufnewfile *.rs exe 'normal 2G'
-  au FileType rust setlocal softtabstop=4|set shiftwidth=4|set expandtab
-  au FileType rust setlocal autoindent|set smartindent
-  au FileType rust setlocal tw=80 " good coding practice
-  au FileType rust setlocal cinkeys-=0#
-  au FileType rust setlocal comments-=:// comments+=f://
-  au FileType rust :inoremap <buffer> {<cr> {<cr>}<esc>O
-  au FileType rust :nnoremap <silent> <buffer> m :w<cr>:!cargo build<cr>
+  au FileType rs setlocal softtabstop=4|set shiftwidth=4|set expandtab
+  au FileType rs setlocal autoindent|set smartindent
+  au FileType rs setlocal tw=80 " good coding practice
+  au FileType rs setlocal cinkeys-=0#
+  au FileType rs setlocal comments-=:// comments+=f://
 augroup END
 " }}}
 " ===== txt ======  {{{
@@ -695,8 +689,10 @@ augroup END
 " === markdown === {{{
 augroup markdownSettings
   au!
+
   au BufRead,BufNewFile *.md setlocal ft=markdown
   au BufRead,BufNewFile *.md :syntax sync fromstart
+
   au FileType markdown setlocal autoindent
   au FileType markdown setlocal softtabstop=2|set shiftwidth=2
   "au FileType markdown setlocal tw=68 " good for readability
@@ -705,9 +701,15 @@ augroup markdownSettings
   au FileType markdown setlocal foldlevel=99
   au FileType markdown nnoremap <buffer> go o*<space>
   au FileType markdown nnoremap <buffer> gO O*<space>
+<<<<<<< HEAD
   let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'cpp', 'vim', 'yaml', 'julia']
+=======
+  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'vim', 'yaml']
+
+>>>>>>> parent of 3936906 (Backup before upgrade.)
   " fixes highlighting issue with breaking up items in a list
   au FileType markdown :syn clear markdownCodeBlock
+
   hi markdownH1 cterm=bold ctermbg=2 ctermfg=0
   hi markdownH1Delimiter cterm=bold ctermbg=2 ctermfg=0
   hi markdownH2 cterm=bold ctermbg=11 ctermfg=0
@@ -722,6 +724,7 @@ augroup markdownSettings
   hi markdownBoldDelimiter cterm=bold ctermfg=11
   hi markdownBoldItalic cterm=bold ctermfg=9
   hi markdownBoldItalicDelimiter cterm=bold ctermfg=9
+
   hi markdownCode ctermfg=12
   hi markdownCodeBlock ctermfg=12
   hi markdownCodeDelimiter ctermfg=12
@@ -730,6 +733,7 @@ augroup markdownSettings
   hi markdownAutomaticLink ctermfg=12
   " hi markdownUrl ctermfg=10
   hi htmlTag ctermfg=15
+
   au FileType markdown :inoremap <buffer> $$<cr> $$<cr>$$<esc>O
   au FileType markdown :vnoremap <buffer> <localleader>k :!add_numbers_in_string.py<cr>
 augroup END
@@ -757,6 +761,7 @@ augroup END
 " }}}
 
 " }}}
+<<<<<<< HEAD
 " === julia ==== {{{
 augroup juliaSettings
   au!
@@ -769,6 +774,8 @@ augroup juliaSettings
   au FileType julia :nnoremap <buffer> <localleader>lf ofunction<cr>end<esc>kA<space>
 augroup END
 " }}}
+=======
+>>>>>>> parent of 3936906 (Backup before upgrade.)
 " === Makefile === {{{
 augroup makefileSettings
   au!

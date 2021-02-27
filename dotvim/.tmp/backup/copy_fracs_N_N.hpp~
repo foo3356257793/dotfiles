@@ -1,5 +1,0 @@
-#ifndef _isptr
-_TYPE(const _ZZ_TYPE_1 &in_1, const _ZZ_TYPE_2 &in_2) : _TYPE();
-#endif
-
-_TYPE& operator=(const std::tuple<_ZZ_TYPE_1,_ZZ_TYPE_2> &in);

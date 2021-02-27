@@ -1,8 +1,0 @@
-QQ_mat translate(const std::function<void(fmpq_mat_t, const fmpq_mat_t)> &fun,
-    const _QQ_mat_1 &in);
-
-bool translate(const std::function<int(const fmpq_mat_t)> &fun,
-    const _QQ_mat_1 &in);
-
-bool is_square(const _QQ_mat_1 &in);
-QQ_mat inverse(const _QQ_mat_1 &in);

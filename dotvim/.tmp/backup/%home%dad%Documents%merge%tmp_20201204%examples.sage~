@@ -1,6 +1,0 @@
-#!/usr/bin/sage
-
-if __name__ == "__main__":
-
-    a = prod([next_prime(2^i) for i in range(10,45,5)])
-    print(a)

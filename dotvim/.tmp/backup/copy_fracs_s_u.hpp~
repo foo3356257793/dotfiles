@@ -1,7 +1,0 @@
-#ifndef _isptr
-_TYPE(const _SI_TYPE in_1, const _UI_TYPE in_2);
-_TYPE(const _UI_TYPE in_1, const _SI_TYPE in_2);
-#endif
-
-_TYPE &operator=(const std::tuple<_SI_TYPE,_UI_TYPE> &in);
-_TYPE &operator=(const std::tuple<_UI_TYPE,_SI_TYPE> &in);

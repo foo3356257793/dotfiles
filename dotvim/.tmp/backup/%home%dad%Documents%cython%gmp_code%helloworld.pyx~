@@ -1,5 +1,0 @@
-cimport helloworld
-
-def py_use_mpz_addeq(long a, long b):
-
-    return helloworld.use_mpz_addeq(a,b)

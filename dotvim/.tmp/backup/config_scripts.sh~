@@ -1,5 +1,0 @@
-#!/bin/bash
-
-./fix_scroll.sh
-./.touchpad.sh
-xmodmap .Xmodmap

@@ -1,6 +1,0 @@
-#!/usr/bin/sage
-
-import foo
-
-if __name__ == "__main__":
-

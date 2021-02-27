@@ -1,6 +1,0 @@
-_TYPE_NEW _FMMA(const _TYPE_IN_1 &in_1, const _TYPE_IN_2 &in_2,
-                const _TYPE_IN_3 &in_3, const _TYPE_IN_4 &in_4) {
-  auto out = _TYPE_NEW();
-  _native_fmma(out.data, in_1.data, in_2.data, in_3.data, in_4.data);
-  return out;
-}

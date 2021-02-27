@@ -1,4 +1,0 @@
-all: ex_000.o
-
-ex_000.o: ex_000.rs
-	rustc $+ -o $@

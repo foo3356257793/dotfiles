@@ -1,2 +1,0 @@
-explicit operator std::string() const;
-explicit operator const std::string() const;

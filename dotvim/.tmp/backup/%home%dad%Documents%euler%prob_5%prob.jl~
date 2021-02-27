@@ -1,3 +1,0 @@
-UPPER_BOUND = 20
-
-println(lcm(1:UPPER_BOUND))

@@ -1,8 +1,0 @@
-#include <stdio.h>
-#include <upc.h>
-
-main()
-{
-     printf("Hello World\n");
-}
-
