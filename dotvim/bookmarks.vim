@@ -11,4 +11,4 @@ nnoremap <leader>4 :tabnew $HOME/dotfiles/zshrc<cr>
 nnoremap <leader>5 :FZF $HOME/dotfiles/dotvim<cr>
 
 " current projects: open directly
-nnoremap <leader>9 :e /home/dad/Documents/notes_20200718.md<cr>
+nnoremap <leader>9 :e $HOME/Documents/notes_20200718.md<cr>

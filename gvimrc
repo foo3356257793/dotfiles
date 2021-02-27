@@ -29,6 +29,6 @@ nnoremap <leader>t7 :colorscheme badwolf<cr>
 ":set guifont=Monospace\ 14
 ":set guifont=Inconsolata\ 16
 "set guifont=Cousine\ 14
-set guifont=JetBrainsMono\ Nerd\ Font\ 14
+set guifont=JetBrains\ Mono\ 14
 
 set vb t_vb=

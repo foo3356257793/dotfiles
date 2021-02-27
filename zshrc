@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/opt
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/opt:$HOME/.local/bin
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -135,7 +135,7 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 #export FZF_ALT_C_COMMAND="ag --ignore '.git' -g ."
 #export FZF_ALT_C_COMMAND="/home/dad/opt/list_all_directories.py"
 
-source /usr/share/fzf/shell/key-bindings.zsh
+source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 # don't remove files by accident
 alias rm='safedelete'

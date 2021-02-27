@@ -356,6 +356,7 @@ nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 "nnoremap <leader>F :set columns=150<cr>
 " }}}
 " fzf {{{
+source /usr/share/doc/fzf/examples/fzf.vim
 "nnoremap <leader>F :FZF <cr>
 "nnoremap <leader>f :cd %:p:h<cr>:Files <cr>
 nnoremap <leader>f :Files <cr>
@@ -701,12 +702,7 @@ augroup markdownSettings
   au FileType markdown setlocal foldlevel=99
   au FileType markdown nnoremap <buffer> go o*<space>
   au FileType markdown nnoremap <buffer> gO O*<space>
-<<<<<<< HEAD
   let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'cpp', 'vim', 'yaml', 'julia']
-=======
-  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'vim', 'yaml']
-
->>>>>>> parent of 3936906 (Backup before upgrade.)
   " fixes highlighting issue with breaking up items in a list
   au FileType markdown :syn clear markdownCodeBlock
 
@@ -761,7 +757,6 @@ augroup END
 " }}}
 
 " }}}
-<<<<<<< HEAD
 " === julia ==== {{{
 augroup juliaSettings
   au!
@@ -774,8 +769,6 @@ augroup juliaSettings
   au FileType julia :nnoremap <buffer> <localleader>lf ofunction<cr>end<esc>kA<space>
 augroup END
 " }}}
-=======
->>>>>>> parent of 3936906 (Backup before upgrade.)
 " === Makefile === {{{
 augroup makefileSettings
   au!
