@@ -1,0 +1,4 @@
+_TYPE &_TYPE::_ADDMUL(const _TYPE_IN_1 &in_1, const _TYPE_IN_2 &in_2) {
+  _native_addmul(data, in_1.data, in_2.data);
+  return *this;
+}

@@ -1,8 +1,11 @@
-#all: prob.o example prob_functions
-all: prob.o test.o
+CXX = g++ -std=c++20 -O3
+INCLUDE =
+LIBS = -fopenmp -lgtest
 
-prob.o: prob.cpp
-	g++ -O3 $+ -o $@ -fopenmp
+all: prob test
+
+prob: prob.cpp
+	$(CXX) $(INCLUDE) $+ -o $@ $(LIBS)
 
 prob_functions: prob_functions.cpp
 	g++ -O3 -Wall -shared -std=gnu++20 -fPIC `python3 -m pybind11 --includes` $+ -o $@`python3-config --extension-suffix` -fopenmp
@@ -10,11 +13,11 @@ prob_functions: prob_functions.cpp
 example: example.cpp
 	g++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`
 
-test.o: test.cpp
+test: test.cpp
 	g++ -O3 $+ -o $@ -lyaml-cpp -lfmt -fopenmp
 
 clean:
-	rm prob.o
+	rm prob test
 
 .PHONY: clean
 

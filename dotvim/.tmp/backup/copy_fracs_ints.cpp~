@@ -1,0 +1,37 @@
+#ifndef _isptr
+_TYPE::_TYPE(const _SI_TYPE in_1, const _UI_TYPE in_2) : _TYPE() {
+  fmpq_set_si(data, in_1, in_2);
+}
+
+_TYPE::_TYPE(const _UI_TYPE in_1, const _SI_TYPE in_2) : _TYPE() {
+  if(in_2 < 0){
+    fmpq_set_ui(data,in_1,(ulong) (-in_2));
+    fmpq_neg(data,data);
+  }
+  else{
+    fmpq_set_ui(data, in_1, (ulong) (in_2));
+  }
+}
+
+_TYPE::_TYPE(const _UI_TYPE in_1, const _UI_TYPE in_2) : _TYPE() {
+  fmpq_set_ui(data, in_1, in_2);
+}
+#endif
+
+_TYPE &_TYPE::operator=(const _SI_TYPE in_1, const _UI_TYPE in_2) {
+  fmpq_set_si(data, in_1, in_2);
+}
+
+_TYPE &_TYPE::operator=(const _UI_TYPE in_1, const _SI_TYPE in_2) {
+  if(in_2 < 0){
+    fmpq_set_ui(data,in_1,(ulong) (-in_2));
+    fmpq_neg(data,data);
+  }
+  else{
+    fmpq_set_ui(data, in_1, (ulong) (in_2));
+  }
+}
+
+_TYPE &_TYPE::operator=(const _UI_TYPE in_1, const _UI_TYPE in_2) {
+  fmpq_set_ui(data, in_1, in_2);
+}

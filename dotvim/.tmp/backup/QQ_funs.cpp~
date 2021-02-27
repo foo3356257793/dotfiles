@@ -1,0 +1,34 @@
+#include "QQ_auto_funs.cpp"
+
+#define _TYPE _TYPE_NEW
+#include "../ostream.cpp"
+#undef _TYPE
+#define _TYPE _TYPE_PTR
+#include "../ostream.cpp"
+#undef _TYPE
+
+#define _funname pow
+#define _checkerror int error =
+#define _funnative fmpq_pow_fmpz
+#define _checkoutput if(error==0){throw invalid_argument("pow_eq error");}
+
+#define _TYPE_IN_1 _TYPE_NEW
+#define _TYPE_IN_2 ZZ
+#include "../fun_NN.hpp"
+#undef _TYPE_IN_2
+#define _TYPE_IN_2 ZZ_ptr
+#undef _TYPE_IN_2
+#undef _TYPE_IN_1
+
+#define _TYPE_IN_1 _TYPE_PTR
+#define _TYPE_IN_2 ZZ
+#include "../fun_NN.hpp"
+#undef _TYPE_IN_2
+#define _TYPE_IN_2 ZZ_ptr
+#undef _TYPE_IN_2
+#undef _TYPE_IN_1
+
+#undef _checkoutput
+#undef _funnative
+#undef _checkerror
+#undef _funname

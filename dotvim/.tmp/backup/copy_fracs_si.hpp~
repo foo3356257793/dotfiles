@@ -1,0 +1,5 @@
+#ifndef _isptr
+_TYPE(const _SI_TYPE in);
+#endif
+
+_TYPE &operator=(const _SI_TYPE in);

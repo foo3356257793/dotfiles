@@ -1,0 +1,29 @@
+//#include "myflint_big_factor.hpp"
+#include "myflint_header_only_ZZfactor.hpp"
+
+// TODO: put this somewhere...
+  template<typename T>
+auto repr(const T& thing)
+{
+  stringstream ss;
+  ss << thing;
+  return ss.str();
+}
+
+// testing
+#include <gtest/gtest.h>
+
+TEST(Tests, TestInit) {
+
+  auto A = ZZ("23422561884997507608543774956236195382509542924871");
+
+  print("{}\n", A);
+
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

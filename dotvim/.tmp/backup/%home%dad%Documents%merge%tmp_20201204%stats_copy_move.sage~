@@ -1,0 +1,30 @@
+#!/usr/bin/sage
+
+if __name__ == "__main__":
+
+    fnames = [ "move1.out", "move2.out", "move3.out", "move4.out", "move5.out", "move6.out", "move7.out", "move8.out", "move9.out"]
+
+    for fname in fnames:
+
+        num_copy=0
+        num_move=0
+        ignore = False
+        with open(fname, 'r') as f:
+
+            for line in f.readlines():
+
+                if "START print" in line:
+                    ignore = True
+                if "END print" in line:
+                    ignore = False
+
+                if ignore:
+                    continue
+
+                if "copy" in line:
+                    num_copy += 1
+                elif "move" in line:
+                    num_move += 1
+
+
+        print(f"file {fname}: {num_copy} copy, {num_move} move {num_copy+num_move} total")

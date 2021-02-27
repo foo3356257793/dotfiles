@@ -1,0 +1,30 @@
+#include "myflint_lll.hpp"
+
+using namespace std;
+
+
+ZZ_mat& LLL_inplace(ZZ_mat &A, const fmpz_lll_t params)
+{
+  fmpz_lll(A.mat, NULL, params);
+  return A;
+}
+
+ZZ_mat& LLL_inplace(ZZ_mat &A)
+{
+  fmpz_lll_t params;
+  fmpz_lll_context_init_default(params);
+
+  return LLL_inplace(A,params);
+}
+
+ZZ_mat LLL(const ZZ_mat A)
+{
+  auto result = A;
+  return LLL_inplace(result);
+}
+
+ZZ_mat LLL(const ZZ_mat A, fmpz_lll_t params)
+{
+  auto result = A;
+  return LLL_inplace(result,params);
+}

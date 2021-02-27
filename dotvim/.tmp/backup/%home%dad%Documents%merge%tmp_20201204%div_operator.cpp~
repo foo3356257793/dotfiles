@@ -1,0 +1,45 @@
+#include "div_operator.hpp"
+
+div_op_temporary operator<(ZZ lhs, div_operator rhs) {
+  return {&lhs};
+}
+
+ZZ operator >(div_op_temporary lhs, ZZ rhs) {
+  return apply_fmpz_fun(lhs,rhs,fmpz_divexact);
+}
+
+div_op_temporary operator >(div_operator lhs, ZZ rhs) {
+  return {&rhs};
+}
+
+ZZ& ZZ::operator=(div_op_temporary rhs){
+  return apply_fmpz_fun_eq(rhs, fmpz_divexact);
+}
+
+// POW OP
+
+pow_op_temporary operator<(ZZ lhs, pow_operator rhs) {
+  return {&lhs};
+}
+
+ZZ operator >(pow_op_temporary lhs, int64_t rhs) {
+  if (rhs < 0) {
+    throw invalid_argument("Negative exponentiation not supported for ZZ");
+  }
+
+  auto result = ZZ();
+  fmpz_pow_ui((fmpz*) result, (const fmpz*) (*lhs), (uint64_t)rhs);
+
+  return result;
+}
+
+#if 0
+pow_op_temporary operator >(pow_operator lhs, int64_t rhs)
+{
+  return {&rhs};
+}
+
+ZZ& ZZ::operator=(pow_op_temporary rhs){
+  return apply_fmpz_fun_eq(rhs, fmpz_powexact);
+}
+#endif

@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+
+if __name__ == "__main__":
+
+    foo = []
+
+    for i in range(10):
+
+        foo.append(i)
+
+        i += 5
+

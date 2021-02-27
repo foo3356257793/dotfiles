@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+
+from icecream import ic
+
+def foo(a):
+    return a
+
+if __name__ == "__main__":
+
+    a = 4
+    b = 5
+
+    ic(a)
+
+    ic(foo(5))

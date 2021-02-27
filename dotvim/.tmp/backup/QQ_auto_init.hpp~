@@ -1,0 +1,15 @@
+#include "../rule_of_five.hpp"
+
+#define _setfun _fun_paster(_ftype,set_str)
+#include "../copy_string.hpp"
+#undef _setfun
+
+#define _getfun _fun_paster(_ftype,get_str)
+#include "../cast_string.hpp"
+#undef _getfun
+
+#define _getfun _fun_paster(_ftype,get_d)
+#include "../cast_df.hpp"
+#undef _getfun
+
+#include "QQ_auto_copy_fracs.hpp"

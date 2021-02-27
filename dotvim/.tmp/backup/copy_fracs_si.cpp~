@@ -1,0 +1,9 @@
+#ifndef _isptr
+_TYPE::_TYPE(const _SI_TYPE in) : _TYPE() {
+  fmpq_set_si(data, in, 1);
+}
+#endif
+
+_TYPE &_TYPE::operator=(const _SI_TYPE in) {
+  fmpq_set_si(data, in, 1);
+}

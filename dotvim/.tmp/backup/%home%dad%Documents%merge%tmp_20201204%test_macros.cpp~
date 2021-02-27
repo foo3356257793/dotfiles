@@ -1,0 +1,602 @@
+#include <flint/fmpz.h>
+#include <flint/fmpq.h>
+#include <flint/fmpz_mat.h>
+
+#include "yaml-cpp/yaml.h"
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <type_traits>
+#include <variant>
+#include <vector>
+// testing
+#include <gtest/gtest.h>
+
+using namespace std;
+
+#define INIT_DATA(type,head) type() { head##_init(data); }
+#define COPY_CONSTRUCT_DATA(type,head) type(const type &other) : type() { \
+  head##_set(data,other.data); \
+}
+#define MOVE_CONSTRUCT_DATA(type,head) type(type &&other) noexcept : type() { \
+  swap(data, other.data); \
+}
+#define CLEAR_DATA(type,head) ~type() { head##_clear(data); }
+#define COPY_ASSIGN_DATA(type,head) type &operator=(const type &other) { \
+  head##_set(data, other.data); \
+    return *this; \
+}
+#define MOVE_ASSIGN_DATA(type,head) type &operator=(type &&other) noexcept { \
+  swap(data, other.data); \
+    return *this; \
+}
+
+#define RULE_OF_FIVE(type,head) INIT_DATA(type,head); \
+COPY_CONSTRUCT_DATA(type,head);\
+MOVE_CONSTRUCT_DATA(type,head);\
+COPY_ASSIGN_DATA(type,head);\
+MOVE_ASSIGN_DATA(type,head);\
+CLEAR_DATA(type,head);
+
+#define __ASSIGN_SI(type,head,type_si) type(const type_si other) : type() \
+{ head##_set_si(data, other); } \
+type &operator=(const type_si other) { \
+  head##_set_si(data, other); \
+  return *this; \
+}
+
+#define ASSIGN_SI(type,head) __ASSIGN_SI(type,head,int64_t);\
+  __ASSIGN_SI(type,head,int32_t);\
+  __ASSIGN_SI(type,head,int16_t);\
+  __ASSIGN_SI(type,head,int8_t);
+
+#define __ASSIGN_SI_PTR(type,head,type_si) type##_ptr &operator=(const type_si other) { \
+  head##_set_si(data, other); \
+  return *this; \
+}
+
+#define ASSIGN_SI_PTR(type,head) __ASSIGN_SI_PTR(type,head,int64_t);\
+  __ASSIGN_SI_PTR(type,head,int32_t);\
+__ASSIGN_SI_PTR(type,head,int16_t);\
+__ASSIGN_SI_PTR(type,head,int8_t);
+
+#define __ASSIGN_UI(type,head,type_ui) type(const type_ui other) : type() \
+{ head##_set_ui(data, other); } \
+type &operator=(const type_ui other) { \
+  head##_set_ui(data, other); \
+  return *this; \
+}
+
+#define ASSIGN_UI(type,head) __ASSIGN_UI(type,head,uint64_t);\
+  __ASSIGN_UI(type,head,uint32_t);\
+__ASSIGN_UI(type,head,uint16_t);\
+__ASSIGN_UI(type,head,uint8_t);
+
+#define __ASSIGN_UI_PTR(type,head,type_ui) type##_ptr &operator=(const type_ui other) { \
+  head##_set_ui(data, other); \
+  return *this; \
+}
+
+#define ASSIGN_UI_PTR(type,head) __ASSIGN_UI_PTR(type,head,uint64_t);\
+  __ASSIGN_UI_PTR(type,head,uint32_t);\
+__ASSIGN_UI_PTR(type,head,uint16_t);\
+__ASSIGN_UI_PTR(type,head,uint8_t);
+
+#define ASSIGN_D(type,head) type(const double other) : type() \
+{ head##_set_d(data, other); } \
+type &operator=(const double other) { \
+  head##_set_d(data, other); \
+  return *this; \
+}
+
+#define ASSIGN_STR(type,head) type(const string other) : type() \
+{ head##_set_str(data, other.c_str(), 10); } \
+type &operator=(const string other) { \
+  head##_set_str(data, other.c_str(), 10); \
+  return *this; \
+}
+
+#define FUN_NONE_EQ(type,fun,head,op) type& fun() {\
+  head##_##op(data,data); \
+    return *this; \
+}
+
+#define FUN_MIX_EQ(type,fun,head,op,type_other) type& fun(const type_other &rhs) {\
+  head##_##op(data,data,rhs); \
+  return *this; \
+}
+
+#define FUN_MYMIX_EQ(type,fun,head,op,type_other) type& fun(const type_other &rhs) {\
+  head##_##op(data,data,rhs.data); \
+  return *this; \
+}
+
+#define FUN_SI_EQ(type,fun,head,op) FUN_MIX_EQ(type,fun,head,op##_si,int64_t); \
+  FUN_MIX_EQ(type,fun,head,op##_si,int32_t); \
+  FUN_MIX_EQ(type,fun,head,op##_si,int16_t); \
+  FUN_MIX_EQ(type,fun,head,op##_si,int8_t);
+
+#define FUN_MY_SI_EQ(type,fun,head,op) FUN_EQ(type,fun,head,op);\
+  FUN_SI_EQ(type,fun,head,op);
+
+#define FUN_UI_EQ(type,fun,head,op) FUN_MIX_EQ(type,fun,head,op##_ui,uint64_t); \
+  FUN_MIX_EQ(type,fun,head,op##_ui,uint32_t); \
+  FUN_MIX_EQ(type,fun,head,op##_ui,uint16_t); \
+  FUN_MIX_EQ(type,fun,head,op##_ui,uint8_t);
+
+#define FUN_EQ(type,fun,head,op) FUN_MYMIX_EQ(type,fun,head,op,type);
+
+#define FUN_MY_UI_EQ(type,fun,head,op) FUN_EQ(type,fun,head,op);\
+  FUN_UI_EQ(type,fun,head,op);
+
+
+#define FUN_NONE(type,fun,head,op) type fun() const { \
+  auto result = type(); \
+  head##_##op(result.data, result.data); \
+  return result; \
+}
+
+#define FUN_NONE_BOTH(type,fun,head,op) FUN_NONE_EQ(type,fun,head,op);\
+  FUN_NONE(type,fun,head,op);
+
+#define FUN_MIX(type,fun,head,op,type_other) type fun(const type_other &rhs) const { \
+  auto result = type(); \
+  head##_##op(result.data, data, rhs); \
+  return result; \
+}
+
+#define FUN_MIX_BOTH(type,fun,head,op,type_other) FUN_MIX_EQ(type,fun##=,head,op,type_other);\
+  FUN_MIX(type,fun,head,op,type_other);
+
+#define FUN_MYMIX(type,fun,head,op,type_other) type fun(const type_other &rhs) const { \
+  auto result = type(); \
+  head##_##op(result.data, data, rhs.data); \
+  return result; \
+}
+
+#define FUN_MYMIX_BOTH(type,fun,head,op,type_other) FUN_MYMIX_EQ(type,fun##=,head,op,type_other);\
+  FUN_MYMIX(type,fun,head,op,type_other);
+
+#define FUN(type,fun,head,op) FUN_MYMIX(type,fun,head,op,type);
+
+#define FUN_BOTH(type,fun,head,op) FUN_MYMIX_BOTH(type,fun,head,op,type);
+
+#define FUN_SI(type,fun,head,op) FUN_MIX(type,fun,head,op##_si,int64_t);\
+  FUN_MIX(type,fun,head,op##_si,int32_t);\
+  FUN_MIX(type,fun,head,op##_si,int16_t);\
+  FUN_MIX(type,fun,head,op##_si,int8_t);
+
+#define FUN_UI(type,fun,head,op) FUN_MIX(type,fun,head,op##_ui,int64_t);\
+  FUN_MIX(type,fun,head,op##_ui,uint32_t);\
+  FUN_MIX(type,fun,head,op##_ui,uint16_t);\
+  FUN_MIX(type,fun,head,op##_ui,uint8_t);
+
+#define FUN_SI_BOTH(type,fun,head,op) FUN_SI_EQ(type,fun##=,head,op);\
+  FUN_SI(type,fun,head,op);
+#define FUN_UI_BOTH(type,fun,head,op) FUN_UI_EQ(type,fun##=,head,op);\
+ FUN_UI(type,fun,head,op);
+
+#define FUN_MY_SI(type,fun,head,op) FUN(type,fun,head,op);\
+  FUN_SI(type,fun,head,op);
+
+#define FUN_MY_UI(type,fun,head,op) FUN(type,fun,head,op);\
+  FUN_UI(type,fun,head,op);
+
+#define FUN_MY_SI_BOTH(type,fun,head,op) FUN_MY_SI_EQ(type,fun##=,head,op);\
+  FUN_MY_SI(type,fun,head,op);
+
+#define FUN_MY_UI_BOTH(type,fun,head,op) FUN_MY_UI_EQ(type,fun##=,head,op);\
+  FUN_MY_UI(type,fun,head,op);
+
+#define FUN_MIX_BOOL(type,fun,head,op,type_other) bool fun(const type_other other) const {\
+  return (bool) (head##_##op(data,other));\
+}
+#define FUN_MYMIX_BOOL(type,fun,head,op,type_other) bool fun(const type_other &other) const {\
+  return (bool) head##_##op(data,other.data);\
+}
+
+#define FUN_BOOL(type,fun,head,op) FUN_MYMIX_BOOL(type,fun,head,op,type);
+
+#define DEF_EQ(type,head) FUN_MYMIX_BOOL(type,operator==,head,equal,type);
+#define DEF_SI_EQ(type,head) FUN_MYMIX_BOOL(type,operator==,head,equal_si,int64_t);\
+  FUN_MYMIX_BOOL(type,operator==,head,equal_si,int32_t);\
+  FUN_MYMIX_BOOL(type,operator==,head,equal_si,int16_t);\
+  FUN_MYMIX_BOOL(type,operator==,head,equal_si,int8_t);
+
+#define COMPARE_EQ(type,head) DEF_EQ(type,head);
+
+#define STR_ORD_MIX(type,head,op,type_other) strong_ordering operator<=>(const type other){\
+  return (head##_##op(data,other))<=>0;\
+}
+#define STR_ORD_MYMIX(type,head,op,type_other) strong_ordering operator<=>(const type &other){\
+  return (head##_##op(data,other.data))<=>0;\
+}
+
+#define STR_ORD(type,head) STR_ORD_MYMIX(type,head,cmp,type);
+
+#define DEF_COMP(type,head) DEF_EQ(type,head);\
+  STR_ORD(type,head);
+
+#define FUN_MAT_MYMIXMAT_EQ(type,fun,head,op,type_other) type##_mat& fun(const type_other##_mat &rhs) { \
+  if(!dim_match(rhs)){\
+    throw invalid_argument("fun with unequal dimensions is undefined!");\
+  }\
+  head##_mat_##op(data, data, rhs.data); \
+  return *this; \
+}
+
+#define FUN_MAT_EQ(type,fun,head,op) FUN_MAT_MYMIXMAT_EQ(type,fun,head,op,type);
+
+#define FUN_MAT_NONE_EQ(type,fun,head,op) FUN_NONE_EQ(type##_mat,fun,head##_mat,op);
+
+#define FUN_MATMUL_MYMIXMAT_EQ(type,fun,head,op,type_other) type##_mat& fun(const type_other##_mat &rhs) { \
+  if(ncols() != rhs.nrows()){ \
+    throw invalid_argument("Incompatible dimensions for multiplication!"); \
+  } \
+  if(rhs.ncols() != rhs.nrows()) {\
+    auto result = *this * rhs; \
+    swap(result.data,data); \
+    return *this;\
+  }\
+  head##_##op(data, data, rhs.data); \
+  return *this; \
+}
+
+#define FUN_MATMUL_EQ(type,fun,head,op) FUN_MAT_MYMIXMAT_EQ(type,fun,head,op,type);
+
+#define FUN_MAT_NONE(type,fun,head,op) type fun() const { \
+  auto result = type(nrows(),ncols()); \
+  head##_##op(result.data, result.data); \
+  return result; \
+}
+
+#define FUN_MAT_NONE_BOTH(type,fun,head,op) FUN_MAT_NONE_EQ(type,fun,head,op); \
+    FUN_MAT_NONE(type,fun,head,op)
+
+#define FUN_MAT_MYMIXMAT(type,fun,head,op,type_other) type##_mat fun(const type_other##_mat &rhs) const { \
+  if(!dim_match(rhs)) { \
+    throw invalid_argument("fun with unequal dimensions is undefined!"); \
+  } \
+  auto result = type(nrows(),ncols()); \
+  head##_mat_##op(result.data, data, rhs.data); \
+  return result; \
+}
+
+#define FUN_MAT(type,fun,head,op) FUN_MAT_MYMIXMAT(type,fun,head,op,type)
+
+#define APPLY_FUN_2_MAT_MUL(type,fun,head,op) type fun(const type &rhs) const { \
+  if(ncols() != rhs.nrows()){ \
+    throw invalid_argument("Incompatible dimensions for multiplication!"); \
+  } \
+  auto result = type(nrows(),rhs.ncols()); \
+  head##_##op(result.data, data, rhs.data); \
+  return result; \
+}
+
+#define APPLY_FUN_PAIR_2_MAT(type,fun,head,op) APPLY_FUN_2_MAT_EQ(type,fun##=,head,op); \
+                                                                             APPLY_FUN_2_MAT(type##_mat,fun,head##_mat,op);
+
+#define APPLY_FUN_PAIR_2_MAT_MUL(type,fun,head,op) APPLY_FUN_2_MAT_MUL_EQ(type,fun##=,head,op); \
+                                                                                     APPLY_FUN_2_MAT_MUL(type,fun,head,op);
+
+
+#define OSTREAM_PRINT(type,head) ostream &operator<<(ostream &os, const type &to_print) {\
+  char *out_string = head##_get_str(NULL, 10, to_print.data); \
+  os << out_string; \
+  free(out_string); \
+  return os; \
+}
+
+struct ZZ_ptr;
+
+struct ZZ {
+  fmpz_t data;
+
+  explicit operator fmpz*() { return (fmpz*) data; }
+  explicit operator const fmpz*() const { return (const fmpz*) data; }
+  explicit operator const double() const { return fmpz_get_d((const fmpz*) data); }
+
+  RULE_OF_FIVE(ZZ,fmpz);
+
+  ASSIGN_SI(ZZ,fmpz);
+  ASSIGN_UI(ZZ,fmpz);
+  ASSIGN_D(ZZ,fmpz);
+  ASSIGN_STR(ZZ,fmpz);
+
+  FUN_MY_SI_BOTH(ZZ,operator+,fmpz,add);
+  FUN_MY_SI_BOTH(ZZ,operator-,fmpz,sub);
+  FUN_MY_SI_BOTH(ZZ,operator*,fmpz,mul);
+  FUN_MY_SI_BOTH(ZZ,operator/,fmpz,divexact);
+  FUN_MY_UI_BOTH(ZZ,operator%,fmpz,mod);
+
+  FUN_MY_UI_EQ(ZZ,addmul,fmpz,addmul);
+  FUN_MY_UI_EQ(ZZ,submul,fmpz,submul);
+
+  FUN_NONE_BOTH(ZZ,operator-,fmpz,neg);
+
+  DEF_COMP(ZZ,fmpz);
+
+  FUN_BOOL(ZZ,is_divisible_by,fmpz,divisible);
+
+};
+
+OSTREAM_PRINT(ZZ,fmpz);
+
+struct QQ {
+  fmpq_t data;
+
+  explicit operator fmpq*() { return (fmpq*) data; }
+  explicit operator const fmpq*() const { return (const fmpq*) data; }
+  explicit operator const double() const { return fmpq_get_d((const fmpq*) data); }
+
+  RULE_OF_FIVE(QQ,fmpq);
+
+  QQ(const int64_t other) : QQ() { fmpq_set_si(data, other, 1); }
+  QQ(const uint64_t other) : QQ() { fmpq_set_ui(data, other, 1); }
+
+  ASSIGN_STR(QQ,fmpq);
+
+  FUN_BOTH(QQ,operator+,fmpq,add);
+  FUN_BOTH(QQ,operator-,fmpq,sub);
+  FUN_BOTH(QQ,operator*,fmpq,mul);
+  FUN_BOTH(QQ,operator/,fmpq,div);
+
+  FUN_EQ(QQ,addmul,fmpq,addmul);
+  FUN_EQ(QQ,submul,fmpq,submul);
+
+  FUN_NONE_BOTH(QQ,operator-,fmpq,neg);
+
+  DEF_COMP(QQ,fmpq);
+
+};
+
+OSTREAM_PRINT(QQ,fmpq);
+
+struct ZZ_ptr{
+  fmpz* data;
+
+  explicit operator fmpz*() { return data; }
+  explicit operator const fmpz*() const { return data; }
+
+  ZZ_ptr(fmpz* other) : data(other) {}
+
+  ZZ_ptr& operator=(fmpz* other) {
+    data = other;
+    return *this;
+  }
+
+  ZZ_ptr& operator=(const ZZ_ptr &other) {
+    fmpz_set(data,other.data);
+    return *this;
+  }
+
+  ASSIGN_SI_PTR(ZZ,fmpz);
+  ASSIGN_UI_PTR(ZZ,fmpz);
+
+};
+
+struct ZZ_vec_ptr {
+  fmpz* row;
+
+  ZZ_vec_ptr(fmpz* in_row) : row(in_row) {}
+
+  ZZ_ptr operator[](const int col) const {
+    return row + col;
+  }
+};
+
+struct ZZ_mat {
+  fmpz_mat_t data;
+
+  slong nrows() const { return data->r; }
+  slong ncols() const { return data->c; }
+
+  ZZ_vec_ptr operator[](const int row) const {
+    return data->rows[row];
+  }
+
+  ZZ_mat(int nrows, int ncols) {
+    fmpz_mat_init(data,nrows,ncols);
+  }
+
+  ZZ_mat() : ZZ_mat(0,0) {}
+
+  ZZ_mat(const ZZ_mat& other) { // copy constructor
+    fmpz_mat_init_set(data,other.data);
+  }
+
+  bool dim_match(const ZZ_mat &other) const {
+    return ((nrows() == other.nrows()) && (ncols() == other.ncols()));
+  }
+
+  ZZ_mat& operator=(const ZZ_mat &other) { // copy assignment
+    if(!dim_match(other))
+    {
+      // clear and reallocate
+      fmpz_mat_clear(data);
+      fmpz_mat_init_set(data,other.data);
+      return *this;
+    }
+
+    fmpz_mat_set(data,other.data);
+    return *this;
+  }
+
+  MOVE_CONSTRUCT_DATA(ZZ_mat,fmpz_mat);
+  MOVE_ASSIGN_DATA(ZZ_mat,fmpz_mat);
+  CLEAR_DATA(ZZ_mat,fmpz_mat);
+
+  #if 0
+  ASSIGN_SI(ZZ_mat,fmpz_mat);
+  ASSIGN_UI(ZZ_mat,fmpz_mat);
+  ASSIGN_D(ZZ_mat,fmpz_mat);
+  ASSIGN_STR(ZZ_mat,fmpz_mat);
+  #endif
+
+  FUN_MAT_EQ(ZZ,operator+=,fmpz,add);
+  FUN_MAT(ZZ,operator+,fmpz,add);
+
+
+
+  #if 0
+  //APPLY_FUN_PAIR_2_MAT(ZZ_mat,operator-,fmpz_mat,sub);
+
+  FUN_MAT_EQ(ZZ,operator-,fmpz,sub);
+
+  APPLY_FUN_PAIR_2_MAT_MUL(ZZ_mat,operator*,fmpz_mat,mul);
+
+  APPLY_FUN_1_PAIR_MAT(ZZ_mat,operator-,fmpz_mat,neg);
+
+  COMPARE_EQ(ZZ_mat,fmpz_mat);
+  #endif
+
+  vector<vector<string>> to_string_vectors() const
+  {
+    auto result = vector<vector<string>>();
+
+    for(int row=0; row<nrows(); row++) {
+      auto row_vec = vector<string>();
+      for(int col=0; col<ncols(); col++) {
+        stringstream ss;
+        char *out_string = fmpz_get_str(NULL, 10, (const fmpz*) (*this)[row][col]);
+        ss << out_string;
+        free(out_string);
+        row_vec.push_back(ss.str());
+      }
+      result.push_back(row_vec);
+    }
+
+    return result;
+  }
+
+};
+
+
+size_t column_width(vector<vector<string>> string_vectors, size_t col) {
+  size_t max_val = 0;
+
+  for(auto &vec : string_vectors) {
+    if(vec.size() <= col) {
+      throw invalid_argument("vector of vectors not a matrix");
+    }
+
+    max_val = max(max_val, vec[col].size());
+  }
+
+  return max_val;
+}
+
+vector<size_t> column_widths (vector<vector<string>> string_vectors) {
+  if(string_vectors.size() == 0)
+  {
+    throw invalid_argument("column_widths of empty vector undefined");
+  }
+
+  auto ncols = string_vectors[0].size();
+
+  auto result = vector<size_t>(ncols);
+
+  for(size_t col=0; col<ncols; col++) {
+    result[col] = column_width(string_vectors,col);
+  }
+
+  return result;
+}
+
+ostream& operator<<(ostream& os, const ZZ_mat& to_print) {
+  if(to_print.nrows() == 0) {
+    os << "[]";
+    return os;
+  }
+
+  const auto string_vectors = to_print.to_string_vectors();
+  const auto widths = column_widths(string_vectors);
+  const auto nrows = to_print.nrows();
+  const auto ncols = to_print.ncols();
+
+  os << "[" << endl;
+  for(int row=0; row<nrows; row++) {
+    os << "  [";
+    for(int col=0; col<ncols; col++) {
+      os << setw(widths[col]);
+      os << string_vectors[row][col];
+      if(col != ncols-1) os << ", ";
+    }
+    os << "]";
+    if (row != nrows-1) os << ",";
+    os << endl;
+  }
+  os << "]";
+
+  return os;
+}
+
+TEST(Tests, ZZ) {
+
+  auto a = ZZ(123456L);
+  auto b = ZZ("123456789123456789");
+  auto c = a + b;
+
+  cout << a << endl;
+  cout << b << endl;
+  cout << c << endl;
+
+  auto d = c - b;
+  cout << d << endl;
+
+  auto e = a * d;
+  cout << e << endl;
+
+  auto f = e % a;
+  cout << f << endl;
+
+  auto g = a * 2;
+  cout << g << endl;
+
+  cout << g.is_divisible_by(a) << endl;
+}
+
+TEST(Tests, QQ) {
+
+  auto a = QQ(123456L);
+  auto b = QQ("123/456");
+
+  cout << a << endl;
+  cout << b << endl;
+
+}
+
+TEST(Tests, ZZ_mat) {
+
+  #if 0
+  auto a = ZZ_mat(2,2);
+
+  a[0][0] = 1;
+  a[0][1] = 0;
+  a[1][0] = 4;
+  a[1][1] = 1;
+
+  cout << a << endl;
+
+  auto b = a + a;
+
+  cout << b << endl;
+
+  auto c = a * a;
+
+  cout << c << endl;
+
+  auto d = -c;
+
+  cout << d << endl;
+  #endif
+
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

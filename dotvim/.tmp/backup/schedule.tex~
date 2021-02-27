@@ -1,0 +1,104 @@
+\documentclass[a4paper,landscape,9pt]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage[margin=0.25in]{geometry}
+
+\usepackage{fontspec}
+
+\setmainfont{Alte Haas Grotesk}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+\usepackage{array}
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+
+\def\blank{&&&&&&& \\ \hline}
+
+%opening
+\title{}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{center}
+\begin{tabular}{|c|C{1.2in}|C{1.2in}|C{1.2in}|C{1.2in}|C{1.2in}|C{1.2in}|C{1.2in}|}
+  \hline
+  &{\Huge \bf Sun}&{\Huge \bf Mon}&{\Huge \bf Tue}&{\Huge \bf Wed}&{\Huge \bf Thu}&{\Huge \bf Fri}&{\Huge \bf Sat} \\
+  \hline
+  12:00\blank
+  12:30\blank
+  1:00\blank
+  1:30\blank
+  2:00\blank
+  2:30\blank
+  3:00\blank
+  3:30\blank
+  4:00\blank
+  4:30\blank
+  5:00\blank
+  5:30\blank
+  6:00\blank
+  6:30\blank
+  7:00\blank
+  7:30\blank
+  8:00\blank
+  8:30\blank
+  9:00\blank
+  9:30\blank
+  10:00\blank
+  10:30\blank
+  11:00\blank
+  11:30\blank
+  12:00\blank
+  12:30\blank
+  1:00\blank
+  1:30\blank
+  2:00\blank
+  2:30\blank
+  3:00\blank
+  3:30\blank
+  4:00\blank
+  4:30\blank
+  5:00\blank
+  5:30\blank
+  6:00\blank
+  6:30\blank
+  7:00\blank
+  7:30\blank
+  8:00\blank
+  8:30\blank
+  9:00\blank
+  9:30\blank
+  10:00\blank
+  10:30\blank
+  11:00\blank
+  11:30\blank
+\end{tabular}
+\end{center}
+
+
+\end{document}
+

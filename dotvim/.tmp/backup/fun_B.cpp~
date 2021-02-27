@@ -1,0 +1,13 @@
+_TYPEOUT &_TYPEOUT::_funname(const _TYPEIN in){
+  #ifdef _checkinput
+  _checkinput;
+  #endif
+  #ifdef _checkerror
+  _checkerror;
+  #endif
+  _funnative(data, in);
+  #ifdef _checkoutput
+  _checkoutput;
+  #endif
+  return *this;
+}

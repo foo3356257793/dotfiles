@@ -1,0 +1,29 @@
+ZZ_mat translate(const std::function<void(fmpz_mat_t, const fmpz_mat_t)> &fun,
+    const _ZZ_mat_1 &in) {
+  auto out = ZZ_mat(in.nrows(), in.ncols());
+  fun(out.data, in.data);
+  return out;
+}
+
+std::tuple<ZZ_mat,ZZ> inverse(const _ZZ_mat_1 &in) {
+  auto den = ZZ();
+  auto out = ZZ_mat(in.nrows(),in.nrows());
+
+  auto success = fmpz_mat_inv(out.data,den.data,in.data);
+  if(success == 0){
+    throw std::invalid_argument("Inverse of singular matrix");
+  }
+  return std::tuple(out,den);
+}
+
+ZZ_mat inverse_strict(const _ZZ_mat_1 &in) {
+  auto[out,den] = inverse(in);
+  if(den == -1){
+    out.operator-();
+    den.operator-();
+  }
+  else{
+    throw std::invalid_argument("Inverse strict failed");
+  }
+  return out;
+}

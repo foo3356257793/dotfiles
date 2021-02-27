@@ -1,0 +1,442 @@
+#include "myflint_ZZ_mat.hpp"
+
+
+slong ZZ_mat::nrows() const { return ((const fmpz_mat_struct*) (*this))->r; }
+slong ZZ_mat::ncols() const { return ((const fmpz_mat_struct*) (*this))->c; }
+
+// get entries
+fmpz* ZZ_mat::operator()(const int& row, const int& col) const {
+  if((row<0) || (col<0) || (row>=nrows()) || (col>=ncols())) {
+    throw invalid_argument("Out of bounds matrix access");
+  }
+
+  auto entry = fmpz_mat_entry((const fmpz_mat_struct*) (*this), row, col);
+  return entry;
+}
+
+ZZ_vec_ptr ZZ_mat::operator[](const int row) const {
+  return ((const fmpz_mat_struct*) (*this))->rows[row];
+}
+
+ZZ_mat::ZZ_mat(int nrows, int ncols) {
+  fmpz_mat_init((fmpz_mat_struct*) (*this),nrows,ncols);
+}
+
+ZZ_mat::ZZ_mat() : ZZ_mat(0,0) {};
+
+  template <typename T>
+ZZ_mat::ZZ_mat(const vector<vector<T>>& mat_as_vectors)
+{
+  size_t nrows = mat_as_vectors.size();
+  size_t ncols;
+  if(nrows == 0)
+  {
+    ncols = 0;
+  }
+  else
+  {
+    ncols = mat_as_vectors[0].size();
+  }
+
+  fmpz_mat_init((fmpz_mat_struct*) (*this),nrows,ncols);
+
+  for(size_t row = 0; row<nrows; row++) {
+    if(mat_as_vectors[row].size() != ncols) {
+      throw invalid_argument("list of vectors not a matrix!");
+    }
+    for(size_t col = 0; col<ncols; col++) {
+      (*this)[row][col] = mat_as_vectors[row][col];
+    }
+  }
+}
+
+template ZZ_mat::ZZ_mat(const vector<vector<int64_t>>& mat_as_vectors);
+template ZZ_mat::ZZ_mat(const vector<vector<ZZ>>& mat_as_vectors);
+template ZZ_mat::ZZ_mat(const vector<vector<string>>& mat_as_vectors);
+
+ZZ_mat::ZZ_mat(const fmpz_mat_t other) {
+  fmpz_mat_init_set((fmpz_mat_struct*) (*this),other);
+}
+
+ZZ_mat::ZZ_mat(const ZZ_mat& other) { // copy constructor
+  fmpz_mat_init_set((fmpz_mat_struct*) (*this),(const fmpz_mat_struct*) other);
+}
+
+ZZ_mat::ZZ_mat(ZZ_mat &&other) noexcept : ZZ_mat() { // move constructor
+  swap(data, other.data);
+}
+
+bool ZZ_mat::dim_match(const ZZ_mat &other) {
+  return ((nrows() == other.nrows()) && (ncols() == other.ncols()));
+}
+
+ZZ_mat& ZZ_mat::operator=(const ZZ_mat &other) { // copy assignment
+  if(!dim_match(other))
+  {
+    // clear and reallocate
+    fmpz_mat_clear((fmpz_mat_struct*) (*this));
+    fmpz_mat_init_set((fmpz_mat_struct*) (*this),(const fmpz_mat_struct*) other);
+    return *this;
+  }
+
+  fmpz_mat_set((fmpz_mat_struct*) (*this),(const fmpz_mat_struct*) other);
+  return *this;
+}
+
+ZZ_mat &ZZ_mat::operator=(ZZ_mat &&other) noexcept { // move assignment
+  swap(data, other.data);
+  return *this;
+}
+
+ZZ_mat::~ZZ_mat() { // destructor
+  fmpz_mat_clear((fmpz_mat_struct*) (*this));
+}
+
+ZZ_mat& ZZ_mat::apply_fmpz_mat_fun_eq(const ZZ_mat &rhs,
+    const function<void(fmpz_mat_t, fmpz_mat_t, const fmpz_mat_t)>& fun) {
+  fun((fmpz_mat_struct*) (*this), (fmpz_mat_struct*) (*this), (const fmpz_mat_struct*) rhs);
+  return *this;
+}
+ZZ_mat &ZZ_mat::apply_fmpz_mat_fun_eq(const ZZ& rhs,
+    const function<void(fmpz_mat_t, fmpz_mat_t, const fmpz_t)>& fun) {
+  fun((fmpz_mat_struct*) (*this), (fmpz_mat_struct*) (*this), (const fmpz*) rhs);
+  return *this;
+}
+
+ZZ_mat apply_fmpz_mat_fun(const ZZ_mat &lhs, const ZZ_mat &rhs,
+    const int& num_rows, const int& num_cols,
+    const function<void(fmpz_mat_t, const fmpz_mat_t, const fmpz_mat_t)>& fun) {
+  auto result = ZZ_mat(num_rows,num_cols);
+  fun((fmpz_mat_struct*) result, (const fmpz_mat_struct*) lhs, (const fmpz_mat_struct*) rhs);
+  return result;
+}
+
+ZZ_mat apply_fmpz_mat_fun(const ZZ_mat &rhs,
+    const int& num_rows, const int& num_cols,
+    const function<void(fmpz_mat_t, const fmpz_mat_t)>& fun) {
+  auto result = ZZ_mat(num_rows,num_cols);
+  fun((fmpz_mat_struct*) result, (const fmpz_mat_struct*) rhs);
+  return result;
+}
+
+ZZ_mat apply_fmpz_mat_fun(const ZZ_mat &rhs,
+    const function<void(fmpz_mat_t, const fmpz_mat_t)>& fun) {
+  return apply_fmpz_mat_fun(rhs,rhs.nrows(),rhs.ncols(),fun);
+}
+
+ZZ apply_fmpz_mat_fun(const ZZ_mat &rhs,
+    const function<void(fmpz_t, const fmpz_mat_t)>& fun) {
+  auto result = ZZ();
+  fun((fmpz*) result, (const fmpz_mat_struct*) rhs);
+  return result;
+}
+
+ZZ_mat apply_fmpz_mat_fun(const ZZ_mat &lhs, const ZZ& rhs,
+    const function<void(fmpz_mat_t, const fmpz_mat_t, const fmpz_t)>& fun) {
+  auto result = ZZ_mat(lhs.nrows(),lhs.ncols());
+  fun((fmpz_mat_struct*) result, (const fmpz_mat_struct*) lhs, (const fmpz*) rhs);
+  return result;
+}
+
+
+// addition
+ZZ_mat& ZZ_mat::operator+=(const ZZ_mat& rhs)
+{
+  if(!dim_match(rhs)) {
+    throw invalid_argument("addition with unequal dimensions is undefined!");
+  }
+  return apply_fmpz_mat_fun_eq(rhs,fmpz_mat_add);
+}
+
+ZZ_mat& ZZ_mat::operator-=(const ZZ_mat& rhs)
+{
+  if(!dim_match(rhs)) {
+    throw invalid_argument("subtraction with unequal dimensions is undefined!");
+  }
+  return apply_fmpz_mat_fun_eq(rhs,fmpz_mat_sub);
+}
+ZZ_mat& ZZ_mat::operator*=(const ZZ_mat& rhs)
+{
+  if(ncols() != rhs.nrows()){
+    throw invalid_argument("Incompatible dimensions for multiplication!");
+  }
+
+  if(rhs.ncols() != rhs.nrows()) {
+    // have to create a temporary result
+    auto result = *this * rhs;
+    swap(result.data,data);
+    return *this;
+  }
+
+  return apply_fmpz_mat_fun_eq(rhs,fmpz_mat_mul);
+}
+
+ZZ_mat& ZZ_mat::operator*=(const ZZ& rhs) {
+  return apply_fmpz_mat_fun_eq(rhs, fmpz_mat_scalar_mul_fmpz);
+}
+ZZ_mat& ZZ_mat::addmul(const ZZ& scalar, const ZZ_mat& other) {
+  if(!dim_match(other)){
+    throw invalid_argument("incompatible dimensions on addmul!");
+  }
+  fmpz_mat_scalar_addmul_fmpz((fmpz_mat_struct*) (*this), (const fmpz_mat_struct*) other, (const fmpz*) scalar);
+  return *this;
+}
+ZZ_mat& ZZ_mat::addmul(const ZZ_mat& other, const ZZ& scalar){
+  return addmul(scalar,other);
+}
+ZZ_mat& ZZ_mat::submul(const ZZ& scalar, const ZZ_mat& other) {
+  if(!dim_match(other)){
+    throw invalid_argument("incompatible dimensions on submul!");
+  }
+  fmpz_mat_scalar_submul_fmpz((fmpz_mat_struct*) (*this), (const fmpz_mat_struct*) other, (const fmpz*) scalar);
+  return *this;
+}
+ZZ_mat& ZZ_mat::submul(const ZZ_mat& other, const ZZ& scalar){return submul(scalar,other);}
+
+ZZ_mat ZZ_mat::operator+(const ZZ_mat& rhs)
+{
+  if(!dim_match(rhs)) {
+    throw invalid_argument("addition with unequal dimensions is undefined!");
+  }
+  return apply_fmpz_mat_fun(*this,rhs,nrows(),ncols(),fmpz_mat_add);
+}
+ZZ_mat ZZ_mat::operator-(const ZZ_mat& rhs)
+{
+  if(!dim_match(rhs)) {
+    throw invalid_argument("subtraction with unequal dimensions is undefined!");
+  }
+  return apply_fmpz_mat_fun(*this,rhs,nrows(),ncols(),fmpz_mat_sub);
+}
+ZZ_mat ZZ_mat::operator-() { return apply_fmpz_mat_fun(*this,fmpz_mat_neg); }
+ZZ_mat ZZ_mat::operator*(const ZZ_mat& rhs)
+{
+  if(ncols() != rhs.nrows()){
+    throw invalid_argument("Incompatible dimensions for multiplication!");
+  }
+  return apply_fmpz_mat_fun(*this,rhs,nrows(),rhs.ncols(),fmpz_mat_mul);
+}
+
+ZZ_mat ZZ_mat::operator*(const ZZ& rhs) const {
+  return apply_fmpz_mat_fun(*this,rhs, fmpz_mat_scalar_mul_fmpz);
+}
+
+
+bool ZZ_mat::operator==(const ZZ_mat &rhs) const {return fmpz_mat_equal((const fmpz_mat_struct*) (*this),(const fmpz_mat_struct*) rhs);}
+bool ZZ_mat::operator==(const int64_t &rhs)  const{
+  if(rhs != 0) {
+    throw invalid_argument("Comparison to nonzero scalar not supported");
+  }
+  return fmpz_mat_is_zero((const fmpz_mat_struct*) (*this));
+}
+
+bool ZZ_mat::operator==(const ZZ& rhs)  const{
+  if(!fmpz_is_zero((const fmpz*) rhs)) {
+    throw invalid_argument("Comparison to nonzero scalar not supported");
+  }
+  return fmpz_mat_is_zero((const fmpz_mat_struct*) (*this));
+}
+
+auto ZZ_mat::to_string_vectors() const
+{
+  auto result = vector<vector<string>>();
+
+  for(int row=0; row<nrows(); row++) {
+    auto row_vec = vector<string>();
+    for(int col=0; col<ncols(); col++) {
+      stringstream ss;
+      char *out_string = fmpz_get_str(NULL, 10, (const fmpz*) (*this)[row][col]);
+      ss << out_string;
+      free(out_string);
+      row_vec.push_back(ss.str());
+    }
+    result.push_back(row_vec);
+  }
+
+  return result;
+}
+
+
+ZZ_mat& ZZ_mat::transpose_inplace() {
+  if(!fmpz_mat_is_square((const fmpz_mat_struct*) (*this))){
+    throw invalid_argument("can only transpose in place on square matrices");
+  }
+  fmpz_mat_transpose((fmpz_mat_struct*) (*this),(fmpz_mat_struct*) (*this));
+  return *this;
+}
+
+auto ZZ_mat::swap_rows(const int& i, const int& j) {
+  const auto num_rows = nrows();
+  if(i<0 || j<0 || i>=num_rows || j>=num_rows){
+    throw invalid_argument("indices out of bounds");
+  }
+  fmpz_mat_swap_rows((fmpz_mat_struct*) (*this), NULL, i, j);
+}
+
+auto ZZ_mat::add_a_times_row_b_to_row_c(const ZZ& a, const int& b, const int& c) {
+  const auto num_rows = nrows();
+  const auto num_cols = ncols();
+
+  if(b<0 || c<0 || b>=num_rows || c>=num_rows){
+    throw invalid_argument("indices out of bounds");
+  }
+  for(int col=0; col<num_cols; col++)
+  {
+    (*this)[c][col].addmul(a,(*this)[b][col]);
+  }
+}
+
+
+ZZ_mat transpose(const ZZ_mat& in) {
+  return apply_fmpz_mat_fun(in,in.ncols(),in.nrows(),fmpz_mat_transpose);
+}
+
+ZZ determinant(const ZZ_mat &in) {
+  return apply_fmpz_mat_fun(in,fmpz_mat_det);
+}
+
+tuple<bool,tuple<int,int>> dim_block_mat_valid(vector<vector<ZZ_mat>> block_mat) {
+
+  const auto fail = tuple(false, tuple(0,0));
+
+  if(block_mat.size() == 0) return fail;
+
+  int nrows = 0;
+  int ncols = 0;
+  for(const auto &vec : block_mat)
+  {
+    if(vec.size() == 0) return fail;
+
+    int vec_nrows = 0;
+    int vec_ncols = 0;
+    for(const auto &data : vec)
+    {
+      if(vec_nrows == 0) vec_nrows = data.nrows();
+      else if(vec_nrows != data.nrows()) return fail;
+
+      vec_ncols += data.ncols();
+    }
+
+    // dim 0 bad
+    if(vec_nrows == 0) return fail;
+    if(vec_ncols == 0) return fail;
+
+    if(ncols == 0) ncols = vec_ncols;
+    else if(ncols != vec_ncols) return fail;
+
+    nrows += vec_nrows;
+  }
+
+  return tuple(true, tuple(nrows,ncols));
+}
+
+auto block_matrix(vector<vector<ZZ_mat>> block_mat)
+{
+  // verify that the dimensions are good
+  const auto[valid,dims] = dim_block_mat_valid(block_mat);
+  const auto[nrows,ncols] = dims;
+
+  if(!valid) {
+    throw invalid_argument("invalid dimensions for a block matrix");
+  }
+
+  auto result = ZZ_mat(nrows,ncols);
+
+  int row_offset = 0;
+  for(auto &block_row : block_mat) {
+    int col_offset = 0;
+    const int nrows_block = block_row[0].nrows();
+    for(const auto &block : block_row) {
+      const int ncols_block = block.ncols();
+      for(int row=0; row<nrows_block; row++) {
+        for(int col=0; col<ncols_block; col++) {
+          result[row_offset+row][col_offset+col] = block[row][col];
+        }
+      }
+      col_offset += ncols_block;
+    }
+    row_offset += nrows_block;
+  }
+
+  return result;
+}
+
+auto zero_matrix(int nrows, int ncols)
+{
+  if((nrows<0) || (ncols<0)){
+    throw invalid_argument("negative dimension for zero_matrix not defined");
+  }
+
+  auto result = ZZ_mat(nrows,ncols);
+  fmpz_mat_zero((fmpz_mat_struct*) result);
+  return result;
+}
+
+auto identity_matrix(int dim)
+{
+  if(dim < 0){
+    throw invalid_argument("negative dimension for identity_matrix not defined");
+  }
+
+  auto result = ZZ_mat(dim,dim);
+  fmpz_mat_one((fmpz_mat_struct*) result);
+  return result;
+}
+
+size_t column_width(vector<vector<string>> string_vectors, size_t col) {
+  size_t max_val = 0;
+
+  for(auto &vec : string_vectors) {
+    if(vec.size() <= col) {
+      throw invalid_argument("vector of vectors not a matrix");
+    }
+
+    max_val = max(max_val, vec[col].size());
+  }
+
+  return max_val;
+}
+
+vector<size_t> column_widths (vector<vector<string>> string_vectors) {
+  if(string_vectors.size() == 0)
+  {
+    throw invalid_argument("column_widths of empty vector undefined");
+  }
+
+  auto ncols = string_vectors[0].size();
+
+  auto result = vector<size_t>(ncols);
+
+  for(size_t col=0; col<ncols; col++) {
+    result[col] = column_width(string_vectors,col);
+  }
+
+  return result;
+}
+
+ostream& operator<<(ostream& os, const ZZ_mat& f) {
+  if(f.nrows() == 0) {
+    os << "[]";
+    return os;
+  }
+
+  const auto string_vectors = f.to_string_vectors();
+  const auto widths = column_widths(string_vectors);
+  const auto nrows = f.nrows();
+  const auto ncols = f.ncols();
+
+  os << "[" << endl;
+  for(int row=0; row<nrows; row++) {
+    os << "  [";
+    for(int col=0; col<ncols; col++) {
+      os << setw(widths[col]);
+      os << string_vectors[row][col];
+      if(col != ncols-1) os << ", ";
+    }
+    os << "]";
+    if (row != nrows-1) os << ",";
+    os << endl;
+  }
+  os << "]";
+
+  return os;
+}

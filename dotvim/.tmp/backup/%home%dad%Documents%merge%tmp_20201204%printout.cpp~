@@ -1,0 +1,241 @@
+ZZ max(const Factorization<ZZ> &factors){
+  ZZ result = 1;
+  for(auto it : factors){
+    result = max(result, it.first);
+  }
+  return result;
+}
+
+double max_d(const Factorization<ZZ> &factors){
+  double result = 1;
+  for(auto it : factors){
+    result = max(result, (double) it.first);
+  }
+  return result;
+}
+
+ZZ mat_value(RR_mat_iterator::iterator &it,
+    const vector<ZZ> &vec){
+  auto coeffs = get<0>(*it);
+  ZZ value = vec[0] * coeffs[0];
+  for(size_t index=1; index<vec.size(); index++){
+    value += vec[index] * coeffs[index];
+  }
+  return value;
+}
+
+tuple<double,ZZ,Factorization<ZZ>> eval_mat_vec(RR_mat_iterator::iterator &it,
+    const vector<ZZ> &vec){
+  auto value = mat_value(it,vec);
+  auto fac = factor(value);
+  auto score = max_d(fac);
+  return tuple(score, value, fac);
+}
+
+tuple<
+double,
+  optional<vector<ZZ>>,
+  optional<vector<Factorization<ZZ>>>
+  >
+  eval_mat_vec_many(
+      RR_mat_iterator::iterator &it,
+      const vector<vector<ZZ>> &vec,
+      double threshold){
+
+    auto value = mat_value(it,vec[0]);
+    auto fac = factor(value);
+    auto score = max_d(fac);
+
+    if(score > threshold){
+      return tuple(score,nullopt,nullopt);
+    }
+
+    vector<ZZ> result_values = {value};
+    vector<Factorization<ZZ>> result_facs = {fac};
+
+    for(size_t index=1; index<vec.size(); index++){
+      auto value = mat_value(it,vec[index]);
+      auto fac = factor(value);
+      score = max(score,max_d(fac));
+      if(score > threshold){
+        return tuple(score,nullopt,nullopt);
+      }
+      result_values.push_back(value);
+      result_facs.push_back(fac);
+    }
+    return tuple(score, result_values, result_facs);
+  }
+
+tuple<
+double,
+  vector<ZZ>,
+  vector<Factorization<ZZ>>
+  >
+eval_mat_vec_many(
+    RR_mat_iterator::iterator &it,
+    const vector<vector<ZZ>> &vec){
+
+  auto value = mat_value(it,vec[0]);
+  auto fac = factor(value);
+  auto score = max_d(fac);
+
+  vector<ZZ> result_values = {value};
+  vector<Factorization<ZZ>> result_facs = {fac};
+
+  for(size_t index=1; index<vec.size(); index++){
+    auto value = mat_value(it,vec[index]);
+    auto fac = factor(value);
+    score = max(score,max_d(fac));
+    result_values.push_back(value);
+    result_facs.push_back(fac);
+  }
+  return tuple(score, result_values, result_facs);
+}
+
+tuple<double,ZZ,Factorization<ZZ>> min_mat_val(
+    RR_mat_iterator &it,
+    const vector<ZZ> &vec,
+    double threshold){
+
+  if(it.mat.ncols() != vec.size()){
+    throw invalid_argument("dimensions don't match");
+  }
+
+  if(!(it.begin() != it.end())){
+    throw invalid_argument("Empty mat iterator");
+  }
+
+  auto it_it = it.begin();
+
+  auto[min_score,arg_min_value,arg_min_fac] = eval_mat_vec(it_it, vec);
+
+  while((min_score > threshold) && (++it_it != it.end())){
+    auto[score,min_value,min_fac] = eval_mat_vec(it_it, vec);
+    if(score < min_score){
+      min_score = score;
+      arg_min_value = min_value;
+      arg_min_fac = min_fac;
+    }
+  }
+  return tuple(min_score,arg_min_value,arg_min_fac);
+}
+
+tuple<double,ZZ,Factorization<ZZ>> min_mat_val(
+    RR_mat_iterator &it,
+    const vector<ZZ> &vec) {
+  return min_mat_val(it,vec,1);
+}
+
+tuple<
+double,
+  vector<ZZ>,
+  vector<Factorization<ZZ>>
+  >
+min_mat_val(
+    RR_mat_iterator &it,
+    const vector<vector<ZZ>> &vec,
+    double threshold){
+  for(auto &row : vec){
+    if(it.mat.ncols() != row.size()){
+      throw invalid_argument("dimensions don't match");
+    }
+  }
+
+  if(!(it.begin() != it.end())){
+    throw invalid_argument("Empty mat iterator");
+  }
+
+  auto it_it = it.begin();
+
+  auto[min_score,arg_min_value,arg_min_fac] = eval_mat_vec_many(it_it, vec);
+
+  while((min_score > threshold) && (++it_it != it.end())){
+    auto[score,min_value,min_fac] = eval_mat_vec_many(it_it, vec, min_score);
+    if(score < min_score){
+      min_score = score;
+      arg_min_value = min_value.value();
+      arg_min_fac = min_fac.value();
+    }
+  }
+  return tuple(min_score,arg_min_value,arg_min_fac);
+}
+
+TEST(Tests, best_score) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  RR_mat_params it_params = {
+    .in_phases    = true,
+    .two_sided    = false,
+    .max_vecs     = 32,
+    .only_primitive = true,
+    .grow_factor  = 1.5 };
+
+  auto it = RR_mat_iterator(L, it_params);
+
+  auto c = ZZ(88789);
+  auto d = ZZ(37861);
+
+  auto[score,value,fac] = min_mat_val(it,{c,d},256);
+
+  print("min_score = {}\n", score);
+  print("value     = {}\n", value);
+  print("fac       = {}\n", fac);
+}
+
+TEST(Tests, best_score_many) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  RR_mat_params it_params = {
+    .in_phases    = true,
+    .two_sided    = false,
+    .max_vecs     = 32,
+    .only_primitive = true,
+    .grow_factor  = 1.5 };
+
+  auto it = RR_mat_iterator(L, it_params);
+
+  vector<vector<ZZ>> input = {{ZZ(88789),ZZ(37861)},{ZZ(-53633),ZZ(62927)}};
+
+  auto[score,values,facs] = min_mat_val(it,input,256);
+
+  print("min_score = {}\n", score);
+
+  print("[{},{}]\n", values[0], values[1]);
+  print("[{},{}]\n", facs[0], facs[1]);
+}

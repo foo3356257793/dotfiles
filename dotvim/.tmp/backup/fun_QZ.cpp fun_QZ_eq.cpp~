@@ -1,0 +1,20 @@
+_TYPE &_TYPE::_funname_eq(const _TYPE_QQ &in) {
+  #ifdef _checkinput
+  _checkinput
+    #endif
+    #ifdef _checkerror
+    _checkerror;
+  #endif
+  auto out = _TYPE_NEW();
+  _funnative(out.data, in_1.data, in_2.data);
+  #ifdef _checkoutput
+  _checkoutput
+    #endif
+    return out;
+}
+
+#ifndef _noncommute
+_TYPE_NEW _funname(const _TYPE_ZZ &in_1, const _TYPE_QQ &in_2) {
+  return _funname(in_2,in_1);
+}
+#endif

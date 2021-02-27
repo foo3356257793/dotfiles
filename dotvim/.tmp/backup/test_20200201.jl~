@@ -1,0 +1,51 @@
+# always use these?
+using Formatting
+using Test
+
+using Nemo
+using Hecke
+
+using LoadFlint
+const libflint = LoadFlint.libflint
+
+ZZ = FlintZZ
+QQ = FlintQQ
+
+poly_ZZ, x = PolynomialRing(ZZ, "x")
+
+
+function TEST_nf()
+    @testset "TEST nf" begin
+        f = 2*x^2 - 3
+        K, u = NumberField(f, "u")
+
+        a = 3*u+4
+
+        norm_a = norm(a)
+
+        printfmtln("norm({}) = {}", a, norm_a)
+    end
+end
+
+
+@testset "ALL TESTS" begin
+    TEST_nf()
+end
+
+f = x^2 - 24
+K, u = NumberField(f, "u")
+
+a = 3*u+4
+
+norm_a = norm(a)
+
+printfmtln("norm({}) = {}", a, norm_a)
+
+E = EquationOrder(K)
+O_K = MaximalOrder(K)
+
+lp = prime_decomposition(O_K, 2)
+
+id = ideal(O_K, a)
+
+id_basis = basis(id)

@@ -1,0 +1,3 @@
+_TYPE::operator _CAST() const {
+  return _getfun(data);
+}

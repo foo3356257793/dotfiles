@@ -1,0 +1,1 @@
+_TYPE &_funname_eq(const _TYPE_IN &in);

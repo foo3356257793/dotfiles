@@ -14,7 +14,7 @@ neofetch --disable packages
 #export SPICETIFY_INSTALL="/home/dad/spicetify-cli"
 #export PATH="$SPICETIFY_INSTALL:$PATH"
 
-# alias vim="nvim"
+#alias vim="nvim"
 
 export CFLAGS="$CFLAGS -I/usr/include/ -L/usr/lib64"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/lib64
@@ -22,3 +22,5 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/lib64
 export JR="dad@192.168.86.28"
 
 export PATH="$PATH:$HOME/.cargo/bin"
+
+#alias sage=$HOME/opt/sage/sage

@@ -1,0 +1,43 @@
+#!/usr/bin/python3
+
+import os,sys,errno
+
+def mkdir_p(filename):
+    dirname = os.path.dirname(filename)
+    if dirname:
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+def unconcat_file(fname):
+
+    looking_for_content = False
+    found_fname = None
+    f_out = None
+
+    with open(fname,"r") as f:
+        for line in f:
+            if "# CONCAT_FILES_HEADER: " == line[0:23]:
+                found_fname = line[23:].rstrip()
+                looking_for_content = True
+            elif looking_for_content and not line.isspace():
+                if not f_out is None:
+                    f_out.close()
+
+                mkdir_p(found_fname)
+                f_out = open(found_fname,"w")
+
+                looking_for_content = False
+            if not looking_for_content and (not f_out is None):
+                f_out.write(line)
+
+if __name__ == "__main__":
+
+    # files = sys.argv[1:]
+
+    # if len(files) == 0:
+    #     raise ValueError(f"{sys.argv[0]} fname [other fnames]")
+
+    files = ["arb-2.19.0.txt"]
+
+    for fname in files:
+        unconcat_file(fname)
+

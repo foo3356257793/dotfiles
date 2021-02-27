@@ -1,0 +1,9 @@
+#define __attribute__(x)
+#define __extension__
+//#define __nptr
+//#define __endptr
+//#define __pwc
+//#define __pwcs
+#define __restrict
+
+#include <flint/fmpz.h>

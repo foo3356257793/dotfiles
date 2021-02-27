@@ -1,0 +1,13 @@
+fmpz_t data;
+
+ZZ();
+
+ZZ(const ZZ& in);
+ZZ(const ZZ_ptr& in);
+
+ZZ &operator=(const ZZ &in);
+ZZ &operator=(const ZZ_ptr &in);
+
+ZZ(ZZ &&in) noexcept;
+ZZ &operator=(ZZ &&in) noexcept;
+~ZZ();

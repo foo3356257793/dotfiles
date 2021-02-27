@@ -1,0 +1,7 @@
+#ifndef _isptr
+_TYPE(_COPY_TYPE &&in) noexcept;
+_TYPE &operator=(_COPY_TYPE &&in) noexcept;
+#else
+_TYPE(_COPY_TYPE &&in) noexcept = delete;
+_TYPE &operator=(_COPY_TYPE &&in) noexcept = delete;
+#endif

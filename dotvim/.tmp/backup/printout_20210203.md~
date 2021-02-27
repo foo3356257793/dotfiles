@@ -1,0 +1,137 @@
+Install Julia packages locally:
+
+```bash
+pkg> develop [path to file]
+```
+
+
+Some shortcuts
+```vim
+" === julia ==== {{{
+  augroup juliaSettings
+    au!
+    au bufnewfile *.jl 0r $HOME/.vim/julia_template.jl
+    let g:julia_target = "right"
+    au FileType julia :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:julia_target . ' "include(\"' . expand('%') . '\")" Enter')<cr>
+
+    au FileType julia let maplocalleader="\<Space>"
+    au FileType julia :nnoremap <buffer> <localleader>lt ofunction TEST_XXX()<cr>@testset "TEST XXX" begin<CR>end<CR>end<esc>{=apvap:s/XXX/
+    au FileType julia :nnoremap <buffer> <localleader>lf ofunction<cr>end<esc>kA<space>
+    augroup END
+" }}}
+```
+
+```julia
+Nemo.getindex(m::fmpz_mat, Index::int64) = begin
+  #=
+  # return a row matrix, unless there is only one row,
+  # in which case return the entry at column 'index'
+  =#
+  if nrows(m) == 1
+    m[1,index]
+  else
+    view(m,index,1,index,ncols(m))
+  end
+end
+
+function ==(row_mat::fmpz_mat,vec::Array{fmpz,1})
+  if nrows(row_mat) > 1
+    throw(DomainError("row vector a multi-row matrix"))
+  end
+
+  dim = ncols(row_mat)
+  if length(vec) != dim
+    return false
+  end
+
+  for col in 1:dim
+    if row_mat[col] != vec[col]
+      return false
+    end
+  end
+
+  return true
+end
+```
+
+```julia
+L,_ = lq(mat)
+
+weights = ones(Float64,dim)
+
+pivot = 1
+while pivot < dim && L[pivot,pivot] / L[pivot+1,pivot+1] < 4
+  global pivot
+  pivot += 1
+end
+
+for row in pivot+1:dim
+  weights[row] = max(1.0,L[pivot,pivot]/L[row,row])
+end
+
+tmp_mat = deepcopy(mat)
+
+for row in pivot+1:dim
+
+  global pivot
+
+  if weights[row] == 1
+    continue
+  end
+
+  w = ZZ(round(weights[row]))
+
+  for col in 1:ncols(tmp_mat)
+    tmp_mat[row,col] *= w
+  end
+end
+
+tmp_L,_ = lq(tmp_mat)
+tmp_mat,tmp_L = reduce_columns(tmp_mat,tmp_L,0,true)
+
+for col in pivot+1:dim
+  global L
+  inv_w = 1.0/weights[col]
+  for row in col:dim
+    L[row,col] = tmp_L[row,col] * inv_w
+  end
+end
+
+# do we need to reweight again
+pivot = 1
+while pivot < dim && tmp_L[pivot,pivot] / tmp_L[pivot+1,pivot+1] < 4
+  global pivot
+  pivot += 1
+end
+
+new_weights = ones(Float64,dim)
+for row in pivot+1:dim
+  new_weights[row] = max(1.0,L[pivot,pivot]/L[row,row])
+end
+
+for row in pivot+1:dim
+
+  global pivot
+
+  if new_weights[row] == 1.0
+    continue
+  end
+
+  w = ZZ(round(new_weights[row]))
+
+  for col in 1:ncols(tmp_mat)
+    tmp_mat[row,col] *= w
+  end
+end
+
+tmp_L,_ = lq(tmp_mat)
+tmp_mat,tmp_L = reduce_columns(tmp_mat,tmp_L,0,true)
+
+for col in pivot+1:dim
+  global L
+  inv_w = 1.0/(weights[col] * new_weights[col])
+  for row in col:dim
+    L[row,col] = tmp_L[row,col] * inv_w
+  end
+end
+```

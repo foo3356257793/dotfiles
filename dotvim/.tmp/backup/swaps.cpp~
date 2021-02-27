@@ -1,0 +1,13 @@
+#ifndef _isptr
+_TYPE::_TYPE(_TYPE_IN &&in) noexcept : _TYPE()
+{
+  _swapfun(data,in.data);
+}
+
+_TYPE &_TYPE::operator=(_TYPE_IN &&in) noexcept
+{
+  _swapfun(data,in.data);
+  return *this;
+}
+#endif
+

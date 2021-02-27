@@ -1,0 +1,123 @@
+#pragma once
+
+#include "myflint_ZZ_mat.hpp"
+
+struct RR_ptr{
+  double* ptr;
+  explicit operator double*() { return ptr; }
+  explicit operator const double*() const { return ptr; }
+  operator double() { return *ptr; }
+  operator const double() const { return *ptr; }
+
+  RR_ptr(double* in) : ptr(in) {}
+};
+
+struct RR_vec_ptr {
+  double* row;
+
+  RR_vec_ptr(double* in_row) : row(in_row) {}
+
+  RR_ptr operator[](const int col) const {
+    return row + col;
+  }
+};
+
+struct RR_mat {
+
+  d_mat_t data;
+
+  explicit operator d_mat_struct*() { return (d_mat_struct*) data; }
+  explicit operator const d_mat_struct*() const { return (const d_mat_struct*) data; }
+
+  slong nrows() const;
+  slong ncols() const;
+
+  // get entries
+  RR_vec_ptr operator[](const int row) const;
+
+  bool dim_match(const RR_mat &other);
+
+  RR_mat();
+  RR_mat(int nrows, int ncols);
+  RR_mat(const ZZ_mat& other);
+  RR_mat(const RR_mat& other);
+  RR_mat(RR_mat &&other) noexcept;
+  RR_mat& operator=(const RR_mat &other);
+  RR_mat &operator=(RR_mat &&other) noexcept;
+  ~RR_mat();
+
+  RR_mat& transpose_inplace();
+
+  std::vector<std::vector<string>> to_string_vectors() const;
+};
+
+ostream& operator<<(ostream& os, const RR_mat& f);
+
+std::tuple<RR_mat,RR_mat> LQ(const ZZ_mat &mat);
+
+struct RR_mat_ptr {
+  const d_mat_struct* ptr;
+  RR_mat_ptr(const RR_mat& mat) : ptr((const d_mat_struct*) mat) {}
+
+  explicit operator const d_mat_struct*() const { return (const d_mat_struct*) ptr; }
+
+  RR_vec_ptr operator[](const int row) const;
+
+  slong nrows() const;
+  slong ncols() const;
+};
+
+struct RR_mat_params {
+  bool in_phases = false;
+  bool two_sided = true;
+  optional<double> len_bound = nullopt;
+  int64_t max_vecs = 1L<<8;
+  bool make_coprime = false;
+  double grow_factor;
+};
+
+struct RR_mat_iterator {
+
+  RR_mat mat;
+  RR_mat_params params;
+
+  RR_mat_iterator(RR_mat in_mat, RR_mat_params in_params) :
+    mat(in_mat), params(in_params) {}
+
+  struct iterator {
+    RR_mat_ptr mat;
+    RR_mat_params params;
+    int dim;
+    int pos;
+    int64_t num_vecs = 0;
+    vector<int64_t> coeffs;
+    vector<double> vec;
+    vector<double> inv_diags;
+    vector<int64_t> coeff_bounds;
+    vector<double> len_bounds;
+    vector<bool> two_sided;
+    double min_len;
+    int64_t l_coeff;
+    int64_t r_coeff;
+
+    iterator(const RR_mat &in_mat) :
+      mat(in_mat), dim(in_mat.nrows()), pos(in_mat.nrows()) {};
+    iterator(const RR_mat &in_mat, RR_mat_params in_params);
+
+    iterator& operator++();
+
+    bool operator!=(const iterator &other) const;
+    tuple<vector<int64_t>,vector<double>> operator*() const;
+
+    bool set_bounds();
+    bool backtrack();
+    void next_phase();
+    void set_interior();
+    void jump_interior();
+    void step_to_front(bool do_backtrack);
+    bool is_coprime();
+  };
+
+  iterator begin() const { return iterator(mat,params); }
+  iterator end() const { return iterator(mat); }
+};

@@ -1,0 +1,689 @@
+#!/usr/bin/python3
+
+import os
+
+import itertools
+
+HEADER = "#include <flint/fmpz.h>\n"
+HEADER += "#include <flint/fmpq.h>\n"
+HEADER += "#include <flint/fmpz_mat.h>\n"
+HEADER += "#include <algorithm>\n"
+HEADER += "#include <iomanip>\n"
+HEADER += "#include <iostream>\n"
+HEADER += "#include <string>\n"
+HEADER += "#include <type_traits>\n"
+HEADER += "#include <variant>\n"
+HEADER += "#include <vector>\n"
+HEADER += "\n"
+HEADER += "using namespace std;\n"
+HEADER += "\n"
+
+class FlintName:
+    def __init__(self,new_name,flint_name):
+        self.new = new_name
+        self.flint = flint_name
+
+class FlintFunc:
+    def __init__(self,new_name,flint_name,is_builtin=False):
+        self.new = new_name
+        self.flint = flint_name
+        self.is_builtin = is_builtin
+
+    def new_str(self):
+        result = f"{self.new}"
+        if self.is_builtin:
+            result = f"operator{result}"
+        return result
+
+    def new_str_eq(self):
+        if self.is_builtin:
+            return f"operator{self.new}="
+        return f"{self.new}_eq"
+
+def decl_ptr_struct(name):
+
+    before = f"struct {name.new}_ptr;"
+    before += "\n"
+
+    head  = f"struct {name.new}_ptr {{\n"
+    head += f"{name.flint}_t data;\n"
+    head += f"\n"
+
+    foot = f"}};\n"
+
+    return before, head, foot
+
+def decl_struct(name):
+
+    head  = f"struct {name.new} {{\n"
+    head += f"{name.flint}_t data;\n"
+    head += f"\n"
+    
+    foot = f"}};\n"
+
+    return head, foot
+
+def rule_of_five(name):
+
+    result  = f"{name.new}() {{\n"
+    result += f"{name.flint}_init(data);\n"
+    result += f"}}\n"
+
+    result += f"\n"
+
+    result += f"{name.new}(const {name.new} &in) : {name.new}() {{\n"
+    result += f"{name.flint}_set(data,in.data);\n"
+    result += f"}}\n"
+
+    result += f"\n"
+
+    result += f"{name.new}& operator=(const {name.new} &in) {{\n"
+    result += f"{name.flint}_set(data,in.data);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    result += f"\n"
+
+    result += f"{name.new}({name.new} &&in) noexcept : {name.new}() {{\n"
+    result += f"swap(data,in.data);\n"
+    result += f"}}\n"
+
+    result += f"\n"
+
+    result += f"{name.new}& operator=({name.new} &&in) noexcept {{\n"
+    result += f"swap(data,in.data);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    result += f"\n"
+
+    result += f"~{name.new}() {{\n"
+    result += f"{name.flint}_clear(data);\n"
+    result += f"}}\n"
+
+    return result
+
+def get_suffix(builtin_type):
+
+    if "int" in builtin_type:
+        if builtin_type[0] == "u":
+            return "ui"
+        return "si"
+
+    if builtin_type == "float":
+        return "d"
+
+    if builtin_type == "double":
+        return "d"
+
+    if builtin_type == "string":
+        return "str"
+
+    else:
+        raise ValueError(f"Cannot find suffix for {builtin_type}")
+
+def copy_builtin(name,builtin_type,suffix=None):
+
+    if suffix is None:
+        suffix = get_suffix(builtin_type)
+
+    result  = f"{name.new}(const {builtin_type} in) : {name.new}() {{\n"
+    result += f"{name.flint}_set_{suffix}(data,in);\n"
+    result += f"}}\n"
+    result += f"\n"
+
+    result += f"{name.new}& operator=(const {builtin_type} in) {{\n"
+    result += f"{name.flint}_set_{suffix}(data,in);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    return result
+
+def get_int_types(si=True,ui=True):
+
+    result = []
+
+    if si:
+        result += [f"int{b}_t" for b in [2**i for i in range(3,7)]]
+    if ui:
+        result += [f"uint{b}_t" for b in [2**i for i in range(3,7)]]
+
+    return result
+
+def copy_int(name,si=True,ui=True):
+
+    int_types = get_int_types(si,ui)
+    return "\n".join([copy_builtin(name,int_type) for int_type in int_types])
+
+def copy_float(name):
+
+    return "\n".join([copy_builtin(name,float_type) for float_type in
+                      ["float","double"]])
+
+def copy_string(name):
+
+    result  = f"{name.new}(const string in) : {name.new}() {{\n"
+    result += f"{name.flint}_set_str(data,in.c_str(),10);\n"
+    result += f"}}\n"
+    result += f"\n"
+
+    result += f"{name.new}& operator=(const string in) {{\n"
+    result += f"{name.flint}_set_str(data,in.c_str(),10);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    return result
+
+def copy_ptr(name):
+
+    result  = f"{name.new}(const {name.new}_ptr &in) : {name.new}() {{\n"
+    result += f"{name.flint}_set(data,in.data);\n"
+    result += f"}}\n"
+    result += f"\n"
+
+    result += f"{name.new}& operator=(const {name.new}_ptr in) {{\n"
+    result += f"{name.flint}_set(data,in.data);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    return result
+
+def copy_types(name,si=True,ui=True,d=True,string=True,ptr=True,other=None):
+
+    result = []
+
+    result.append(copy_int(name,si=si,ui=ui))
+
+    if d:
+        result.append(copy_float(name))
+
+    if string:
+        result.append(copy_string(name))
+
+    if ptr:
+        result.append(copy_ptr(name))
+
+    if other:
+        for type_name in other:
+
+            if isinstance(type_name,FlintName):
+                raise NotImplementedError(f"Don't know how to cast to {type_name}")
+
+            raise NotImplementedError(f"Don't know how to cast to {type_name}")
+
+
+    return result
+
+def cast_raw(name):
+
+    result = f"explicit operator {name.flint}*() {{ return ({name.flint}*) data; }}\n"
+    result += f"\n"
+    result += f"explicit operator const {name.flint}*() const {{ return (const {name.flint}*) data; }}\n"
+
+    return result
+
+def cast_builtin(name,builtin_type):
+
+    suffix = get_suffix(builtin_type)
+
+    result  = f"explicit operator {builtin_type}() const {{ "
+    result += f"return {name.flint}_get_{suffix}(data); }}\n"
+
+    return result
+
+def cast_int_all(name,si=True,ui=True):
+
+    int_types = get_int_types(si,ui)
+    return "\n".join([cast_builtin(name,int_type) for int_type in int_types])
+
+def cast_float_all(name):
+
+    return "\n".join([cast_builtin(name,float_type) for float_type in
+                      ["float","double"]])
+
+def cast_string(name):
+
+    result  = f"explicit operator string() const {{ "
+    result += f"stringstream ss;\n"
+    result += f"char *tmp = {name.flint}_get_str(NULL, 10, data);\n"
+    result += f"ss << tmp;\n"
+    result += f"free(tmp);\n"
+    result += f"return ss.str();\n"
+    result += f"}}\n"
+
+    return result
+
+def cast(name,raw=True,si=True,ui=True,d=True,string=True,other=None):
+
+    result = []
+
+    if raw:
+        result.append(cast_raw(name))
+
+    result.append(cast_int_all(name,si=si,ui=ui))
+
+    if d:
+        result.append(cast_float_all(name))
+
+    if string:
+        result.append(cast_string(name))
+
+    if other:
+        for type_name in other:
+
+            if isinstance(type_name,FlintName):
+                raise NotImplementedError(f"Don't know how to cast to {type_name}")
+
+            result.append(cast_builtin(name,type_name))
+
+    return result
+
+
+def compare(name,si=True,ui=True):
+
+    result  = f"bool operator==(const {name.new} &other) const {{\n"
+    result += f"return ((bool) {name.flint}_equal(data,other.data));\n"
+    result += f"}}\n"
+
+    result += f"\n"
+    result += f"strong_ordering operator<=>(const {name.new} &other) const {{"
+    result += f"return ({name.flint}_cmp(data,other.data))<=>0;\n"
+    result += f"}}\n"
+
+    int_types = get_int_types(si=si,ui=ui)
+
+    for int_type in int_types:
+
+        suffix = get_suffix(int_type)
+
+        result += f"\n"
+        result += f"bool operator==(const {int_type} other) const {{\n"
+        result += f"return ((bool) {name.flint}_equal_{suffix}(data,other));\n"
+        result += f"}}\n"
+
+        result += f"\n"
+        result += f"strong_ordering operator<=>(const {int_type} other) const {{"
+        result += f"return ({name.flint}_cmp_{suffix}(data,other))<=>0;\n"
+        result += f"}}\n"
+
+    return result
+
+def translate_fun(ftype,ffun,template):
+
+    result = ["",""]
+
+    if template in ["void(ftype:out,ftype,ftype)",
+            "void(ftype:out,ftype,ftype/si/ui):commutes",
+            "void(ftype:out,ftype,ftype/si/ui)",
+            "void(ftype:out,ftype,ftype/ui)",
+            "int(ftype:out,ftype,ftype)" ]:
+
+        result[0] += f"\n"
+        result[0] += f"{ftype.new} &{ffun.new_str_eq()}("
+        result[0] += f"const {ftype.new} &in) {{\n"
+
+        if template in ["int(ftype:out,ftype,ftype)"]:
+            result[0] += "int error = "
+
+        result[0] += f"{ftype.flint}_{ffun.flint}(data,data,in.data);\n"
+
+        if template in ["int(ftype:out,ftype,ftype)"]:
+            result[0] += f"if(error==0) {{\n"
+            result[0] += f'throw invalid_argument("{ffun.new_str_eq()} failed");\n'
+            result[0] += f"}}\n"
+
+        result[0] += f"return *this;\n"
+        result[0] += f"}}\n"
+
+        result[1] += f"\n"
+        result[1] += f"{ftype.new} {ffun.new_str()}("
+        result[1] += f"const {ftype.new} &in_1, const {ftype.new} &in_2) {{\n"
+        result[1] += f"auto result = {ftype.new}();\n"
+
+        if template in ["int(ftype:out,ftype,ftype)"]:
+            result[1] += "int error = "
+
+        result[1] += f"{ftype.flint}_{ffun.flint}(result.data,in_1.data,in_2.data);\n"
+
+        if template in ["int(ftype:out,ftype,ftype)"]:
+            result[1] += f"if(error==0) {{\n"
+            result[1] += f'throw invalid_argument("{ffun.new_str()} failed");\n'
+            result[1] += f"}}\n"
+
+        result[1] += f"return result;\n"
+        result[1] += f"}}\n"
+
+    si = False
+    ui = False
+
+    if template == "void(ftype:out,ftype,ftype/si/ui)":
+        si = True
+        ui = True
+
+    if template == "void(ftype:out,ftype,ftype/ui)":
+        ui = True
+
+    if template == "void(ftype:out,ftype,ftype/si/ui):commutes":
+        si = True
+        ui = True
+
+    if template == "void(ftype:out,ftype,ui)":
+        ui = True
+
+    if template in ["void(ftype:out,ftype,ftype/si/ui)",
+                    "void(ftype:out,ftype,ftype/ui)",
+                    "void(ftype:out,ftype,ftype/si/ui):commutes",
+                    "void(ftype:out,ftype,ui)" ]:
+
+        int_types = get_int_types(si=si,ui=ui)
+
+        for int_type in int_types:
+
+            suffix = f"_{get_suffix(int_type)}"
+
+            if template in ["void(ftype:out,ftype,ui)"]:
+                suffix = ""
+
+            result[0] += f"\n"
+            result[0] += f"{ftype.new} &{ffun.new_str_eq()}("
+            result[0] += f"const {int_type} in) {{\n"
+            result[0] += f"{ftype.flint}_{ffun.flint}{suffix}(data,data,in);\n"
+            result[0] += f"return *this;\n"
+            result[0] += f"}}\n"
+
+            result[1] += f"\n"
+            result[1] += f"{ftype.new} {ffun.new_str()}("
+            result[1] += f"const {ftype.new} &in_1, const {int_type} in_2) {{\n"
+            result[1] += f"auto result = {ftype.new}();\n"
+            result[1] += f"{ftype.flint}_{ffun.flint}{suffix}(result.data,in_1.data,in_2);\n"
+            result[1] += f"return result;\n"
+            result[1] += f"}}\n"
+
+    if template == "void(ftype:out,ftype,ftype/si/ui):commutes":
+
+        int_types = get_int_types(si=si,ui=ui)
+
+        for int_type in int_types:
+
+            suffix = get_suffix(int_type)
+
+            result[1] += f"\n"
+            result[1] += f"{ftype.new} {ffun.new_str()}("
+            result[1] += f"const {int_type} in_1, const {ftype.new} in_2) {{\n"
+            result[1] += f"auto result = {ftype.new}();\n"
+            result[1] += f"{ftype.flint}_{ffun.flint}_{suffix}(result.data,in_2.data,in_1);\n"
+            result[1] += f"return result;\n"
+            result[1] += f"}}\n"
+
+    if template == "void(ftype:out,ftype)":
+
+        result[0] += f"\n"
+        result[0] += f"{ftype.new} &{ffun.new_str_eq()}() {{\n"
+        result[0] += f"{ftype.flint}_{ffun.flint}(data,data);\n"
+        result[0] += f"return *this;\n"
+        result[0] += f"}}\n"
+
+        result[1] += f"\n"
+        result[1] += f"{ftype.new} {ffun.new_str()}("
+        result[1] += f"const {ftype.new} &in) {{\n"
+        result[1] += f"auto result = {ftype.new}();\n"
+        result[1] += f"{ftype.flint}_{ffun.flint}(result.data,in.data);\n"
+        result[1] += f"return result;\n"
+        result[1] += f"}}\n"
+
+    if template == "void(ftype:out,ftype,int:default=0)":
+
+        result[0] += f"\n"
+        result[0] += f"{ftype.new} &{ffun.new_str_eq()}(const int in) {{\n"
+        result[0] += f"{ftype.flint}_{ffun.flint}(data,data,in);\n"
+        result[0] += f"return *this;\n"
+        result[0] += f"}}\n"
+
+        result[0] += f"\n"
+        result[0] += f"{ftype.new} &{ffun.new_str_eq()}() {{\n"
+        result[0] += f"return {ffun.new_str_eq()}(0);\n"
+        result[0] += f"}}\n"
+
+        result[1] += f"\n"
+        result[1] += f"{ftype.new} {ffun.new_str()}("
+        result[1] += f"const {ftype.new} &in_1, const int in_2) {{\n"
+        result[1] += f"auto result = {ftype.new}();\n"
+        result[1] += f"{ftype.flint}_{ffun.flint}(result.data,in_1.data,in_2);\n"
+        result[1] += f"return result;\n"
+        result[1] += f"}}\n"
+
+        result[1] += f"\n"
+        result[1] += f"{ftype.new} {ffun.new_str()}("
+        result[1] += f"const {ftype.new} &in) {{\n"
+        result[1] += f"return {ffun.new_str()}(0);\n"
+        result[1] += f"}}\n"
+
+    if template == "bool(ftype,ftype/si):memonly":
+
+        result[0] += f"\n"
+        result[0] += f"bool {ffun.new_str()}("
+        result[0] += f"const {ftype.new} &in) const {{\n"
+        result[0] += f"return {ftype.flint}_{ffun.flint}(data,in.data);\n"
+        result[0] += f"}}\n"
+
+        si=True
+
+        int_types = get_int_types(si=si,ui=ui)
+
+        for int_type in int_types:
+
+            suffix = get_suffix(int_type)
+
+            result[0] += f"\n"
+            result[0] += f"bool {ffun.new_str()}("
+            result[0] += f"const {int_type} in) const {{\n"
+            result[0] += f"return {ftype.flint}_{ffun.flint}_{suffix}(data,in);\n"
+            result[0] += f"}}\n"
+
+    if template == "bool(ftype):notmem":
+
+        result[1] += f"\n"
+        result[1] += f"bool {ffun.new_str()}("
+        result[1] += f"const {ftype.new} &in) {{\n"
+        result[1] += f"return {ftype.flint}_{ffun.flint}(in.data);\n"
+        result[1] += f"}}\n"
+
+    return result
+
+def negation(name,fun='neg'):
+
+    result  = f"{name.new} &operator-() {{\n"
+    result += f"{name.flint}_{fun}(data,data);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    return result
+
+def addmul(name,ui=True):
+
+    fun_names = ["addmul", "submul"]
+
+    result = ""
+
+    for fun in fun_names:
+        result += "\n"
+        result += f"{name.new} &{fun}(const {name.new} &in_1, "
+        result += f"const {name.new} &in_2) {{\n"
+        result += f"{name.flint}_{fun}(data,in_1.data,in_2.data);\n"
+        result += f"return *this;\n"
+        result += f"}}\n"
+
+    ui_types = get_int_types(si=False,ui=True)
+    if ui:
+        for fun,int_type in itertools.product(fun_names,ui_types):
+            result += "\n"
+            result += f"{name.new} &{fun}(const {name.new} &in_1, "
+            result += f"const {int_type} in_2) {{\n"
+            result += f"{name.flint}_{fun}_ui(data,in_1.data,in_2);\n"
+            result += f"return *this;\n"
+            result += f"}}\n"
+    else:
+        for fun,int_type in itertools.product(fun_names,ui_types):
+            result += "\n"
+            result += f"{name.new} &{fun}(const {name.new} &in_1, "
+            result += f"const {int_type} in_2) {{\n"
+            result += f"return addmul(in_1,{name.new}(in_2));\n"
+            result += f"}}\n"
+
+    si_types = get_int_types(si=True,ui=False)
+    for int_type in si_types:
+        result += "\n"
+        result += f"{name.new} &addmul(const {name.new} &in_1, "
+        result += f"const {int_type} in_2) {{\n"
+        result += f"if(in_2 < 0) {{\n"
+        result += f"return submul(in_1,(uint64_t) (-in_2));\n"
+        result += f"}}"
+        result += f"return addmul(in_1,(uint64_t) in_2);\n"
+        result += f"}}\n"
+
+        result += "\n"
+        result += f"{name.new} &submul(const {name.new} &in_1, "
+        result += f"const {int_type} in_2) {{\n"
+        result += f"if(in_2 < 0) {{\n"
+        result += f"return addmul(in_1,(uint64_t) (-in_2));\n"
+        result += f"}}"
+        result += f"return submul(in_1,(uint64_t) in_2);\n"
+        result += f"}}\n"
+
+    int_types = ui_types + si_types
+
+    for fun,int_type in itertools.product(fun_names,int_types):
+        result += "\n"
+        result += f"{name.new} &{fun}(const {int_type} in_1, "
+        result += f"const {name.new} &in_2) {{\n"
+        result += f"return addmul(in_2,in_1);\n"
+        result += f"}}\n"
+
+    for fun,int_type1,int_type2 in itertools.product(fun_names,
+                                                     int_types,int_types):
+        result += "\n"
+        result += f"{name.new} &{fun}(const {int_type1} in_1, "
+        result += f"const {int_type2} in_2) {{\n"
+        result += f"return addmul({name.new}(in_1),in_2);\n"
+        result += f"}}\n"
+
+    return result
+
+
+def ostream(name):
+
+    result  = f"ostream &operator<<(ostream &os, const {name.new} &in) {{\n"
+    result += f"os << ((const string) in);\n"
+    result += f"return os;\n"
+    result += f"}}\n"
+
+    return result;
+
+def gen_ZZ_header():
+
+    name = FlintName("ZZ", "fmpz")
+
+    before, head_ptr, foot_ptr = decl_ptr_struct(name)
+
+    body = [rule_of_five(name)]
+
+    body += copy_types(name)
+    body += cast(name)
+
+    after = [ostream(name)]
+
+    funs_by_template = {}
+
+    funs_by_template["void(ftype:out,ftype,ftype/si/ui):commutes"] = [
+            FlintFunc("+","add",True),
+            FlintFunc("-","sub",True),
+            FlintFunc("*","mul",True) ]
+
+    funs_by_template["void(ftype:out,ftype,ftype/si/ui)"] =  [
+            FlintFunc("cdiv_q", "cdiv_q"),
+            FlintFunc("fdiv_q", "fdiv_q"),
+            FlintFunc("tdiv_q", "tdiv_q"),
+            FlintFunc("divexact","divexact") ]
+
+    funs_by_template["void(ftype:out,ftype,ftype)"] =  [
+            FlintFunc("gcd","gcd"),
+            ]
+
+    funs_by_template["int(ftype:out,ftype,ftype)"] =  [
+            FlintFunc("pow","pow_fmpz"),
+            ]
+
+    funs_by_template["void(ftype:out,ftype,ui)"] =  [
+            FlintFunc("<<","mul_2exp",True),
+            FlintFunc("pow","pow_ui"),
+            ]
+
+    funs_by_template["void(ftype:out,ftype)"] =  [
+            FlintFunc("abs","abs"),
+            ]
+
+    funs_by_template["void(ftype:out,ftype,int:default=0)"] =  [
+            FlintFunc("next_prime","nextprime"),
+            ]
+
+    funs_by_template["void(ftype:out,ftype,ftype/ui)"] =  [
+            FlintFunc("%","mod",True) ]
+
+    funs_by_template["bool(ftype,ftype/si):memonly"] =  [
+            FlintFunc("is_divisible_by","divisible") ]
+
+    funs_by_template["bool(ftype):notmem"] =  [
+            FlintFunc("is_prime","is_prime") ]
+
+    for template,funs in funs_by_template.items():
+        for fun in funs:
+            tup = translate_fun(name,fun,template)
+            body.append(tup[0])
+            after.append(tup[1])
+
+    body.append(negation(name))
+    body.append(compare(name))
+    body.append(addmul(name))
+
+    head, foot = decl_struct(name)
+
+    result = [before] + [head] + body + [foot]
+    result += after
+
+    result += [head_ptr] + [foot_ptr]
+
+    return result
+
+def generate_header(fname="tmp.hpp"):
+
+    result = [HEADER]
+
+    result += gen_ZZ_header()
+
+    result = "\n".join(result)
+
+    with open(fname,'w') as f:
+        f.write(result)
+
+    os.system(f"clang-format -i --style=Google {fname}")
+
+    lc = 0
+    for line in open(fname,'r').readlines():
+        print(line,end="")
+        lc += 1
+
+    print("")
+    print("------------------------>")
+    print("")
+    print(f"line count = {lc}")
+    print("")
+    print("<------------------------")
+
+if __name__ == "__main__":
+
+    generate_header()
+
+    # TODO:
+    # ZZ_ptr
+    # QQ*
+    # *_mat* ...

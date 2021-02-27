@@ -1,0 +1,4 @@
+#ifndef _isptr
+_TYPE(const std::string &in);
+#endif
+_TYPE &operator=(const std::string &in);

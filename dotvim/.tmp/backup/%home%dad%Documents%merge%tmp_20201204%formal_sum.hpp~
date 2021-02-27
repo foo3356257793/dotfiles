@@ -1,0 +1,604 @@
+#pragma once
+
+#include "myflint_ZZ.hpp"
+#include <functional>
+
+template <typename S,typename T>
+struct FormalSumTerm{
+  S value;
+  T coeff;
+
+  FormalSumTerm() {}
+  FormalSumTerm(const S &in_value, const T &in_coeff)
+    : value(in_value), coeff(in_coeff) {}
+  FormalSumTerm(S &&in_value, T &&in_coeff)
+    : value(move(in_value)), coeff(move(in_coeff)) {}
+  FormalSumTerm(tuple<S,T> &in)
+    : value(get<0>(in)), coeff(get<1>(in)) {}
+  FormalSumTerm(tuple<S,T> &&in)
+    : value(move(get<0>(in))), coeff(move(get<1>(in))) {}
+
+  bool operator<(const FormalSumTerm &rhs) const{
+    if(value != rhs.value){return (value < rhs.value);}
+    return (coeff < rhs.coeff);
+  }
+  bool operator<=(const FormalSumTerm &rhs) const{
+    if(value != rhs.value){return (value <= rhs.value);}
+    return (coeff <= rhs.coeff);
+  }
+  bool operator>=(const FormalSumTerm &rhs) const{
+    if(value != rhs.value){return (value >= rhs.value);}
+    return (coeff >= rhs.coeff);
+  }
+  bool operator>(const FormalSumTerm &rhs) const{
+    if(value != rhs.value){return (value > rhs.value);}
+    return (coeff > rhs.coeff);
+  }
+
+};
+
+template <typename S,typename T>
+struct FormalSum {
+  unordered_map<S,T> data;
+
+  FormalSum() {}
+
+  vector<FormalSumTerm<S,T>> items() const{
+    //return vector<FormalSumTerm<S,T>>(data.begin(),data.end());
+    auto result = vector<FormalSumTerm<S,T>>();
+    for(auto &item : data){
+      result.push_back(FormalSumTerm<S,T>(item.first,item.second));
+    }
+    return result;
+  }
+
+  vector<FormalSumTerm<S,T>> sorted_items() const{
+    auto result = items();
+    sort(result.begin(), result.end());
+    return result;
+  }
+
+  vector<FormalSumTerm<S,T>> extract_items() {
+
+    auto result = vector<FormalSumTerm<S,T>>();
+    for(auto it = data.begin(); it!=data.end(); ){
+      auto node = data.extract(it++);
+      result.push_back(FormalSumTerm{.value=move(node.key()),.coeff=move(node.mapped())});
+    }
+    return result;
+  }
+
+  vector<FormalSumTerm<S,T>> extract_sorted_items() {
+
+    auto result = extract_items();
+    sort(result.begin(), result.end());
+    return result;
+  }
+
+  FormalSum& operator+=(const FormalSumTerm<S,T>& rhs){
+
+    auto it = data.find(rhs.value);
+    if(it == data.end()){
+      data[rhs.value] = rhs.coeff;
+    }
+    else{
+      it->second += rhs.coeff;
+      if(it->second == 0){
+        data.erase(it);
+      }
+    }
+    return *this;
+  }
+
+  FormalSum& operator+=(FormalSumTerm<S,T>&& rhs){
+
+    auto it = data.find(rhs.value);
+    if(it == data.end()){
+      data[move(rhs.value)] = move(rhs.coeff);
+    }
+    else{
+      it->second += move(rhs.coeff);
+      if(it->second == 0){
+        data.erase(it);
+      }
+    }
+
+    return *this;
+  }
+
+  FormalSum& operator+=(const vector<FormalSumTerm<S,T>>& rhs){
+    for(auto &item : rhs){*this += item;}
+    return *this;
+  }
+
+  FormalSum& operator+=(vector<FormalSumTerm<S,T>>&& rhs){
+    for(auto &item : rhs){*this += item;}
+    return *this;
+  }
+
+  FormalSum& operator+=(const FormalSum& rhs){
+
+    for(auto &item : rhs.data){
+      auto it = data.find(item.first);
+      if(it == data.end()){
+        data[item.first] = item.second;
+      }
+      else{
+        it->second += item.second;
+        if(it->second == 0){
+          data.erase(it);
+        }
+      }
+    }
+    return *this;
+  }
+
+  FormalSum& operator+=(FormalSum&& rhs){
+
+    for(auto rhs_it = rhs.data.begin(); rhs_it!=rhs.data.end(); ){
+
+      // have to use extract to be able to modify without a copy
+      // this only works with the ++ here: can't be later
+      auto node = rhs.data.extract(rhs_it++);
+
+      auto lhs_it = data.find(node.key());
+      if(lhs_it == data.end()){
+        data[move(node.key())] = move(node.mapped());
+      }
+      else{
+        lhs_it->second += move(node.mapped());
+        if(lhs_it->second == 0){
+          data.erase(lhs_it);
+        }
+      }
+    }
+    return *this;
+  }
+
+  template<typename U>
+    FormalSum operator+(const U& rhs) const{
+      auto result = *this;
+      result += rhs;
+      return result;
+    }
+
+  FormalSum& operator-=(const FormalSumTerm<S,T>& rhs){
+
+    auto it = data.find(rhs.value);
+    if(it == data.end()){
+      data[rhs.value] = -rhs.coeff;
+    }
+    else{
+      it->second -= rhs.coeff;
+      if(it->second == 0){
+        data.erase(it);
+      }
+    }
+    return *this;
+  }
+
+  FormalSum& operator-=(FormalSumTerm<S,T>&& rhs){
+
+    auto it = data.find(rhs.value);
+    if(it == data.end()){
+      data[move(rhs.value)] = move(-rhs.coeff);
+    }
+    else{
+      it->second -= move(rhs.coeff);
+      if(it->second == 0){
+        data.erase(it);
+      }
+    }
+    return *this;
+  }
+
+  FormalSum& operator-=(const vector<FormalSumTerm<S,T>>& rhs){
+    for(auto &item : rhs){*this -= item;}
+    return *this;
+  }
+
+  FormalSum& operator-=(vector<FormalSumTerm<S,T>>&& rhs){
+    for(auto &item : rhs){*this -= item;}
+    return *this;
+  }
+
+  FormalSum& operator-=(const FormalSum& rhs){
+    for(auto &item : rhs.data){
+      auto it = data.find(item.first);
+      if(it == data.end()){
+        data[item.first] = -item.second;
+      }
+      else{
+        it->second -= item.second;
+        if(it->second == 0){
+          data.erase(it);
+        }
+      }
+    }
+    return *this;
+  }
+
+  FormalSum& operator-=(FormalSum&& rhs){
+
+    for(auto rhs_it = rhs.data.begin(); rhs_it!=rhs.data.end(); ){
+
+      // have to use extract to be able to modify without a copy
+      // this only works with the ++ here: can't be later
+      auto node = rhs.data.extract(rhs_it++);
+
+      auto lhs_it = data.find(node.key());
+      if(lhs_it == data.end()){
+        data[move(node.key())] = move(-node.mapped());
+      }
+      else{
+        lhs_it->second -= move(node.mapped());
+        if(lhs_it->second == 0){
+          data.erase(lhs_it);
+        }
+      }
+    }
+    return *this;
+  }
+
+
+  template<typename U>
+    FormalSum operator-(const U& rhs) const{
+      auto result = *this;
+      result -= rhs;
+      return result;
+    }
+
+  FormalSum operator-() const{
+    auto result = FormalSum();
+    for(auto &item : data){
+      result.data[item.first] = -item.second;
+    }
+    return result;
+  }
+
+  template <typename U>
+    FormalSum& operator*=(const U rhs) {
+
+      for(auto it = data.begin(); it != data.end(); ){
+        it->second *= rhs;
+        if (it->second == 0) { it = data.erase(it); }
+        else { ++it; }
+      }
+
+      return *this;
+    }
+
+  template <typename U>
+    FormalSum operator*(const U rhs) {
+      auto result = FormalSum();
+      for(auto &item : data){
+        auto value = item.second * rhs;
+        if(value != 0){
+          result[item.first] = value;
+        }
+      }
+      return result;
+    }
+
+  template <typename U>
+    bool operator==(const U &rhs) const{
+      return ((rhs == 0) && (data.empty()));
+    }
+  template <typename U>
+    bool operator!=(const U &rhs) const {
+      return !(*this == rhs);
+    }
+
+  unordered_map<S,T>::const_iterator begin() const { return data.begin(); }
+  unordered_map<S,T>::const_iterator end() const { return data.end(); }
+
+  size_t size() const { return data.size(); }
+
+};
+
+  template <typename S, typename T>
+ostream& operator<<(ostream& os, const FormalSum<S,T>& f)
+{
+
+  auto items = f.sorted_items();
+
+  if(items.size() == 0){
+    os << "0";
+    return os;
+  }
+
+  bool include_plus = false;
+
+  for(auto &term : items) {
+
+    auto coeff = term.coeff;
+
+    if(include_plus){
+      if(coeff < 0){
+        os << " - ";
+        coeff = -coeff;
+      }
+      else{
+        os << " + ";
+      }
+      // NOTE: if code is working correctly, then coeff==0 shouldn't happen
+    }
+    include_plus = true;
+
+    if(coeff != 1){
+      os << coeff << "*";
+    }
+    os << term.value;
+  }
+
+  return os;
+
+
+}
+
+template <typename T>
+struct Factorization {
+  FormalSum<T,int64_t> primes;
+  FormalSum<T,int64_t> composites;
+
+  Factorization() {}
+
+  vector<FormalSumTerm<T,int64_t>> items() const{
+    auto result = primes.items();
+    auto tmp = composites.items();
+    result.insert(result.end(),tmp.begin(),tmp.end());
+    return result;
+  }
+
+  vector<FormalSumTerm<T,int64_t>> sorted_items() const{
+    auto result = items();
+    sort(result.begin(),result.end());
+    return result;
+  }
+
+  vector<FormalSumTerm<T,int64_t>> extract_items() const{
+
+    auto result = primes.extract_items();
+    auto tmp = composites.extract_items();
+    result.insert(result.end(),tmp.begin(),tmp.end());
+    return result;
+  }
+
+  vector<FormalSumTerm<T,int64_t>> extract_sorted_items() const{
+    auto result = extract_items();
+    sort(result.begin(),result.end());
+    return result;
+  }
+
+  template <typename U>
+    Factorization& operator+=(const Factorization<U>& rhs){
+      primes += rhs.primes;
+      composites += rhs.composites;
+      return *this;
+    }
+
+  template <typename U>
+    Factorization& operator+=(const Factorization<U>&& rhs){
+      primes += rhs.primes;
+      composites += rhs.composites;
+      return *this;
+    }
+
+  template <typename U>
+    Factorization operator+(const Factorization<U>& rhs) const{
+      auto result = Factorization<T>();
+      result.primes = primes + rhs.primes;
+      result.composites = composites + rhs.composites;
+
+      return result;
+    }
+
+  template <typename U>
+    Factorization& operator-=(const Factorization<U>& rhs){
+      primes -= rhs.primes;
+      composites -= rhs.composites;
+      return *this;
+    }
+
+  template <typename U>
+    Factorization& operator-=(const Factorization<U>&& rhs){
+      primes -= rhs.primes;
+      composites -= rhs.composites;
+      return *this;
+    }
+
+  template <typename U>
+    Factorization operator-(const Factorization<U>& rhs) const{
+      auto result = Factorization<T>();
+      result.primes = primes - rhs.primes;
+      result.composites = composites - rhs.composites;
+
+      return result;
+    }
+
+  template <typename U>
+    Factorization& operator*=(const U& rhs){
+      primes *= rhs;
+      composites *= rhs;
+      return *this;
+    }
+
+  template <typename U>
+    Factorization& operator*=(const U&& rhs){
+      primes *= rhs;
+      composites *= rhs;
+      return *this;
+    }
+
+  template <typename U>
+    Factorization operator*(const U& rhs) const{
+      auto result = *this;
+      result *= rhs;
+      return result;
+    }
+
+
+  template <typename U>
+    bool operator==(const U& rhs) const{
+      return ((primes==rhs) && (composites==rhs));
+    }
+
+  template <typename U>
+    bool operator!=(const U& rhs) const{
+      return !(*this == rhs);
+    }
+
+  Factorization& make_factors_coprime(){
+    if(composites == 0) return *this;
+
+    auto items = composites.extract_items();
+    auto pos_0 = 0;
+
+    // mark if we need to test new factors for primality
+    auto prime_tests = vector<bool>(items.size());
+    for(auto index=0; index<items.size(); index++){
+      prime_tests[index] = false;
+    }
+
+    // note that items could expand
+    while(pos_0 < items.size()){
+      auto pos_1 = pos_0+1;
+      while((items[pos_0].value!=1) && (pos_1 < items.size())){
+
+        auto G = gcd(items[pos_0].value, items[pos_1].value);
+
+        if(G != 1){
+
+          // simple case: G is one of the factors
+          while((G != 1) && ((G == items[pos_0].value) || (G == items[pos_1].value))){
+            if(G == items[pos_0].value){
+              items[pos_1].value /= G;
+              items[pos_0].coeff += items[pos_1].coeff;
+              prime_tests[pos_1] = true;
+            }
+            else{ // G == fac_1
+              items[pos_0].value /= G;
+              items[pos_1].coeff += items[pos_0].coeff;
+              prime_tests[pos_0] = true;
+            }
+
+            G = gcd(items[pos_0].value, items[pos_1].value);
+
+          }
+
+          // tricky case: partial overlap
+          if(G != 1){
+            items[pos_0].value /= G;
+            items[pos_1].value /= G;
+            prime_tests[pos_0] = true;
+            prime_tests[pos_1] = true;
+
+            //auto coeff_G = coeff_0 + coeff_1;
+            auto coeff_G = items[pos_0].coeff + items[pos_1].coeff;
+            items.push_back(FormalSumTerm(G,coeff_G));
+            prime_tests.push_back(true);
+          }
+        }
+        pos_1++;
+      }
+      pos_0++;
+    }
+
+    // go back over and put back
+    for(auto index=0; index<items.size(); index++){
+      if((items[index].value==1) || (items[index].coeff==0)) continue;
+      bool item_is_prime = false;
+      if(prime_tests[index]){
+        item_is_prime = is_prime(items[index].value);
+      }
+      if(item_is_prime){
+        primes += FormalSumTerm(move(items[index].value),items[index].coeff);
+      }
+      else{
+        // guaranteed that this is an empty spot
+        composites.data[move(items[index].value)] = items[index].coeff;
+      }
+    }
+
+    return *this;
+  }
+
+  struct Iterator{
+    unordered_map<T,int64_t>::const_iterator it;
+    bool on_primes;
+    unordered_map<T,int64_t>::const_iterator primes_begin;
+    unordered_map<T,int64_t>::const_iterator primes_end;
+    unordered_map<T,int64_t>::const_iterator composites_begin;
+    unordered_map<T,int64_t>::const_iterator composites_end;
+
+    Iterator(const Factorization<T> &in, bool begin) {
+
+      primes_begin = in.primes.begin();
+      primes_end = in.primes.end();
+      composites_begin = in.composites.begin();
+      composites_end = in.composites.end();
+
+      if(begin){
+        on_primes = true;
+        it = primes_begin;
+        if(it == primes_end){
+          on_primes = false;
+          it = composites_begin;
+        }
+      }
+      else{
+        on_primes = false;
+        it = composites_end;
+      }
+    }
+
+    Iterator(const Factorization<T> &in) : Iterator(in,true) {}
+
+    Iterator operator++() {
+      ++it;
+      if(on_primes && it == primes_end){
+        on_primes = false;
+        it = composites_begin;
+      }
+      return *this;
+    }
+    bool operator!=(const Iterator &other) const { return it != other.it; }
+    auto& operator*() const { return *it; }
+
+  };
+
+  Iterator begin() const { return Iterator(*this); }
+  Iterator end() const { return Iterator(*this,false); }
+
+  size_t size() const { return primes.size() + composites.size(); }
+};
+
+  template <typename T>
+ostream& operator<<(ostream& os, const Factorization<T>& f)
+{
+
+
+  auto factors = f.sorted_items();
+
+  if(factors.size() == 0){
+    os << "1";
+    return os;
+  }
+
+  bool include_times = false;
+
+  for(auto &term : factors) {
+
+    if(include_times){
+      os << " * ";
+    }
+    include_times = true;
+
+    os << term.value;
+    if(term.coeff != 1){
+      os << "^" << term.coeff;
+    }
+  }
+
+  return os;
+}

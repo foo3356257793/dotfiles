@@ -1,0 +1,5 @@
+_TYPE &_FMMA(const _TYPE_IN_1 in_1, const _TYPE_IN_2 in_2,
+    const _TYPE_IN_3 in_3, const _TYPE_IN_4 in_4) {
+  _native_fmma(data, _VAR_1, _VAR_2, _VAR_3, _VAR_4);
+  return *this;
+}

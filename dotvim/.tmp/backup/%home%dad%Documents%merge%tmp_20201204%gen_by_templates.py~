@@ -1,0 +1,382 @@
+#!/usr/bin/python3
+
+import os
+
+HEADER = "#include <flint/fmpz.h>\n"
+HEADER += "#include <flint/fmpq.h>\n"
+HEADER += "#include <flint/fmpz_mat.h>\n"
+HEADER += "#include <algorithm>\n"
+HEADER += "#include <iomanip>\n"
+HEADER += "#include <iostream>\n"
+HEADER += "#include <string>\n"
+HEADER += "#include <type_traits>\n"
+HEADER += "#include <variant>\n"
+HEADER += "#include <vector>\n"
+HEADER += "\n"
+HEADER += "using namespace std;\n"
+HEADER += "\n"
+
+class FlintName:
+    def __init__(self,new_name,flint_name):
+        self.new = new_name
+        self.flint = flint_name
+
+class BuiltInOp:
+    def __init__(self,token,flint_name):
+        self.token = token
+        self.flint = flint_name
+
+class NamedOp:
+    def __init__(self,new_name,flint_name):
+        self.new = new_name
+        self.flint = flint_name
+
+def decl_struct(name,body):
+
+    head  = f"struct {name.new} {{\n"
+    head += f"{name.flint}_t data;\n"
+    head += f"\n"
+    footer = f"}};\n"
+
+    return [head] + body + [footer]
+
+def rule_of_five(name):
+
+    result  = f"{name.new}() {{\n"
+    result += f"{name.flint}_init(data);\n"
+    result += f"}}\n"
+    result += f"\n"
+    result += f"{name.new}(const {name.new} &in) : {name.new}() {{\n"
+    result += f"{name.flint}_set(data,in.data);\n"
+    result += f"}}\n"
+    result += f"\n"
+    result += f"{name.new}& operator=(const {name.new} &in) {{\n"
+    result += f"{name.flint}_set(data,in.data);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+    result += f"\n"
+    result += f"{name.new}({name.new} &&in) noexcept : {name.new}() {{\n"
+    result += f"swap(data,in.data);\n"
+    result += f"}}\n"
+    result += f"\n"
+    result += f"{name.new}& operator=({name.new} &&in) noexcept {{\n"
+    result += f"swap(data,in.data);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+    result += f"\n"
+    result += f"~{name.new}() {{\n"
+    result += f"{name.flint}_clear(data);\n"
+    result += f"}}\n"
+
+    return result
+
+def get_suffix(builtin_type):
+
+    if "int" in builtin_type:
+        if builtin_type[0] == "u":
+            return "ui"
+        return "si"
+
+    if builtin_type == "float":
+        return "d"
+
+    if builtin_type == "double":
+        return "d"
+
+    if builtin_type == "string":
+        return "str"
+
+    else:
+        raise ValueError(f"Cannot find suffix for {builtin_type}")
+
+def builtin_copy(name,builtin_type,suffix=None):
+
+    if suffix is None:
+        suffix = get_suffix(builtin_type)
+
+    result  = f"{name.new}(const {builtin_type} in) : {name.new}() {{\n"
+    result += f"{name.flint}_set_{suffix}(data,in);\n"
+    result += f"}}\n"
+    result += f"\n"
+    result += f"{name.new}& operator=(const {builtin_type} in) {{\n"
+    result += f"{name.flint}_set_{suffix}(data,in);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    return result
+
+def get_int_types(si=True,ui=True):
+
+    result = []
+
+    if si:
+        result += [f"int{b}_t" for b in [2**i for i in range(3,7)]]
+    if ui:
+        result += [f"uint{b}_t" for b in [2**i for i in range(3,7)]]
+
+    return result
+
+def int_copy_all(name,si=True,ui=True):
+
+    int_types = get_int_types(si,ui)
+    return "\n".join([builtin_copy(name,int_type) for int_type in int_types])
+
+def float_copy_all(name):
+
+    return "\n".join([builtin_copy(name,float_type) for float_type in
+                      ["float","double"]])
+
+def string_copy(name):
+
+    result  = f"{name.new}(const string in) : {name.new}() {{\n"
+    result += f"{name.flint}_set_str(data,in.c_str(),10);\n"
+    result += f"}}\n"
+    result += f"\n"
+    result += f"{name.new}& operator=(const string in) {{\n"
+    result += f"{name.flint}_set_str(data,in.c_str(),10);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    return result
+
+def cast_raw(name):
+
+    result = f"explicit operator {name.flint}*() {{ return ({name.flint}*) data; }}\n"
+    result += f"\n"
+    result += f"explicit operator const {name.flint}*() const {{ return (const {name.flint}*) data; }}\n"
+
+    return result
+
+def cast_builtin(name,builtin_type):
+
+    suffix = get_suffix(builtin_type)
+
+    result  = f"explicit operator {builtin_type}() const {{ "
+    result += f"return {name.flint}_get_{suffix}(data); }}\n"
+
+    return result
+
+def cast_int_all(name,si=True,ui=True):
+
+    int_types = get_int_types(si,ui)
+    return "\n".join([cast_builtin(name,int_type) for int_type in int_types])
+
+def cast_float_all(name):
+
+    return "\n".join([cast_builtin(name,float_type) for float_type in
+                      ["float","double"]])
+
+def cast_string(name):
+
+    result  = f"explicit operator string() const {{ "
+    result += f"stringstream ss;\n"
+    result += f"char *tmp = {name.flint}_get_str(NULL, 10, data);\n"
+    result += f"ss << tmp;\n"
+    result += f"free(tmp);\n"
+    result += f"return ss.str();\n"
+    result += f"}}\n"
+
+    return result
+
+def fun_bi(name,op):
+
+    result_eq  = f"{name.new} &operator{op.token}="
+    result_eq += f"(const {name.new} &other) {{\n"
+    result_eq += f"{name.flint}_{op.flint}(data,data,other.data);\n"
+    result_eq += f"return *this;\n"
+    result_eq += f"}}\n"
+
+    result_const  = f"{name.new} operator{op.token}"
+    result_const += f"(const {name.new} &lhs, const {name.new} &rhs) {{\n"
+    result_const += f"auto result = {name.new}();\n"
+    result_const += f"{name.flint}_{op.flint}(result.data,lhs.data,rhs.data);\n"
+    result_const += f"return result;\n"
+    result_const += f"}}\n"
+
+    return result_eq, result_const
+
+def fun_bi_ibi(name,op,builtin_type,commutes=True):
+
+    suffix = get_suffix(builtin_type)
+
+    result_eq  = f"{name.new} &operator{op.token}="
+    result_eq += f"(const {builtin_type} other) {{\n"
+    result_eq += f"{name.flint}_{op.flint}_{suffix}(data,data,other);\n"
+    result_eq += f"return *this;\n"
+    result_eq += f"}}\n"
+
+    result_const  = f"{name.new} operator{op.token}"
+    result_const += f"(const {name.new} &lhs, const {builtin_type} rhs) {{\n"
+    result_const += f"auto result = {name.new}();\n"
+    result_const += f"{name.flint}_{op.flint}_{suffix}(result.data,lhs.data,rhs);\n"
+    result_const += f"return result;\n"
+    result_const += f"}}\n"
+
+    if commutes:
+        result_const += f"\n"
+        result_const += f"{name.new} operator{op.token}"
+        result_const += f"(const {builtin_type} lhs, const {name.new} &rhs) {{\n"
+        result_const += f"return rhs {op.token} lhs;\n"
+        result_const += f"}}\n"
+
+    return result_eq, result_const
+
+def fun_bi_iint(name,op,si=True,ui=True,commutes=True):
+
+    int_types = get_int_types(si,ui)
+
+    result = ["",""]
+
+    for int_type in int_types:
+        tup = fun_bi_ibi(name,op,int_type,commutes)
+        for index in range(2):
+            result[index] += "\n" + tup[index]
+
+    return result
+
+def fun_eq_i0_rbi(name,op,builtin_type):
+
+    result  = f"{builtin_type} {op.new}() {{\n"
+    result += f"return {name.flint}_{op.flint}(data);\n"
+    result += f"}}\n"
+
+    return result
+
+def fun_i1_rbi(name,op,builtin_type):
+
+    result  = f"{builtin_type} {op.new}(const {name.new} &in) {{\n"
+    result += f"return {name.flint}_{op.flint}(in.data);\n"
+    result += f"}}\n"
+
+    return result
+
+def fun_eq_i1_rbi(name,op,builtin_type):
+
+    result  = f"{builtin_type} {op.new}(const {name.new} &in) {{\n"
+    result += f"return {name.flint}_{op.flint}(data,in.data);\n"
+    result += f"}}\n"
+
+    return result
+
+def fun_eq_ibi_rbi(name,op,out_builtin_type,in_builtin_type):
+
+    suffix = get_suffix(in_builtin_type)
+
+    result  = f"{out_builtin_type} {op.new}(const {in_builtin_type} in) {{\n"
+    result += f"return {name.flint}_{op.flint}_{suffix}(data,in);\n"
+    result += f"}}\n"
+
+    return result
+
+def fun_eq_iint_rbi(name,op,out_builtin_type,si=True,ui=True):
+
+    int_types = get_int_types(si,ui)
+
+    return "\n".join([fun_eq_ibi_rbi(
+            name,op,out_builtin_type,int_type)
+                      for int_type in int_types])
+
+
+def fun(name,op,eq=False,inp="self",outp="self"):
+
+    if eq:
+        if isinstance(inp,list):
+            if len(inp) == 0:
+                if outp == None:
+                    raise NotImplementedError("not implemented")
+                elif isinstance(outp,FlintName):
+                    raise NotImplementedError("not implemented")
+                else:
+                    return fun_eq_i0_rbi(name,op,outp)
+
+    else:
+
+
+def addmul(name):
+
+    result  = f"{name.new} &addmul(const {name.new} &in_1, "
+    result += f"const {name.new} &in_2) {{\n"
+    result += f"{name.flint}_addmul(data,in_1.data,in_2.data);\n"
+    result += f"return *this;\n"
+    result += f"}}\n"
+
+    return result
+
+
+def ostream(name):
+
+    result  = f"ostream &operator<<(ostream &os, const {name.new} &in) {{\n"
+    result += f"os << ((const string) in);\n"
+    result += f"return os;\n"
+    result += f"}}\n"
+
+    return result;
+
+def generate_header(fname="tmp.hpp"):
+
+    result = [HEADER]
+
+    name = FlintName("ZZ", "fmpz")
+
+    body = [rule_of_five(name)]
+    body.append(int_copy_all(name))
+    body.append(float_copy_all(name))
+    body.append(string_copy(name))
+    body.append(cast_raw(name))
+    body.append(cast_int_all(name))
+    body.append(cast_float_all(name))
+    body.append(cast_string(name))
+
+    after = []
+
+    builtins = [BuiltInOp("+","add"),
+                BuiltInOp("-","sub"),
+                BuiltInOp("*","mul"),
+                BuiltInOp("%","mod")]
+
+    for op in builtins:
+        tup = fun_bi(name,op)
+        body.append(tup[0])
+        after.append(tup[1])
+
+    int_builtins = [BuiltInOp("+","add"),
+                    BuiltInOp("-","sub"),
+                    BuiltInOp("*","mul")]
+
+    for op in int_builtins:
+        tup = fun_bi_iint(name,op)
+        body.append(tup[0])
+        after.append(tup[1])
+
+    op = BuiltInOp("%","mod")
+    tup = fun_bi_iint(name,op,si=False,commutes=False)
+    body.append(tup[0])
+    after.append(tup[1])
+
+    op = NamedOp("is_divisible_by", "divisible")
+    body.append(fun_eq_i1_rbi(name,op,"bool"))
+    body.append(fun_eq_iint_rbi(name,op,"bool",ui=False))
+
+    op = NamedOp("is_prime", "is_prime")
+    body.append(fun_eq_i0_rbi(name,op,"bool"))
+    after.append(fun_i1_rbi(name,op,"bool"))
+
+    body.append(addmul(name))
+
+    result += decl_struct(name, body)
+    result += after
+
+    result.append(ostream(name))
+
+    result = "\n".join(result)
+
+    print(result)
+
+    with open(fname,'w') as f:
+        f.write(result)
+
+    os.system(f"clang-format -i --style=Google {fname}")
+
+if __name__ == "__main__":
+
+    generate_header()

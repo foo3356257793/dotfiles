@@ -1,0 +1,93 @@
+CXX = g++ -std=c++20 -O3 -Wfatal-errors
+#CXX = g++ -std=c++20 -O3
+#CXXFLAGS = -fdump-ipa-all
+CXXFLAGS =
+INCLUDE =
+LIBS = -fopenmp -lgmp -lflint -lfmt
+
+TEST_LIBS = -lgtest -lyaml-cpp
+
+PYBIND11_INCLUDE = -I/usr/include/python3.9 -I/home/dad/.local/lib/python3.9/site-packages/pybind11/include
+PYEXT = .cpython-39-x86_64-linux-gnu.so
+PYBIND11_CXXFLAGS = -Wall -shared -fPIC
+
+#all: test_vector
+#all: test_formal_sum
+#all: test_factor
+#all: myflint_RR_mat.o
+#all: test_op_temporaries
+#all: ZZ.o ZZ_ptr.o
+#all: ZZ_mat.o
+#all: ZZ.o
+#all: test_shorter
+#all: test_macros
+#all: test_gen_struct
+all: tmp.o
+
+ZZ.o: ZZ.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+tmp.o: tmp.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+ZZ_ptr.o: ZZ_ptr.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+myflint_factor.o: myflint_factor.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+myflint_poly.o: myflint_poly.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+ZZ_mat.o: ZZ_mat.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+myflint_RR_mat.o: myflint_RR_mat.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+myflint_lll.o: myflint_lll.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+div_operator.o: div_operator.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+op_temporaries.o: op_temporaries.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS)
+
+test_op_temporaries: test_op_temporaries.cpp op_temporaries.o
+	$(CXX) -g $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+test_vector.cpp: test_vector_fancy.cpp
+	perl fancy_to_valid.pl test_vector_fancy.cpp test_vector.cpp
+
+test_vector: test_vector.cpp ZZ.o myflint_factor.o myflint_poly.o ZZ_mat.o myflint_lll.o ZZ_ptr.o div_operator.o myflint_RR_mat.o
+#test_vector: test_vector.cpp ZZ.cpp myflint_factor.cpp myflint_poly.cpp ZZ_mat.cpp myflint_lll.cpp ZZ_ptr.cpp div_operator.cpp
+	$(CXX) -g $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+test_formal_sum: test_formal_sum.cpp ZZ.o ZZ_mat.o ZZ_ptr.o myflint_RR_mat.o myflint_lll.o myflint_factor.o
+	$(CXX) -g $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+test_factor: test_factor.cpp ZZ.o ZZ_mat.o ZZ_ptr.o myflint_RR_mat.o myflint_lll.o myflint_factor.o
+	$(CXX) -g $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+test_shorter: test_shorter.cpp
+	$(CXX) -g $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+test_macros: test_macros.cpp
+	$(CXX) -g $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+test_gen_struct: test_gen_struct.cpp
+	$(CXX) -g $(CXXFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+my_fmpz.h: my_fmpz_pre.h
+	gcc -E -std=c99 -D__attribute__="" -I/usr/lib/python3.9/site-packages/pycparser/ -I/usr/include/flint my_fmpz_pre.h -o my_fmpz.h                                                      
+
+cf: test_vector.cpp
+	clang-format -i --style=Google $+
+
+clean:
+	rm -rf *.o test_vector
+
+.PHONY: clean test_vector
+#.PHONY: clean
+

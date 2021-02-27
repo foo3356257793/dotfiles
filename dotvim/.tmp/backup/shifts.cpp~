@@ -1,0 +1,7 @@
+_TYPE_OUT &_TYPE_OUT::operator<<=(const _TYPE_IN in){
+  if(in < 0){
+    return (*this) >>= ((uint64_t) (-in));
+  }
+  _funnative(data, data, ((uint64_t) in));
+  return *this;
+}

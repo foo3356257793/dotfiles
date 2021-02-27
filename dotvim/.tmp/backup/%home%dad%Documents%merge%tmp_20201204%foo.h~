@@ -1,0 +1,4 @@
+void fmpz_init(fmpz_t f)
+{
+ (*f) = (0L);
+}

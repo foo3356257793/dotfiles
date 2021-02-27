@@ -1,0 +1,172 @@
+#pragma once
+
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+// flint
+#include <flint/flint.h>
+#include <flint/fmpz.h>
+
+using namespace std;
+
+struct ZZ_ptr;
+struct ZZ_add;
+
+struct ZZ {
+  fmpz_t number;
+
+  ZZ();
+  ZZ(const int64_t &in_number);
+  ZZ(const fmpz_t &in_number);
+  ZZ(const ZZ_ptr &ptr);
+  ZZ(const string in_string);
+  ZZ(const ZZ &other);  // copy constructor
+  ZZ(ZZ &&other) noexcept; // move constructor
+  ZZ &operator=(const ZZ &other); // copy assignment
+  ZZ &operator=(ZZ &&other) noexcept; // move assignment
+
+  ZZ &operator=(const ZZ_add &rhs); // copy assignment
+
+  ~ZZ(); // destructor
+
+  explicit operator fmpz*() { return (fmpz*) number; }
+  explicit operator const fmpz*() const { return (const fmpz*) number; }
+
+  ZZ& apply_fmpz_fun_eq(const ZZ &rhs,
+      const function<void(fmpz_t, fmpz_t, const fmpz_t)>& fun);
+  ZZ& apply_fmpz_fun_eq(
+      const function<void(fmpz_t, fmpz_t)>& fun);
+  ZZ& apply_fmpz_fun_eq(int64_t in,
+      const function<void(fmpz_t, fmpz_t, int64_t)>& fun);
+
+  ZZ& operator+=(const ZZ &rhs);
+  ZZ& operator+=(const ZZ_add &rhs);
+  ZZ& operator-=(const ZZ &rhs);
+  ZZ& operator*=(const ZZ &rhs);
+  ZZ& operator%=(const ZZ &rhs);
+  ZZ& operator/=(const ZZ &rhs);
+  ZZ& operator-();
+  ZZ& addmul(const ZZ &in0, const ZZ &in1);
+  ZZ& submul(const ZZ &in0, const ZZ &in1);
+
+  ZZ_add operator+(const ZZ &rhs) const;
+  ZZ operator-(const ZZ &rhs) const;
+  ZZ operator*(const ZZ &rhs) const;
+  ZZ operator%(const ZZ &rhs) const;
+  ZZ operator/(const ZZ &rhs) const;
+  ZZ operator-() const;
+
+  bool operator==(const ZZ &rhs) const;
+  #if 0
+  bool operator!=(const ZZ &rhs) const;
+  #endif
+
+  strong_ordering operator<=>(const ZZ &rhs) const;
+
+  bool is_divisible_by(const ZZ &poss_factor) const;
+
+  ZZ& next_prime();
+
+};
+
+ZZ apply_fmpz_fun(
+    const ZZ &lhs,
+    const ZZ &rhs,
+    const function<void(fmpz_t, const fmpz_t, const fmpz_t)>& fun);
+ZZ apply_fmpz_fun(const ZZ &lhs, function<void(fmpz_t, const fmpz_t)> fun);
+ZZ apply_fmpz_fun(const ZZ &lhs, int64_t in, function<void(fmpz_t, const fmpz_t, int64_t)> fun);
+
+ZZ abs(const ZZ &in);
+bool is_prime(const ZZ &in);
+ZZ pow(ZZ base, int64_t exponent);
+ZZ gcd(const ZZ &a, const ZZ &b);
+ZZ next_prime(const ZZ &a);
+
+ostream &operator<<(ostream &os, const ZZ &f);
+
+namespace std{
+  template <>
+    struct hash<ZZ> {
+      size_t operator()(const ZZ& in) const noexcept {
+        return hash<double>{}(fmpz_get_d((const fmpz*) in.number));
+      }
+    };
+}
+
+struct ZZ_ptr{
+  fmpz* ptr;
+
+  explicit operator fmpz*() { return ptr; }
+  explicit operator const fmpz*() const { return ptr; }
+
+  ZZ_ptr(fmpz* in) : ptr(in) {}
+
+  ZZ_ptr& operator=(const ZZ_ptr &other); // copy assignment from ZZ_ptr
+  ZZ_ptr& operator=(const ZZ &other); // copy assignment from ZZ
+  ZZ_ptr& operator=(const int64_t &other); // copy assignment from int64_t
+  ZZ_ptr& operator=(const string &other); // copy assignment from string
+
+  ZZ_ptr& apply_fmpz_fun_eq(const ZZ &rhs,
+      const function<void(fmpz_t, fmpz_t, const fmpz_t)>& fun);
+  ZZ_ptr& apply_fmpz_fun_eq(
+      const function<void(fmpz_t, fmpz_t)>& fun);
+  ZZ_ptr& apply_fmpz_fun_eq(int64_t in,
+      const function<void(fmpz_t, fmpz_t, int64_t)>& fun);
+
+  ZZ_ptr &operator+=(const ZZ &rhs);
+  ZZ_ptr &operator-=(const ZZ &rhs);
+  ZZ_ptr &operator*=(const ZZ &rhs);
+  ZZ_ptr &operator%=(const ZZ &rhs);
+  ZZ_ptr &operator/=(const ZZ &rhs);
+  ZZ_ptr &operator-();
+  ZZ_ptr& addmul(const ZZ &in0, const ZZ &in1);
+  ZZ_ptr& submul(const ZZ &in0, const ZZ &in1);
+
+  ZZ operator+(const ZZ &rhs) const;
+  ZZ operator-(const ZZ &rhs) const;
+  ZZ operator*(const ZZ &rhs) const;
+  ZZ operator%(const ZZ &rhs) const;
+  ZZ operator/(const ZZ &rhs) const;
+  ZZ operator-() const;
+
+  bool operator==(const ZZ &rhs) const;
+  bool operator==(const int64_t &rhs) const;
+
+  strong_ordering operator<=>(const ZZ &rhs) const;
+
+  bool is_divisible_by(const ZZ &poss_factor) const;
+
+  ZZ_ptr& next_prime();
+};
+
+ZZ apply_fmpz_fun(
+    const ZZ_ptr &lhs,
+    const ZZ &rhs,
+    const function<void(fmpz_t, const fmpz_t, const fmpz_t)>& fun);
+ZZ apply_fmpz_fun(const ZZ_ptr &lhs, function<void(fmpz_t, const fmpz_t)> fun);
+ZZ apply_fmpz_fun(const ZZ_ptr &lhs, int64_t in, function<void(fmpz_t, const fmpz_t, int64_t)> fun);
+
+ZZ abs(const ZZ_ptr &in);
+bool is_prime(const ZZ_ptr &in);
+ZZ pow(ZZ_ptr base, int64_t exponent);
+ZZ gcd(const ZZ_ptr &a, const ZZ &b);
+ZZ next_prime(const ZZ_ptr &a);
+
+ostream &operator<<(ostream &os, const ZZ_ptr &f);
+
+struct ZZ_add{
+  const fmpz* a;
+  const fmpz* b;
+
+  ZZ_add(const fmpz* in_a, const fmpz* in_b) : a(in_a), b(in_b) {}
+
+  operator ZZ() const { 
+    printf("implicit conversion\n");
+    auto result = ZZ();
+    fmpz_add((fmpz*) result, a, b);
+    return result; }
+};

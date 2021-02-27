@@ -1,0 +1,42 @@
+#include "op_temporaries.hpp"
+
+using namespace std;
+
+#include <fmt/core.h>
+#include <fmt/ostream.h>
+
+using fmt::print;
+using fmt::format;
+
+// testing
+#include <gtest/gtest.h>
+
+ZZ foo(const ZZ &a, const ZZ &b){
+  return a+b;
+}
+
+TEST(Tests, add_temporary) {
+
+  auto a = ZZ(2);
+  auto b = ZZ(3);
+
+  auto c = a+b;
+
+  print("finished add\n");
+
+  print("c = {}\n", c);
+
+  print("{}\n", foo(a,c));
+
+  print("trying add w/o temporaries\n");
+  a = b+b;
+
+  print("{}\n", a);
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

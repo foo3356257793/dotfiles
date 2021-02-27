@@ -1,0 +1,98 @@
+//#include "myflint_big_factor.hpp"
+#include "myflint_header_only_ZZmat.hpp"
+
+// TODO: put this somewhere...
+  template<typename T>
+auto repr(const T& thing)
+{
+  stringstream ss;
+  ss << thing;
+  return ss.str();
+}
+
+// testing
+#include <gtest/gtest.h>
+
+TEST(Tests, TestInit) {
+
+  vector<vector<int64_t>> a = {{1,0},{-3,1}};
+
+  auto A = ZZmat(a);
+
+  print("{}\n", A);
+
+}
+
+TEST(Tests, TestAddition) {
+
+  vector<vector<int64_t>> a = {{1,0},{-3,1}};
+  vector<vector<int64_t>> b = {{1,0},{3,1}};
+
+  auto A = ZZmat(a);
+  auto B = ZZmat(b);
+
+  auto C = A+B;
+
+  print("{}\n", C);
+
+}
+
+TEST(Tests, TestSubtraction) {
+
+  vector<vector<int64_t>> a = {{1,0},{-3,1}};
+  vector<vector<int64_t>> b = {{1,0},{3,1}};
+
+  auto A = ZZmat(a);
+  auto B = ZZmat(b);
+
+  auto C = A-B;
+
+  print("{}\n", C);
+
+}
+
+TEST(Tests, TestMultiplication) {
+
+  vector<vector<int64_t>> a = {{1,0},{-3,1}};
+  vector<vector<int64_t>> b = {{1,0},{3,1}};
+
+  auto A = ZZmat(a);
+  auto B = ZZmat(b);
+
+  auto C = A*B;
+
+  print("{}\n", C);
+
+}
+
+TEST(Tests, TestTranspose) {
+
+  vector<vector<int64_t>> a = {{1,0},{-3,1}};
+  vector<vector<int64_t>> b = {{1,0},{3,1}};
+
+  auto A = ZZmat(a);
+  auto B = ZZmat(b);
+
+  auto C = transpose(A);
+
+  print("{}\n", C);
+
+}
+
+TEST(Tests, TestDet) {
+
+  vector<vector<int64_t>> a = {{1,0},{-3,1}};
+
+  auto A = ZZmat(a);
+  auto det = determinant(A);
+
+  print("det = {}\n", det);
+
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

@@ -1,0 +1,346 @@
+using Nemo
+using Random
+using Formatting
+
+import Base: log2
+import LinearAlgebra: lq, norm
+
+using LoadFlint
+const libflint = LoadFlint.libflint
+
+ZZ = FlintZZ
+QQ = FlintQQ
+
+function apply_2_by_2(c11,c12,c21,c22,a1,a2)
+
+    new1 = c11*a1 + c12*a2
+    new2 = c21*a1 + c22*a2
+
+    return new1,new2
+end
+
+function norm_sq(vec)
+    return sum([v^2 for v in vec])
+end
+
+function norm(vec::Array{fmpz,1})
+    return sqrt(Float64(norm_sq(vec)))
+end
+
+function dual_basis(mat::fmpz_mat)
+
+    mat_inv,den = pseudo_inv(mat)
+    out = transpose(mat_inv)
+
+    dim = nrows(out)
+
+    for row in 1:(dim ÷ 2)
+        swap_rows!(out,row,dim+1-row)
+    end
+
+    if den < 0
+        out = -out
+        den = -den
+    end
+
+    return out,den
+end
+
+function nextprime(a::fmpz)
+
+    out = a
+
+    # Notes: calling this function
+    #
+    # void fmpz_nextprime(fmpz_t res, const fmpz_t n, int proved)
+    #
+    # 'Nothing' is the 'void' return type
+    # next is the tuple of input types
+    # next is the actual input values
+    ccall((:fmpz_nextprime, libflint), Nothing, (Ref{fmpz}, Ref{fmpz}, Int64), out, a, 1)
+
+    return out
+end
+
+function log2(a::fmpz)
+
+    return log2(max(0.5,abs(Float64(a))))
+end
+
+# maybe don't need this
+function ZZ_Float64(a::Float64)
+
+    out = ZZ(0)
+
+    ccall((:fmpz_set_d,libflint), Nothing, (Ref{fmpz}, Float64), out, a)
+
+    return out
+end
+
+function rand_round(a::Float64)
+
+    out = ZZ(round(a))
+
+    bound = round(abs(a) / 2.0^53)
+
+    if bound > 0
+        bound_ZZ = ZZ(bound)
+        out += rand(-bound_ZZ:bound_ZZ)
+    end
+
+    return out
+end
+
+function rand_vec_of_len(mat::fmpz_mat,L::Array{Float64,2},target_len)
+
+    println("mat = ", mat)
+    println("L = ", L)
+    println("target_len = ", target_len)
+
+    dim = nrows(mat)
+
+    target_vec = [randn(Float64) for _ in 1:dim]
+
+    norm = sum([v^2 for v in target_vec])
+    norm = sqrt(norm)
+
+    scale = target_len / norm
+
+    curr_vec = zeros(Float64, dim)
+    out = zeros(ZZ, dim)
+
+    for col in Iterators.reverse(1:dim)
+
+        # scale * target_vec ~= curr_vec + c * L
+        # c ~= (scale * target_vec - curr_vec) / L
+
+        c_float = round((scale * target_vec[col] - curr_vec[col]) / L[col,col])
+        c = rand_round(c_float)
+
+        for subcol in 1:col
+            curr_vec[subcol] += c_float * L[col,subcol]
+        end
+
+        for subcol in 1:ncols(mat)
+            out[subcol] += c * mat[col,subcol]
+        end
+    end
+
+    return out
+end
+
+function rand_vec_of_len(target,dim)
+
+    #d = Normal()
+
+    vec = []
+
+    for i in 1:dim
+        append!(vec,randn(Float64))
+    end
+
+    norm = vec[1]^2
+    for i in 2:dim
+        norm += vec[i]^2
+    end
+
+    norm = sqrt(norm)
+
+    scale = Float64(target) / norm
+
+    out = [rand_round(scale * v) for v in vec]
+
+    # the above doesn't fill in all the bits in general
+    # make the below bits be uniform random
+
+    G = gcd(out)
+
+    while G > 1
+        lbound = -fdiv(G,2)
+        ubound = lbound + G - 1
+
+        out = [v + rand(lbound:ubound) for v in out]
+
+        G = gcd(out)
+    end
+
+    return out
+
+end
+
+function d_mat(m::fmpz_mat)
+    out = zeros(Float64,nrows(m),ncols(m))
+
+    for row in 1:nrows(m)
+        for col in 1:ncols(m)
+            out[row,col] = m[row,col]
+        end
+    end
+
+    return out
+end
+
+function lq(m::fmpz_mat)
+
+    num_rows = nrows(m)
+    num_cols = ncols(m)
+
+    L,Q = lq(d_mat(m))
+    Q = Array{Float64,2}(Q)
+
+    for col in 1:num_rows
+        if L[col,col] < 0
+            for row in col:num_rows
+                L[row,col] *= -1
+            end
+            for subcol in 1:num_cols
+                Q[col,subcol] *= -1
+            end
+        end
+    end
+
+    return L,Q
+
+end
+
+function lq(m::fmpz_mat,signs::Bool)
+
+    num_rows = nrows(m)
+    num_cols = ncols(m)
+
+    L,Q = lq(d_mat(m))
+    Q = Array{Float64,2}(Q)
+
+    if signs
+        for col in 1:num_rows
+            if L[col,col] < 0
+                for row in col:num_rows
+                    L[row,col] *= -1
+                end
+                for subcol in 1:num_cols
+                    Q[col,subcol] *= -1
+                end
+            end
+        end
+    end
+
+    return L,Q
+end
+
+function reduce_col(m::fmpz_mat,L::Array{Float64,2},col::Int64)
+
+    for row in col+1:nrows(m)
+
+        c = round(L[row,col]/L[col,col])
+
+        for subcol in 1:col
+            L[row,subcol] -= c * L[col,subcol]
+        end
+
+        c_ZZ = ZZ(c)
+
+        for subcol in 1:ncols(m)
+            m[row,subcol] -= c_ZZ * m[col,subcol]
+        end
+    end
+
+    return m,L
+
+end
+
+# function weak_reduce(m::fmpz_mat,row_begin::Int64,row_end::Int64)
+#
+#     L,_ = lq(m)
+#
+#     row = start+1
+#
+#     while row <= row_end
+#     end
+# end
+
+function rand_mod_diag_mat(M::fmpz,dim::Int64,num_mod::Int64)
+
+    out = identity_matrix(ZZ, dim)
+
+    for row in 1:num_mod
+        out[row,row] = M
+    end
+
+    for row in (num_mod+1):dim
+        out[row,1] = rand(ZZ(1):M)
+    end
+
+    return out
+
+end
+
+Random.seed!(0)
+
+dim = 4
+log2_target_len = 64
+log2_max_mod = 2 * log2_target_len
+log2_target_gap = 16
+
+target_len = 2.0^log2_target_len
+
+# what det to start at?
+log2_det_to_gap = (log2_target_len - log2_target_gap) * dim
+
+num_mod_diags = Int64( floor( log2_det_to_gap / log2_max_mod ) )
+
+M = ZZ(1) << log2_max_mod
+
+mat = rand_mod_diag_mat(M,dim,num_mod_diags)
+mat = lll(mat)
+
+L,_ = lq(mat)
+
+vec = rand_vec_of_len(mat, L, target_len)
+
+try
+    u = solve(transpose(mat),MatrixSpace(ZZ,dim,1)(vec))
+catch e
+    println("Doesn't appear the result is in the indicated span")
+end
+
+norm_vec = norm(vec)
+
+printfmtln("norm = 2^{:.3f} (target = 2^{:.3f})", log2(norm_vec), log2_target_len)
+
+
+# place at head
+dl_mat, den = dual_basis(mat)
+
+col_vec = MatrixSpace(ZZ, dim, 1)(vec)
+dot_vec = dl_mat * col_vec
+
+row = 1
+
+while row <= dim && dot_vec[row,1] == 0
+    global row
+    row += 1
+end
+
+while row < dim
+
+    global row, dot_vec, mat
+
+    g,u,v = gcdx(dot_vec[row,1],dot_vec[row+1,1])
+
+    s = dot_vec[row+1,1] ÷ g
+    t = -dot_vec[row,1] ÷ g
+
+    dot_vec[row,1],dot_vec[row+1,1] = apply_2_by_2(s,t,u,v,
+                                       dot_vec[row,1],dot_vec[row+1,1])
+
+    for col in 1:dim
+        mat[dim-row,col],mat[dim+1-row,col] = apply_2_by_2(s,-t,-u,v,
+                                               mat[dim-row,col],mat[dim+1-row,col])
+    end
+
+    row += 1
+end
+
+L, _ = lq(mat)
+
+log2_diags = [log2(L[row,row]) for row in 1:dim]

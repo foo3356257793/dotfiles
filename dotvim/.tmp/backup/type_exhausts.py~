@@ -1,0 +1,107 @@
+#!/usr/bin/python3
+
+from collections import Counter
+import itertools
+
+my_types = {}
+my_types["SI"] = [f"int{2**i}_t" for i in range(3,7)]
+my_types["UI"] = [f"uint{2**i}_t" for i in range(3,7)]
+my_types["STR"] = ["std::string"]
+my_types["D"] = ["float","double"]
+my_types["ZZ"] = ["ZZ", "ZZ_ptr"]
+my_types["QQ"] = ["QQ", "QQ_ptr"]
+my_types["ZZ_mat"] = ["ZZ_mat", "ZZ_mat_ptr"]
+my_types["QQ_mat"] = ["QQ_mat", "QQ_mat_ptr"]
+
+my_labels = ["struct", "only", "fun"]
+
+valid_keys = set(my_labels)
+valid_keys.update(my_types.keys())
+
+def assign_macro_variables(main_type, other_types):
+
+    out = []
+
+    counts = Counter([main_type] + other_types)
+
+    indices = {}
+
+    for t in other_types:
+
+        if counts[t] == 1:
+            out.append([f"_{t}", t])
+        else:
+            if not t in indices:
+                out.append([f"_{t}_1", t])
+                indices[t] = 2
+            else:
+                out.append([f"_{t}_{indices[t]}", t])
+                indices[t] += 1
+
+    return out
+
+def write_permutation_file(dirname,myname,ext,var_names):
+
+    fname = f"{myname}.{ext}"
+    include_name = f"_{fname}"
+    full_fname = f"{dirname}/{fname}"
+
+    with open(full_fname, "w") as f:
+        for tup in itertools.product(*[my_types[t] for _,t in var_names]):
+            for value,(var_name,_) in zip(tup,var_names):
+                f.write(f"#define {var_name} {value}\n")
+            f.write(f"#include \"{include_name}\"\n")
+            for var_name,_ in var_names:
+                f.write(f"#undef {var_name}\n")
+
+def parse_myname(myname):
+
+    arr = myname.split("_")
+
+    index = 0
+    while index < len(arr)-1:
+
+        if f"{arr[index]}_{arr[index+1]}" in valid_keys:
+            arr[index] = f"{arr[index]}_{arr.pop(index+1)}"
+        else:
+            index += 1
+
+    if len(arr) < 2:
+        raise ValueError("myname {myname} not as long as expected")
+
+    if not arr[0] in my_types:
+        raise ValueError("myname {arr} has unknown types")
+
+    if not arr[1] in my_labels:
+        raise ValueError("myname {arr} has unknown types")
+
+    for t in arr[2:]:
+        if not t in my_types:
+            raise ValueError("myname {arr} has unknown types")
+
+    var_names = assign_macro_variables(arr[0], arr[2:])
+
+    for ext in ["hpp","cpp"]:
+        write_permutation_file(arr[0],myname,ext,var_names)
+
+
+if __name__ == "__main__":
+
+    mynames = ["ZZ_mat_only_ZZ_mat", "ZZ_mat_struct_ZZ_mat",
+               "ZZ_mat_fun_ZZ_mat", "ZZ_mat_fun_ZZ_mat_ZZ_mat",
+               "ZZ_mat_struct_ZZ", "ZZ_mat_fun_ZZ_mat_ZZ",
+               "ZZ_mat_struct_UI", "ZZ_mat_fun_ZZ_mat_UI",
+               "ZZ_mat_struct_SI", "ZZ_mat_fun_ZZ_mat_SI"]
+
+    mynames += ["QQ_mat_fun_QQ_mat","QQ_mat_struct_QQ_mat",
+                "QQ_mat_struct_QQ","QQ_mat_only_QQ_mat",
+                "QQ_mat_struct_UI","QQ_mat_struct_SI",
+                "QQ_mat_struct_ZZ",
+                "QQ_mat_fun_QQ_mat_SI", "QQ_mat_fun_QQ_mat_ZZ",
+                "QQ_mat_fun_QQ_mat_UI", "QQ_mat_fun_QQ_mat_QQ",
+                "QQ_mat_fun_QQ_mat_QQ_mat"
+                ]
+
+
+    for myname in mynames:
+        parse_myname(myname)

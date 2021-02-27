@@ -1,0 +1,58 @@
+_QQ_mat &_QQ_mat::translate(const std::function<void(fmpq_mat_t,const fmpq_mat_t)> &fun,
+    const _QQ_mat_1 &in){
+  fun(data,in.data);
+  return *this;
+}
+
+_QQ_mat &_QQ_mat::translate(const std::function<void(fmpq_mat_t,fmpq_mat_t,const fmpq_mat_t)> &fun,
+    const _QQ_mat_1 &in){
+  fun(data,data,in.data);
+  return *this;
+}
+
+bool _QQ_mat::dim_match(const _QQ_mat_1 &in) const{
+  return ((nrows() == in.nrows()) && (ncols() == in.ncols()));
+}
+
+bool _QQ_mat::dim_rmul_match(const _QQ_mat_1 &in) const {
+  return ncols() == in.nrows();
+}
+
+_QQ_mat &_QQ_mat::operator=(const _QQ_mat_1 &in){
+  resize(in.nrows(),in.ncols());
+  return translate(fmpq_mat_set,in);
+}
+
+_QQ_mat &_QQ_mat::operator+=(const _QQ_mat_1 &in) {
+  if(!dim_match(in)){
+    throw std::invalid_argument("Dimensions don't match for +=");
+  }
+  return translate(fmpq_mat_add,in);
+}
+
+_QQ_mat &_QQ_mat::operator-=(const _QQ_mat_1 &in) {
+  if(!dim_match(in)){
+    throw std::invalid_argument("Dimensions don't match for -=");
+  }
+  return translate(fmpq_mat_sub,in);
+}
+
+_QQ_mat &_QQ_mat::operator*=(const _QQ_mat_1 &in) {
+  if(!dim_rmul_match(in)){
+    throw std::invalid_argument("Dimensions don't match for *=");
+  }
+  return translate(fmpq_mat_mul,in);
+}
+
+_QQ_mat &_QQ_mat::operator/=(const _QQ_mat_1 &in) {
+  if(in.nrows() != in.ncols()){
+    throw std::invalid_argument("Division by non-square matrix");
+  }
+  if(!dim_rmul_match(in)){
+    throw std::invalid_argument("Dimensions don't match for /=");
+  }
+  auto inv = inverse(in);
+  *this *= inv;
+  return *this;
+}
+

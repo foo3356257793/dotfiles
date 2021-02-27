@@ -1,0 +1,12 @@
+#define _TYPEIN uint8_t
+#include "copys_B.hpp"
+#undef _TYPEIN
+#define _TYPEIN uint16_t
+#include "copys_B.hpp"
+#undef _TYPEIN
+#define _TYPEIN uint32_t
+#include "copys_B.hpp"
+#undef _TYPEIN
+#define _TYPEIN uint64_t
+#include "copys_B.hpp"
+#undef _TYPEIN

@@ -1,0 +1,14 @@
+_TYPE_NEW _funname(_TYPE_IN in) {
+  #ifdef _checkinput
+  _checkinput
+    #endif
+    #ifdef _checkerror
+    _checkerror;
+  #endif
+  auto out = _TYPE_NEW();
+  _funnative(out.data, in.data);
+  #ifdef _checkoutput
+  _checkoutput
+    #endif
+    return out;
+}

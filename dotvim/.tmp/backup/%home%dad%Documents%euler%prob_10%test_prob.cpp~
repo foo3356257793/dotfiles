@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <ulong_extras.h>
+
+//#define CATCH_CONFIG_MAIN
+//#include <catch.hpp>
+
+#include <gtest/gtest.h>
+
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+#define UPPER_BOUND (2000000)
+
+int64_t sum_of_primes(int64_t bound)
+{
+  n_primes_t iter;
+
+  n_primes_init(iter);
+
+  int64_t p = 0;
+
+  int64_t sum = 0;
+
+  while(p <= bound)
+  {
+    sum += p;
+    p = n_primes_next(iter);
+  }
+
+  n_primes_clear(iter);
+
+  return sum;
+}
+
+TEST (SumOfPrimesTest, SimpleCases) {
+  EXPECT_EQ (2+3+5+7, sum_of_primes(10));
+  EXPECT_EQ (sum_of_primes(1000), 76127);
+}
+
+int main(int argc, char *argv[])
+{
+
+  ::testing::InitGoogleTest(&argc, argv);
+
+  int64_t answer = sum_of_primes(UPPER_BOUND);
+
+  cout << answer << endl;
+
+  return RUN_ALL_TESTS();
+
+}

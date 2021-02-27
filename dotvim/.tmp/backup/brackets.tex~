@@ -1,0 +1,50 @@
+\documentclass[landscape,12pt]{extarticle}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
+\usepackage{fontspec}
+\setmainfont{Alte Haas Grotesk}
+
+\pagenumbering{gobble}
+
+\newcommand\Pair[4]{%
+  \arrayrulecolor{cyan!60!black!40}%
+  \arrayrulewidth=1pt
+  \renewcommand\extrarowheight{1.5pt}%
+  \begin{tabular}{|p{2cm}|>{\centering\arraybackslash}p{10pt}|}
+  \hline
+  \rowcolor{cyan!60!black!10}\textcolor{red!60!black}{#1} & \textcolor{red!60!black}{#2} \\
+  \hline 
+  \rowcolor{cyan!60!black!10}\textcolor{red!60!black}{#3} & \textcolor{red!60!black}{#4} \\
+  \hline
+  \end{tabular}%
+}
+
+\def\twix{\includegraphics[width=0.85in]{twix.png}}
+\begin{document}
+
+\begin{tikzpicture}[
+  level distance=5cm,every node/.style={minimum width=3cm,inner sep=0pt},
+  edge from parent/.style={cyan!70!black,ultra thick,draw},
+  level 1/.style={sibling distance=4cm},
+  level 2/.style={sibling distance=2cm},
+  legend/.style={draw=orange,fill=orange!30,inner sep=3pt}
+]
+\node (1) {\Pair{}{}{}{}}
+[edge from parent fork left,grow=left]
+child {node (2) {\Pair{}{}{}{}}
+child {node (3) {\Pair{\twix}{}{}{}}}
+child {node {\Pair{}{}{}{}}}
+}
+child {node {\Pair{}{}{}{}}
+child {node {\Pair{}{}{}{}}}
+child {node {\Pair{}{}{}{}}}
+};
+\node[legend] at ([yshift=50pt]3) (QF) {Quarter Finals};
+\node[legend] at (2|-QF) {Semi-Finals};
+\node[legend] at (1|-QF) (QF) {Final};
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,5 @@
+_TYPE_NEW _funname(const _TYPE_QQ &in_1, const _TYPE_B in_2);
+
+#ifndef _noncommute
+_TYPE_NEW _funname(const _TYPE_B in_1, const _TYPE_QQ &in_2);
+#endif

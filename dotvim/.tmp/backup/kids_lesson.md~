@@ -1,0 +1,173 @@
+<div style="max-width: 600px;width: 100%;margin: auto">
+
+# Highlight of the Week
+
+* **Mom**: Library books
+* **Dad**: 8 boxes of free cookies
+* **Anna**: Snow, Rabbids, Playing with dad, library, Costco, glasses
+* **Leah**: Dollar Tree, snow, Target
+* **Sam**: Dollar Tree, snow, Playing with dad, library books, Target, Costco
+* **Juju**: Unicorn, library books
+
+# Treat of the week
+
+* **Mom**: Ice cream
+* **Dad**: Froyo house
+* **Anna**: Froyo house
+* **Leah**: Ice cream
+* **Sam**: Ice cream
+* **Juju**: Ice cream
+
+
+# Game
+
+### 5 pts
+
+<center>
+<img src="blur_0x64_pic_01.png" width="600"/>
+</center>
+
+### 4 pts
+
+<center>
+<img src="blur_0x32_pic_01.png" width="600"/>
+</center>
+
+### 3 pts
+
+<center>
+<img src="blur_0x16_pic_01.png" width="600"/>
+</center>
+
+### 2 pts
+
+<center>
+<img src="blur_0x8_pic_01.png" width="600"/>
+</center>
+
+### 1 pt
+
+<center>
+<img src="pic_01.gif" width="600"/>
+</center>
+
+### 5 pts
+
+<center>
+<img src="blur_0x64_pic_02.png" width="600"/>
+</center>
+
+### 4 pts
+
+<center>
+<img src="blur_0x32_pic_02.png" width="600"/>
+</center>
+
+### 3 pts
+
+<center>
+<img src="blur_0x16_pic_02.png" width="600"/>
+</center>
+
+### 2 pts
+
+<center>
+<img src="blur_0x8_pic_02.png" width="600"/>
+</center>
+
+### 1 pt
+
+<center>
+<img src="pic_02.gif" width="600"/>
+</center>
+
+### 5 pts
+
+<center>
+<img src="blur_0x64_pic_03.png" width="600"/>
+</center>
+
+### 4 pts
+
+<center>
+<img src="blur_0x32_pic_03.png" width="600"/>
+</center>
+
+### 3 pts
+
+<center>
+<img src="blur_0x16_pic_03.png" width="600"/>
+</center>
+
+### 2 pts
+
+<center>
+<img src="blur_0x8_pic_03.png" width="600"/>
+</center>
+
+### 1 pt
+
+<center>
+<img src="pic_03.gif" width="600"/>
+</center>
+
+# Puzzle
+
+Join all 9 dots below using 4 straight lines
+with the following rules:
+
+1. Don't lift your pen (i.e., the four lines
+    are connected)
+2. Don't trace over the same line more than once.
+
+<center>
+<img src="9_dot_puzzle.png" width="400"/>
+</center>
+
+
+<style>
+#solution {
+  width: 100%;
+padding: 50px 0;
+         text-align: center;
+         margin-top: 20px;
+display: none;
+}
+</style>
+
+<center>
+<button onclick="myFunction()">Solution</button>
+</center>
+
+<div id="solution">
+<center>
+<img src="9_dot_solution.png" width="400"/>
+</center>
+</div>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("solution");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+Review the story of Martin Harris and the lost 116 pages.
+
+## D&C 10:43
+
+> I will not suffer that they shall destroy my work; yea, I will show unto
+> them that my wisdom is greater than the cunning of the devil.
+
+## Example
+
+<center>
+<img src="home_church.png" width="500"/>
+</center>
+
+
+</div>

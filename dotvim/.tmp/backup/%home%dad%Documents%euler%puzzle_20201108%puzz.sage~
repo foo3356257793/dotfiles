@@ -1,0 +1,27 @@
+#!/usr/bin/sage
+
+import itertools
+
+if __name__ == "__main__":
+
+    poly_ZZ.<x> = ZZ[]
+
+    terms = [x^i * (1-x)^(3-i) for i in range(4)]
+
+    p_values = set()
+
+    for coeffs in itertools.product(range(2), range(4), range(4), range(2)):
+
+        poly = sum([c * t for c,t in zip(terms, coeffs)]) - 1/2
+
+        print(poly)
+
+        if poly == 0:
+            continue
+
+        roots = poly.real_roots()
+        roots = [r for r in roots if r>0 and r<1]
+
+        p_values.update(roots)
+
+

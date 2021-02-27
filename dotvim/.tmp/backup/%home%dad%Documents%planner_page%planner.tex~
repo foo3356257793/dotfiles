@@ -1,0 +1,131 @@
+\documentclass[20pt,landscape]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+
+\usepackage{fontspec}
+
+\setmainfont{Alte Haas Grotesk}
+
+\usepackage[margin=0.25in]{geometry}
+
+\usepackage{multicol}
+
+\usepackage{colortbl}
+\usepackage[x11names]{xcolor}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+
+\pagenumbering{gobble}
+
+\def\blank{\rule{2in}{0.15mm}}
+
+\definecolor{anti-flashwhite}{rgb}{0.50, 0.50, 0.50}
+
+\newcommand*{\grayline}{%
+	\arrayrulecolor{anti-flashwhite}
+  \hline
+	\arrayrulecolor{black}
+}
+
+\def\todoblank{\rule{3in}{0.15mm}}
+
+%opening
+\title{Daily Planner}
+\author{}
+\date{Date: \blank}
+
+\begin{document}
+
+\centering
+{\Huge \bf DAILY PLANNER}
+
+\
+
+{\large \bf Date: \blank}
+
+\
+
+\begin{multicols}{2}
+
+\centering
+
+
+  {\Large \bf To Do}
+
+  \vspace{0.5em}
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+  \todoblank
+
+
+  \columnbreak
+
+
+  {\Large \bf Meal Plan}
+
+  \
+
+  \begin{tabular}{ c | c | c }
+    %\hline
+    {\bf Item} & {\bf Cal} & {\bf Total} \\
+    \hline \hspace{3in} & \hspace{0.75in} & \hspace{0.75in} \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & \\
+    \grayline \hspace{3in} & & 
+  \end{tabular}
+
+
+\end{multicols}
+
+\end{document}
+

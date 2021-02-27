@@ -1,0 +1,1 @@
+bool is_divisible_by(const _TYPE_IN &in) const;

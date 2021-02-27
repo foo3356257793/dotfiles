@@ -1,14 +1,7 @@
-#include <algorithm>
-#include <iostream>
-#include <memory>
-#include <numeric>
-#include <tuple>
-#include <vector>
+#include <dad.hpp>
 
-using namespace std;
+int main(int argc, char *argv[]){
 
-int main() {
-
-  cout << "Hello, world!" << endl;
+  print("Hello, world!\n");
 
 }

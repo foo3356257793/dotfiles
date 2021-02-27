@@ -609,8 +609,20 @@ augroup cShortcuts
   au FileType c,cpp :onoremap <buffer> in{ :<c-u>normal!f{vi{<cr>
   au FileType c,cpp :onoremap <buffer> ip{ :<c-u>normal!F{vi{<cr>
   au FileType c,cpp :inoremap <buffer> {<cr> {<cr>}<esc>O
+  au FileType c,cpp :nnoremap <buffer> <localleader>d oDEBUG(<esc>"=printf("%d",line('.'))<c-M>pa,);<esc>hi
 augroup END
 " }}}
+" }}}
+" ===== go ===== {{{
+augroup goSettings
+  au!
+  au bufnewfile *.go 0r $HOME/.vim/template.go
+  au bufnewfile *.go exe 'normal 9G'
+augroup END
+augroup goShortcuts
+  au!
+  au FileType go :inoremap <buffer> {<cr> {<cr>}<esc>O
+augroup END
 " }}}
 " ===== rust ===== {{{
 augroup rustSettings
@@ -693,7 +705,7 @@ augroup markdownSettings
   au FileType markdown setlocal foldlevel=99
   au FileType markdown nnoremap <buffer> go o*<space>
   au FileType markdown nnoremap <buffer> gO O*<space>
-  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'cpp', 'vim', 'yaml']
+  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'cpp', 'vim', 'yaml', 'julia']
   " fixes highlighting issue with breaking up items in a list
   au FileType markdown :syn clear markdownCodeBlock
   hi markdownH1 cterm=bold ctermbg=2 ctermfg=0
@@ -746,8 +758,16 @@ augroup END
 
 " }}}
 " === julia ==== {{{
-let g:julia_target = "right"
-au FileType julia :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:julia_target . ' "include(\"' . expand('%') . '\")" Enter')<cr>
+augroup juliaSettings
+  au!
+  au bufnewfile *.jl 0r $HOME/.vim/julia_template.jl
+  let g:julia_target = "right"
+  au FileType julia :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:julia_target . ' "include(\"' . expand('%') . '\")" Enter')<cr>
+
+  au FileType julia let maplocalleader="\<Space>"
+  au FileType julia :nnoremap <buffer> <localleader>lt ofunction TEST_XXX()<cr>@testset "TEST XXX" begin<CR>end<CR>end<esc>{=apvap:s/XXX/
+  au FileType julia :nnoremap <buffer> <localleader>lf ofunction<cr>end<esc>kA<space>
+augroup END
 " }}}
 " === Makefile === {{{
 augroup makefileSettings
@@ -785,6 +805,7 @@ augroup END
 "   - command to pull up a list of all the bookmarks (parse this file...)
 "   - write my own fzf command to manage bookmarks (or use a plugin...)
 "     - call it and it lists bookmarks which are accessible
+"   - keeping a tmux session open has made me use these less
 " autocomplete:
 "   - youcompleteme: needs npm
 "   - COC: needs node
@@ -797,13 +818,6 @@ augroup END
 "   - only feature which doesn't work out of the box would be images
 "   - If I really wanted, could include some kind of LaTeX/html compilation to
 "     make something really interesting
-" send sage to tmux pane
-"   - wrote a function to send load file to a split pane
-"   - wrote tmux function to setup split panes with Sage on one side
-"   - unclear how useful this will become (it's super fast though)
-"   - tmux function to switch between windows Vim/Sage??
-" vim-startify
-"   - didn't use the recently used: shifting to bookmarking
 " }}}
 " === tried, don't want === {{{
 " stuff from emacs that I have tried out but I don't want here
@@ -828,4 +842,5 @@ augroup END
 "     parens)
 " - do I need surround?
 "     I installed it just in case I want it later
+" - vim-startify: didn't use the recently used: shifting to bookmarking
 " }}}

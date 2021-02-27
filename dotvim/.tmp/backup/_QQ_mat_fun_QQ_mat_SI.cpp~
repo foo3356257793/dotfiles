@@ -1,0 +1,34 @@
+QQ_mat translate(const std::function<void(fmpq_mat_t,const fmpq_mat_t,const slong)> &fun,
+    const _QQ_mat_1 &in_1, const _SI in_2){
+  auto out = QQ_mat(in_1.nrows(),in_1.ncols());
+  fun(out.data,in_1.data,in_2);
+  return out;
+}
+
+QQ_mat translate(const std::function<void(fmpq_t,const fmpq_t,const slong)> &fun,
+    const _QQ_mat_1 &in_1, const _SI in_2){
+  auto out = QQ_mat(in_1.nrows(),in_1.ncols());
+
+  for(int row=0; row<in_1.nrows(); row++){
+    for(int col=0; col<in_1.ncols(); col++){
+      fun(out[row][col].data,in_1[row][col].data,in_2);
+    }
+  }
+
+  return out;
+}
+
+QQ_mat operator*(const _QQ_mat_1 &in_1, const _SI in_2)
+{
+  return translate(fmpq_mul_si,in_1,in_2);
+}
+
+QQ_mat operator*(const _SI in_1, const _QQ_mat_1 &in_2)
+{
+  return in_2 * in_1;
+}
+
+QQ_mat operator/(const _QQ_mat_1 &in_1, const _SI in_2)
+{
+  return in_1/ZZ(in_2);
+}

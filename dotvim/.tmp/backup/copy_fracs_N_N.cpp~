@@ -1,0 +1,10 @@
+#ifndef _isptr
+_TYPE::_TYPE(const _ZZ_TYPE_1 &in_1, const _ZZ_TYPE_2 &in_2) : _TYPE() {
+  fmpq_set_fmpz_frac(data, in_1.data, in_2.data);
+}
+#endif
+
+_TYPE& _TYPE::operator=(const std::tuple<_ZZ_TYPE_1,_ZZ_TYPE_2> &in) {
+  fmpq_set_fmpz_frac(data, get<0>(in).data, get<1>(in).data);
+  return *this;
+}

@@ -1,0 +1,16 @@
+ZZ::ZZ(){
+  fmpz_init(data);
+}
+
+ZZ::ZZ(const ZZ &in) : ZZ() {
+  fmpz_set(data,in.data);
+}
+
+ZZ::ZZ(ZZ &&in) noexcept : ZZ() {
+  fmpz_swap(data,in.data);
+}
+
+ZZ &ZZ::operator=(ZZ &&in) noexcept {
+  fmpz_swap(data, in.data);
+  return *this;
+}

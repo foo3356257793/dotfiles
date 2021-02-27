@@ -1,0 +1,157 @@
+#pragma once
+
+#include <algorithm>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+#include <compare>
+
+#include <flint/flint.h>
+#include <flint/fmpz.h>
+
+
+template <typename T>
+struct __flint_type {
+
+  T data;
+
+  //explicit operator T() { return data; }
+  //explicit operator const T() const { return (const T) data; }
+
+  void init(T a);
+  void clear(T a);
+
+  void assign(T a, const T b);
+  void assign(T a, const int64_t b);
+  void assign(T a, const uint64_t b);
+  void assign(T a, const double b);
+  void assign(T a, const std::string b);
+
+  void add(T a, const T b, const T c);
+  void add(T a, const T b, const uint64_t c);
+  void add(T a, const T b, const int64_t c);
+  void add(T a, const T b, const double c);
+
+  void addeq(T a, const T c);
+  void addeq(T a, const uint64_t c);
+  void addeq(T a, const int64_t c);
+  void addeq(T a, const double c);
+
+  #if 0
+  void sub(T a[1], T b[1], const T c[1]);
+  void sub(T a[1], T b[1], const uint64_t c);
+  void sub(T a[1], T b[1], const int64_t c);
+  void sub(T a[1], T b[1], const double c);
+
+  void mul(T a[1], T b[1], const T c[1]);
+  void mul(T a[1], T b[1], const uint64_t c);
+  void mul(T a[1], T b[1], const int64_t c);
+  void mul(T a[1], T b[1], const double c);
+
+  void div(T a[1], T b[1], const T c[1]);
+  void div(T a[1], T b[1], const uint64_t c);
+  void div(T a[1], T b[1], const int64_t c);
+  void div(T a[1], T b[1], const double c);
+
+  void mod(T a[1], T b[1], const T c[1]);
+  void mod(T a[1], T b[1], const uint64_t c);
+  void mod(T a[1], T b[1], const int64_t c);
+  void mod(T a[1], T b[1], const double c);
+  #endif
+
+  __flint_type() {
+    init(data);
+  }
+
+  __flint_type(const __flint_type &other) : __flint_type() { // copy constructor
+    assign(data, other.data);
+  }
+
+  __flint_type(__flint_type &&other) noexcept : __flint_type() { // move constructor
+    std::swap(data,other.data);
+  }
+
+  __flint_type &operator=(const __flint_type &other) { // copy assignment
+    assign(data, other.data);
+  }
+
+  __flint_type &operator=(__flint_type &&other) noexcept { // move assignment
+    std::swap(data, other.data);
+  }
+
+  __flint_type(const uint64_t &other) : __flint_type() { assign(data, other); }
+  __flint_type(const int64_t &other) : __flint_type() {
+    assign(data, other); }
+  __flint_type(const double &other) : __flint_type() { assign(data, other); }
+  __flint_type(const std::string &other) : __flint_type() { assign(data, other); }
+
+  #if 0
+  __flint_type &operator=(const uint64_t &other) { assign((T*) *this, other); }
+  __flint_type &operator=(const int64_t &other) { assign((T*) *this, other); }
+  __flint_type &operator=(const double &other) { assign((T*) *this, other); }
+  __flint_type &operator=(const std::string &other) { assign((T*) *this, other); }
+  #endif
+
+  ~__flint_type() { clear(data); }
+
+  __flint_type& operator+=(const __flint_type &rhs) {
+    addeq(data, rhs.data);
+    return *this;
+  }
+  __flint_type& operator+=(const uint64_t &rhs) {
+    addeq(data, rhs);
+    return *this;
+  }
+  __flint_type& operator+=(const int64_t &rhs) {
+    addeq(data, rhs);
+    return *this;
+  }
+  __flint_type& operator+=(const double &rhs) {
+    addeq(data, rhs);
+    return *this;
+  }
+
+  __flint_type operator+(const __flint_type &rhs) {
+    auto result = __flint_type();
+    add(result.data, data, rhs.data);
+    return result;
+  }
+
+  #if 0
+  ZZ& operator+=(const ZZ &rhs);
+  ZZ& operator+=(const ZZ_mul &other);
+
+  ZZ& operator-=(const ZZ &rhs);
+  ZZ& operator-=(const ZZ_mul &other);
+
+  ZZ& operator*=(const ZZ &rhs);
+  ZZ& operator%=(const ZZ &rhs);
+  ZZ& operator/=(const ZZ &rhs);
+  ZZ& operator-();
+  ZZ& addmul(const ZZ &in0, const ZZ &in1);
+  ZZ& submul(const ZZ &in0, const ZZ &in1);
+
+  ZZ_add operator+(const ZZ &rhs) const;
+  ZZ_sub operator-(const ZZ &rhs) const;
+  ZZ_mul operator*(const ZZ &rhs) const;
+
+  ZZ operator*(const ZZ_mul &rhs) const;
+  ZZ operator*(const int64_t rhs) const;
+
+  ZZ operator%(const ZZ &rhs) const;
+  ZZ operator/(const ZZ &rhs) const;
+  ZZ operator-() const;
+
+  bool operator==(const ZZ &rhs) const;
+
+  strong_ordering operator<=>(const ZZ &rhs) const;
+
+  bool is_divisible_by(const ZZ &poss_factor) const;
+
+  ZZ& next_prime();
+  #endif
+};

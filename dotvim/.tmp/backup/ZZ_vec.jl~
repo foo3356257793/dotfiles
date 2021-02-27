@@ -1,0 +1,30 @@
+using Nemo
+using Random
+using Formatting
+using Test
+using Statistics
+
+import Base: log2
+import LinearAlgebra: lq, norm
+
+using LoadFlint
+const libflint = LoadFlint.libflint
+
+ZZ = FlintZZ
+QQ = FlintQQ
+
+Nemo.getindex(m::fmpz_mat, index::Int64) = begin
+    #=
+    # return a row matrix, unless there is only one row,
+    # in which case return the entry at column 'index'
+    =#
+    if nrows(m) == 1
+        m[1,index]
+    else
+        view(m,index,1,index,ncols(m))
+    end
+end
+
+m = identity_matrix(ZZ,3)
+
+myrow = m[1]

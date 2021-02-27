@@ -1,0 +1,17 @@
+#ifdef _def
+  #define _initfun _initfun_paster(_ftype)
+  #define _setfun _setfun_paster(_ftype)
+  #define _swapfun _swapfun_paster(_ftype)
+  #define _getfun _getfun_paster(_ftype)
+  #define _clearfun _clearfun_paster(_ftype)
+  #define _raw_t _raw_t_paster(_ftype)
+  #define _rawptr _raw_ptr_paster(_ftype)
+#else
+  #undef _rawptr
+  #undef _raw_t
+  #undef _clearfun
+  #undef _getfun
+  #undef _swapfun
+  #undef _setfun
+  #undef _initfun
+#endif

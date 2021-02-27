@@ -1,0 +1,15 @@
+#define _TYPE_IN_1 _TYPE_NEW
+
+#define _TYPE_IN_2 ulong
+#include "fun_NB.cpp"
+#undef _TYPE_IN_2
+
+#undef _TYPE_IN_1
+
+#define _TYPE_IN_1 _TYPE_PTR
+
+#define _TYPE_IN_2 ulong
+#include "fun_NB.cpp"
+#undef _TYPE_IN_2
+
+#undef _TYPE_IN_1

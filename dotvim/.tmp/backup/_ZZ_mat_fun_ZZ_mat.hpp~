@@ -1,0 +1,5 @@
+ZZ_mat translate(const std::function<void(fmpz_mat_t, const fmpz_mat_t)> &fun,
+    const _ZZ_mat_1 &in);
+
+std::tuple<ZZ_mat,ZZ> inverse(const _ZZ_mat_1 &in);
+ZZ_mat inverse_strict(const _ZZ_mat_1 &in);

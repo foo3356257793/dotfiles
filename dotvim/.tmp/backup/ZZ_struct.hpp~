@@ -1,0 +1,57 @@
+#define _TYPE _ZZ
+
+struct _TYPE {
+
+  // auto stuff
+  #include "ZZ_auto_init.hpp"
+  #include "ZZ_auto_struct.hpp"
+
+  #include "../compare_star.hpp"
+  #include "../addmul_star.hpp"
+  #include "../fmma_eq_star.hpp"
+
+  #define _funname_eq pow_eq
+  #include "../fun_NN_eq_star.hpp"
+  #undef _funname_eq
+
+  _TYPE &next_prime_eq(int proved);
+  _TYPE &next_prime_eq();
+
+  bool is_prime() const;
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator<<=
+  #define _funnative _fun_paster(_ftype,mul_2exp)
+  #include "../fun_ui_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator<<=
+  #define _funnative _fun_paster(_ftype,mul_2exp)
+  #include "../fun_si_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator>>=
+  #define _funnative _fun_paster(_ftype,tdiv_q_2exp)
+  #include "../fun_ui_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator>>=
+  #define _funnative _fun_paster(_ftype,tdiv_q_2exp)
+  #include "../fun_si_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+
+};
+
+#undef _TYPE
+

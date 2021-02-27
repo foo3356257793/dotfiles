@@ -1,0 +1,276 @@
+[==========] Running 4 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 4 tests from Tests
+[ RUN      ] Tests.factorization
+START print ...
+31 * 94^-1END print ...
+
+START print ...
+END print ...
+2^3 * 31
+START print ...
+END print ...
+2^6 * 31^2
+START print ...
+1 is zero? true
+copy
+copy
+START print ...
+copy
+copy
+copy
+copy
+copy
+END print ...
+31 * 94^-1
+[       OK ] Tests.factorization (0 ms)
+[ RUN      ] Tests.formal_sum
+copy
+copy
+copy
+copy
+copy
+copy
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+3*10 - 5*70 - 123456789123456789
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+-3*10 + 5*70 + 123456789123456789
+copy
+copy
+copy
+copy
+copy
+copy
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+45*37 + 89*71 + 90909090909090909090909090*93
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+-3*10 + 45*37 + 5*70 + 89*71 + 90909090909090909090909090*93 + 123456789123456789
+copy
+copy
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+-79*2 - 3*10 + 45*37 + 5*70 + 89*71 + 90909090909090909090909090*93 + 123456789123456789
+[       OK ] Tests.formal_sum (0 ms)
+[ RUN      ] Tests.factor
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+2 * 3 * 5 * 7 * 11^2 * 13
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+1031 * 32771 * 1048583 * 33554467 * 40564819383764894834222235126097
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+primes:
+1031 + 32771 + 1048583 + 33554467
+START print ...
+copy
+copy
+END print ...
+composites:
+40564819383764894834222235126097
+[       OK ] Tests.factor (4 ms)
+[ RUN      ] Tests.coprime
+copy
+copy
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+start  = 2520 * 110250
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+result = 2^4 * 5^4 * 7^3 * 9^2
+START print ...
+copy
+copy
+copy
+copy
+copy
+copy
+END print ...
+primes:
+4*2 + 4*5 + 3*7
+START print ...
+copy
+copy
+END print ...
+composites:
+2*9
+[       OK ] Tests.coprime (0 ms)
+[----------] 4 tests from Tests (4 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test suite ran. (5 ms total)
+[  PASSED  ] 4 tests.

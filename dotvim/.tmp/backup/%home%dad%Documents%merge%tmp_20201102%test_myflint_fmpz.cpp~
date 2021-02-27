@@ -1,0 +1,137 @@
+#include "myflint_fmpz.hpp"
+
+// TODO: put this somewhere...
+  template<typename T>
+auto repr(const T& thing)
+{
+  stringstream ss;
+  ss << thing;
+  return ss.str();
+}
+
+// testing
+#include <gtest/gtest.h>
+
+TEST(Tests, TestInit) {
+
+  auto A = Fmpz(2);
+  auto B = Fmpz(A);
+  auto C = Fmpz(repr(A));
+
+  fmpz_t d;
+  fmpz_init_set_si(d,2);
+
+  auto D = Fmpz(d);
+
+  EXPECT_EQ(A,2);
+  EXPECT_EQ(A,B);
+  EXPECT_EQ(A,C);
+  EXPECT_EQ(A,D);
+
+  // cleanup C-style stuff
+  fmpz_clear(d);
+}
+
+TEST(Tests, TestAddition) {
+
+  auto A = Fmpz(2);
+  auto B = Fmpz("123456789123456789123456789123456789");
+  B += A;
+
+  auto C = Fmpz("123456789123456789123456789123456791");
+
+  EXPECT_EQ(B,C);
+
+  C = A+B;
+
+  auto D = Fmpz("123456789123456789123456789123456793");
+
+  EXPECT_EQ(C,D);
+}
+
+TEST(Tests, TestSubtraction) {
+
+  auto A = Fmpz(2);
+  auto B = Fmpz("123456789123456789123456789123456789");
+  B -= A;
+
+  auto C = Fmpz("123456789123456789123456789123456787");
+
+  EXPECT_EQ(B,C);
+
+  C = A-C;
+
+  auto D = Fmpz("-123456789123456789123456789123456785");
+
+  EXPECT_EQ(C,D);
+}
+
+TEST(Tests, TestMultiplication) {
+
+  auto A = Fmpz(2);
+  auto B = Fmpz("123456789123456789123456789123456789");
+  B *= A;
+
+  auto C = Fmpz("246913578246913578246913578246913578");
+
+  EXPECT_EQ(B,C);
+
+  C = A*C;
+
+  auto D = Fmpz("493827156493827156493827156493827156");
+
+  EXPECT_EQ(C,D);
+}
+
+TEST(Tests, TestAddmul) {
+
+  auto A = Fmpz(2);
+  auto B = Fmpz("123456789123456789123456789123456789");
+  auto C = Fmpz("479");
+
+  A.addmul(B,C);
+
+  auto D = Fmpz("59135801990135801990135801990135801933");
+
+  EXPECT_EQ(A,D);
+
+  A.submul(B,C);
+
+  EXPECT_EQ(A,2);
+
+}
+
+TEST(Tests, TestMod) {
+
+  auto B = Fmpz("123456789123456789123456789123456789");
+  auto C = Fmpz("479");
+
+  B %= C;
+
+  EXPECT_EQ(B,91);
+
+  B = Fmpz("123456789123456789123456789123456789");
+  auto A = B % 479;
+
+  EXPECT_EQ(A,91);
+
+}
+
+TEST(Tests, TestInequality) {
+
+  auto B = Fmpz("123456789123456789123456789123456789");
+  auto C = Fmpz("479");
+
+  EXPECT_GT(B,C);
+  EXPECT_GE(B,C);
+  EXPECT_LE(C,B);
+  EXPECT_LT(C,B);
+
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

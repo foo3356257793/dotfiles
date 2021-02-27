@@ -1,0 +1,661 @@
+#!/usr/bin/python3
+
+import os
+import itertools
+
+SUBTYPES = {"si" :
+           [f"int{b}_t" for b in [2**i for i in range(3,7)]],
+           "ui" :
+           [f"uint{b}_t" for b in [2**i for i in range(3,7)]],
+           "f" :
+           ["float","double"]
+           }
+SUBTYPES["int"] = SUBTYPES["si"] + SUBTYPES["ui"]
+
+class TypeName:
+    def __init__(self,name,new=None,byref=True):
+        self.name = name
+        self.new = new
+        self.byref = byref
+
+    def subtypes(self):
+        if self.name in SUBTYPES:
+            return SUBTYPES[self.name]
+        return [self.name]
+
+    def __repr__(self):
+        out = f"TypeName: {self.name}"
+        if self.new:
+            out += f" ({self.new})"
+        return out
+
+    def __hash__(self):
+        return hash(tuple([self.name,self.new,self.byref]))
+
+    def __eq__(self,other):
+        return self.name == other.name
+
+    def out_type(self):
+        if self.new:
+            return self.new
+        return self.name
+
+    def out_type_eq(self):
+        if not self.new:
+            raise ValueError("Expected a new type for eq function")
+        return self.new
+
+    def in_type(self):
+        suffix = ""
+        if self.byref:
+            suffix = "&"
+        if self.new:
+            return self.new + suffix
+        return self.name + suffix
+
+    def call_type(self,name="in"):
+        suffix = ""
+        if self.new:
+            suffix = ".data"
+        return name + suffix
+
+    def call_type_eq(self,name="in"):
+        if name == "data":
+            return name
+        suffix = ""
+        if self.new:
+            suffix = ".data"
+        return name + suffix
+
+# type shortcuts
+ZZ_t = TypeName("fmpz","ZZ")
+
+si_t = [TypeName(f"int{2**i}_t",byref=False) for i in range(3,7)]
+ui_t = [TypeName(f"uint{2**i}_t",byref=False) for i in range(3,7)]
+int_t = si_t + ui_t
+
+f_t = [TypeName(name,byref=False) for name in ["float","double"]]
+string_t = TypeName("std::string",byref=False)
+
+class SourceCode:
+    def __init__(self):
+        self.head = []
+        self.foot = []
+        self.cpp = []
+        self.structs = {}
+
+    def __call__(self,name,content):
+        if not isinstance(name,TypeName):
+            raise ValueError("Expected to store based on TypeName")
+        if name in self.structs:
+            self.structs[name].append(content)
+        else:
+            self.structs[name] = [content]
+
+    def __add__(self,other):
+        result = SourceCode()
+
+        result.head = self.head + other.head
+        result.foot = self.foot + other.foot
+        result.cpp = self.cpp + other.cpp
+
+        result.structs = {}
+        for key,value in self.structs.items():
+            result[key] = value
+            if key in other:
+                result[key] += other[key]
+        for key,value in other.structs.items():
+            if not key in self:
+                result[key] = value
+
+        return result
+
+    def __iadd__(self,other):
+        self.head += other.head
+        self.foot += other.foot
+        self.cpp += other.cpp
+
+        for key, value in other.structs.items():
+            if key in self.structs:
+                self.structs[key] += value
+            else:
+                self.structs[key] = value
+
+        return self
+
+    def struct_to_str(self,key,value=None):
+
+        if not key in self.structs:
+            raise ValueError("key not in structs")
+
+        out = f"struct {key.new} {{\n"
+        out += f"{key.name}_t data;\n\n"
+        if value is None:
+            value = self.structs[key]
+        out += "\n\n".join(value)
+        out += f"}};\n"
+
+        return out
+
+    def write(self,hpp_fname,cpp_fname):
+
+        with open(hpp_fname,'w') as f:
+            f.write("\n".join(self.head))
+            f.write("\n")
+
+            for key,value in self.structs.items():
+                f.write(self.struct_to_str(key,value))
+                f.write("\n")
+
+            f.write("\n\n".join(self.foot))
+        os.system(f"clang-format -i --style=Google {hpp_fname}")
+
+        with open(cpp_fname,'w') as f:
+            f.write("".join(self.cpp))
+        os.system(f"clang-format -i --style=Google {cpp_fname}")
+
+
+
+
+class FunArg:
+    def __init__(self,typename,out=False,const=True,default=None):
+        self.typename = typename
+        self.out = out
+        self.const = const
+        self.default = default
+
+    def __repr__(self):
+        out = f"FunArg: {self.typename}"
+        if self.out:
+            out += " (out)"
+        if self.default:
+            out += f" (default = {self.default})"
+        return out
+
+    def out_type(self):
+        if not self.out:
+            return None
+        return self.typename.out_type()
+
+    def out_type_eq(self):
+        if not self.out:
+            raise ValueError("Expected a valid type for eq")
+        return self.typename.out_type_eq()
+
+    def var_decl(self,name="in"):
+        out = ""
+        if self.const:
+            out += "const "
+        out += self.typename.in_type()
+        out += f" {name}"
+        return out
+
+
+class FunTranslation:
+
+    def __init__(self,name,new,args,out_value=None,in_check=None,out_check=None,
+                 is_op=False,commutes=False):
+        self.name = name
+        self.new = new
+        self.args = args
+        self.out_value = out_value
+        self.in_check = in_check
+        self.out_check = out_check
+        self.is_op = is_op
+        self.commutes = commutes
+
+    def __repr__(self):
+        out = f"FunTranslation: {self.name} -> {self.new}"
+        return out
+
+    def struct_typename(self):
+
+        out_args = [arg for arg in self.args if arg.out]
+
+        if len(out_args) != 1:
+            raise ValueError("Expected one out type")
+
+        return out_args[0].typename
+
+    def out_type(self):
+
+        out_args = [arg for arg in self.args if arg.out]
+
+        if len(out_args) == 0:
+            return "void"
+
+        if len(out_args) == 1:
+            return out_args[0].out_type()
+
+        out_types = [arg.out_type()]
+        out = ", ".join(out_types)
+        out = f"tuple<{out}>"
+
+        return out
+
+    def out_type_eq(self):
+
+        out_args = [arg for arg in self.args if arg.out]
+
+        if len(out_args) != 1:
+            raise ValueError("For eq type expecting single out")
+
+        return out_args[0].out_type_eq()
+
+    def var_decl(self):
+
+        in_args = [arg for arg in self.args if not arg.out]
+
+        if len(in_args) == 0:
+            return ""
+
+        if len(in_args) == 1:
+            return in_args[0].var_decl(name="in")
+
+        out_strings = [arg.var_decl(name=f"in_{index+1}") for index,arg in
+                       enumerate(in_args)]
+        out = ", ".join(out_strings)
+
+        return out
+
+    def var_decl_commutes(self):
+
+        in_args = [arg for arg in self.args if not arg.out]
+
+        if len(in_args) < 2:
+            raise ValueError("commuting doesn't make sense with {len(in_args)} inputs")
+
+        if len(in_args) > 2:
+            raise NotImplementedError("commuting with {len(in_args)} variables")
+
+        out_strings = [arg.var_decl(name=f"in_{index+1}") for index,arg in
+                       enumerate(in_args)]
+
+        out_strings.reverse()
+
+        out = ", ".join(out_strings)
+
+        return out
+
+    def var_decl_eq(self):
+
+        out_type = self.struct_typename()
+
+        in_args = [arg for arg in self.args if not arg.out]
+        index = 0
+        found_out_match = False
+        while (not found_out_match) and (index < len(in_args)):
+            arg = in_args[index]
+            index += 1
+            if arg.typename == out_type:
+                found_out_match = True
+
+        if not found_out_match:
+            raise ValueError("Couldn't match out type to an in type!")
+
+        in_args.pop(index-1)
+
+        if len(in_args) == 0:
+            return ""
+
+        if len(in_args) == 1:
+            return in_args[0].var_decl(name="in")
+
+        out_strings = [arg.var_decl(name=f"in_{index+1}") for index,arg in
+                       enumerate(in_args)]
+        out = ", ".join(out_strings)
+
+        return out
+
+    def decl(self):
+
+        out = SourceCode()
+
+        fun_name = self.new
+        if self.is_op:
+            fun_name = f"operator{fun_name}"
+
+        decl_str = f"{self.out_type()} {fun_name}({self.var_decl()})\n"
+
+        out.foot.append(decl_str + ";\n")
+        out.cpp.append(decl_str)
+
+        return out
+
+    def decl_commutes(self):
+
+        out = SourceCode()
+
+        fun_name = self.new
+        if self.is_op:
+            fun_name = f"operator{fun_name}"
+
+        decl_str = f"{self.out_type()} {fun_name}({self.var_decl_commutes()})\n"
+
+        out.foot.append(decl_str + ";\n")
+        out.cpp.append(decl_str)
+
+        return out
+
+    def decl_struct_fun(self):
+
+        fun_name = self.new + "_eq"
+        if self.is_op:
+            fun_name = f"operator{self.new}="
+
+        return f"{self.out_type_eq()}& {fun_name}({self.var_decl_eq()});\n"
+
+    def decl_eq(self):
+
+        fun_name = self.new + "_eq"
+        if self.is_op:
+            fun_name = f"operator{self.new}="
+
+        return f"{self.out_type_eq()}& {self.out_type_eq()}::{fun_name}({self.var_decl_eq()})\n"
+
+    def alloc(self):
+
+        out_args = [arg for arg in self.args if arg.out]
+
+        if len(out_args) == 0:
+            return ""
+
+        if len(out_args) == 1:
+
+            arg = out_args[0]
+
+            if not arg.typename.new:
+                raise ValueError("Expecting output args to have new decl")
+            return f"auto out = {arg.typename.new}();\n"
+
+        out = ""
+        for index,arg in enumerate(out_args):
+            if not arg.typename.new:
+                raise ValueError("Expecting output args to have new decl")
+            out += f"auto out_{index+1} = {arg.typename.new}();\n"
+
+        return out
+
+    def var_names(self):
+
+        num_out = 0
+        num_in = 0
+        for arg in self.args:
+            if arg.out:
+                num_out += 1
+            else:
+                num_in += 1
+
+        out_index=1
+        in_index=1
+
+        out = []
+        for arg in self.args:
+
+            if arg.out:
+                if num_out > 1:
+                    out.append(f"out_{out_index}")
+                    out_index += 1
+                else:
+                    out.append("out")
+            else:
+                if num_in > 1:
+                    out.append(f"in_{in_index}")
+                    in_index += 1
+                else:
+                    out.append("in")
+
+        return out
+
+    def var_names_eq(self):
+
+        num_out = 0
+        num_in = 0
+        for arg in self.args:
+            if arg.out:
+                num_out += 1
+                out_typename = arg.typename
+            else:
+                num_in += 1
+
+        if num_out != 1:
+            raise ValueError("Expected single out for eq")
+
+        out_index=1
+        in_index=1
+        found_out_match = False
+
+        out = []
+        for arg in self.args:
+
+            if arg.out:
+                out.append("data")
+            else:
+                if not found_out_match and arg.typename == out_typename:
+                    out.append("data")
+                    found_out_match = True
+                elif num_in > 2:
+                    out.append(f"in_{in_index}")
+                    in_index += 1
+                else:
+                    out.append("in")
+
+        return out
+
+    def call_line(self):
+
+        out = ""
+        if self.out_value:
+            out += f"{self.out_value.name} success = "
+
+        out += f"{self.name}("
+
+        vnames = self.var_names()
+
+        call_names = [arg.typename.call_type(name=vname) for arg,vname in
+                      zip(self.args,vnames)]
+        out += ", ".join(call_names)
+        out += ");\n"
+
+        return out
+
+    def call_line_eq(self):
+
+        out = ""
+        if self.out_value:
+            out += f"{self.out_value.name} success = "
+
+        out += f"{self.name}("
+
+        vnames = self.var_names_eq()
+
+        call_names = [arg.typename.call_type_eq(name=vname) for arg,vname in
+                      zip(self.args,vnames)]
+        out += ", ".join(call_names)
+        out += ");\n"
+
+        return out
+
+    def return_line(self):
+
+        out_args = [arg for arg in self.args if arg.out]
+
+        if len(out_args) == 0:
+            return ""
+
+        if len(out_args) == 1:
+            return "return output;\n"
+
+        tuple_string = ", ".join([f"out_{index+1}" for index in
+                                 range(len(out_args))])
+        return f"tuple({tuple_string});\n"
+
+    def return_line_eq(self):
+
+        return "return *this;\n"
+
+    def full_ret(self):
+
+        out = SourceCode()
+
+        out += self.decl()
+        out.cpp.append("{\n")
+
+        if self.in_check:
+            out.cpp.append(self.in_check + "\n")
+
+        out.cpp.append(self.alloc())
+        out.cpp.append(self.call_line())
+
+        if self.out_check:
+            out.cpp.append(self.out_check + "\n")
+
+        out.cpp.append(self.return_line())
+        out.cpp.append("}\n")
+        out.cpp.append("\n")
+
+        return out
+
+    def full_commutes(self):
+
+        out = SourceCode()
+
+        out += self.decl_commutes()
+        out.cpp.append("{\n")
+
+        if self.in_check:
+            out.cpp.append(self.in_check + "\n")
+
+        out.cpp.append(self.alloc())
+        out.cpp.append(self.call_line())
+
+        if self.out_check:
+            out.cpp.append(self.out_check + "\n")
+
+        out.cpp.append(self.return_line())
+        out.cpp.append("}\n")
+        out.cpp.append("\n")
+
+        return out
+
+    def full_eq(self):
+
+        out = SourceCode()
+
+        out(self.struct_typename(), self.decl_struct_fun())
+
+        out.cpp.append(self.decl_eq())
+        out.cpp.append("{\n")
+
+        if self.in_check:
+            out.cpp.append(self.in_check + "\n")
+
+        out.cpp.append(self.call_line_eq())
+
+        if self.out_check:
+            out.cpp.append(self.out_check + "\n")
+
+        out.cpp.append(self.return_line_eq())
+        out.cpp.append("}\n")
+        out.cpp.append("\n")
+
+        return out
+
+    def source(self):
+
+        out = SourceCode()
+
+        out_args = [arg for arg in self.args if arg.out]
+
+        if len(out_args) == 1:
+            arg = out_args[0]
+            if arg.typename.new:
+                out += self.full_eq()
+
+        out += self.full_ret()
+
+        if self.commutes:
+            out += self.full_commutes()
+
+        return out
+
+if __name__ == "__main__":
+
+    ZZ_out = FunArg(ZZ_t,out=True)
+    ZZ_in = FunArg(ZZ_t)
+
+    si_in = [FunArg(t) for t in si_t]
+    ui_in = [FunArg(t) for t in ui_t]
+
+    fun = FunTranslation("fmpz_add", "+",
+                         [ZZ_out,ZZ_in,ZZ_in],
+                         is_op=True)
+
+    #print(fun.full())
+
+    """
+    fun = FunTranslation("fmpz_sub", "-",
+                         [FunArg(ZZ_t,out=True),FunArg(ZZ_t),FunArg(ZZ_t)],
+                         is_op=True)
+
+    print(fun.full())
+    """
+
+    hpp_fname = "scratch_auto.hpp"
+    cpp_fname = "scratch_auto.cpp"
+
+    output = SourceCode()
+
+    output.cpp.append(f'#include "{hpp_fname}"\n\n')
+    output.cpp.append("using namespace std;\n\n")
+
+    funs = [
+            FunTranslation("fmpz_add", "+", [ZZ_out,ZZ_in,ZZ_in], is_op=True),
+            FunTranslation("fmpz_sub", "-", [ZZ_out,ZZ_in,ZZ_in], is_op=True),
+            FunTranslation("fmpz_mul", "*", [ZZ_out,ZZ_in,ZZ_in], is_op=True),
+            FunTranslation("fmpz_mod", "%", [ZZ_out,ZZ_in,ZZ_in], is_op=True),
+            FunTranslation("fmpz_cdiv_q", "cdiv", [ZZ_out,ZZ_in,ZZ_in]),
+            FunTranslation("fmpz_fdiv_q", "fdiv", [ZZ_out,ZZ_in,ZZ_in]),
+            FunTranslation("fmpz_tfiv_q", "tdiv", [ZZ_out,ZZ_in,ZZ_in]),
+            FunTranslation("fmpz_divexact", "divexact", [ZZ_out,ZZ_in,ZZ_in]),
+            FunTranslation("fmpz_gcd", "gcd", [ZZ_out,ZZ_in,ZZ_in]),
+            FunTranslation("fmpz_pow_fmpz", "pow", [ZZ_out,ZZ_in,ZZ_in]),
+            FunTranslation("fmpz_abs", "abs", [ZZ_out,ZZ_in])
+            ]
+
+    for arg in si_in:
+        funs += [
+                FunTranslation("fmpz_add_si", "+", [ZZ_out,ZZ_in,arg],
+                               is_op=True, commutes = True),
+                FunTranslation("fmpz_sub_si", "-", [ZZ_out,ZZ_in,arg],
+                               is_op=True, commutes = True),
+                FunTranslation("fmpz_mul_si", "*", [ZZ_out,ZZ_in,arg],
+                               is_op=True, commutes = True),
+                FunTranslation("fmpz_cdiv_q_si", "cdiv", [ZZ_out,ZZ_in,arg],
+                               commutes = False),
+                FunTranslation("fmpz_fdiv_q_si", "fdiv", [ZZ_out,ZZ_in,arg],
+                               commutes = False),
+                FunTranslation("fmpz_tdiv_q_si", "tdiv", [ZZ_out,ZZ_in,arg],
+                               commutes = False)
+                ]
+
+    for arg in ui_in:
+        funs += [
+                FunTranslation("fmpz_add_ui", "+", [ZZ_out,ZZ_in,arg],
+                               is_op=True, commutes = True),
+                FunTranslation("fmpz_sub_ui", "-", [ZZ_out,ZZ_in,arg],
+                               is_op=True, commutes = True),
+                FunTranslation("fmpz_mul_ui", "*", [ZZ_out,ZZ_in,arg],
+                               is_op=True, commutes = True),
+                FunTranslation("fmpz_cdiv_q_ui", "cdiv", [ZZ_out,ZZ_in,arg],
+                               commutes = False),
+                FunTranslation("fmpz_fdiv_q_ui", "fdiv", [ZZ_out,ZZ_in,arg],
+                               commutes = False),
+                FunTranslation("fmpz_tdiv_q_ui", "tdiv", [ZZ_out,ZZ_in,arg],
+                               commutes = False)
+                ]
+
+    for fun in funs:
+        output += fun.source()
+
+    output.write(hpp_fname=hpp_fname,cpp_fname=cpp_fname)

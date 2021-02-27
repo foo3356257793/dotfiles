@@ -1,0 +1,54 @@
+#define _TYPE _ZZ
+
+#include "ZZ_auto_init.cpp"
+#include "ZZ_auto_struct.cpp"
+
+#include "../compare_star.cpp"
+#include "../addmul_star.cpp"
+#include "../fmma_eq_star.cpp"
+
+#define _funname_eq pow_eq
+#define _funnative _fun_paster(_ftype,pow_fmpz)
+#define _checkinput int error =
+#define _checkoutput if(error=0) {throw invalid_argument("pow_eq failed");}
+#include "../fun_NN_eq_star.cpp"
+#undef _checkoutput
+#undef _checkinput
+#undef _funnative
+#undef _funname_eq
+
+_TYPE &_TYPE::next_prime_eq(int proved){
+  _fun_paster(_ftype,nextprime)(data,data,proved);
+  return *this;
+}
+
+_TYPE &_TYPE::next_prime_eq(){
+  return next_prime_eq(1);
+}
+
+bool _TYPE::is_prime() const{
+  return _fun_paster(_ftype,is_prime)(data);
+}
+
+#define _TYPE_OUT _TYPE
+#define _funname_eq operator<<=
+#define _funnative _fun_paster(_ftype,mul_2exp)
+#include "../fun_ui_eq.cpp"
+#undef _funnative
+#undef _funname_eq
+#undef _TYPE_OUT
+
+#define _TYPE_OUT _TYPE
+#define _funname_eq operator>>=
+#define _funnative _fun_paster(_ftype,tdiv_q_2exp)
+#include "../fun_ui_eq.cpp"
+#undef _funnative
+#undef _funname_eq
+#undef _TYPE_OUT
+
+#define _TYPE_OUT _TYPE
+#include "shifts_si.cpp"
+#undef _TYPE_OUT
+
+#undef _TYPE
+

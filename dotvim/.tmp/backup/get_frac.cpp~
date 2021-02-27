@@ -1,0 +1,13 @@
+_TYPE::operator std::tuple<ZZ,ZZ>() {
+
+  auto num = ZZ();
+  auto den = ZZ();
+
+  auto _num = _fmpz_promote(num.data);
+  auto _den = _fmpz_promote(den.data);
+
+  fmpq_get_mpz_frac(_num,_den,data);
+
+  return std::tuple(num,den);
+
+}

@@ -1,0 +1,11 @@
+ZZ_mat translate(const std::function<void(fmpz_mat_t,const fmpz_mat_t,const ulong)> &fun,
+    const _ZZ_mat_1 &in_1, const _UI in_2);
+
+ZZ_mat translate(const std::function<void(fmpz_t,const fmpz_t,const ulong)> &fun,
+    const _ZZ_mat_1 &in_1, const _UI in_2);
+
+ZZ_mat operator*(const _ZZ_mat_1 &in_1, const _UI in_2);
+ZZ_mat operator*(const _ZZ &in_1, const _ZZ_mat_1 &in_2);
+ZZ_mat divexact(const _ZZ_mat_1 &in_1, const _ZZ &in_2);
+
+ZZ_mat operator%(const _ZZ_mat_1 &in_1, const _ZZ &in_2);

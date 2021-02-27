@@ -1,0 +1,72 @@
+#define _funname operator+
+#define _funnative _fun_paster(_ftype,add)
+#include "../fun_NN_star.cpp"
+#undef _funnative
+#undef _funname
+
+#define _funname operator-
+#define _funnative _fun_paster(_ftype,sub)
+#include "../fun_NN_star.cpp"
+#undef _funnative
+#undef _funname
+
+#define _funname operator*
+#define _funnative _fun_paster(_ftype,mul)
+#include "../fun_NN_star.cpp"
+#undef _funnative
+#undef _funname
+
+#define _funname operator%
+#define _funnative _fun_paster(_ftype,mod)
+#include "../fun_NN_star.cpp"
+#undef _funnative
+#undef _funname
+
+#define _TYPE_OUT _TYPE
+#define _funname operator+=
+#define _funnative _fun_paster(_ftype,add_si)
+#include "../fun_Nsi.cpp"
+#undef _funnative
+#undef _funname
+#undef _TYPE_OUT
+
+#define _TYPE_OUT _TYPE
+#define _funname operator+=
+#define _funnative _fun_paster(_ftype,add_ui)
+#include "../fun_Nui.cpp"
+#undef _funnative
+#undef _funname
+#undef _TYPE_OUT
+
+#define _TYPE_OUT _TYPE
+#define _funname operator-=
+#define _funnative _fun_paster(_ftype,sub_si)
+#include "../fun_Nsi.cpp"
+#undef _funnative
+#undef _funname
+#undef _TYPE_OUT
+
+#define _TYPE_OUT _TYPE
+#define _funname operator-=
+#define _funnative _fun_paster(_ftype,sub_ui)
+#include "../fun_Nui.cpp"
+#undef _funnative
+#undef _funname
+#undef _TYPE_OUT
+
+#define _TYPE_OUT _TYPE
+#define _funname operator*=
+#define _funnative _fun_paster(_ftype,mul_si)
+#include "../fun_Nsi.cpp"
+#undef _funnative
+#undef _funname
+#undef _TYPE_OUT
+
+#define _TYPE_OUT _TYPE
+#define _funname operator*=
+#define _funnative _fun_paster(_ftype,mul_ui)
+#include "../fun_Nui.cpp"
+#undef _funnative
+#undef _funname
+#undef _TYPE_OUT
+

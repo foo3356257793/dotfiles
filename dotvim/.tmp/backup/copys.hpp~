@@ -1,0 +1,2 @@
+_TYPE(const _TYPE_IN &in);
+_TYPE &operator=(const _TYPE_IN &in);

@@ -1,0 +1,19 @@
+#from sage.all import next_prime
+from sympy import nextprime
+
+UPPER_BOUND = 2000000
+
+def prob_10(upper_bound):
+
+    p = 0
+
+    answer = 0;
+
+    while p <= upper_bound:
+        answer += p
+        #p = next_prime(p)
+        p = nextprime(p)
+
+    print(answer)
+
+prob_10(UPPER_BOUND)

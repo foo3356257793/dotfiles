@@ -1,0 +1,3 @@
+#define _TYPE_IN slong
+#include "shift_eq.cpp"
+#undef _TYPE_IN

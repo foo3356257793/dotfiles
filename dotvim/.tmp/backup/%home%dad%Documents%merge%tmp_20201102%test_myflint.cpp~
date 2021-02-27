@@ -1,0 +1,34 @@
+#include "myflint.hpp"
+
+// TODO: what are the correct C++ keywords to put on each kind of input?
+//
+// matrices
+// factoring
+
+// testing
+#include <gtest/gtest.h>
+
+TEST(Tests, TestMatrix) {
+
+  vector<vector<int64_t>> data = {{1,0},{-2,1}};
+
+  auto mat = FmpzMat(data);
+
+  print("{}\n", mat);
+}
+
+TEST(Tests, TestSquareBracketOperator) {
+
+  vector<vector<Fmpz>> data = {{Fmpz(1),Fmpz(0)},{Fmpz(-2),Fmpz(1)}};
+
+  auto mat = FmpzMat(data);
+
+  print("{}\n", mat);
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

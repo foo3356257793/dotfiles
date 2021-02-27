@@ -1,0 +1,2 @@
+bool operator==(const _TYPE_IN &in) const;
+strong_ordering operator<=>(const _TYPE_IN &in) const;

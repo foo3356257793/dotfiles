@@ -1,0 +1,6 @@
+#ifndef _isptr
+_TYPE(const _ZZ_TYPE &in);
+#endif
+
+_TYPE& operator=(const ZZ &in);
+_TYPE& operator=(const std::tuple<ZZ,ZZ> &in);

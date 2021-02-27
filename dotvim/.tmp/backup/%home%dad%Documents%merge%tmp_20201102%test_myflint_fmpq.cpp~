@@ -1,0 +1,138 @@
+#include "myflint_fmpq.hpp"
+
+// TODO: put this somewhere...
+  template<typename T>
+auto repr(const T& thing)
+{
+  stringstream ss;
+  ss << thing;
+  return ss.str();
+}
+
+// testing
+#include <gtest/gtest.h>
+
+TEST(Tests, TestInit) {
+
+  auto A = Fmpq("2/3");
+  auto B = Fmpq(2,3);
+  auto C = Fmpq(Fmpz(2),3);
+
+  fmpq_t d;
+  fmpq_init(d);
+  fmpq_set_si(d,2,3);
+
+  auto D = Fmpq(d);
+
+  EXPECT_EQ(A,B);
+  EXPECT_EQ(A,C);
+  EXPECT_EQ(A,D);
+
+  // cleanup C-style stuff
+  fmpq_clear(d);
+}
+
+TEST(Tests, TestAddition) {
+
+  auto A = Fmpq(2);
+  auto B = Fmpq("123456789123456789123456789123456789/711");
+  B += A;
+
+  auto C = Fmpq("13717421013717421013717421013717579/79");
+
+  EXPECT_EQ(B,C);
+
+  C = Fmpz(2)+B;
+
+  auto D = Fmpq("13717421013717421013717421013717737/79");
+
+  EXPECT_EQ(C,D);
+}
+
+TEST(Tests, TestSubtraction) {
+
+  auto A = Fmpq(2);
+  auto B = Fmpq("123456789123456789123456789123456789/711");
+  B -= A;
+
+  auto C = Fmpq("13717421013717421013717421013717263/79");
+
+  EXPECT_EQ(B,C);
+
+  C = Fmpz(2)-B;
+
+  auto D = Fmpq("-13717421013717421013717421013717105/79");
+
+  EXPECT_EQ(C,D);
+}
+
+TEST(Tests, TestMultiplication) {
+
+  auto A = Fmpq(2);
+  auto B = Fmpq("123456789123456789123456789123456789/711");
+  B *= A;
+
+  auto C = Fmpq("27434842027434842027434842027434842/79");
+
+  EXPECT_EQ(B,C);
+
+  C = A*C;
+
+  auto D = Fmpq("54869684054869684054869684054869684/79");
+
+  EXPECT_EQ(C,D);
+}
+
+TEST(Tests, TestAddmul) {
+
+  auto A = Fmpq(2);
+  auto B = Fmpq("123456789123456789123456789123456789/711");
+  auto C = Fmpz("479");
+
+  A.addmul(B,C);
+
+  auto D = Fmpq("6570644665570644665570644665570644817/79");
+
+  EXPECT_EQ(A,D);
+
+  A.submul(B,C);
+
+  EXPECT_EQ(A,2);
+
+}
+
+TEST(Tests, TestDivision) {
+
+  auto A = Fmpq("123456789123456789123456789123456789");
+  auto B = Fmpz("479");
+
+  A /= B;
+
+  auto C = Fmpq("123456789123456789123456789123456789/479");
+
+  EXPECT_EQ(A,C);
+
+  auto D = Fmpz("123456789123456789123456789123456789")/C;
+
+  EXPECT_EQ(D,479);
+
+}
+
+TEST(Tests, TestInequality) {
+
+  auto B = Fmpq("123456789123456789123456789123456789/479");
+  auto C = Fmpz("479");
+
+  EXPECT_GT(B,C);
+  EXPECT_GE(B,C);
+  EXPECT_LE(C,B);
+  EXPECT_LT(C,B);
+
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

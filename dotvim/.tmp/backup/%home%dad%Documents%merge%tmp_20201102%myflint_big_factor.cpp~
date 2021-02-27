@@ -1,0 +1,107 @@
+#include "myflint_big_factor.hpp"
+
+ZZ::ZZ() {
+  fmpz_init(number);
+}
+
+ZZ::ZZ(const int64_t& in_number) {
+  fmpz_init_set_si(number, in_number);
+}
+
+ZZ::ZZ(const fmpz_t& in_number) {
+  fmpz_init_set(number, in_number);
+}
+
+ZZ::ZZ(const string in_string) : ZZ() {
+  fmpz_set_str(number, in_string.c_str(), 10);
+}
+
+ZZ::ZZ(const ZZ &other) : ZZ(other.number) {}
+
+ZZ::ZZ(ZZ&& other) noexcept : ZZ() {
+  swap(number,other.number);
+}
+
+ZZ& ZZ::operator=(const ZZ &other) {
+  fmpz_set(number, other.number);
+  return *this;
+}
+
+ZZ& ZZ::operator=(ZZ &&other) noexcept {
+  swap(number,other.number);
+  return *this;
+}
+
+ZZ::~ZZ() {
+  fmpz_clear(number);
+}
+
+ZZ& ZZ::apply_fmpz_fun_eq(
+    const ZZ& rhs,
+    function<void(fmpz_t,fmpz_t,const fmpz_t)> fun) {
+  fun(number, number, rhs.number);
+  return *this;
+}
+
+ZZ ZZ::apply_fmpz_fun(
+    const ZZ& rhs,
+    function<void(fmpz_t,const fmpz_t,const fmpz_t)> fun) const {
+  auto result = ZZ();
+  fun(result.number, number, rhs.number);
+  return result;
+}
+
+ZZ ZZ::apply_fmpz_fun(
+    function<void(fmpz_t,const fmpz_t)> fun) const {
+  auto result = ZZ();
+  fun(result.number, number);
+  return result;
+}
+
+ZZ& ZZ::operator+=(const ZZ& rhs) { return apply_fmpz_fun_eq(rhs, fmpz_add); }
+ZZ ZZ::operator+(const ZZ& rhs) const { return apply_fmpz_fun(rhs, fmpz_add); }
+ZZ& ZZ::operator-=(const ZZ& rhs) { return apply_fmpz_fun_eq(rhs, fmpz_sub); }
+ZZ ZZ::operator-(const ZZ& rhs) const { return apply_fmpz_fun(rhs, fmpz_sub); }
+ZZ& ZZ::operator*=(const ZZ& rhs) { return apply_fmpz_fun_eq(rhs, fmpz_mul); }
+ZZ ZZ::operator*(const ZZ& rhs) const { return apply_fmpz_fun(rhs, fmpz_mul); }
+ZZ& ZZ::operator%=(const ZZ& rhs) { return apply_fmpz_fun_eq(rhs, fmpz_mod); }
+ZZ ZZ::operator%(const ZZ& rhs) const { return apply_fmpz_fun(rhs, fmpz_mod); }
+ZZ& ZZ::operator/=(const ZZ& rhs) { return apply_fmpz_fun_eq(rhs, fmpz_divexact); }
+ZZ ZZ::operator/(const ZZ& rhs) const { return apply_fmpz_fun(rhs, fmpz_divexact); }
+ZZ ZZ::operator-() const { return apply_fmpz_fun(fmpz_neg); }
+void ZZ::addmul(const ZZ &in0, const ZZ &in1) {fmpz_addmul(number, in0.number, in1.number);}
+void ZZ::submul(const ZZ &in0, const ZZ &in1) {fmpz_submul(number, in0.number, in1.number);}
+bool ZZ::operator==(const ZZ &rhs) const { return (bool) fmpz_equal(number, rhs.number); }
+bool ZZ::operator!=(const ZZ &rhs) const { return !(fmpz_equal(number, rhs.number)); }
+bool ZZ::operator>(const ZZ &rhs) const { return (fmpz_cmp(number, rhs.number) > 0); }
+bool ZZ::operator>=(const ZZ &rhs) const { return (fmpz_cmp(number, rhs.number) >= 0); }
+bool ZZ::operator<=(const ZZ &rhs) const { return (fmpz_cmp(number, rhs.number) <= 0); }
+bool ZZ::operator<(const ZZ &rhs) const { return (fmpz_cmp(number, rhs.number) < 0); }
+
+bool ZZ::is_divisible_by(const ZZ& poss_factor) const { return fmpz_divisible(number,poss_factor.number); }
+ZZ abs(const ZZ& in) { return in.apply_fmpz_fun(fmpz_abs); }
+
+bool is_prime(const ZZ& in) {
+  auto result = fmpz_is_prime(in.number);
+  return (result != 0);
+}
+
+ZZ pow(ZZ base, int64_t exponent) {
+  if(exponent < 0)
+  {
+    throw invalid_argument("Negative exponentiation not supported for ZZ");
+  }
+
+  auto result = ZZ();
+  fmpz_pow_ui(result.number, base.number, (uint64_t) exponent);
+
+  return result;
+}
+
+ostream& operator<<(ostream& os, const ZZ& f) {
+  char *out_string = fmpz_get_str(NULL, 10, f.number);
+  os << out_string;
+  free(out_string);
+
+  return os;
+}

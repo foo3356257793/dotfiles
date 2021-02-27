@@ -80,8 +80,12 @@ set matchtime=3 " tenths of a second to show matching parens
 " file shortcuts {{{
 "nnoremap <leader>1 :tabnew $MYVIMRC<cr>
 "nnoremap <leader>2 :tabnew $MYGVIMRC<cr>
-nnoremap <leader>1 :tabnew $HOME/dotfiles/vimrc<cr>
-nnoremap <leader>2 :tabnew $HOME/dotfiles/gvimrc<cr>
+" nnoremap <leader>1 :tabnew $HOME/dotfiles/vimrc<cr>
+" nnoremap <leader>2 :tabnew $HOME/dotfiles/gvimrc<cr>
+
+" Idea to do use a bookmarks file
+source $HOME/.vim/bookmarks.vim
+nnoremap M :let @f = expand('%:p')<cr>:tabnew $HOME/.vim/bookmarks.vim<cr>Go<cr>nnoremap <lt>leader>9 :e <esc>"fpa<lt>cr><esc>0EEs
 " }}}
 " Save when losing focus {{{
 "augroup autosave
@@ -107,9 +111,9 @@ augroup END
 set backup                        " enable backups
 set noswapfile
 
-set undodir=~/.vim/tmp/undo//     " undo files
-set backupdir=~/.vim/tmp/backup// " backups
-set directory=~/.vim/tmp/swap//   " swap files
+set undodir=~/.vim/.tmp/undo//     " undo files
+set backupdir=~/.vim/.tmp/backup// " backups
+set directory=~/.vim/.tmp/swap//   " swap files
 
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
@@ -161,7 +165,8 @@ nnoremap k gk
 " au Syntax * RainbowParenthesesLoadRound    " ()
 " au Syntax * RainbowParenthesesLoadSquare   " []
 " au Syntax * RainbowParenthesesLoadBraces   " {}
-"au Syntax * RainbowParenthesesLoadChevrons " <>
+" au Syntax * RainbowParenthesesLoadChevrons " <>
+let g:rainbow_active = 1
 " }}}
 " Use clipboard {{{
 set clipboard=unnamedplus
@@ -171,9 +176,12 @@ set noeb vb t_vb=
 " }}}
 " }}}
 " General shortcuts {{{
+" Make is m {{{
+nnoremap m :w<cr>:!make<cr>
+" }}}
 " Comment boxes {{{
-vnoremap <leader>cb !perl ~/Documents/perl_stuff/comment_box.pl<cr>
-nnoremap <leader>cb Vip !perl ~/Documents/perl_stuff/comment_box.pl<cr>
+"vnoremap <leader>cb !perl ~/Documents/perl_stuff/comment_box.pl<cr>
+"nnoremap <leader>cb Vip !perl ~/Documents/perl_stuff/comment_box.pl<cr>
 " }}}
 " Align equals signs {{{
 "vnoremap <leader>a= !perl ~/Documents/perl_stuff/align_equals.pl<cr>
@@ -233,23 +241,30 @@ inoremap <c-u> <esc>vawUea
 nnoremap <c-e> 3<c-e>
 nnoremap <c-y> 3<c-y>
 " }}}
-" shortcut to toggle relative line numbering {{{
-function! g:ToggleNuMode()
-	if(&relativenumber == 1)
-		set number
-	else
-		set relativenumber
-	endif
-endfunc
+" shortcut to toggle numbering {{{
+" function! g:ToggleNuMode()
+" 	if(&relativenumber == 1)
+" 		set number
+" 	else
+" 		set relativenumber
+" 	endif
+" endfunc
 
 " if version >= 703
-" 	"set relativenumber
-" 	noremap <leader>n :call g:ToggleNuMode()<cr>
+" 	nnoremap <leader>n :call g:ToggleNuMode()<cr>
 " endif
+
+nnoremap <leader>n :set invnumber<cr>
+
 " }}}
 " open split windows easy {{{
-nnoremap <leader>s <c-w>s
-nnoremap <leader>v <c-w>v
+
+"nnoremap <leader>s <c-w>s
+"nnoremap <leader>v <c-w>v
+
+nnoremap _ <c-w>s
+nnoremap \| <c-w>v
+
 " }}}
 " remove trailing whitespace {{{
 nnoremap <leader>r :%s/\v\s+$//<cr>``:noh<cr>
@@ -259,6 +274,11 @@ nnoremap <c-j> <c-W>j
 nnoremap <c-k> <c-W>k
 nnoremap <c-h> <c-W>h
 nnoremap <c-l> <c-W>l
+
+imap <c-j> <esc><c-j>
+imap <c-k> <esc><c-k>
+imap <c-h> <esc><c-h>
+imap <c-l> <esc><c-l>
 " }}}
 " Autoformat text when pasting and go to end {{{
 nnoremap p p=`]
@@ -274,11 +294,13 @@ inoremap <c-v> <c-O>:set paste<Enter><c-R>+<c-O>:set nopaste<Enter>
 nnoremap <leader>w  :w<cr>
 " }}}
 " Shortcut for resizing windows {{{
-nnoremap <silent> + :vertical resize +5<cr>
-nnoremap <silent> - :vertical resize -5<cr>
+"nnoremap <silent> + :vertical resize +5<cr>
+"nnoremap <silent> - :vertical resize -5<cr>
 " radical solution: repurpose arrow keys
 nnoremap <silent> <up> :resize +5<cr>
 nnoremap <silent> <down> :resize -5<cr>
+nnoremap <silent> <left> :vertical resize +5<cr>
+nnoremap <silent> <right> :vertical resize -5<cr>
 " }}}
 " Open the previous buffer in a vertical split window {{{
 "nnoremap <leader>s :execute "rightbelow vsplit " . bufname("#")<cr>
@@ -300,18 +322,21 @@ nnoremap <leader>A= :Tabularize /\S*=\S*/<cr>:Tabularize /=\S*/l0l1l0<cr>
 "vnoremap <Leader>P "+P
 " }}}
 " Headlines {{{
-"nnoremap <Leader>h= yypVr=
-"nnoremap <Leader>h- yypVr-
+nnoremap <Leader>h= yypVr=
+nnoremap <Leader>h- yypVr-
+nnoremap <Leader>h# yypVr#
+nnoremap <Leader>h* yypVr*
+nnoremap <Leader>H= yyPVr=yyjp
+nnoremap <Leader>H- yyPVr-yyjp
+nnoremap <Leader>H# yyPVr#yyjp
+nnoremap <Leader>H* yyPVr*yyjp
 " }}}
 " navigate tabs {{{
-"nnoremap <C-M-n> :tabnew<CR>
-"nnoremap <C-M-j> :tabnext<CR>
-"nnoremap <C-M-k> :tabprevious<CR>
-nnoremap <leader>n :tabnew<CR>
-nnoremap <leader>, :tabnext<CR>
-nnoremap <leader>. :tabprevious<CR>
+"nnoremap <leader>n :tabnew<CR>
+"nnoremap <leader>, :tabnext<CR>
+"nnoremap <leader>. :tabprevious<CR>
 ":set showtabline=0
-nnoremap <leader>q :wqa<cr>
+"nnoremap <leader>q :wqa<cr>
 " }}}
 " Make Y sensible {{{
 nnoremap Y y$
@@ -330,18 +355,16 @@ nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 "nnoremap <leader>f :Goyo<CR>
 "nnoremap <leader>f :set columns=75<cr>
 "nnoremap <leader>F :set columns=150<cr>
-
-" version that is independent of profile
-"colorscheme foo
-"colorscheme foo_256
-
-"nnoremap <leader>b :set background=dark<cr>:colorscheme foo<cr>
-"nnoremap <leader>B :set background=light<cr>:colorscheme default<cr>
-
 " }}}
 " fzf {{{
-" nnoremap <leader>f :FZF<cr>
-" nnoremap <leader>F :FZF ~<cr>
+"nnoremap <leader>F :FZF <cr>
+"nnoremap <leader>f :cd %:p:h<cr>:Files <cr>
+nnoremap <leader>f :Files <cr>
+"nnoremap <leader>F :Files ~<cr>
+
+imap <c-x><c-f> <plug>(fzf-complete-path)
+
+nnoremap <leader>l :!$HOME/Documents/time_logger/get_tags.py \| fzf \| $HOME/Documents/time_logger/log_time.py<cr>
 " }}}
 " Command mode shortcuts (typo fixing) {{{
 " cnoremap Q q
@@ -352,11 +375,16 @@ tnoremap <c-j> <c-W>j
 tnoremap <c-k> <c-W>k
 tnoremap <c-h> <c-W>h
 tnoremap <c-l> <c-W>l
-nnoremap <leader>t :tabnew<CR>:ter ++curwin<CR>
-nnoremap <leader>T :vert term<CR>
+"nnoremap <leader>t :tabnew<CR>:ter ++curwin<CR>
+"nnoremap <leader>T :vert term<CR>
 " }}}
 " buffer movement {{{
-nnoremap <leader>b :buffers<cr>
+" pretty nice one-liner
+"nnoremap <leader>b :ls<cr>:b<Space>
+" fzf version
+nnoremap <leader>b :Buffers<cr>
+nnoremap - :bp<cr>
+nnoremap + :bn<cr>
 " }}}
 " clipboard {{{
 " use a file to pass around stuff (works)
@@ -369,6 +397,15 @@ noremap <leader>p :let @c = system('cat /home/dad/.clipboard.txt')<cr>"cp
 " (replace \" with ")
 " vnoremap <leader>y \"cy:call system('tmux set-buffer \"' . @c . '"')<cr>
 " noremap <leader>p :let @c = system('tmux show-buffer ')<cr>"cp
+" }}}
+" time logger {{{
+augroup time_log
+  au!
+  au BufNewFile,BufRead time_log*yaml set ft=yaml.timelog
+  au FileType yaml.timelog :nnoremap <buffer> m :!process_time_log.py %<cr>
+  au FileType yaml.timelog let maplocalleader="\<Space>"
+  au FileType yaml.timelog :nnoremap <buffer> <localleader>g o-<space><esc>"=strftime("%Y-%m-%d %H:%M:%S")<cr>p
+augroup END
 " }}}
 " }}}
 " ===== Perl =====  {{{
@@ -404,7 +441,6 @@ augroup perlMake
   au FileType perl setlocal makeprg=perl\ -c\ %\ $*
   au FileType perl setlocal errorformat=%f:%l:%m
   au FileType perl setlocal autowrite
-  au FileType perl :noremap <buffer> <localleader>m :make<cr>
   au FileType perl :noremap <buffer> <localleader>k :! perl %<cr>
   "let g:syntastic_enable_perl_checker = 1
   "let g:syntastic_perl_lib_path = [ '/usr/bin' ]
@@ -451,21 +487,6 @@ augroup texJournal
   au BufNewFile,Bufread ~/Dropbox/Documents/journal/*.tex :nnoremap <buffer> <localleader>od "=strftime("%B %d, %Y")<cr>PF,h<c-x>I\subsection*{<esc>A}<esc>F,h
 augroup END
 " }}}
-" check tex code with :make  {{{
-augroup texMake
-  au!
-  " au FileType tex setlocal makeprg=xelatex\ %\ -synctex=1
-  " au FileType tex setlocal errorformat=%f:%l:%m
-  " au FileType tex setlocal autowrite
-  " au FileType tex :noremap <buffer> <localleader>m :lcd %:p:h<cr>:make<cr>
-  " set up a Makefile
-  command! -nargs=* -complete=shellcmd Rsplit execute "new | r! <args>"
-  "au FileType tex :noremap <buffer> <localleader>m :w<cr>:!make<cr>
-  "au FileType tex :noremap <buffer> <localleader>m :w<cr>:Rsplit make<cr>
-  " uses the dispatch plugin to do this nicely in a Tmux split
-  au FileType tex :noremap <buffer> <localleader>m :w<cr>:Make<cr>
-augroup END
-" }}}
 " synctex  {{{
 "function! SyncTexForward()
 "	 let execstr = "silent !okular --unique %:p:r.pdf\#src:".line(".")."%:p &"
@@ -479,100 +500,143 @@ augroup END
 " }}}
 " ===== Python ===== {{{
 " Settings  {{{
+function GetGooglePythonIndent(lnum)
+
+  " Indent inside parens.
+  " Align with the open paren unless it is at the end of the line.
+  " E.g.
+  "   open_paren_not_at_EOL(100,
+  "                         (200,
+  "                          300),
+  "                         400)
+  "   open_paren_at_EOL(
+  "       100, 200, 300, 400)
+  call cursor(a:lnum, 1)
+  let [par_line, par_col] = searchpairpos('(\|{\|\[', '', ')\|}\|\]', 'bW',
+        \ "line('.') < " . (a:lnum - s:maxoff) . " ? dummy :"
+        \ . " synIDattr(synID(line('.'), col('.'), 1), 'name')"
+        \ . " =~ '\\(Comment\\|String\\)$'")
+  if par_line > 0
+    call cursor(par_line, 1)
+    if par_col != col("$") - 1
+      return par_col
+    endif
+  endif
+
+  " Delegate the rest to the original function.
+  return GetPythonIndent(a:lnum)
+  
+endfunction
 augroup pythonSettings
   au!
   au bufnewfile *.py 0r $HOME/.vim/python_template.py
   au bufnewfile *.py exe 'normal G'
+  au bufnewfile,Bufread Sconstruct :set ft=python
   au FileType python setlocal softtabstop=4|set shiftwidth=4|set expandtab
   au FileType python setlocal autoindent|set smartindent
   au FileType python setlocal tw=80 " good coding practice
   au FileType python setlocal foldmethod=indent
   au FileType python setlocal foldlevel=99
+  let g:python_target = "right"
+  au FileType python :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:python_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:python_target . ' "%run ' . expand('%') . '" Enter')<cr>
+
+  au FileType python setlocal indentexpr=GetGooglePythonIndent(v:lnum)
+  au FileType python let s:maxoff = 50 " maximum number of lines to look backwards.
+	au FileType python let pyindent_nested_paren="&sw*2"
+  au FileType python let pyindent_open_paren="&sw*2"
 augroup END
 " }}}
 " Python Leaders  {{{
 augroup pythonShortcuts
   au!
   au FileType python let maplocalleader="\<Space>"
-  au FileType python :vnoremap <buffer> <localleader>cb !perl ~/Documents/perl_stuff/comment_box.pl<cr>
   au FileType python :nnoremap <buffer> <localleader>cx 80A <esc>d80<bar>r#<esc><cr>
   "au FileType python :nnoremap <buffer> <localleader>he yyp^v$r#yykPjj
 augroup END
   au FileType python :nnoremap <buffer> <localleader>lt ostart_tm = time.perf_counter()<cr><cr>end_tm = time.perf_counter()<cr>tot_tm = end_tm-start_tm<cr>print("TIME = %.3lf" % tot_tm)<esc>
 " }}}
-" check python code with :make  {{{
-augroup pythonMake
-  au!
-  au FileType python setlocal makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-  au FileType python setlocal errorformat=%f:%l:%m
-  au FileType python setlocal autowrite
-  au FileType python :noremap <buffer> <localleader>m :make<cr>
-  au FileType python :noremap <buffer> <localleader>k :w<cr>:! python3 %<cr>
-augroup END
 " }}}
-" }}}
-" {{{ === Sage ===
+" {{{ ==== Sage ====
 augroup sageSettings
   au!
-  au bufnewfile *.sage 0r $HOME/.vim/sage_template.sage
-  au bufnewfile,Bufread *.sage set ft=python
+  au bufnewfile *.sage,*.spyx 0r $HOME/.vim/sage_template.sage
+  au bufnewfile,Bufread *.sage,*.spyx setfiletype python.sage
+  " make a window with sage in it load the current file
+
+  " default is sage pane to the right
+  " change this by setting this variable
+  let g:sage_target = "right"
+
+  " function to send the correct keys
+  "au FileType python :nnoremap <silent> <buffer> <leader>m :w<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "load(\"' . expand('%') . '\")" Enter')<cr>
+  au FileType python.sage :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "load(\"' . expand('%') . '\")" Enter')<cr>
 augroup END
 " running commands in a tmux session {{{
-function SendToTmux() range
-  echo system('tmux send-keys -t sage_session '.shellescape(join(getline(a:firstline, a:lastline), "\n")).' ENTER' )
-  echo system('tmux capture-pane -t sage_session')
-endfunction
-" augroup sageShell
-"   au!
-"   au FileType python :nnoremap <buffer> <localleader>T :!tmux new -d -s sage_session<CR>!tmux send-keys "sage" ENTER
-"   au FileType python :nnoremap <buffer> <localleader>S :split .terminal.buffer.sage<CR>:resize 10<CR>
-"   au FileType python :nnoremap <buffer> <localleader>t V:call SendToTmux()<CR><C-w>jggdG:r!tmux show-buffer<CR>?:<CR>^dG
-"   au FileType python :vnoremap <buffer> <localleader>t :call SendToTmux()<CR><C-w>jggdG:r!tmux show-buffer<CR>?:<CR>^dG
-" augroup END
+augroup sageShell
+  au!
+  au FileType python :nnoremap <buffer> <localleader>T :!tmux new -d -s sage_session<CR>!tmux send-keys "sage" ENTER<cr>
+  " au FileType python :nnoremap <buffer> <localleader>S :split .terminal.buffer.sage<CR>:resize 10<CR>
+  " au FileType python :nnoremap <buffer> <localleader>t V:call SendToTmux()<CR><C-w>jggdG:r!tmux show-buffer<CR>?:<CR>^dG
+  " au FileType python :vnoremap <buffer> <localleader>t :call SendToTmux()<CR><C-w>jggdG:r!tmux show-buffer<CR>?:<CR>^dG
+augroup END
 " }}}
 " }}}
 " ===== c =====  {{{
 " Settings  {{{
 augroup cSettings
   au!
-  au bufnewfile *.c 0r /home/cnelson125/.vim/c.template
+  au bufnewfile *.c 0r $HOME/.vim/c_template.c
+  au bufnewfile *.cpp 0r $HOME/.vim/cpp_template.cpp
   au bufnewfile *.c exe 'normal 5G'
+  au bufnewfile *.cpp exe 'normal 10G'
   au bufnewfile,bufread *.cuh setlocal ft=cpp
-  au FileType c setlocal softtabstop=4|set shiftwidth=4|set expandtab
-  au FileType c setlocal autoindent|set smartindent
-  au FileType c setlocal tw=80 " good coding practice
-  au FileType c setlocal cinkeys-=0#
-  au FileType c setlocal comments-=:// comments+=f://
+  au FileType c,cpp setlocal softtabstop=2|set shiftwidth=2|set expandtab
+  au FileType c,cpp setlocal autoindent|set smartindent
+  au FileType c,cpp setlocal tw=80 " good coding practice
+  au FileType c,cpp setlocal cinkeys-=0#
+  au FileType c,cpp setlocal comments-=:// comments+=f://
   "let g:syntastic_c_checkers=['']
 augroup END
 " }}}
 " c Shortcuts  {{{
 augroup cShortcuts
   au!
-  au FileType c let maplocalleader="\<Space>"
-  au FileType c :nnoremap <buffer> <localleader>= gg=G<c-o><c-o><space>
-  au FileType c :nnoremap <buffer> <localleader>cx 80A <esc>d80<bar>r#<esc><cr>
-  "au FileType c :nnoremap <buffer> <localleader>he yyp^v$r#yykPjj
-  au FileType c :onoremap <buffer> in( :<c-u>normal!f(vi(<cr>
-  au FileType c :onoremap <buffer> ip( :<c-u>normal!f(vi(<cr>
-  au FileType c :onoremap <buffer> in{ :<c-u>normal!f{vi{<cr>
-  au FileType c :onoremap <buffer> ip{ :<c-u>normal!F{vi{<cr>
-  au FileType c :inoremap <buffer> {<cr> {<cr>}<esc>O
+  au FileType c,cpp let maplocalleader="\<Space>"
+  au FileType c,cpp :nnoremap <buffer> <localleader>= gg=G<c-o><c-o><space>
+  au FileType c,cpp :nnoremap <buffer> <localleader>cx 80A <esc>d80<bar>r#<esc><cr>
+  au FileType c,cpp :onoremap <buffer> in( :<c-u>normal!f(vi(<cr>
+  au FileType c,cpp :onoremap <buffer> ip( :<c-u>normal!f(vi(<cr>
+  au FileType c,cpp :onoremap <buffer> in{ :<c-u>normal!f{vi{<cr>
+  au FileType c,cpp :onoremap <buffer> ip{ :<c-u>normal!F{vi{<cr>
+  au FileType c,cpp :inoremap <buffer> {<cr> {<cr>}<esc>O
+  au FileType c,cpp :nnoremap <buffer> <localleader>d oDEBUG(<esc>"=printf("%d",line('.'))<c-M>pa,);<esc>hi
 augroup END
 " }}}
-" check c code with :make  {{{
-augroup cMake
+" }}}
+" ===== go ===== {{{
+augroup goSettings
   au!
-    au FileType c :nnoremap <buffer> <localleader>k :w<cr>:make clean<cr>
-    au FileType c :nnoremap <buffer> <localleader>m :w<cr>:!make<cr>
-  " au FileType c setlocal makeprg=c\ -c\ %\ $*
-  " au FileType c setlocal errorformat=%f:%l:%m
-  " au FileType c setlocal autowrite
-  " au FileType c :noremap <buffer> <localleader>m :make<cr>
-  au FileType c :noremap <buffer> <localleader>k :! c %<cr>
+  au bufnewfile *.go 0r $HOME/.vim/template.go
+  au bufnewfile *.go exe 'normal 9G'
+augroup END
+augroup goShortcuts
+  au!
+  au FileType go :inoremap <buffer> {<cr> {<cr>}<esc>O
 augroup END
 " }}}
+" ===== rust ===== {{{
+augroup rustSettings
+  au!
+  au bufnewfile *.rs 0r $HOME/.vim/rust_template.rs
+  au bufnewfile *.rs exe 'normal 2G'
+  au FileType rust setlocal softtabstop=4|set shiftwidth=4|set expandtab
+  au FileType rust setlocal autoindent|set smartindent
+  au FileType rust setlocal tw=80 " good coding practice
+  au FileType rust setlocal cinkeys-=0#
+  au FileType rust setlocal comments-=:// comments+=f://
+  au FileType rust :inoremap <buffer> {<cr> {<cr>}<esc>O
+  au FileType rust :nnoremap <silent> <buffer> m :w<cr>:!cargo build<cr>
+augroup END
 " }}}
 " ===== txt ======  {{{
 augroup txtSettings
@@ -631,17 +695,19 @@ augroup END
 " === markdown === {{{
 augroup markdownSettings
   au!
+  au BufRead,BufNewFile *.md setlocal ft=markdown
+  au BufRead,BufNewFile *.md :syntax sync fromstart
   au FileType markdown setlocal autoindent
   au FileType markdown setlocal softtabstop=2|set shiftwidth=2
   "au FileType markdown setlocal tw=68 " good for readability
   au FileType markdown setlocal tw=0 " seems to be bad in bulleted lists
   au FileType markdown let maplocalleader="\<Space>"
-  au FileType markdown :nnoremap <buffer> <localleader>m :w<cr>:!make<cr>
   au FileType markdown setlocal foldlevel=99
   au FileType markdown nnoremap <buffer> go o*<space>
   au FileType markdown nnoremap <buffer> gO O*<space>
-  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c']
-
+  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'cpp', 'vim', 'yaml']
+  " fixes highlighting issue with breaking up items in a list
+  au FileType markdown :syn clear markdownCodeBlock
   hi markdownH1 cterm=bold ctermbg=2 ctermfg=0
   hi markdownH1Delimiter cterm=bold ctermbg=2 ctermfg=0
   hi markdownH2 cterm=bold ctermbg=11 ctermfg=0
@@ -656,7 +722,6 @@ augroup markdownSettings
   hi markdownBoldDelimiter cterm=bold ctermfg=11
   hi markdownBoldItalic cterm=bold ctermfg=9
   hi markdownBoldItalicDelimiter cterm=bold ctermfg=9
-
   hi markdownCode ctermfg=12
   hi markdownCodeBlock ctermfg=12
   hi markdownCodeDelimiter ctermfg=12
@@ -665,8 +730,8 @@ augroup markdownSettings
   hi markdownAutomaticLink ctermfg=12
   " hi markdownUrl ctermfg=10
   hi htmlTag ctermfg=15
-
   au FileType markdown :inoremap <buffer> $$<cr> $$<cr>$$<esc>O
+  au FileType markdown :vnoremap <buffer> <localleader>k :!add_numbers_in_string.py<cr>
 augroup END
 
 " LaTeX: {{{
@@ -691,6 +756,18 @@ augroup markdownTeX
 augroup END
 " }}}
 
+" }}}
+" === julia ==== {{{
+augroup juliaSettings
+  au!
+  au bufnewfile *.jl 0r $HOME/.vim/julia_template.jl
+  let g:julia_target = "right"
+  au FileType julia :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:julia_target . ' "include(\"' . expand('%') . '\")" Enter')<cr>
+
+  au FileType julia let maplocalleader="\<Space>"
+  au FileType julia :nnoremap <buffer> <localleader>lt ofunction TEST_XXX()<cr>@testset "TEST XXX" begin<CR>end<CR>end<esc>{=apvap:s/XXX/
+  au FileType julia :nnoremap <buffer> <localleader>lf ofunction<cr>end<esc>kA<space>
+augroup END
 " }}}
 " === Makefile === {{{
 augroup makefileSettings
@@ -723,38 +800,47 @@ augroup abbreviations
 augroup END
 " }}}
 " ===== wishlist ===== {{{
+" bookmarks:
+"   - I map these to <leader>num currently
+"   - command to pull up a list of all the bookmarks (parse this file...)
+"   - write my own fzf command to manage bookmarks (or use a plugin...)
+"     - call it and it lists bookmarks which are accessible
+"   - keeping a tmux session open has made me use these less
 " autocomplete:
 "   - youcompleteme: needs npm
 "   - COC: needs node
-" show what I would sub in dynamically
 " olivetti-mode
-"   - Goyo does this, but it doesn't work as nicely as olivetti
-"   - If my window is small, then it's like I have olivetti
-"   - Doesn't bother me that much??
-" do I need surround?
-"   I have always done well surrounding by hand; not sure it saves so many
-"   keystrokes
-" buffer hydra : don't need?
-"   space-b is pretty fast (prob faster than what I'm doing in emacs)
-"   :b <tab> is also a thing I didn't know about
-" buffer move (necessary?)
-"   it's kind of niche, and less necessary in vim than emacs
-" smartparens
-"   I am not sure this really saves that many keystrokes
-" OLD
-"   - folding?
-"   - server mode?
-"       don't need because already so fast
-"       I don't really need every single buffer across workspaces
-"   - opening an empty buffer does bad things: never have an empty buffer?
-"       I installed startify
-"   - window resize hydra
-"       I redefined arrow keys to do what I want; faster than a hydra
-"   - spacemacs theme
-"       I am restricted to using just terminals; happy with the theme and with
-"       being able to change color in tmux panes
-"   - zoom in text
-"       this could be done:
-"       https://vim.fandom.com/wiki/Change_font_size_quickly
-"       don't really need it?
+"   - Goyo does this, but it doesn't seem as robust as olivetti mode
+"   - maybe I don't need it??
+" vim-markdown
+"   - at home probably don't need
+"   - with vim-slime (or own code??) could achieve something like a notebook in markdown?
+"   - only feature which doesn't work out of the box would be images
+"   - If I really wanted, could include some kind of LaTeX/html compilation to
+"     make something really interesting
+" }}}
+" === tried, don't want === {{{
+" stuff from emacs that I have tried out but I don't want here
+" - vim-dispatch
+"     cool, but I am happier with fullscreen make
+"     or with keeping a tmux window/pane open
+" - server mode?
+"     don't need because opening a new Vim instance is so fast
+"     tmux works nicely
+" - window resize hydra
+"     I redefined arrow keys to do what I want; faster than a hydra
+" - zoom in text
+"     this could be done:
+"     https://vim.fandom.com/wiki/Change_font_size_quickly
+"     don't really need it?
+" - buffer move (necessary?)
+"     recall that this rearranges splits
+"     the built in C-w r, C-w R do window moving
+" - smartparens
+"     there is a plugin in to do this (autopairs)
+"     I don't like it, however (is weird when I want to edit a line with
+"     parens)
+" - do I need surround?
+"     I installed it just in case I want it later
+" - vim-startify: didn't use the recently used: shifting to bookmarking
 " }}}

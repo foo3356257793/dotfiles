@@ -1,0 +1,159 @@
+[==========] Running 2 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 2 tests from Tests
+[ RUN      ] Tests.stepping
+A = [
+  [ 185184897, 288065851],
+  [-234568189, 301783272]
+]
+L = [
+  [3.42455e+08,           0],
+  [1.27009e+08, 3.60505e+08]
+]
+current coeffs: [??,0]
+bounds? [-2,2]
+BOUNDS = [-2,2]
+current coeffs: [0,-2]
+bounds? [-1,2]
+BOUNDS = [-1,2]
+ready to carve shell
+[-1,-2]
+current coeffs: [2,-1]
+bounds? [-4,1]
+BOUNDS = [-2,3]
+ready to carve shell
+[-2,-1]
+current coeffs: [3,0]
+bounds? [-6,0]
+BOUNDS = [-3,3]
+ready to carve shell
+[-3,0]
+current coeffs: [3,1]
+bounds? [-6,-1]
+BOUNDS = [-3,2]
+ready to carve shell
+[-3,1]
+current coeffs: [2,2]
+bounds? [-4,-1]
+BOUNDS = [-2,1]
+ready to carve shell
+[-2,2]
+-3, 0  -1027364796.6050293, 0
+-3, 1  -900355473.4594421, 360505215.4738756
+-2, -1  -811919187.5489403, -360505215.4738756
+-2, 0  -684909864.403353, 0
+-2, 1  -557900541.2577658, 360505215.4738756
+-2, 2  -430891218.1121783, 721010430.9477512
+-1, -2  -596473578.4928513, -721010430.9477512
+-1, -1  -469464255.3472639, -360505215.4738756
+-1, 0  -342454932.20167655, 0
+-1, 1  -215445609.05608934, 360505215.4738756
+-1, 2  -88436285.9105019, 721010430.9477512
+0, -2  -254018646.29117483, -721010430.9477512
+0, -1  -127009323.14558744, -360505215.4738756
+0, 0  -1.1920928955078125e-07, 0
+0, 1  127009323.14558709, 360505215.4738756
+0, 2  254018646.29117453, 721010430.9477512
+1, -2  88436285.9105016, -721010430.9477512
+1, -1  215445609.05608898, -360505215.4738756
+1, 0  342454932.2016763, 0
+1, 1  469464255.3472635, 360505215.4738756
+1, 2  596473578.492851, 721010430.9477512
+2, -2  430891218.112178, -721010430.9477512
+2, -1  557900541.2577654, -360505215.4738756
+2, 0  684909864.4033527, 0
+2, 1  811919187.54894, 360505215.4738756
+3, -1  900355473.4594419, -360505215.4738756
+3, 0  1027364796.6050291, 0
+[       OK ] Tests.stepping (1 ms)
+[ RUN      ] Tests.shell_stepping
+A = [
+  [ 185184897, 288065851],
+  [-234568189, 301783272]
+]
+L = [
+  [3.42455e+08,           0],
+  [1.27009e+08, 3.60505e+08]
+]
+current coeffs: [??,0]
+bounds? [-1,1]
+BOUNDS = [-1,1]
+not two_sided: BOUNDS = [0,1]
+current coeffs: [0,0]
+bounds? [-1,1]
+BOUNDS = [-1,1]
+not two_sided: BOUNDS = [0,1]
+ready to carve shell
+[0,0]
+current coeffs: [1,1]
+bounds? [-2,-1]
+BOUNDS = [-1,0]
+ready to carve shell
+[-1,1]
+current coeffs: [??,1]
+bounds? [-3,1]
+BOUNDS = [-2,2]
+not two_sided: BOUNDS = [0,2]
+current coeffs: [0,0]
+bounds? [-2,2]
+BOUNDS = [-2,2]
+not two_sided: BOUNDS = [0,2]
+ready to carve shell
+[0,0]
+l_coeff = -1 and coeffs = [0,0]
+JUMP SHELL!
+current coeffs: [2,1]
+bounds? [-4,-1]
+BOUNDS = [-2,1]
+ready to carve shell
+[-2,1]
+JUMP SHELL!
+current coeffs: [1,2]
+bounds? [-2,-1]
+BOUNDS = [-1,0]
+ready to carve shell
+[-1,2]
+current coeffs: [??,2]
+bounds? [-4,0]
+BOUNDS = [-2,2]
+not two_sided: BOUNDS = [0,2]
+current coeffs: [0,0]
+bounds? [-3,3]
+BOUNDS = [-3,3]
+not two_sided: BOUNDS = [0,3]
+ready to carve shell
+[0,0]
+l_coeff = -2 and coeffs = [0,0]
+JUMP SHELL!
+current coeffs: [3,1]
+bounds? [-6,-1]
+BOUNDS = [-3,2]
+ready to carve shell
+[-3,1]
+JUMP SHELL!
+current coeffs: [2,2]
+bounds? [-4,-1]
+BOUNDS = [-2,1]
+ready to carve shell
+[-2,2]
+JUMP SHELL!
+-3, 1  -900355473.4594419, 360505215.4738756
+-2, 1  -557900541.2577654, 360505215.4738756
+-2, 2  -430891218.1121781, 721010430.9477512
+-1, 1  -215445609.05608904, 360505215.4738756
+-1, 2  -88436285.9105016, 721010430.9477512
+0, 0  0, 0
+0, 1  127009323.14558738, 360505215.4738756
+0, 2  254018646.29117483, 721010430.9477512
+1, 0  342454932.2016764, 0
+1, 1  469464255.3472639, 360505215.4738756
+1, 2  596473578.4928513, 721010430.9477512
+2, 0  684909864.4033529, 0
+2, 1  811919187.5489402, 360505215.4738756
+3, 0  1027364796.6050293, 0
+[       OK ] Tests.shell_stepping (0 ms)
+[----------] 2 tests from Tests (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 2 tests.

@@ -1,0 +1,13 @@
+_TYPE &_TYPE::_funname_eq() {
+  #ifdef _checkinput
+  _checkinput
+    #endif
+    #ifdef _checkerror
+    _checkerror;
+  #endif
+  _funnative(data, data);
+  #ifdef _checkoutput
+  _checkoutput
+    #endif
+    return *this;
+}

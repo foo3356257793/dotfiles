@@ -1,0 +1,4 @@
+fmpz* data;
+
+ZZ_ptr() = delete;
+ZZ_ptr(const ZZ &in) = delete;

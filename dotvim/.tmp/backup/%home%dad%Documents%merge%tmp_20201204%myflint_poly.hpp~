@@ -1,0 +1,71 @@
+#include "myflint_ZZ.hpp"
+#include <flint/fmpz_poly.h>
+
+struct ZZ_poly {
+  fmpz_poly_t data;
+
+  ZZ_poly();
+  ZZ_poly(const int64_t &degree);
+  ZZ_poly(const fmpz_poly_t &in_poly);
+  ZZ_poly(const vector<ZZ> &coeffs);
+  ZZ_poly(const ZZ_poly &other);
+  ZZ_poly(ZZ_poly &&other) noexcept;
+  ZZ_poly &operator=(const ZZ_poly &other);
+  ZZ_poly &operator=(ZZ_poly &&other) noexcept;
+  ~ZZ_poly();
+
+  ZZ_ptr operator[](slong index) const;
+
+  slong degree() const;
+
+  #if 0
+  ZZ_poly& apply_fmpz_poly_fun_eq(const ZZ_poly &rhs,
+      const function<void(fmpz_poly_t, fmpz_poly_t, const fmpz_poly_t)>& fun);
+  ZZ_poly& apply_fmpz_poly_fun_eq(const function<void(fmpz_poly_t, fmpz_poly_t)>& fun);
+  ZZ_poly& apply_fmpz_poly_fun_eq(const ZZ &rhs,
+      const function<void(fmpz_poly_t, fmpz_poly_t, const fmpz_t)>& fun);
+  ZZ_poly apply_fmpz_poly_fun(
+      const ZZ_poly &rhs,
+      const function<void(fmpz_poly_t, const fmpz_poly_t, const fmpz_poly_t)>& fun) const;
+  ZZ_poly apply_fmpz_poly_fun(
+      const ZZ&rhs,
+      const function<void(fmpz_poly_t, const fmpz_poly_t, const fmpz_t)>& fun) const ;
+  ZZ_poly apply_fmpz_poly_fun(function<void(fmpz_poly_t, const fmpz_poly_t)> fun) const;
+
+  ZZ_poly &operator+=(const ZZ_poly &rhs);
+  ZZ_poly operator+(const ZZ_poly &rhs) const;
+  ZZ_poly &operator-=(const ZZ_poly &rhs);
+  ZZ_poly operator-(const ZZ_poly &rhs) const;
+  ZZ_poly &operator*=(const ZZ_poly &rhs);
+  ZZ_poly operator*(const ZZ_poly &rhs) const;
+  ZZ_poly &operator%=(const ZZ &rhs);
+  ZZ_poly operator%(const ZZ &rhs) const;
+  ZZ_poly &operator/=(const ZZ &rhs);
+  ZZ_poly operator/(const ZZ &rhs) const;
+  ZZ_poly &operator-();
+  ZZ_poly operator-() const;
+
+  bool operator==(const ZZ_poly &rhs) const;
+  bool operator!=(const ZZ_poly &rhs) const;
+  bool operator>(const ZZ_poly &rhs) const;
+  bool operator>=(const ZZ_poly &rhs) const;
+  bool operator<=(const ZZ_poly &rhs) const;
+  bool operator<(const ZZ_poly &rhs) const;
+  #endif
+
+};
+
+ostream &operator<<(ostream &os, const ZZ_poly &f);
+
+#if 0
+namespace std{
+  template <>
+    struct hash<ZZ_poly> {
+      size_t operator()(const ZZ_poly& in) const noexcept {
+        stringstream ss;
+        ss << in;
+        return hash<string>{}(ss.str());
+      }
+    };
+}
+#endif

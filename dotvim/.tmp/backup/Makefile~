@@ -1,11 +1,9 @@
-TEX = xelatex
+NAME = weekly_wrap_20210221
 
-NAME = default
+all: $(NAME).html
 
-all: $(NAME).pdf
-
-%.pdf: %.tex
-	$(TEX) $+
+%.html: %.md
+	pandoc --standalone -c pandoc.css -f markdown -t html -o $@ $+
 
 clean:
 	rm -rf $(NAME).pdf $(NAME).log $(NAME).aux

@@ -1,0 +1,126 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+using namespace std;
+
+#include <fmt/core.h>
+#include <fmt/ostream.h>
+
+using fmt::print;
+
+const double pi = 3.141592653589793;
+
+void square_array(double *array, size_t len_array)
+{
+  for(size_t i=0; i<len_array; i++)
+  {
+    array[i] *= array[i];
+  }
+}
+
+class Stuff {
+  private:
+    unique_ptr<int64_t[]> _wheat;
+    unique_ptr<double[]> _tares;
+    size_t _num_wheat;
+    size_t _num_tares;
+  public:
+    Stuff()
+    {
+      _num_wheat = 16;
+
+      _wheat = make_unique<int64_t[]>(_num_wheat);
+      for(size_t i=0; i<_num_wheat; i++)
+      {
+        _wheat[i] = (int64_t) i;
+      }
+
+      _num_tares = 16;
+
+      _tares = make_unique<double[]>(_num_tares);
+      for(size_t i=0; i<_num_tares; i++)
+      {
+        _tares[i] = ((double) _wheat[i]) * pi;
+      }
+    }
+
+    auto num_wheat()
+    {
+      return _num_wheat;
+    }
+
+    auto num_tares()
+    {
+      return _num_tares;
+    }
+
+    auto wheat(size_t index)
+    {
+
+      if(index >= num_wheat())
+      {
+        throw invalid_argument("Out of bounds access on wheat");
+      }
+
+      return _wheat[index];
+    }
+
+    auto wheat_ptr()
+    {
+      return _wheat.get();
+    }
+
+    auto tares(size_t index)
+    {
+
+      if(index >= num_tares())
+      {
+        throw invalid_argument("Out of bounds access on wheat");
+      }
+
+      return _tares[index];
+    }
+
+    auto tares_ptr()
+    {
+      return _tares.get();
+    }
+
+};
+
+
+int main(int argc, char *argv[]){
+
+  print("Hello, world!\n");
+
+  auto my_stuff = Stuff();
+
+  print("Wheat:\n");
+  for(size_t i = 0; i < my_stuff.num_wheat(); i++)
+  {
+    print("{} ", my_stuff.wheat(i));
+  }
+  print("\n");
+
+  print("Tares:\n");
+  for(size_t i = 0; i < my_stuff.num_tares(); i++)
+  {
+    print("{:.2f} ", my_stuff.tares(i));
+  }
+  print("\n");
+
+  square_array(my_stuff.tares_ptr(), my_stuff.num_tares());
+
+  print("after squaring...\n");
+  for(size_t i = 0; i < my_stuff.num_tares(); i++)
+  {
+    print("{:.2f} ", my_stuff.tares(i));
+  }
+  print("\n");
+
+}
+

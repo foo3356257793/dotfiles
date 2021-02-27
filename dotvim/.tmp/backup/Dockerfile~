@@ -1,0 +1,7 @@
+FROM ubuntu:latest
+Label maintainer = "Dad"
+RUN apt update &amp;&amp; \
+    apt install -y sudo curl git zsh \
+    vim-gtk tmux; \
+    --shell /bin/zsh
+

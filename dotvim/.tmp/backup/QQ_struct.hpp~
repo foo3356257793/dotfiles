@@ -1,0 +1,73 @@
+struct _TYPE {
+
+  // auto stuff
+  #include "QQ_auto_init.hpp"
+  #include "QQ_auto_copy_fracs.hpp"
+  #include "get_frac.hpp"
+  #include "QQ_auto_struct.hpp"
+
+  #define _funname_eq pow_eq
+  #define _checkerror int error =
+  #define _funnative fmpq_pow_fmpz
+  #define _checkoutput if(error==0){throw std::std::invalid_argument("pow_eq error");}
+
+  #define _TYPE_IN ZZ
+  #include "../fun_NN_eq.hpp"
+  #undef _TYPE_IN
+  #define _TYPE_IN ZZ_ptr
+  #include "../fun_NN_eq.hpp"
+  #undef _TYPE_IN
+
+  #undef _checkoutput
+  #undef _funnative
+  #undef _checkerror
+  #undef _funname_eq
+
+#if 0
+  #include "../compare_star.hpp"
+  #include "../addmul_star.hpp"
+  #include "../fmma_eq_star.hpp"
+
+  #define _funname_eq pow_eq
+  #include "../fun_NN_eq_star.hpp"
+  #undef _funname_eq
+
+  _TYPE &next_prime_eq(int proved);
+  _TYPE &next_prime_eq();
+
+  bool is_prime() const;
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator<<=
+  #define _funnative _fun_paster(_ftype,mul_2exp)
+  #include "../fun_ui_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator<<=
+  #define _funnative _fun_paster(_ftype,mul_2exp)
+  #include "../fun_si_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator>>=
+  #define _funnative _fun_paster(_ftype,tdiv_q_2exp)
+  #include "../fun_ui_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+
+  #define _TYPE_OUT _TYPE
+  #define _funname_eq operator>>=
+  #define _funnative _fun_paster(_ftype,tdiv_q_2exp)
+  #include "../fun_si_eq.hpp"
+  #undef _funnative
+  #undef _funname_eq
+  #undef _TYPE_OUT
+#endif
+
+};

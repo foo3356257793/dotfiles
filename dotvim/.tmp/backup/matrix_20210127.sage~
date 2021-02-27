@@ -1,0 +1,173 @@
+#!/usr/bin/sage
+
+def rand_vec_of_len(length,dim):
+
+    vec = [normalvariate(0,1) for _ in range(dim)]
+    vec_norm = sum([v^2 for v in vec])
+    vec_norm = sqrt(vec_norm)
+
+    scale = length / vec_norm
+
+    out = vector(ZZ,[round(scale * v) for v in vec])
+
+    return out
+
+
+def dual_basis(mat):
+
+    out = matrix(QQ,mat)^(-1)
+
+    den = denominator(out)
+
+    out = matrix(ZZ, den * out)
+    out = transpose(out)
+
+    dim = out.nrows()
+
+    for i in range(ceil(dim/2)):
+        out.swap_rows(i,dim-1-i)
+
+    return out, den
+
+def lower_triang(mat):
+
+    _,L = matrix(RDF,transpose(mat)).QR()
+
+    L = copy(L)
+
+    for i in range(L.nrows()):
+
+        if L[i,i] < 0:
+            L[i] *= -1
+
+    L = transpose(L)
+
+    return L
+
+def reduce_below_diag(L,cob=None,end=None):
+
+    dim = L.nrows()
+
+    if end is None:
+        end = dim
+
+    if cob is None:
+        cob = identity_matrix(dim)
+
+    for col in range(end-1,-1,-1):
+        for row in range(col+1,dim):
+            c = round(L[row,col]/L[col,col])
+            L[row] -= c * L[col]
+            cob[row] -= c * cob[col]
+
+    return L, cob
+
+def weak_reduce(mat,begin=0,end=None):
+
+    mat = copy(mat)
+
+    if end is None:
+        end = mat.nrows()
+
+    L = lower_triang(mat)
+
+    L,mat = reduce_below_diag(L,mat)
+
+    i = begin+1
+
+    it = 0
+    max_iter = 256
+
+    while i < end and it < max_iter:
+
+        diags = [RR(log(diag,2)) for diag in L.diagonal()]
+
+        len_sq_i = L[i,i-1]^2 + L[i,i]^2
+
+        if len_sq_i < L[i-1,i-1]^2:
+
+            check = mat[i-1,0]
+
+            # swap rows doesn't work?
+            for col in range(mat.ncols()):
+                tmp = mat[i-1,col]
+                mat[i-1,col] = mat[i,col]
+                mat[i,col] = tmp
+
+            i -= 1
+
+            L = lower_triang(mat)
+
+            L,mat = reduce_below_diag(L,mat)
+
+            if i == begin:
+                i += 1
+
+        else:
+            i += 1
+
+        it += 1
+
+    return mat
+
+
+if __name__ == "__main__":
+
+    set_random_seed(0)
+
+    dim = 4
+    length = 2^16
+
+    vec = rand_vec_of_len(length, dim)
+
+    print(vec)
+
+
+    mat = identity_matrix(dim)
+
+    # place at head
+
+    dmat, den = dual_basis(mat)
+
+    dot_vec = dmat * vec
+
+    pivot = 0
+
+    while pivot < dim and dot_vec[pivot] == 0:
+        pivot += 1
+
+    for i in range(pivot+1,dim):
+
+        g,s,t = xgcd(dot_vec[pivot], dot_vec[i])
+
+        u = -dot_vec[i] // g
+        v = dot_vec[pivot] // g
+
+        tmp = s * dmat[pivot] + t * dmat[i]
+        dmat[i] = u * dmat[pivot] + v * dmat[i]
+        dmat[pivot] = tmp
+
+        dot_vec[pivot] = g
+        dot_vec[i] = 0
+
+    dmat.swap_rows(pivot,dim-1)
+
+    L = lower_triang(dmat)
+
+    print([RR(log(diag,2)) for diag in L.diagonal()])
+
+    L,cob = reduce_below_diag(L)
+
+    dmat = weak_reduce(dmat,end=dim-1)
+
+    mat, new_den = dual_basis(dmat)
+
+    if den != new_den:
+        print("WARNING: denominator doesn't match!")
+
+    L = lower_triang(mat)
+    L,mat = reduce_below_diag(L,mat)
+
+    print("Here is the matrix")
+    print(mat)
+

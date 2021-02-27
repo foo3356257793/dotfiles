@@ -1,0 +1,2979 @@
+#pragma once
+
+#include <flint/fmpq.h>
+#include <flint/fmpz.h>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <type_traits>
+#include <variant>
+#include <vector>
+
+struct ZZ_ptr;
+
+struct ZZ;
+
+struct QQ_ptr;
+
+struct QQ;
+
+struct ZZ_ptr {
+  fmpz *data;
+
+  ZZ_ptr(fmpz_t in);
+
+  ZZ_ptr(const ZZ &in);
+
+  ZZ_ptr &operator=(const ZZ &in);
+
+  ZZ_ptr(ZZ_ptr &&in) noexcept = delete;
+
+  ZZ_ptr &operator=(ZZ_ptr &&in) noexcept = delete;
+
+  ~ZZ_ptr();
+
+  ZZ_ptr(const int8_t in);
+
+  ZZ_ptr &operator=(const int8_t in);
+
+  ZZ_ptr(const int16_t in);
+
+  ZZ_ptr &operator=(const int16_t in);
+
+  ZZ_ptr(const int32_t in);
+
+  ZZ_ptr &operator=(const int32_t in);
+
+  ZZ_ptr(const int64_t in);
+
+  ZZ_ptr &operator=(const int64_t in);
+
+  ZZ_ptr(const uint8_t in);
+
+  ZZ_ptr &operator=(const uint8_t in);
+
+  ZZ_ptr(const uint16_t in);
+
+  ZZ_ptr &operator=(const uint16_t in);
+
+  ZZ_ptr(const uint32_t in);
+
+  ZZ_ptr &operator=(const uint32_t in);
+
+  ZZ_ptr(const uint64_t in);
+
+  ZZ_ptr &operator=(const uint64_t in);
+
+  ZZ_ptr(const double in);
+
+  ZZ_ptr &operator=(const double in);
+
+  ZZ_ptr(const std::string in);
+
+  ZZ_ptr &operator=(const std::string in);
+
+  ZZ_ptr(const ZZ_ptr &in);
+
+  ZZ_ptr &operator=(const ZZ_ptr in);
+
+  explicit operator fmpz *();
+
+  explicit operator const fmpz *() const;
+
+  explicit operator int8_t() const;
+
+  explicit operator int16_t() const;
+
+  explicit operator int32_t() const;
+
+  explicit operator int64_t() const;
+
+  explicit operator uint8_t() const;
+
+  explicit operator uint16_t() const;
+
+  explicit operator uint32_t() const;
+
+  explicit operator uint64_t() const;
+
+  explicit operator float() const;
+
+  explicit operator double() const;
+
+  explicit operator std::string() const;
+
+  ZZ_ptr &operator-();
+
+  ZZ_ptr &operator+=(const ZZ &in);
+
+  ZZ_ptr &operator+=(const ZZ_ptr &in);
+
+  ZZ_ptr &operator+=(const int8_t in);
+
+  ZZ_ptr &operator+=(const int16_t in);
+
+  ZZ_ptr &operator+=(const int32_t in);
+
+  ZZ_ptr &operator+=(const int64_t in);
+
+  ZZ_ptr &operator+=(const uint8_t in);
+
+  ZZ_ptr &operator+=(const uint16_t in);
+
+  ZZ_ptr &operator+=(const uint32_t in);
+
+  ZZ_ptr &operator+=(const uint64_t in);
+
+  ZZ_ptr &operator-=(const ZZ &in);
+
+  ZZ_ptr &operator-=(const ZZ_ptr &in);
+
+  ZZ_ptr &operator-=(const int8_t in);
+
+  ZZ_ptr &operator-=(const int16_t in);
+
+  ZZ_ptr &operator-=(const int32_t in);
+
+  ZZ_ptr &operator-=(const int64_t in);
+
+  ZZ_ptr &operator-=(const uint8_t in);
+
+  ZZ_ptr &operator-=(const uint16_t in);
+
+  ZZ_ptr &operator-=(const uint32_t in);
+
+  ZZ_ptr &operator-=(const uint64_t in);
+
+  ZZ_ptr &operator*=(const ZZ &in);
+
+  ZZ_ptr &operator*=(const ZZ_ptr &in);
+
+  ZZ_ptr &operator*=(const int8_t in);
+
+  ZZ_ptr &operator*=(const int16_t in);
+
+  ZZ_ptr &operator*=(const int32_t in);
+
+  ZZ_ptr &operator*=(const int64_t in);
+
+  ZZ_ptr &operator*=(const uint8_t in);
+
+  ZZ_ptr &operator*=(const uint16_t in);
+
+  ZZ_ptr &operator*=(const uint32_t in);
+
+  ZZ_ptr &operator*=(const uint64_t in);
+
+  ZZ_ptr &cdiv_q_eq(const ZZ &in);
+
+  ZZ_ptr &cdiv_q_eq(const ZZ_ptr &in);
+
+  ZZ_ptr &cdiv_q_eq(const int8_t in);
+
+  ZZ_ptr &cdiv_q_eq(const int16_t in);
+
+  ZZ_ptr &cdiv_q_eq(const int32_t in);
+
+  ZZ_ptr &cdiv_q_eq(const int64_t in);
+
+  ZZ_ptr &cdiv_q_eq(const uint8_t in);
+
+  ZZ_ptr &cdiv_q_eq(const uint16_t in);
+
+  ZZ_ptr &cdiv_q_eq(const uint32_t in);
+
+  ZZ_ptr &cdiv_q_eq(const uint64_t in);
+
+  ZZ_ptr &fdiv_q_eq(const ZZ &in);
+
+  ZZ_ptr &fdiv_q_eq(const ZZ_ptr &in);
+
+  ZZ_ptr &fdiv_q_eq(const int8_t in);
+
+  ZZ_ptr &fdiv_q_eq(const int16_t in);
+
+  ZZ_ptr &fdiv_q_eq(const int32_t in);
+
+  ZZ_ptr &fdiv_q_eq(const int64_t in);
+
+  ZZ_ptr &fdiv_q_eq(const uint8_t in);
+
+  ZZ_ptr &fdiv_q_eq(const uint16_t in);
+
+  ZZ_ptr &fdiv_q_eq(const uint32_t in);
+
+  ZZ_ptr &fdiv_q_eq(const uint64_t in);
+
+  ZZ_ptr &tdiv_q_eq(const ZZ &in);
+
+  ZZ_ptr &tdiv_q_eq(const ZZ_ptr &in);
+
+  ZZ_ptr &tdiv_q_eq(const int8_t in);
+
+  ZZ_ptr &tdiv_q_eq(const int16_t in);
+
+  ZZ_ptr &tdiv_q_eq(const int32_t in);
+
+  ZZ_ptr &tdiv_q_eq(const int64_t in);
+
+  ZZ_ptr &tdiv_q_eq(const uint8_t in);
+
+  ZZ_ptr &tdiv_q_eq(const uint16_t in);
+
+  ZZ_ptr &tdiv_q_eq(const uint32_t in);
+
+  ZZ_ptr &tdiv_q_eq(const uint64_t in);
+
+  ZZ_ptr &divexact_eq(const ZZ &in);
+
+  ZZ_ptr &divexact_eq(const ZZ_ptr &in);
+
+  ZZ_ptr &divexact_eq(const int8_t in);
+
+  ZZ_ptr &divexact_eq(const int16_t in);
+
+  ZZ_ptr &divexact_eq(const int32_t in);
+
+  ZZ_ptr &divexact_eq(const int64_t in);
+
+  ZZ_ptr &divexact_eq(const uint8_t in);
+
+  ZZ_ptr &divexact_eq(const uint16_t in);
+
+  ZZ_ptr &divexact_eq(const uint32_t in);
+
+  ZZ_ptr &divexact_eq(const uint64_t in);
+
+  ZZ_ptr &gcd_eq(const ZZ &in);
+
+  ZZ_ptr &gcd_eq(const ZZ_ptr &in);
+
+  ZZ_ptr &pow_eq(const ZZ &in);
+
+  ZZ_ptr &pow_eq(const ZZ_ptr &in);
+
+  ZZ_ptr &operator<<=(const uint8_t in);
+
+  ZZ_ptr &operator<<=(const uint16_t in);
+
+  ZZ_ptr &operator<<=(const uint32_t in);
+
+  ZZ_ptr &operator<<=(const uint64_t in);
+
+  ZZ_ptr &pow_eq(const uint8_t in);
+
+  ZZ_ptr &pow_eq(const uint16_t in);
+
+  ZZ_ptr &pow_eq(const uint32_t in);
+
+  ZZ_ptr &pow_eq(const uint64_t in);
+
+  ZZ_ptr &abs_eq();
+
+  ZZ_ptr &next_prime_eq(const int in);
+
+  ZZ_ptr &next_prime_eq();
+
+  ZZ_ptr &operator%=(const ZZ &in);
+
+  ZZ_ptr &operator%=(const ZZ_ptr &in);
+
+  ZZ_ptr &operator%=(const uint8_t in);
+
+  ZZ_ptr &operator%=(const uint16_t in);
+
+  ZZ_ptr &operator%=(const uint32_t in);
+
+  ZZ_ptr &operator%=(const uint64_t in);
+
+  bool is_divisible_by(const ZZ &in) const;
+
+  bool is_divisible_by(const ZZ_ptr &in) const;
+
+  bool is_divisible_by(const int8_t in) const;
+
+  bool is_divisible_by(const int16_t in) const;
+
+  bool is_divisible_by(const int32_t in) const;
+
+  bool is_divisible_by(const int64_t in) const;
+
+  bool operator==(const ZZ &other) const;
+
+  std::strong_ordering operator<=>(const ZZ &other) const;
+
+  bool operator==(const ZZ_ptr &other) const;
+
+  std::strong_ordering operator<=>(const ZZ_ptr &other) const;
+
+  bool operator==(const int8_t other) const;
+
+  std::strong_ordering operator<=>(const int8_t other) const;
+
+  bool operator==(const int16_t other) const;
+
+  std::strong_ordering operator<=>(const int16_t other) const;
+
+  bool operator==(const int32_t other) const;
+
+  std::strong_ordering operator<=>(const int32_t other) const;
+
+  bool operator==(const int64_t other) const;
+
+  std::strong_ordering operator<=>(const int64_t other) const;
+
+  bool operator==(const uint8_t other) const;
+
+  std::strong_ordering operator<=>(const uint8_t other) const;
+
+  bool operator==(const uint16_t other) const;
+
+  std::strong_ordering operator<=>(const uint16_t other) const;
+
+  bool operator==(const uint32_t other) const;
+
+  std::strong_ordering operator<=>(const uint32_t other) const;
+
+  bool operator==(const uint64_t other) const;
+
+  std::strong_ordering operator<=>(const uint64_t other) const;
+
+  ZZ_ptr &addmul(const ZZ &in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const ZZ &in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const ZZ &in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const ZZ_ptr &in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const ZZ_ptr &in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const ZZ &in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const uint8_t in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const uint16_t in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const uint32_t in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const uint64_t in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const int8_t in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const int16_t in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const int32_t in_1, const int64_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const int8_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const int16_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const int32_t in_2);
+
+  ZZ_ptr &addmul(const int64_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const uint8_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const uint16_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const uint32_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const uint64_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const int8_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const int16_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const int32_t in_1, const int64_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const uint8_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const uint16_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const uint32_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const uint64_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const int8_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const int16_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const int32_t in_2);
+
+  ZZ_ptr &submul(const int64_t in_1, const int64_t in_2);
+};
+
+struct ZZ {
+  fmpz_t data;
+
+  ZZ();
+
+  ZZ(const ZZ &in);
+
+  ZZ &operator=(const ZZ &in);
+
+  ZZ(ZZ &&in) noexcept;
+
+  ZZ &operator=(ZZ &&in) noexcept;
+
+  ~ZZ();
+
+  ZZ(const int8_t in);
+
+  ZZ &operator=(const int8_t in);
+
+  ZZ(const int16_t in);
+
+  ZZ &operator=(const int16_t in);
+
+  ZZ(const int32_t in);
+
+  ZZ &operator=(const int32_t in);
+
+  ZZ(const int64_t in);
+
+  ZZ &operator=(const int64_t in);
+
+  ZZ(const uint8_t in);
+
+  ZZ &operator=(const uint8_t in);
+
+  ZZ(const uint16_t in);
+
+  ZZ &operator=(const uint16_t in);
+
+  ZZ(const uint32_t in);
+
+  ZZ &operator=(const uint32_t in);
+
+  ZZ(const uint64_t in);
+
+  ZZ &operator=(const uint64_t in);
+
+  ZZ(const double in);
+
+  ZZ &operator=(const double in);
+
+  ZZ(const std::string in);
+
+  ZZ &operator=(const std::string in);
+
+  ZZ(const ZZ_ptr &in);
+
+  ZZ &operator=(const ZZ_ptr in);
+
+  explicit operator fmpz *();
+
+  explicit operator const fmpz *() const;
+
+  explicit operator int8_t() const;
+
+  explicit operator int16_t() const;
+
+  explicit operator int32_t() const;
+
+  explicit operator int64_t() const;
+
+  explicit operator uint8_t() const;
+
+  explicit operator uint16_t() const;
+
+  explicit operator uint32_t() const;
+
+  explicit operator uint64_t() const;
+
+  explicit operator float() const;
+
+  explicit operator double() const;
+
+  explicit operator std::string() const;
+
+  ZZ &operator-();
+
+  ZZ &operator+=(const ZZ &in);
+
+  ZZ &operator+=(const ZZ_ptr &in);
+
+  ZZ &operator+=(const int8_t in);
+
+  ZZ &operator+=(const int16_t in);
+
+  ZZ &operator+=(const int32_t in);
+
+  ZZ &operator+=(const int64_t in);
+
+  ZZ &operator+=(const uint8_t in);
+
+  ZZ &operator+=(const uint16_t in);
+
+  ZZ &operator+=(const uint32_t in);
+
+  ZZ &operator+=(const uint64_t in);
+
+  ZZ &operator-=(const ZZ &in);
+
+  ZZ &operator-=(const ZZ_ptr &in);
+
+  ZZ &operator-=(const int8_t in);
+
+  ZZ &operator-=(const int16_t in);
+
+  ZZ &operator-=(const int32_t in);
+
+  ZZ &operator-=(const int64_t in);
+
+  ZZ &operator-=(const uint8_t in);
+
+  ZZ &operator-=(const uint16_t in);
+
+  ZZ &operator-=(const uint32_t in);
+
+  ZZ &operator-=(const uint64_t in);
+
+  ZZ &operator*=(const ZZ &in);
+
+  ZZ &operator*=(const ZZ_ptr &in);
+
+  ZZ &operator*=(const int8_t in);
+
+  ZZ &operator*=(const int16_t in);
+
+  ZZ &operator*=(const int32_t in);
+
+  ZZ &operator*=(const int64_t in);
+
+  ZZ &operator*=(const uint8_t in);
+
+  ZZ &operator*=(const uint16_t in);
+
+  ZZ &operator*=(const uint32_t in);
+
+  ZZ &operator*=(const uint64_t in);
+
+  ZZ &cdiv_q_eq(const ZZ &in);
+
+  ZZ &cdiv_q_eq(const ZZ_ptr &in);
+
+  ZZ &cdiv_q_eq(const int8_t in);
+
+  ZZ &cdiv_q_eq(const int16_t in);
+
+  ZZ &cdiv_q_eq(const int32_t in);
+
+  ZZ &cdiv_q_eq(const int64_t in);
+
+  ZZ &cdiv_q_eq(const uint8_t in);
+
+  ZZ &cdiv_q_eq(const uint16_t in);
+
+  ZZ &cdiv_q_eq(const uint32_t in);
+
+  ZZ &cdiv_q_eq(const uint64_t in);
+
+  ZZ &fdiv_q_eq(const ZZ &in);
+
+  ZZ &fdiv_q_eq(const ZZ_ptr &in);
+
+  ZZ &fdiv_q_eq(const int8_t in);
+
+  ZZ &fdiv_q_eq(const int16_t in);
+
+  ZZ &fdiv_q_eq(const int32_t in);
+
+  ZZ &fdiv_q_eq(const int64_t in);
+
+  ZZ &fdiv_q_eq(const uint8_t in);
+
+  ZZ &fdiv_q_eq(const uint16_t in);
+
+  ZZ &fdiv_q_eq(const uint32_t in);
+
+  ZZ &fdiv_q_eq(const uint64_t in);
+
+  ZZ &tdiv_q_eq(const ZZ &in);
+
+  ZZ &tdiv_q_eq(const ZZ_ptr &in);
+
+  ZZ &tdiv_q_eq(const int8_t in);
+
+  ZZ &tdiv_q_eq(const int16_t in);
+
+  ZZ &tdiv_q_eq(const int32_t in);
+
+  ZZ &tdiv_q_eq(const int64_t in);
+
+  ZZ &tdiv_q_eq(const uint8_t in);
+
+  ZZ &tdiv_q_eq(const uint16_t in);
+
+  ZZ &tdiv_q_eq(const uint32_t in);
+
+  ZZ &tdiv_q_eq(const uint64_t in);
+
+  ZZ &divexact_eq(const ZZ &in);
+
+  ZZ &divexact_eq(const ZZ_ptr &in);
+
+  ZZ &divexact_eq(const int8_t in);
+
+  ZZ &divexact_eq(const int16_t in);
+
+  ZZ &divexact_eq(const int32_t in);
+
+  ZZ &divexact_eq(const int64_t in);
+
+  ZZ &divexact_eq(const uint8_t in);
+
+  ZZ &divexact_eq(const uint16_t in);
+
+  ZZ &divexact_eq(const uint32_t in);
+
+  ZZ &divexact_eq(const uint64_t in);
+
+  ZZ &gcd_eq(const ZZ &in);
+
+  ZZ &gcd_eq(const ZZ_ptr &in);
+
+  ZZ &pow_eq(const ZZ &in);
+
+  ZZ &pow_eq(const ZZ_ptr &in);
+
+  ZZ &operator<<=(const uint8_t in);
+
+  ZZ &operator<<=(const uint16_t in);
+
+  ZZ &operator<<=(const uint32_t in);
+
+  ZZ &operator<<=(const uint64_t in);
+
+  ZZ &pow_eq(const uint8_t in);
+
+  ZZ &pow_eq(const uint16_t in);
+
+  ZZ &pow_eq(const uint32_t in);
+
+  ZZ &pow_eq(const uint64_t in);
+
+  ZZ &abs_eq();
+
+  ZZ &next_prime_eq(const int in);
+
+  ZZ &next_prime_eq();
+
+  ZZ &operator%=(const ZZ &in);
+
+  ZZ &operator%=(const ZZ_ptr &in);
+
+  ZZ &operator%=(const uint8_t in);
+
+  ZZ &operator%=(const uint16_t in);
+
+  ZZ &operator%=(const uint32_t in);
+
+  ZZ &operator%=(const uint64_t in);
+
+  bool is_divisible_by(const ZZ &in) const;
+
+  bool is_divisible_by(const ZZ_ptr &in) const;
+
+  bool is_divisible_by(const int8_t in) const;
+
+  bool is_divisible_by(const int16_t in) const;
+
+  bool is_divisible_by(const int32_t in) const;
+
+  bool is_divisible_by(const int64_t in) const;
+
+  bool operator==(const ZZ &other) const;
+
+  std::strong_ordering operator<=>(const ZZ &other) const;
+
+  bool operator==(const ZZ_ptr &other) const;
+
+  std::strong_ordering operator<=>(const ZZ_ptr &other) const;
+
+  bool operator==(const int8_t other) const;
+
+  std::strong_ordering operator<=>(const int8_t other) const;
+
+  bool operator==(const int16_t other) const;
+
+  std::strong_ordering operator<=>(const int16_t other) const;
+
+  bool operator==(const int32_t other) const;
+
+  std::strong_ordering operator<=>(const int32_t other) const;
+
+  bool operator==(const int64_t other) const;
+
+  std::strong_ordering operator<=>(const int64_t other) const;
+
+  bool operator==(const uint8_t other) const;
+
+  std::strong_ordering operator<=>(const uint8_t other) const;
+
+  bool operator==(const uint16_t other) const;
+
+  std::strong_ordering operator<=>(const uint16_t other) const;
+
+  bool operator==(const uint32_t other) const;
+
+  std::strong_ordering operator<=>(const uint32_t other) const;
+
+  bool operator==(const uint64_t other) const;
+
+  std::strong_ordering operator<=>(const uint64_t other) const;
+
+  ZZ &addmul(const ZZ &in_1, const ZZ &in_2);
+
+  ZZ &addmul(const ZZ &in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const ZZ &in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const ZZ &in_1, const ZZ &in_2);
+
+  ZZ &submul(const ZZ &in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const ZZ &in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const ZZ &in_1, const uint8_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const uint8_t in_2);
+
+  ZZ &addmul(const ZZ &in_1, const uint16_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const uint16_t in_2);
+
+  ZZ &addmul(const ZZ &in_1, const uint32_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const uint32_t in_2);
+
+  ZZ &addmul(const ZZ &in_1, const uint64_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const uint64_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const uint8_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const uint8_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const uint16_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const uint16_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const uint32_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const uint32_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const uint64_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const uint64_t in_2);
+
+  ZZ &addmul(const ZZ &in_1, const int8_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const int8_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const int8_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const int8_t in_2);
+
+  ZZ &addmul(const ZZ &in_1, const int16_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const int16_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const int16_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const int16_t in_2);
+
+  ZZ &addmul(const ZZ &in_1, const int32_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const int32_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const int32_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const int32_t in_2);
+
+  ZZ &addmul(const ZZ &in_1, const int64_t in_2);
+
+  ZZ &submul(const ZZ &in_1, const int64_t in_2);
+
+  ZZ &addmul(const ZZ_ptr &in_1, const int64_t in_2);
+
+  ZZ &submul(const ZZ_ptr &in_1, const int64_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const uint8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const uint16_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const uint16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const uint32_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const uint32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const uint64_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const uint64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const int8_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const int8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const int16_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const int16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const int32_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const int32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const int64_t in_1, const ZZ &in_2);
+
+  ZZ &addmul(const int64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const uint8_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const uint8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const uint16_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const uint16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const uint32_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const uint32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const uint64_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const uint64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const int8_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const int8_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const int16_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const int16_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const int32_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const int32_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &submul(const int64_t in_1, const ZZ &in_2);
+
+  ZZ &submul(const int64_t in_1, const ZZ_ptr &in_2);
+
+  ZZ &addmul(const uint8_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const uint8_t in_1, const int64_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const uint16_t in_1, const int64_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const uint32_t in_1, const int64_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const uint64_t in_1, const int64_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const int8_t in_1, const int64_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const int16_t in_1, const int64_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const int32_t in_1, const int64_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const uint8_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const uint16_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const uint32_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const uint64_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const int8_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const int16_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const int32_t in_2);
+
+  ZZ &addmul(const int64_t in_1, const int64_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const int8_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const int16_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const int32_t in_2);
+
+  ZZ &submul(const uint8_t in_1, const int64_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const int8_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const int16_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const int32_t in_2);
+
+  ZZ &submul(const uint16_t in_1, const int64_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const int8_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const int16_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const int32_t in_2);
+
+  ZZ &submul(const uint32_t in_1, const int64_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const int8_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const int16_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const int32_t in_2);
+
+  ZZ &submul(const uint64_t in_1, const int64_t in_2);
+
+  ZZ &submul(const int8_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const int8_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const int8_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const int8_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const int8_t in_1, const int8_t in_2);
+
+  ZZ &submul(const int8_t in_1, const int16_t in_2);
+
+  ZZ &submul(const int8_t in_1, const int32_t in_2);
+
+  ZZ &submul(const int8_t in_1, const int64_t in_2);
+
+  ZZ &submul(const int16_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const int16_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const int16_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const int16_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const int16_t in_1, const int8_t in_2);
+
+  ZZ &submul(const int16_t in_1, const int16_t in_2);
+
+  ZZ &submul(const int16_t in_1, const int32_t in_2);
+
+  ZZ &submul(const int16_t in_1, const int64_t in_2);
+
+  ZZ &submul(const int32_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const int32_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const int32_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const int32_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const int32_t in_1, const int8_t in_2);
+
+  ZZ &submul(const int32_t in_1, const int16_t in_2);
+
+  ZZ &submul(const int32_t in_1, const int32_t in_2);
+
+  ZZ &submul(const int32_t in_1, const int64_t in_2);
+
+  ZZ &submul(const int64_t in_1, const uint8_t in_2);
+
+  ZZ &submul(const int64_t in_1, const uint16_t in_2);
+
+  ZZ &submul(const int64_t in_1, const uint32_t in_2);
+
+  ZZ &submul(const int64_t in_1, const uint64_t in_2);
+
+  ZZ &submul(const int64_t in_1, const int8_t in_2);
+
+  ZZ &submul(const int64_t in_1, const int16_t in_2);
+
+  ZZ &submul(const int64_t in_1, const int32_t in_2);
+
+  ZZ &submul(const int64_t in_1, const int64_t in_2);
+};
+
+struct QQ_ptr {
+  fmpq *data;
+
+  QQ_ptr(fmpq_t in);
+
+  QQ_ptr(const QQ &in);
+
+  QQ_ptr &operator=(const QQ &in);
+
+  QQ_ptr(QQ_ptr &&in) noexcept = delete;
+
+  QQ_ptr &operator=(QQ_ptr &&in) noexcept = delete;
+
+  ~QQ_ptr();
+
+  QQ_ptr(const int8_t num, const uint8_t den);
+
+  QQ_ptr(const int8_t num, const uint16_t den);
+
+  QQ_ptr(const int8_t num, const uint32_t den);
+
+  QQ_ptr(const int8_t num, const uint64_t den);
+
+  QQ_ptr(const int16_t num, const uint8_t den);
+
+  QQ_ptr(const int16_t num, const uint16_t den);
+
+  QQ_ptr(const int16_t num, const uint32_t den);
+
+  QQ_ptr(const int16_t num, const uint64_t den);
+
+  QQ_ptr(const int32_t num, const uint8_t den);
+
+  QQ_ptr(const int32_t num, const uint16_t den);
+
+  QQ_ptr(const int32_t num, const uint32_t den);
+
+  QQ_ptr(const int32_t num, const uint64_t den);
+
+  QQ_ptr(const int64_t num, const uint8_t den);
+
+  QQ_ptr(const int64_t num, const uint16_t den);
+
+  QQ_ptr(const int64_t num, const uint32_t den);
+
+  QQ_ptr(const int64_t num, const uint64_t den);
+
+  QQ_ptr(const uint8_t num, const uint8_t den);
+
+  QQ_ptr(const uint8_t num, const uint16_t den);
+
+  QQ_ptr(const uint8_t num, const uint32_t den);
+
+  QQ_ptr(const uint8_t num, const uint64_t den);
+
+  QQ_ptr(const uint16_t num, const uint8_t den);
+
+  QQ_ptr(const uint16_t num, const uint16_t den);
+
+  QQ_ptr(const uint16_t num, const uint32_t den);
+
+  QQ_ptr(const uint16_t num, const uint64_t den);
+
+  QQ_ptr(const uint32_t num, const uint8_t den);
+
+  QQ_ptr(const uint32_t num, const uint16_t den);
+
+  QQ_ptr(const uint32_t num, const uint32_t den);
+
+  QQ_ptr(const uint32_t num, const uint64_t den);
+
+  QQ_ptr(const uint64_t num, const uint8_t den);
+
+  QQ_ptr(const uint64_t num, const uint16_t den);
+
+  QQ_ptr(const uint64_t num, const uint32_t den);
+
+  QQ_ptr(const uint64_t num, const uint64_t den);
+
+  QQ_ptr(const int8_t num, const int8_t den);
+
+  QQ_ptr(const int8_t num, const int16_t den);
+
+  QQ_ptr(const int8_t num, const int32_t den);
+
+  QQ_ptr(const int8_t num, const int64_t den);
+
+  QQ_ptr(const int16_t num, const int8_t den);
+
+  QQ_ptr(const int16_t num, const int16_t den);
+
+  QQ_ptr(const int16_t num, const int32_t den);
+
+  QQ_ptr(const int16_t num, const int64_t den);
+
+  QQ_ptr(const int32_t num, const int8_t den);
+
+  QQ_ptr(const int32_t num, const int16_t den);
+
+  QQ_ptr(const int32_t num, const int32_t den);
+
+  QQ_ptr(const int32_t num, const int64_t den);
+
+  QQ_ptr(const int64_t num, const int8_t den);
+
+  QQ_ptr(const int64_t num, const int16_t den);
+
+  QQ_ptr(const int64_t num, const int32_t den);
+
+  QQ_ptr(const int64_t num, const int64_t den);
+
+  QQ_ptr(const uint8_t num, const int8_t den);
+
+  QQ_ptr(const uint8_t num, const int16_t den);
+
+  QQ_ptr(const uint8_t num, const int32_t den);
+
+  QQ_ptr(const uint8_t num, const int64_t den);
+
+  QQ_ptr(const uint16_t num, const int8_t den);
+
+  QQ_ptr(const uint16_t num, const int16_t den);
+
+  QQ_ptr(const uint16_t num, const int32_t den);
+
+  QQ_ptr(const uint16_t num, const int64_t den);
+
+  QQ_ptr(const uint32_t num, const int8_t den);
+
+  QQ_ptr(const uint32_t num, const int16_t den);
+
+  QQ_ptr(const uint32_t num, const int32_t den);
+
+  QQ_ptr(const uint32_t num, const int64_t den);
+
+  QQ_ptr(const uint64_t num, const int8_t den);
+
+  QQ_ptr(const uint64_t num, const int16_t den);
+
+  QQ_ptr(const uint64_t num, const int32_t den);
+
+  QQ_ptr(const uint64_t num, const int64_t den);
+
+  QQ_ptr(const ZZ &num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const ZZ &den);
+
+  QQ_ptr(const ZZ_ptr &num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ &num, const int8_t den);
+
+  QQ_ptr(const int8_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const int16_t den);
+
+  QQ_ptr(const int16_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const int32_t den);
+
+  QQ_ptr(const int32_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const int64_t den);
+
+  QQ_ptr(const int64_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const uint8_t den);
+
+  QQ_ptr(const uint8_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const uint16_t den);
+
+  QQ_ptr(const uint16_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const uint32_t den);
+
+  QQ_ptr(const uint32_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ &num, const uint64_t den);
+
+  QQ_ptr(const uint64_t num, const ZZ &den);
+
+  QQ_ptr(const ZZ_ptr &num, const int8_t den);
+
+  QQ_ptr(const int8_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const int16_t den);
+
+  QQ_ptr(const int16_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const int32_t den);
+
+  QQ_ptr(const int32_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const int64_t den);
+
+  QQ_ptr(const int64_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const uint8_t den);
+
+  QQ_ptr(const uint8_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const uint16_t den);
+
+  QQ_ptr(const uint16_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const uint32_t den);
+
+  QQ_ptr(const uint32_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const ZZ_ptr &num, const uint64_t den);
+
+  QQ_ptr(const uint64_t num, const ZZ_ptr &den);
+
+  QQ_ptr(const std::string in);
+
+  QQ_ptr &operator=(const std::string in);
+
+  QQ_ptr(const QQ_ptr &in);
+
+  QQ_ptr &operator=(const QQ_ptr in);
+
+  explicit operator fmpq *();
+
+  explicit operator const fmpq *() const;
+
+  explicit operator float() const;
+
+  explicit operator double() const;
+
+  explicit operator std::string() const;
+
+  QQ_ptr &operator-();
+
+  QQ_ptr &operator+=(const QQ &in);
+
+  QQ_ptr &operator+=(const QQ_ptr &in);
+
+  QQ_ptr &operator+=(const int8_t in);
+
+  QQ_ptr &operator+=(const int16_t in);
+
+  QQ_ptr &operator+=(const int32_t in);
+
+  QQ_ptr &operator+=(const int64_t in);
+
+  QQ_ptr &operator+=(const uint8_t in);
+
+  QQ_ptr &operator+=(const uint16_t in);
+
+  QQ_ptr &operator+=(const uint32_t in);
+
+  QQ_ptr &operator+=(const uint64_t in);
+
+  QQ_ptr &operator+=(const ZZ &in);
+
+  QQ_ptr &operator+=(const ZZ_ptr &in);
+
+  QQ_ptr &operator-=(const QQ &in);
+
+  QQ_ptr &operator-=(const QQ_ptr &in);
+
+  QQ_ptr &operator-=(const int8_t in);
+
+  QQ_ptr &operator-=(const int16_t in);
+
+  QQ_ptr &operator-=(const int32_t in);
+
+  QQ_ptr &operator-=(const int64_t in);
+
+  QQ_ptr &operator-=(const uint8_t in);
+
+  QQ_ptr &operator-=(const uint16_t in);
+
+  QQ_ptr &operator-=(const uint32_t in);
+
+  QQ_ptr &operator-=(const uint64_t in);
+
+  QQ_ptr &operator-=(const ZZ &in);
+
+  QQ_ptr &operator-=(const ZZ_ptr &in);
+
+  QQ_ptr &operator*=(const QQ &in);
+
+  QQ_ptr &operator*=(const QQ_ptr &in);
+
+  QQ_ptr &operator*=(const int8_t in);
+
+  QQ_ptr &operator*=(const int16_t in);
+
+  QQ_ptr &operator*=(const int32_t in);
+
+  QQ_ptr &operator*=(const int64_t in);
+
+  QQ_ptr &operator*=(const uint8_t in);
+
+  QQ_ptr &operator*=(const uint16_t in);
+
+  QQ_ptr &operator*=(const uint32_t in);
+
+  QQ_ptr &operator*=(const uint64_t in);
+
+  QQ_ptr &operator*=(const ZZ &in);
+
+  QQ_ptr &operator*=(const ZZ_ptr &in);
+
+  QQ_ptr &operator/=(const QQ &in);
+
+  QQ_ptr &operator/=(const QQ_ptr &in);
+
+  QQ_ptr &operator/=(const ZZ &in);
+
+  QQ_ptr &operator/=(const ZZ_ptr &in);
+
+  QQ_ptr &pow_eq(const ZZ &in);
+
+  QQ_ptr &pow_eq(const ZZ_ptr &in);
+
+  QQ_ptr &operator<<=(const uint8_t in);
+
+  QQ_ptr &operator<<=(const uint16_t in);
+
+  QQ_ptr &operator<<=(const uint32_t in);
+
+  QQ_ptr &operator<<=(const uint64_t in);
+
+  QQ_ptr &pow_eq(const int8_t in);
+
+  QQ_ptr &pow_eq(const int16_t in);
+
+  QQ_ptr &pow_eq(const int32_t in);
+
+  QQ_ptr &pow_eq(const int64_t in);
+
+  QQ_ptr &abs_eq();
+};
+
+struct QQ {
+  fmpq_t data;
+
+  QQ();
+
+  QQ(const QQ &in);
+
+  QQ &operator=(const QQ &in);
+
+  QQ(QQ &&in) noexcept;
+
+  QQ &operator=(QQ &&in) noexcept;
+
+  ~QQ();
+
+  QQ(const int8_t num, const uint8_t den);
+
+  QQ(const int8_t num, const uint16_t den);
+
+  QQ(const int8_t num, const uint32_t den);
+
+  QQ(const int8_t num, const uint64_t den);
+
+  QQ(const int16_t num, const uint8_t den);
+
+  QQ(const int16_t num, const uint16_t den);
+
+  QQ(const int16_t num, const uint32_t den);
+
+  QQ(const int16_t num, const uint64_t den);
+
+  QQ(const int32_t num, const uint8_t den);
+
+  QQ(const int32_t num, const uint16_t den);
+
+  QQ(const int32_t num, const uint32_t den);
+
+  QQ(const int32_t num, const uint64_t den);
+
+  QQ(const int64_t num, const uint8_t den);
+
+  QQ(const int64_t num, const uint16_t den);
+
+  QQ(const int64_t num, const uint32_t den);
+
+  QQ(const int64_t num, const uint64_t den);
+
+  QQ(const uint8_t num, const uint8_t den);
+
+  QQ(const uint8_t num, const uint16_t den);
+
+  QQ(const uint8_t num, const uint32_t den);
+
+  QQ(const uint8_t num, const uint64_t den);
+
+  QQ(const uint16_t num, const uint8_t den);
+
+  QQ(const uint16_t num, const uint16_t den);
+
+  QQ(const uint16_t num, const uint32_t den);
+
+  QQ(const uint16_t num, const uint64_t den);
+
+  QQ(const uint32_t num, const uint8_t den);
+
+  QQ(const uint32_t num, const uint16_t den);
+
+  QQ(const uint32_t num, const uint32_t den);
+
+  QQ(const uint32_t num, const uint64_t den);
+
+  QQ(const uint64_t num, const uint8_t den);
+
+  QQ(const uint64_t num, const uint16_t den);
+
+  QQ(const uint64_t num, const uint32_t den);
+
+  QQ(const uint64_t num, const uint64_t den);
+
+  QQ(const int8_t num, const int8_t den);
+
+  QQ(const int8_t num, const int16_t den);
+
+  QQ(const int8_t num, const int32_t den);
+
+  QQ(const int8_t num, const int64_t den);
+
+  QQ(const int16_t num, const int8_t den);
+
+  QQ(const int16_t num, const int16_t den);
+
+  QQ(const int16_t num, const int32_t den);
+
+  QQ(const int16_t num, const int64_t den);
+
+  QQ(const int32_t num, const int8_t den);
+
+  QQ(const int32_t num, const int16_t den);
+
+  QQ(const int32_t num, const int32_t den);
+
+  QQ(const int32_t num, const int64_t den);
+
+  QQ(const int64_t num, const int8_t den);
+
+  QQ(const int64_t num, const int16_t den);
+
+  QQ(const int64_t num, const int32_t den);
+
+  QQ(const int64_t num, const int64_t den);
+
+  QQ(const uint8_t num, const int8_t den);
+
+  QQ(const uint8_t num, const int16_t den);
+
+  QQ(const uint8_t num, const int32_t den);
+
+  QQ(const uint8_t num, const int64_t den);
+
+  QQ(const uint16_t num, const int8_t den);
+
+  QQ(const uint16_t num, const int16_t den);
+
+  QQ(const uint16_t num, const int32_t den);
+
+  QQ(const uint16_t num, const int64_t den);
+
+  QQ(const uint32_t num, const int8_t den);
+
+  QQ(const uint32_t num, const int16_t den);
+
+  QQ(const uint32_t num, const int32_t den);
+
+  QQ(const uint32_t num, const int64_t den);
+
+  QQ(const uint64_t num, const int8_t den);
+
+  QQ(const uint64_t num, const int16_t den);
+
+  QQ(const uint64_t num, const int32_t den);
+
+  QQ(const uint64_t num, const int64_t den);
+
+  QQ(const ZZ &num, const ZZ &den);
+
+  QQ(const ZZ &num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const ZZ &den);
+
+  QQ(const ZZ_ptr &num, const ZZ_ptr &den);
+
+  QQ(const ZZ &num, const int8_t den);
+
+  QQ(const int8_t num, const ZZ &den);
+
+  QQ(const ZZ &num, const int16_t den);
+
+  QQ(const int16_t num, const ZZ &den);
+
+  QQ(const ZZ &num, const int32_t den);
+
+  QQ(const int32_t num, const ZZ &den);
+
+  QQ(const ZZ &num, const int64_t den);
+
+  QQ(const int64_t num, const ZZ &den);
+
+  QQ(const ZZ &num, const uint8_t den);
+
+  QQ(const uint8_t num, const ZZ &den);
+
+  QQ(const ZZ &num, const uint16_t den);
+
+  QQ(const uint16_t num, const ZZ &den);
+
+  QQ(const ZZ &num, const uint32_t den);
+
+  QQ(const uint32_t num, const ZZ &den);
+
+  QQ(const ZZ &num, const uint64_t den);
+
+  QQ(const uint64_t num, const ZZ &den);
+
+  QQ(const ZZ_ptr &num, const int8_t den);
+
+  QQ(const int8_t num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const int16_t den);
+
+  QQ(const int16_t num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const int32_t den);
+
+  QQ(const int32_t num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const int64_t den);
+
+  QQ(const int64_t num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const uint8_t den);
+
+  QQ(const uint8_t num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const uint16_t den);
+
+  QQ(const uint16_t num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const uint32_t den);
+
+  QQ(const uint32_t num, const ZZ_ptr &den);
+
+  QQ(const ZZ_ptr &num, const uint64_t den);
+
+  QQ(const uint64_t num, const ZZ_ptr &den);
+
+  QQ(const std::string in);
+
+  QQ &operator=(const std::string in);
+
+  QQ(const QQ_ptr &in);
+
+  QQ &operator=(const QQ_ptr in);
+
+  explicit operator fmpq *();
+
+  explicit operator const fmpq *() const;
+
+  explicit operator float() const;
+
+  explicit operator double() const;
+
+  explicit operator std::string() const;
+
+  QQ &operator-();
+
+  QQ &operator+=(const QQ &in);
+
+  QQ &operator+=(const QQ_ptr &in);
+
+  QQ &operator+=(const int8_t in);
+
+  QQ &operator+=(const int16_t in);
+
+  QQ &operator+=(const int32_t in);
+
+  QQ &operator+=(const int64_t in);
+
+  QQ &operator+=(const uint8_t in);
+
+  QQ &operator+=(const uint16_t in);
+
+  QQ &operator+=(const uint32_t in);
+
+  QQ &operator+=(const uint64_t in);
+
+  QQ &operator+=(const ZZ &in);
+
+  QQ &operator+=(const ZZ_ptr &in);
+
+  QQ &operator-=(const QQ &in);
+
+  QQ &operator-=(const QQ_ptr &in);
+
+  QQ &operator-=(const int8_t in);
+
+  QQ &operator-=(const int16_t in);
+
+  QQ &operator-=(const int32_t in);
+
+  QQ &operator-=(const int64_t in);
+
+  QQ &operator-=(const uint8_t in);
+
+  QQ &operator-=(const uint16_t in);
+
+  QQ &operator-=(const uint32_t in);
+
+  QQ &operator-=(const uint64_t in);
+
+  QQ &operator-=(const ZZ &in);
+
+  QQ &operator-=(const ZZ_ptr &in);
+
+  QQ &operator*=(const QQ &in);
+
+  QQ &operator*=(const QQ_ptr &in);
+
+  QQ &operator*=(const int8_t in);
+
+  QQ &operator*=(const int16_t in);
+
+  QQ &operator*=(const int32_t in);
+
+  QQ &operator*=(const int64_t in);
+
+  QQ &operator*=(const uint8_t in);
+
+  QQ &operator*=(const uint16_t in);
+
+  QQ &operator*=(const uint32_t in);
+
+  QQ &operator*=(const uint64_t in);
+
+  QQ &operator*=(const ZZ &in);
+
+  QQ &operator*=(const ZZ_ptr &in);
+
+  QQ &operator/=(const QQ &in);
+
+  QQ &operator/=(const QQ_ptr &in);
+
+  QQ &operator/=(const ZZ &in);
+
+  QQ &operator/=(const ZZ_ptr &in);
+
+  QQ &pow_eq(const ZZ &in);
+
+  QQ &pow_eq(const ZZ_ptr &in);
+
+  QQ &operator<<=(const uint8_t in);
+
+  QQ &operator<<=(const uint16_t in);
+
+  QQ &operator<<=(const uint32_t in);
+
+  QQ &operator<<=(const uint64_t in);
+
+  QQ &pow_eq(const int8_t in);
+
+  QQ &pow_eq(const int16_t in);
+
+  QQ &pow_eq(const int32_t in);
+
+  QQ &pow_eq(const int64_t in);
+
+  QQ &abs_eq();
+};
+
+std::ostream &operator<<(std::ostream &os, const ZZ &in);
+
+std::ostream &operator<<(std::ostream &os, const ZZ_ptr &in);
+
+ZZ operator+(const ZZ &in_1, const ZZ &in_2);
+
+ZZ operator+(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const ZZ &in_1, const int8_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const int8_t in_2);
+
+ZZ operator+(const ZZ &in_1, const int16_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const int16_t in_2);
+
+ZZ operator+(const ZZ &in_1, const int32_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const int32_t in_2);
+
+ZZ operator+(const ZZ &in_1, const int64_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const int64_t in_2);
+
+ZZ operator+(const ZZ &in_1, const uint8_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ operator+(const ZZ &in_1, const uint16_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ operator+(const ZZ &in_1, const uint32_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ operator+(const ZZ &in_1, const uint64_t in_2);
+
+ZZ operator+(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ operator+(const int8_t in_1, const ZZ &in_2);
+
+ZZ operator+(const int8_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const int16_t in_1, const ZZ &in_2);
+
+ZZ operator+(const int16_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const int32_t in_1, const ZZ &in_2);
+
+ZZ operator+(const int32_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const int64_t in_1, const ZZ &in_2);
+
+ZZ operator+(const int64_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const uint8_t in_1, const ZZ &in_2);
+
+ZZ operator+(const uint8_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const uint16_t in_1, const ZZ &in_2);
+
+ZZ operator+(const uint16_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const uint32_t in_1, const ZZ &in_2);
+
+ZZ operator+(const uint32_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator+(const uint64_t in_1, const ZZ &in_2);
+
+ZZ operator+(const uint64_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const ZZ &in_1, const ZZ &in_2);
+
+ZZ operator-(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const ZZ &in_1, const int8_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const int8_t in_2);
+
+ZZ operator-(const ZZ &in_1, const int16_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const int16_t in_2);
+
+ZZ operator-(const ZZ &in_1, const int32_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const int32_t in_2);
+
+ZZ operator-(const ZZ &in_1, const int64_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const int64_t in_2);
+
+ZZ operator-(const ZZ &in_1, const uint8_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ operator-(const ZZ &in_1, const uint16_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ operator-(const ZZ &in_1, const uint32_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ operator-(const ZZ &in_1, const uint64_t in_2);
+
+ZZ operator-(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ operator-(const int8_t in_1, const ZZ &in_2);
+
+ZZ operator-(const int8_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const int16_t in_1, const ZZ &in_2);
+
+ZZ operator-(const int16_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const int32_t in_1, const ZZ &in_2);
+
+ZZ operator-(const int32_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const int64_t in_1, const ZZ &in_2);
+
+ZZ operator-(const int64_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const uint8_t in_1, const ZZ &in_2);
+
+ZZ operator-(const uint8_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const uint16_t in_1, const ZZ &in_2);
+
+ZZ operator-(const uint16_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const uint32_t in_1, const ZZ &in_2);
+
+ZZ operator-(const uint32_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator-(const uint64_t in_1, const ZZ &in_2);
+
+ZZ operator-(const uint64_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const ZZ &in_1, const ZZ &in_2);
+
+ZZ operator*(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const ZZ &in_1, const int8_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const int8_t in_2);
+
+ZZ operator*(const ZZ &in_1, const int16_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const int16_t in_2);
+
+ZZ operator*(const ZZ &in_1, const int32_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const int32_t in_2);
+
+ZZ operator*(const ZZ &in_1, const int64_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const int64_t in_2);
+
+ZZ operator*(const ZZ &in_1, const uint8_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ operator*(const ZZ &in_1, const uint16_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ operator*(const ZZ &in_1, const uint32_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ operator*(const ZZ &in_1, const uint64_t in_2);
+
+ZZ operator*(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ operator*(const int8_t in_1, const ZZ &in_2);
+
+ZZ operator*(const int8_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const int16_t in_1, const ZZ &in_2);
+
+ZZ operator*(const int16_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const int32_t in_1, const ZZ &in_2);
+
+ZZ operator*(const int32_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const int64_t in_1, const ZZ &in_2);
+
+ZZ operator*(const int64_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const uint8_t in_1, const ZZ &in_2);
+
+ZZ operator*(const uint8_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const uint16_t in_1, const ZZ &in_2);
+
+ZZ operator*(const uint16_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const uint32_t in_1, const ZZ &in_2);
+
+ZZ operator*(const uint32_t in_1, const ZZ_ptr &in_2);
+
+ZZ operator*(const uint64_t in_1, const ZZ &in_2);
+
+ZZ operator*(const uint64_t in_1, const ZZ_ptr &in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const ZZ &in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const int8_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int8_t in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const int16_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int16_t in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const int32_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int32_t in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const int64_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int64_t in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const uint8_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const uint16_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const uint32_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ cdiv_q(const ZZ &in_1, const uint64_t in_2);
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const ZZ &in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const int8_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int8_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const int16_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int16_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const int32_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int32_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const int64_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int64_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const uint8_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const uint16_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const uint32_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ fdiv_q(const ZZ &in_1, const uint64_t in_2);
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const ZZ &in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const int8_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int8_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const int16_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int16_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const int32_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int32_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const int64_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int64_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const uint8_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const uint16_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const uint32_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ tdiv_q(const ZZ &in_1, const uint64_t in_2);
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ divexact(const ZZ &in_1, const ZZ &in_2);
+
+ZZ divexact(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ divexact(const ZZ &in_1, const int8_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const int8_t in_2);
+
+ZZ divexact(const ZZ &in_1, const int16_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const int16_t in_2);
+
+ZZ divexact(const ZZ &in_1, const int32_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const int32_t in_2);
+
+ZZ divexact(const ZZ &in_1, const int64_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const int64_t in_2);
+
+ZZ divexact(const ZZ &in_1, const uint8_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ divexact(const ZZ &in_1, const uint16_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ divexact(const ZZ &in_1, const uint32_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ divexact(const ZZ &in_1, const uint64_t in_2);
+
+ZZ divexact(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ gcd(const ZZ &in_1, const ZZ &in_2);
+
+ZZ gcd(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ gcd(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ gcd(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ pow(const ZZ &in_1, const ZZ &in_2);
+
+ZZ pow(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ pow(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ pow(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ operator<<(const ZZ &in_1, const uint8_t in_2);
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ operator<<(const ZZ &in_1, const uint16_t in_2);
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ operator<<(const ZZ &in_1, const uint32_t in_2);
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ operator<<(const ZZ &in_1, const uint64_t in_2);
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ pow(const ZZ &in_1, const uint8_t in_2);
+
+ZZ pow(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ pow(const ZZ &in_1, const uint16_t in_2);
+
+ZZ pow(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ pow(const ZZ &in_1, const uint32_t in_2);
+
+ZZ pow(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ pow(const ZZ &in_1, const uint64_t in_2);
+
+ZZ pow(const ZZ_ptr &in_1, const uint64_t in_2);
+
+ZZ abs(const ZZ &in);
+
+ZZ abs(const ZZ_ptr &in);
+
+ZZ next_prime(const ZZ &in_1, const int in_2);
+
+ZZ next_prime(const ZZ &in);
+
+ZZ next_prime(const ZZ_ptr &in_1, const int in_2);
+
+ZZ next_prime(const ZZ_ptr &in);
+
+ZZ operator%(const ZZ &in_1, const ZZ &in_2);
+
+ZZ operator%(const ZZ &in_1, const ZZ_ptr &in_2);
+
+ZZ operator%(const ZZ_ptr &in_1, const ZZ &in_2);
+
+ZZ operator%(const ZZ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ operator%(const ZZ &in_1, const uint8_t in_2);
+
+ZZ operator%(const ZZ_ptr &in_1, const uint8_t in_2);
+
+ZZ operator%(const ZZ &in_1, const uint16_t in_2);
+
+ZZ operator%(const ZZ_ptr &in_1, const uint16_t in_2);
+
+ZZ operator%(const ZZ &in_1, const uint32_t in_2);
+
+ZZ operator%(const ZZ_ptr &in_1, const uint32_t in_2);
+
+ZZ operator%(const ZZ &in_1, const uint64_t in_2);
+
+ZZ operator%(const ZZ_ptr &in_1, const uint64_t in_2);
+
+bool is_prime(const ZZ &in);
+
+bool is_prime(const ZZ_ptr &in);
+
+std::ostream &operator<<(std::ostream &os, const QQ &in);
+
+std::ostream &operator<<(std::ostream &os, const QQ_ptr &in);
+
+QQ operator+(const QQ &in_1, const QQ &in_2);
+
+QQ operator+(const QQ &in_1, const QQ_ptr &in_2);
+
+QQ operator+(const QQ_ptr &in_1, const QQ &in_2);
+
+QQ operator+(const QQ_ptr &in_1, const QQ_ptr &in_2);
+
+QQ operator+(const QQ &in_1, const int8_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const int8_t in_2);
+
+QQ operator+(const QQ &in_1, const int16_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const int16_t in_2);
+
+QQ operator+(const QQ &in_1, const int32_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const int32_t in_2);
+
+QQ operator+(const QQ &in_1, const int64_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const int64_t in_2);
+
+QQ operator+(const QQ &in_1, const uint8_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const uint8_t in_2);
+
+QQ operator+(const QQ &in_1, const uint16_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const uint16_t in_2);
+
+QQ operator+(const QQ &in_1, const uint32_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const uint32_t in_2);
+
+QQ operator+(const QQ &in_1, const uint64_t in_2);
+
+QQ operator+(const QQ_ptr &in_1, const uint64_t in_2);
+
+QQ operator+(const int8_t in_1, const QQ &in_2);
+
+QQ operator+(const int8_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const int16_t in_1, const QQ &in_2);
+
+QQ operator+(const int16_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const int32_t in_1, const QQ &in_2);
+
+QQ operator+(const int32_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const int64_t in_1, const QQ &in_2);
+
+QQ operator+(const int64_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const uint8_t in_1, const QQ &in_2);
+
+QQ operator+(const uint8_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const uint16_t in_1, const QQ &in_2);
+
+QQ operator+(const uint16_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const uint32_t in_1, const QQ &in_2);
+
+QQ operator+(const uint32_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const uint64_t in_1, const QQ &in_2);
+
+QQ operator+(const uint64_t in_1, const QQ_ptr &in_2);
+
+QQ operator+(const QQ &in_1, const ZZ &in_2);
+
+QQ operator+(const QQ &in_1, const ZZ_ptr &in_2);
+
+QQ operator+(const QQ_ptr &in_1, const ZZ &in_2);
+
+QQ operator+(const QQ_ptr &in_1, const ZZ_ptr &in_2);
+
+QQ operator+(const ZZ &in_1, const QQ &in_2);
+
+QQ operator+(const ZZ_ptr &in_1, const QQ &in_2);
+
+QQ operator+(const ZZ &in_1, const QQ_ptr &in_2);
+
+QQ operator+(const ZZ_ptr &in_1, const QQ_ptr &in_2);
+
+QQ operator-(const QQ &in_1, const QQ &in_2);
+
+QQ operator-(const QQ &in_1, const QQ_ptr &in_2);
+
+QQ operator-(const QQ_ptr &in_1, const QQ &in_2);
+
+QQ operator-(const QQ_ptr &in_1, const QQ_ptr &in_2);
+
+QQ operator-(const QQ &in_1, const int8_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const int8_t in_2);
+
+QQ operator-(const QQ &in_1, const int16_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const int16_t in_2);
+
+QQ operator-(const QQ &in_1, const int32_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const int32_t in_2);
+
+QQ operator-(const QQ &in_1, const int64_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const int64_t in_2);
+
+QQ operator-(const QQ &in_1, const uint8_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const uint8_t in_2);
+
+QQ operator-(const QQ &in_1, const uint16_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const uint16_t in_2);
+
+QQ operator-(const QQ &in_1, const uint32_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const uint32_t in_2);
+
+QQ operator-(const QQ &in_1, const uint64_t in_2);
+
+QQ operator-(const QQ_ptr &in_1, const uint64_t in_2);
+
+QQ operator-(const int8_t in_1, const QQ &in_2);
+
+QQ operator-(const int8_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const int16_t in_1, const QQ &in_2);
+
+QQ operator-(const int16_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const int32_t in_1, const QQ &in_2);
+
+QQ operator-(const int32_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const int64_t in_1, const QQ &in_2);
+
+QQ operator-(const int64_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const uint8_t in_1, const QQ &in_2);
+
+QQ operator-(const uint8_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const uint16_t in_1, const QQ &in_2);
+
+QQ operator-(const uint16_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const uint32_t in_1, const QQ &in_2);
+
+QQ operator-(const uint32_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const uint64_t in_1, const QQ &in_2);
+
+QQ operator-(const uint64_t in_1, const QQ_ptr &in_2);
+
+QQ operator-(const QQ &in_1, const ZZ &in_2);
+
+QQ operator-(const QQ &in_1, const ZZ_ptr &in_2);
+
+QQ operator-(const QQ_ptr &in_1, const ZZ &in_2);
+
+QQ operator-(const QQ_ptr &in_1, const ZZ_ptr &in_2);
+
+QQ operator-(const ZZ &in_1, const QQ &in_2);
+
+QQ operator-(const ZZ_ptr &in_1, const QQ &in_2);
+
+QQ operator-(const ZZ &in_1, const QQ_ptr &in_2);
+
+QQ operator-(const ZZ_ptr &in_1, const QQ_ptr &in_2);
+
+QQ operator*(const QQ &in_1, const QQ &in_2);
+
+QQ operator*(const QQ &in_1, const QQ_ptr &in_2);
+
+QQ operator*(const QQ_ptr &in_1, const QQ &in_2);
+
+QQ operator*(const QQ_ptr &in_1, const QQ_ptr &in_2);
+
+QQ operator*(const QQ &in_1, const int8_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const int8_t in_2);
+
+QQ operator*(const QQ &in_1, const int16_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const int16_t in_2);
+
+QQ operator*(const QQ &in_1, const int32_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const int32_t in_2);
+
+QQ operator*(const QQ &in_1, const int64_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const int64_t in_2);
+
+QQ operator*(const QQ &in_1, const uint8_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const uint8_t in_2);
+
+QQ operator*(const QQ &in_1, const uint16_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const uint16_t in_2);
+
+QQ operator*(const QQ &in_1, const uint32_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const uint32_t in_2);
+
+QQ operator*(const QQ &in_1, const uint64_t in_2);
+
+QQ operator*(const QQ_ptr &in_1, const uint64_t in_2);
+
+QQ operator*(const int8_t in_1, const QQ &in_2);
+
+QQ operator*(const int8_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const int16_t in_1, const QQ &in_2);
+
+QQ operator*(const int16_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const int32_t in_1, const QQ &in_2);
+
+QQ operator*(const int32_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const int64_t in_1, const QQ &in_2);
+
+QQ operator*(const int64_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const uint8_t in_1, const QQ &in_2);
+
+QQ operator*(const uint8_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const uint16_t in_1, const QQ &in_2);
+
+QQ operator*(const uint16_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const uint32_t in_1, const QQ &in_2);
+
+QQ operator*(const uint32_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const uint64_t in_1, const QQ &in_2);
+
+QQ operator*(const uint64_t in_1, const QQ_ptr &in_2);
+
+QQ operator*(const QQ &in_1, const ZZ &in_2);
+
+QQ operator*(const QQ &in_1, const ZZ_ptr &in_2);
+
+QQ operator*(const QQ_ptr &in_1, const ZZ &in_2);
+
+QQ operator*(const QQ_ptr &in_1, const ZZ_ptr &in_2);
+
+QQ operator*(const ZZ &in_1, const QQ &in_2);
+
+QQ operator*(const ZZ_ptr &in_1, const QQ &in_2);
+
+QQ operator*(const ZZ &in_1, const QQ_ptr &in_2);
+
+QQ operator*(const ZZ_ptr &in_1, const QQ_ptr &in_2);
+
+QQ operator/(const QQ &in_1, const QQ &in_2);
+
+QQ operator/(const QQ &in_1, const QQ_ptr &in_2);
+
+QQ operator/(const QQ_ptr &in_1, const QQ &in_2);
+
+QQ operator/(const QQ_ptr &in_1, const QQ_ptr &in_2);
+
+QQ operator/(const QQ &in_1, const ZZ &in_2);
+
+QQ operator/(const QQ &in_1, const ZZ_ptr &in_2);
+
+QQ operator/(const QQ_ptr &in_1, const ZZ &in_2);
+
+QQ operator/(const QQ_ptr &in_1, const ZZ_ptr &in_2);
+
+QQ pow(const QQ &in_1, const ZZ &in_2);
+
+QQ pow(const QQ &in_1, const ZZ_ptr &in_2);
+
+QQ pow(const QQ_ptr &in_1, const ZZ &in_2);
+
+QQ pow(const QQ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ operator%(const QQ &in_1, const ZZ &in_2);
+
+ZZ operator%(const QQ &in_1, const ZZ_ptr &in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const ZZ &in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const ZZ_ptr &in_2);
+
+ZZ operator%(const QQ &in_1, const int8_t in_2);
+
+ZZ operator%(const QQ &in_1, const int16_t in_2);
+
+ZZ operator%(const QQ &in_1, const int32_t in_2);
+
+ZZ operator%(const QQ &in_1, const int64_t in_2);
+
+ZZ operator%(const QQ &in_1, const uint8_t in_2);
+
+ZZ operator%(const QQ &in_1, const uint16_t in_2);
+
+ZZ operator%(const QQ &in_1, const uint32_t in_2);
+
+ZZ operator%(const QQ &in_1, const uint64_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const int8_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const int16_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const int32_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const int64_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const uint8_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const uint16_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const uint32_t in_2);
+
+ZZ operator%(const QQ_ptr &in_1, const uint64_t in_2);
+
+QQ operator<<(const QQ &in_1, const uint8_t in_2);
+
+QQ operator<<(const QQ_ptr &in_1, const uint8_t in_2);
+
+QQ operator<<(const QQ &in_1, const uint16_t in_2);
+
+QQ operator<<(const QQ_ptr &in_1, const uint16_t in_2);
+
+QQ operator<<(const QQ &in_1, const uint32_t in_2);
+
+QQ operator<<(const QQ_ptr &in_1, const uint32_t in_2);
+
+QQ operator<<(const QQ &in_1, const uint64_t in_2);
+
+QQ operator<<(const QQ_ptr &in_1, const uint64_t in_2);
+
+QQ pow(const QQ &in_1, const int8_t in_2);
+
+QQ pow(const QQ_ptr &in_1, const int8_t in_2);
+
+QQ pow(const QQ &in_1, const int16_t in_2);
+
+QQ pow(const QQ_ptr &in_1, const int16_t in_2);
+
+QQ pow(const QQ &in_1, const int32_t in_2);
+
+QQ pow(const QQ_ptr &in_1, const int32_t in_2);
+
+QQ pow(const QQ &in_1, const int64_t in_2);
+
+QQ pow(const QQ_ptr &in_1, const int64_t in_2);
+
+QQ abs(const QQ &in);
+
+QQ abs(const QQ_ptr &in);
+
+#include "ZZ_mat.hpp"
+#include "ZZ_vec.hpp"

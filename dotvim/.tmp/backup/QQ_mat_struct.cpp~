@@ -1,0 +1,53 @@
+#include "QQ_mat_struct_QQ_mat.cpp"
+#include "QQ_mat_struct_QQ.cpp"
+#include "QQ_mat_struct_UI.cpp"
+#include "QQ_mat_struct_SI.cpp"
+
+bool _QQ_mat::is_square() const {
+  return fmpq_mat_is_square(data);
+}
+
+_QQ_mat &_QQ_mat::translate(const std::function<void(fmpq_mat_t)> &fun){
+  fun(data);
+  return *this;
+}
+
+_QQ_mat &_QQ_mat::translate(const std::function<void(fmpq_mat_t,fmpq_mat_t)> &fun){
+  fun(data,data);
+  return *this;
+}
+
+_QQ_mat &_QQ_mat::operator-(){
+  return translate(fmpq_mat_neg);
+}
+
+_QQ_mat &_QQ_mat::inverse_eq(){
+  if(!is_square()){
+    throw std::invalid_argument("Inverse= of non-square");
+  }
+  auto success = fmpq_mat_inv(data,data);
+  if(success==0){
+    throw std::invalid_argument("Inverse of singular matrix");
+  }
+  return *this;
+}
+
+_QQ_mat &_QQ_mat::resize(int rows, int cols){
+  if(rows != nrows() || cols != ncols()){
+    if(rows<0 || cols<0){
+      throw std::invalid_argument("Negative dimension matrix");
+    }
+    fmpq_mat_clear(data);
+    fmpq_mat_init(data,rows,cols);
+  }
+  return *this;
+}
+
+QQ_vec_ptr _QQ_mat::operator[](const slong row){
+  return data->rows[row];
+}
+
+const QQ_vec_ptr _QQ_mat::operator[](const slong row) const{
+  return data->rows[row];
+}
+

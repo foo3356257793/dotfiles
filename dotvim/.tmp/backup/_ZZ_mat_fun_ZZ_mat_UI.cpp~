@@ -1,0 +1,38 @@
+ZZ_mat translate(const std::function<void(fmpz_mat_t,const fmpz_mat_t,const ulong)> &fun,
+    const _ZZ_mat_1 &in_1, const _UI in_2){
+  auto out = ZZ_mat(in_1.nrows(),in_1.ncols());
+  fun(out.data,in_1.data,in_2);
+  return out;
+}
+
+ZZ_mat translate(const std::function<void(fmpz_t,const fmpz_t,const ulong)> &fun,
+    const _ZZ_mat_1 &in_1, const _UI in_2){
+  auto out = ZZ_mat(in_1.nrows(),in_1.ncols());
+
+  for(int row=0; row<in_1.nrows(); row++){
+    for(int col=0; col<in_1.ncols(); col++){
+      fun(out[row][col].data,in_1[row][col].data,in_2);
+    }
+  }
+
+  return out;
+}
+
+ZZ_mat operator*(const _ZZ_mat_1 &in_1, const _UI in_2)
+{
+  return translate(fmpz_mat_scalar_mul_ui,in_1,in_2);
+}
+
+ZZ_mat operator*(const _UI in_1, const _ZZ_mat_1 &in_2)
+{
+  return in_2 * in_1;
+}
+
+ZZ_mat divexact(const _ZZ_mat_1 &in_1, const _UI in_2)
+{
+  return translate(fmpz_mat_scalar_divexact_ui,in_1,in_2);
+}
+
+ZZ_mat operator%(const _ZZ_mat_1 &in_1, const _UI in_2){
+  return translate(fmpz_mod_ui,in_1,in_2);
+}

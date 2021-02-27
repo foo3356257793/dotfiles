@@ -1,0 +1,4 @@
+QQ_mat::QQ_mat(const _QQ_mat_1 &in) : QQ_mat(in.nrows(), in.ncols()) {
+  fmpz_mat_set(data,in.data);
+}
+

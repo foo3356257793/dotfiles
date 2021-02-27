@@ -531,7 +531,7 @@ augroup pythonSettings
   au!
   au bufnewfile *.py 0r $HOME/.vim/python_template.py
   au bufnewfile *.py exe 'normal G'
-  au bufnewfile,Bufread Sconstruct :set ft=python<cr>
+  au bufnewfile,Bufread Sconstruct :set ft=python
   au FileType python setlocal softtabstop=4|set shiftwidth=4|set expandtab
   au FileType python setlocal autoindent|set smartindent
   au FileType python setlocal tw=80 " good coding practice
@@ -609,8 +609,20 @@ augroup cShortcuts
   au FileType c,cpp :onoremap <buffer> in{ :<c-u>normal!f{vi{<cr>
   au FileType c,cpp :onoremap <buffer> ip{ :<c-u>normal!F{vi{<cr>
   au FileType c,cpp :inoremap <buffer> {<cr> {<cr>}<esc>O
+  au FileType c,cpp :nnoremap <buffer> <localleader>d oDEBUG(<esc>"=printf("%d",line('.'))<c-M>pa,);<esc>hi
 augroup END
 " }}}
+" }}}
+" ===== go ===== {{{
+augroup goSettings
+  au!
+  au bufnewfile *.go 0r $HOME/.vim/template.go
+  au bufnewfile *.go exe 'normal 9G'
+augroup END
+augroup goShortcuts
+  au!
+  au FileType go :inoremap <buffer> {<cr> {<cr>}<esc>O
+augroup END
 " }}}
 " ===== rust ===== {{{
 augroup rustSettings
@@ -785,6 +797,7 @@ augroup END
 "   - command to pull up a list of all the bookmarks (parse this file...)
 "   - write my own fzf command to manage bookmarks (or use a plugin...)
 "     - call it and it lists bookmarks which are accessible
+"   - keeping a tmux session open has made me use these less
 " autocomplete:
 "   - youcompleteme: needs npm
 "   - COC: needs node
@@ -797,13 +810,6 @@ augroup END
 "   - only feature which doesn't work out of the box would be images
 "   - If I really wanted, could include some kind of LaTeX/html compilation to
 "     make something really interesting
-" send sage to tmux pane
-"   - wrote a function to send load file to a split pane
-"   - wrote tmux function to setup split panes with Sage on one side
-"   - unclear how useful this will become (it's super fast though)
-"   - tmux function to switch between windows Vim/Sage??
-" vim-startify
-"   - didn't use the recently used: shifting to bookmarking
 " }}}
 " === tried, don't want === {{{
 " stuff from emacs that I have tried out but I don't want here
@@ -828,4 +834,5 @@ augroup END
 "     parens)
 " - do I need surround?
 "     I installed it just in case I want it later
+" - vim-startify: didn't use the recently used: shifting to bookmarking
 " }}}

@@ -1,0 +1,74 @@
+CXX = g++ -std=c++20 -O3
+#CXX = g++ -std=c++20 -O0
+CXXFLAGS =
+INCLUDE =
+LIBS = -fopenmp -lgmp -lflint -lfmt
+
+TEST_LIBS = -lgtest
+
+PYBIND11_INCLUDE = -I/usr/include/python3.9 -I/home/dad/.local/lib/python3.9/site-packages/pybind11/include
+PYEXT = .cpython-39-x86_64-linux-gnu.so
+PYBIND11_CXXFLAGS = -Wall -shared -fPIC
+
+#all: dad$(PYEXT) myflint$(PYEXT) test_myflint
+#all: myflint$(PYEXT) test_myflint
+#all: test_myflint test_myflint_fmpz test_myflint_fmpq test_myflint_factor
+all: test_myflint_big_factor test_myflint_ZZmat test_myflint_ZZfactor test_poly
+#all: test_20201124
+
+test_20201102: test.cpp
+	$(CXX) $(CPPFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+dad$(PYEXT): dad.cpp
+	$(CXX) $(CXXFLAGS) $(PYBIND11_CXXFLAGS) $+ -o $@ $(INCLUDE) $(PYBIND11_INCLUDE) $(LIBS)
+
+myflint$(PYEXT): myflint_py.cpp
+	$(CXX) $(CXXFLAGS) $(PYBIND11_CXXFLAGS) $+ -o $@ $(INCLUDE) $(PYBIND11_INCLUDE) $(LIBS)
+
+test_20201124: test_20201124.cpp
+	$(CXX) $(CPPFLAGS) $(INCLUDE) $+ -o $@ $(LIBS) $(TEST_LIBS)
+
+test_myflint: test_myflint.cpp myflint_big_header.hpp
+	$(CXX) $(CXXFLAGS) myflint.cpp -o $@ $(INCLUDE) $(LIBS) $(TEST_LIBS)
+
+myflint_fmpz.o: myflint_fmpz.cpp
+	$(CXX) -c $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS)
+
+myflint_fmpq.o: myflint_fmpq.cpp
+	$(CXX) -c $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS)
+
+myflint_factor.o: myflint_factor.cpp
+	$(CXX) -c $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS)
+
+myflint_big_factor.o: myflint_big_factor.cpp
+	$(CXX) -c $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS)
+
+test_myflint_fmpz: myflint_fmpz.o test_myflint_fmpz.cpp 
+	$(CXX) $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS) $(TEST_LIBS)
+
+test_myflint_fmpq: myflint_fmpz.o myflint_fmpq.o test_myflint_fmpq.cpp 
+	$(CXX) $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS) $(TEST_LIBS)
+
+test_myflint_factor: myflint_factor.o myflint_fmpz.o test_myflint_factor.cpp 
+	$(CXX) $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS) $(TEST_LIBS)
+
+test_myflint_big_factor: test_myflint_big_factor.cpp
+	$(CXX) $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS) $(TEST_LIBS)
+
+test_myflint_ZZmat: test_myflint_ZZmat.cpp
+	$(CXX) $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS) $(TEST_LIBS)
+
+test_myflint_ZZfactor: test_myflint_ZZfactor.cpp
+	$(CXX) $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS) $(TEST_LIBS)
+
+test_poly: test_poly.cpp
+	$(CXX) c $(CXXFLAGS) $+ -o $@ $(INCLUDE) $(LIBS)
+
+cf: test.cpp
+	clang-format -i --style=Google $+
+
+clean:
+	rm test_20201102 dad$(PYEXT)
+
+.PHONY: clean
+

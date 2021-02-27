@@ -1,0 +1,60 @@
+#pragma once
+
+//#include "QQ.hpp"
+#include "myflint.hpp"
+
+#include "QQ_vec.hpp"
+#include "ZZ_mat.hpp"
+#include "myflint.hpp"
+
+#include <flint/fmpq_mat.h>
+
+struct QQ_mat;
+struct QQ_mat_ptr;
+
+struct QQ_mat {
+
+  fmpq_mat_t data;
+
+  #define _QQ_mat QQ_mat
+  #include "QQ_mat/QQ_mat_struct.hpp"
+  #undef _QQ_mat
+
+  #if 0
+  #include "QQ_mat/QQ_mat_only.hpp"
+  #endif
+
+  QQ_mat(int rows, int cols);
+  QQ_mat();
+
+  QQ_mat(QQ_mat &&in) noexcept;
+  QQ_mat &operator=(QQ_mat &&in) noexcept;
+
+  ~QQ_mat();
+
+};
+
+
+struct QQ_mat_ptr {
+
+  fmpq_mat_struct *data;
+
+  QQ_mat_ptr() = delete;
+  QQ_mat_ptr(fmpq_mat_struct *in) : data(in) {}
+
+  QQ_mat_ptr(const QQ_mat &in) = delete;
+  QQ_mat_ptr(const QQ_mat_ptr &in) = delete;
+  QQ_mat_ptr(QQ_mat &&in) noexcept = delete;
+  QQ_mat_ptr(QQ_mat_ptr &&in) noexcept = delete;
+  QQ_mat_ptr &operator=(QQ_mat &&in) noexcept = delete;
+  QQ_mat_ptr &operator=(QQ_mat_ptr &&in) noexcept = delete;
+
+  ~QQ_mat_ptr() {}
+
+  #define _QQ_mat QQ_mat_ptr
+  #include "QQ_mat/QQ_mat_struct.hpp"
+  #undef _QQ_mat
+
+};
+
+#include "QQ_mat/QQ_mat_fun.hpp"

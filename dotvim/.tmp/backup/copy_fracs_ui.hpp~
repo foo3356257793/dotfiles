@@ -1,0 +1,7 @@
+#ifndef _isptr
+_TYPE(const _UI_TYPE in);
+#endif
+
+_TYPE &_TYPE::operator=(const _UI_TYPE in) {
+  fmpq_set_ui(data, in, 1);
+}

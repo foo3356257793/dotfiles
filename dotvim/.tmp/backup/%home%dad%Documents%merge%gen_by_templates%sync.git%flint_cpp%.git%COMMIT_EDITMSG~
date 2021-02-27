@@ -1,0 +1,98 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: dad <dad@thinkachu.lan>
+#
+# On branch main
+# Your branch is up to date with 'origin/main'.
+#
+# Changes to be committed:
+#	deleted:    antic-0.2.3.txt
+#	deleted:    arb-2.19.0.txt
+#	deleted:    gmp-6.2.0.txt
+#	deleted:    mpfr-4.1.0.txt
+#	new file:   new_version/QQ_mat.cpp
+#	new file:   new_version/QQ_mat.hpp
+#	new file:   new_version/QQ_mat.txt
+#	new file:   new_version/QQ_mat/Makefile
+#	new file:   new_version/QQ_mat/QQ_mat_fun.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_QQ.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_QQ.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_SI.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_SI.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_UI.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_UI.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_ZZ.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_fun_QQ_mat_ZZ.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_only.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_only_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_only_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_QQ.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_QQ.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_SI.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_SI.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_UI.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_UI.hpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_ZZ.cpp
+#	new file:   new_version/QQ_mat/QQ_mat_struct_ZZ.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_QQ.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_QQ.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_SI.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_SI.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_UI.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_UI.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_ZZ.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_fun_QQ_mat_ZZ.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_only_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_only_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_QQ.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_QQ.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_QQ_mat.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_QQ_mat.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_SI.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_SI.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_UI.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_UI.hpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_ZZ.cpp
+#	new file:   new_version/QQ_mat/_QQ_mat_struct_ZZ.hpp
+#	new file:   new_version/QQ_stuff.txt
+#	new file:   new_version/QQ_vec.cpp
+#	new file:   new_version/QQ_vec.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_SI.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_SI.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_UI.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_UI.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_ZZ.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_ZZ.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_ZZ_mat.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_fun_ZZ_mat_ZZ_mat.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_only_ZZ_mat.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_only_ZZ_mat.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_SI.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_SI.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_UI.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_UI.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_ZZ.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_ZZ.hpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_ZZ_mat.cpp
+#	modified:   new_version/ZZ_mat/ZZ_mat_struct_ZZ_mat.hpp
+#	modified:   new_version/concat_files.py
+#	modified:   new_version/myflint.cpp
+#	modified:   new_version/myflint.o
+#	modified:   new_version/type_exhausts.py
+#

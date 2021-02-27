@@ -1,33 +1,5 @@
-For $0\leq x<1$, define $d_i(x)$ to be the $i$-th digit after the binary point of the binary representation of xx.
-For example $d_2(0.25)=1$, $d_i(0.25)=0$ for $i \neq 2$.
-
-Let
-$$
-f(x) = \sum_{i=1}^{\infty} \frac{d_i(x)}{i^2} \; .
-$$
-
-Let $p(a)$ be probability that $f(x)>a$, given that $x$ is uniformly distributed between $0$ and $1$.
-
-Find $p(0.5)$. Give your answer rounded to $8$ digits after the decimal point.
-
-# Ideas
-
-The $i$-th digit is presumably uniform random in $\{0,1\}$.
-
-If $d_1(a) = 1$, then we get $1/1^2 = 1$ and we are good.
-We have a probability of $0.5$ of being in this case.
-
-Note that
-$$
-\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6} \; .
-$$
-
-As a first stab at this, we could compute the digit $i$
-such that we must have at least one nonzero before $i$
-to have a chance at this.
-
-**next idea**. Suppose we did an exhaust over something like $10$ digits.
-
-**note**.
-* First digit one gives it.
-* If not, second digit one required.  This case reduces to prob rest at least $1/4$.
+```
+autoreconf -fi
+automake
+./configure --prefix=[path to local folder] --enable-cxx
+```

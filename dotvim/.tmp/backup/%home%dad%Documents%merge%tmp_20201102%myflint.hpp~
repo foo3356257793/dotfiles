@@ -1,0 +1,2006 @@
+#pragma once
+
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+#include <fmt/core.h>
+#include <fmt/ostream.h>
+
+using fmt::print;
+
+// flint
+#include <flint/flint.h>
+#include <flint/fmpz.h>
+#include <flint/fmpz_mat.h>
+#include <flint/fmpq.h>
+#include <flint/fmpq_mat.h>
+
+// TODO: what are the correct C++ keywords to put on each kind of input?
+//
+// factoring
+
+  template<typename T>
+auto repr(const T& thing)
+{
+  stringstream ss;
+  ss << thing;
+  return ss.str();
+}
+
+
+class Fmpz
+{
+  public:
+    fmpz_t number;
+
+    Fmpz()
+    {
+      fmpz_init(number);
+    }
+
+    Fmpz(const int64_t& in_number)
+    {
+      fmpz_init_set_si(number, in_number);
+    }
+
+    Fmpz(const fmpz_t& in_number)
+    {
+      fmpz_init_set(number, in_number);
+    }
+
+    Fmpz(const string in_string) : Fmpz()
+    {
+      fmpz_set_str(number, in_string.c_str(), 10);
+    }
+
+    Fmpz(const Fmpz &other) : Fmpz(other.number) {}
+
+    Fmpz& operator=(const Fmpz &other)
+    {
+      if(*this != other) fmpz_set(number, other.number);
+      return *this;
+    }
+
+    Fmpz& operator=(const int64_t &other)
+    {
+      fmpz_set_si(number, other);
+      return *this;
+    }
+
+    ~Fmpz()
+    {
+      fmpz_clear(number);
+    }
+
+    // addition
+    Fmpz& operator+=(const Fmpz& rhs)
+    {
+      fmpz_add(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpz& operator+=(const int64_t& rhs)
+    {
+      fmpz_add_si(number, number, rhs);
+      return *this;
+    }
+
+    Fmpz operator+(const Fmpz &rhs) const
+    {
+      auto result = Fmpz();
+      fmpz_add(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpz operator+(const int64_t& rhs) const
+    {
+      auto result = Fmpz();
+      fmpz_add_si(result.number, number, rhs);
+      return result;
+    }
+
+    // subtraction
+    Fmpz& operator-=(const Fmpz &rhs)
+    {
+      fmpz_sub(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpz& operator-=(const int64_t &rhs)
+    {
+      fmpz_sub_si(number, number, rhs);
+      return *this;
+    }
+
+    Fmpz operator-(const Fmpz &rhs) const
+    {
+      auto result = Fmpz();
+      fmpz_sub(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpz operator-(const int64_t &rhs) const
+    {
+      auto result = Fmpz();
+      fmpz_sub_si(result.number, number, rhs);
+      return result;
+    }
+
+    Fmpz operator-() const
+    {
+      auto result = Fmpz();
+      fmpz_neg(result.number, number);
+      return result;
+    }
+
+    // multiplication
+    Fmpz& operator*=(const Fmpz &rhs)
+    {
+      fmpz_mul(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpz& operator*=(const int64_t &rhs)
+    {
+      fmpz_mul_si(number, number, rhs);
+      return *this;
+    }
+
+    Fmpz operator*(const Fmpz &rhs) const
+    {
+      auto result = Fmpz();
+      fmpz_mul(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpz operator*(const int64_t &rhs) const
+    {
+      auto result = Fmpz();
+      fmpz_mul_si(result.number, number, rhs);
+      return result;
+    }
+
+    // addmul
+    auto addmul(const Fmpz &in0, const Fmpz &in1) {fmpz_addmul(number, in0.number, in1.number);}
+    auto addmul(const Fmpz &in0, const uint64_t &in1) {fmpz_addmul_ui(number, in0.number, in1);}
+    auto addmul(const uint64_t &in0, const Fmpz &in1) {addmul(in1,in0);}
+    auto addmul(const uint64_t &in0, const uint64_t &in1) {addmul(Fmpz(in0),in1);}
+
+    // submul
+    auto submul(const Fmpz &in0, const Fmpz &in1) {fmpz_submul(number, in0.number, in1.number);}
+    auto submul(const Fmpz &in0, const uint64_t &in1) {fmpz_submul_ui(number, in0.number, in1);}
+    auto submul(const uint64_t &in0, const Fmpz &in1) {submul(in1,in0);}
+    auto submul(const uint64_t &in0, const uint64_t &in1) {submul(Fmpz(in0),in1);}
+
+    // handle signed integers by passing unsigned part to one of these
+    auto addmul(const Fmpz &in0, const int64_t &in1)
+    {
+      if(in1 >= 0) addmul(in0, (uint64_t) in1);
+      else submul(in0, (uint64_t) (-in1));
+    }
+    auto addmul(const int64_t &in0, const Fmpz &in1){addmul(in1,in0);}
+    auto addmul(const int64_t &in0, const int64_t &in1){addmul(Fmpz(in0),in1);}
+
+    auto submul(const Fmpz &in0, const int64_t &in1){addmul(in0,-in1);}
+    auto submul(const int64_t &in0, const Fmpz &in1){submul(in1,in0);}
+    auto submul(const int64_t &in0, const int64_t &in1){submul(Fmpz(in0),in1);}
+
+    // division
+    Fmpz& operator%=(const Fmpz &rhs)
+    {
+      fmpz_mod(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpz& operator%=(const uint64_t &rhs)
+    {
+      fmpz_mod_ui(number, number, rhs);
+      return *this;
+    }
+
+    Fmpz operator%(const Fmpz &rhs)
+    {
+      auto result = Fmpz();
+      fmpz_mod(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpz operator%(const uint64_t &rhs)
+    {
+      auto result = Fmpz();
+      fmpz_mod_ui(result.number, number, rhs);
+      return result;
+    }
+
+    // comparison
+    bool operator==(const Fmpz &rhs) const
+    {
+      return (bool) fmpz_equal(number, rhs.number);
+    }
+
+    bool operator==(const int64_t &rhs) const
+    {
+      return (bool) fmpz_equal_si(number, rhs);
+    }
+
+    template<typename T>
+    bool operator!=(const T &rhs) const
+    {
+      return !(*this == rhs);
+    }
+
+    bool operator>(const Fmpz &rhs) const
+    {
+      return (fmpz_cmp(number, rhs.number) > 0);
+    }
+    bool operator>(const int64_t &rhs) const
+    {
+      return (fmpz_cmp_si(number,rhs) > 0);
+    }
+
+    bool operator>=(const Fmpz &rhs) const
+    {
+      return (fmpz_cmp(number, rhs.number) >= 0);
+    }
+    bool operator>=(const int64_t &rhs) const
+    {
+      return (fmpz_cmp_si(number,rhs) >= 0);
+    }
+
+    template<typename T>
+      bool operator<(const T &rhs) const
+      {
+        return !(*this >= rhs);
+      }
+    template<typename T>
+      bool operator<=(const T &rhs) const
+      {
+        return !(*this > rhs);
+      }
+
+
+    // other stuff
+    Fmpz abs() const
+    {
+      auto result = Fmpz();
+      fmpz_abs(result.number, number);
+      return result;
+    }
+
+};
+
+ostream& operator<<(ostream& os, const Fmpz& f)
+{
+  char *out_string = fmpz_get_str(NULL, 10, f.number);
+  os << out_string;
+  free(out_string);
+
+  return os;
+}
+
+class Fmpq {
+  public:
+    fmpq_t number;
+
+    Fmpq()
+    {
+      fmpq_init(number);
+    }
+
+    Fmpq(const string in_string) : Fmpq()
+    {
+      fmpq_set_str(number, in_string.c_str(), 10);
+    }
+
+    // integers
+    Fmpq(const fmpq_t& in_number) : Fmpq()
+    {
+      fmpq_set(number, in_number);
+    }
+
+    Fmpq(const int64_t& in_number) : Fmpq()
+    {
+      fmpq_set_si(number, in_number, 1);
+    }
+
+    // fractions as numerator,denominator
+    Fmpq(const int64_t& num, const int64_t& den) : Fmpq()
+    {
+      fmpq_set_si(number, num, den);
+    }
+
+    Fmpq(const fmpz_t& num, const fmpz_t& den) : Fmpq()
+    {
+      fmpq_set_fmpz_frac(number, num, den);
+    }
+
+    // two Fmpzs
+    Fmpq(const Fmpz &num, const Fmpz &den) : Fmpq(num.number, den.number) {}
+
+    // mix of fmpz_t and int64_t
+    Fmpq(const fmpz_t& num, const int64_t& den) : Fmpq(num, Fmpz(den)) {}
+    Fmpq(const int64_t& num, const fmpz_t& den) : Fmpq(Fmpz(num), den) {}
+
+    // mix of Fmpz and int64_t
+    Fmpq(const Fmpz& num, const int64_t& den) : Fmpq(num.number, den) {}
+    Fmpq(const int64_t& num, const Fmpz& den) : Fmpq(num, den.number) {}
+
+    // integer which isn't handled directly
+    Fmpq(const fmpz_t& in_number) : Fmpq(in_number, 1) {}
+    Fmpq(const Fmpz &in_number) : Fmpq(in_number.number) {}
+
+    Fmpq(const Fmpq &other) : Fmpq()
+    {
+      fmpq_set(number, other.number);
+    }
+
+    Fmpq& operator=(const Fmpq &other)
+    {
+      if(*this != other) fmpq_set(number, other.number);
+      return *this;
+    }
+
+    Fmpq& operator=(const Fmpz &other)
+    {
+      fmpq_set_fmpz_frac(number, other.number, Fmpz(1).number);
+      return *this;
+    }
+
+    Fmpq& operator=(const int64_t &other)
+    {
+      fmpq_set_si(number, other, 1);
+      return *this;
+    }
+
+    ~Fmpq()
+    {
+      fmpq_clear(number);
+    }
+
+    auto numerator() const
+    {
+      return Fmpz(number->num);
+    }
+
+    auto denominator() const
+    {
+      return Fmpz(number->den);
+    }
+
+    auto fraction() const
+    {
+      auto result = tuple(Fmpz(number->num), Fmpz(number->den));
+
+      return result;
+    }
+
+    // addition
+    Fmpq& operator+=(const Fmpq &rhs)
+    {
+      fmpq_add(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpq& operator+=(const int64_t &rhs)
+    {
+      fmpq_add_si(number, number, rhs);
+      return *this;
+    }
+
+    Fmpq& operator+=(const Fmpz &rhs)
+    {
+      fmpq_add_fmpz(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpq operator+(const Fmpq &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_add(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpq operator+(const int64_t &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_add_si(result.number, number, rhs);
+      return result;
+    }
+
+    Fmpq operator+(const Fmpz &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_add_fmpz(result.number, number, rhs.number);
+      return result;
+    }
+
+    // subtraction
+    Fmpq& operator-=(const Fmpq &rhs)
+    {
+      fmpq_sub(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpq& operator-=(const int64_t &rhs)
+    {
+      fmpq_sub_si(number, number, rhs);
+      return *this;
+    }
+
+    Fmpq& operator-=(const Fmpz &rhs)
+    {
+      fmpq_sub_fmpz(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpq operator-(const Fmpq &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_sub(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpq operator-(const int64_t &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_sub_si(result.number, number, rhs);
+      return result;
+    }
+
+    Fmpq operator-(const Fmpz &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_sub_fmpz(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpq operator-() const
+    {
+      auto result = Fmpq();
+      fmpq_neg(result.number, number);
+      return result;
+    }
+
+    // multiplication
+    Fmpq& operator*=(const Fmpq &rhs)
+    {
+      fmpq_mul(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpq& operator*=(const int64_t &rhs)
+    {
+      fmpq_mul_si(number, number, rhs);
+      return *this;
+    }
+
+    Fmpq& operator*=(const Fmpz &rhs)
+    {
+      fmpq_mul_fmpz(number, number, rhs.number);
+      return *this;
+    }
+
+    Fmpq operator*(const Fmpq &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_mul(result.number, number, rhs.number);
+      return result;
+    }
+
+    Fmpq operator*(const int64_t &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_mul_si(result.number, number, rhs);
+      return result;
+    }
+
+    Fmpq operator*(const Fmpz &rhs) const
+    {
+      auto result = Fmpq();
+      fmpq_mul_fmpz(result.number, number, rhs.number);
+      return result;
+    }
+
+    // addmul
+    auto addmul(const Fmpq& in0, const Fmpq& in1)
+    {
+      fmpq_addmul(number, in0.number, in1.number);
+    }
+
+    template <typename T>
+      auto addmul(const Fmpq& in0, const T& in1) {addmul(in0, Fmpq(in1));}
+    template <typename T>
+      auto addmul(const T& in0, const Fmpq& in1) {addmul(Fmpq(in0), in1);}
+    template <typename S, typename T>
+      auto addmul(const S& in0, const T& in1) {addmul(Fmpq(in0), Fmpq(in1));}
+
+    auto submul(const Fmpq& in0, const Fmpq& in1)
+    {
+      fmpq_submul(number, in0.number, in1.number);
+    }
+
+    template <typename T>
+      auto submul(const Fmpq& in0, const T& in1) {submul(in0, Fmpq(in1));}
+    template <typename T>
+      auto submul(const T& in0, const Fmpq& in1) {submul(Fmpq(in0), in1);}
+    template <typename S, typename T>
+      auto submul(const S& in0, const T& in1) {submul(Fmpq(in0), Fmpq(in1));}
+
+    // comparison
+    bool operator==(const Fmpq &rhs) const
+    {
+      return (fmpq_cmp(number, rhs.number)==0);
+    }
+
+    bool operator==(const int64_t &rhs) const
+    {
+      return (fmpq_cmp_si(number, rhs)==0);
+    }
+
+    bool operator==(const Fmpz &rhs) const
+    {
+      return (fmpq_cmp_fmpz(number, rhs.number) == 0);
+    }
+
+    template <typename T>
+    bool operator!=(const T &rhs) const
+    {
+      return !(*this == rhs);
+    }
+
+    bool operator>(const Fmpq &rhs) const
+    {
+      return (fmpq_cmp(number, rhs.number) > 0);
+    }
+    bool operator>(const Fmpz &rhs) const
+    {
+      return (fmpq_cmp_fmpz(number, rhs.number) > 0);
+    }
+    bool operator>(const int64_t &rhs) const
+    {
+      return (fmpq_cmp_si(number,rhs) > 0);
+    }
+
+    bool operator>=(const Fmpq &rhs) const
+    {
+      return (fmpq_cmp(number, rhs.number) >= 0);
+    }
+    bool operator>=(const Fmpz &rhs) const
+    {
+      return (fmpq_cmp_fmpz(number, rhs.number) >= 0);
+    }
+    bool operator>=(const int64_t &rhs) const
+    {
+      return (fmpq_cmp_si(number,rhs) >= 0);
+    }
+
+    template<typename T>
+      bool operator<(const T &rhs) const
+      {
+        return !(*this >= rhs);
+      }
+    template<typename T>
+      bool operator<=(const T &rhs) const
+      {
+        return !(*this > rhs);
+      }
+
+    // division
+    Fmpq& operator/=(const Fmpq &rhs)
+    {
+      if(fmpq_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      fmpq_div(number, number, rhs.number);
+
+      return *this;
+    }
+
+    Fmpq& operator/=(const Fmpz &rhs)
+    {
+      if(fmpz_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      fmpq_div_fmpz(number, number, rhs.number);
+
+      return *this;
+    }
+
+    Fmpq& operator/=(const int64_t &rhs)
+    {
+      *this /= Fmpz(rhs);
+      return *this;
+    }
+
+    Fmpq operator/(const Fmpq& rhs) const
+    {
+      if(fmpq_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      auto result = Fmpq();
+      fmpq_div(result.number, number, rhs.number);
+
+      return result;
+    }
+
+    Fmpq operator/(const Fmpz& rhs) const
+    {
+      if(fmpz_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      auto result = Fmpq();
+      fmpq_div_fmpz(result.number, number, rhs.number);
+
+      return result;
+    }
+
+    Fmpq operator/(const int64_t& rhs) const
+    {
+      auto result = *this / Fmpq(rhs);
+      return result;
+    }
+
+    // other stuff
+    Fmpq abs() const
+    {
+      auto result = Fmpq();
+      fmpq_abs(result.number, number);
+      return result;
+    }
+};
+
+ostream& operator<<(ostream& os, const Fmpq& f)
+{
+
+  char *out_string = fmpq_get_str(NULL, 10, f.number);
+  os << out_string;
+  free(out_string);
+
+  return os;
+}
+
+// define all the operators with rational on rhs
+Fmpq operator+(const Fmpz &lhs, const Fmpq &rhs)
+{
+  return rhs + lhs;
+}
+Fmpq operator+(const int64_t &lhs, const Fmpq &rhs)
+{
+  return rhs + lhs;
+}
+Fmpq operator-(const Fmpz &lhs, const Fmpq &rhs)
+{
+  return -(rhs - lhs);
+}
+Fmpq operator-(const int64_t &lhs, const Fmpq &rhs)
+{
+  return -(rhs - lhs);
+}
+Fmpq operator*(const Fmpz &lhs, const Fmpq &rhs)
+{
+  return rhs * lhs;
+}
+Fmpq operator*(const int64_t &lhs, const Fmpq &rhs)
+{
+  return rhs * lhs;
+}
+Fmpq operator/(const Fmpz &lhs, const Fmpq &rhs)
+{
+  auto result = Fmpq();
+  fmpq_inv(result.number, rhs.number);
+  result *= lhs;
+  return result;
+}
+Fmpq operator/(const int64_t &lhs, const Fmpq &rhs)
+{
+  auto result = Fmpq();
+  fmpq_inv(result.number, rhs.number);
+  result *= lhs;
+  return result;
+}
+
+// divide integers to get rationals
+Fmpq operator/(int64_t &lhs, Fmpz &rhs)
+{
+  return Fmpq(lhs)/rhs;
+}
+Fmpq operator/(Fmpz &lhs, int64_t &rhs)
+{
+  return Fmpq(lhs)/rhs;
+}
+Fmpq operator/(Fmpz &lhs, Fmpz &rhs)
+{
+  return Fmpq(lhs)/rhs;
+}
+
+auto pow(Fmpz base, int64_t exponent)
+{
+
+  if(exponent < 0)
+  {
+    throw invalid_argument("Negative exponentiation not supported for Fmpz");
+  }
+
+  auto result = Fmpz();
+  fmpz_pow_ui(result.number, base.number, (uint64_t) exponent);
+
+  return result;
+}
+
+auto pow(Fmpq base, int64_t exponent)
+{
+  auto result = Fmpq();
+  fmpq_pow_si(result.number, base.number, exponent);
+
+  return result;
+}
+
+
+class FmpzMat {
+  public:
+    fmpz_mat_t mat;
+
+    auto nrows() const
+    {
+      return mat->r;
+    }
+    auto ncols() const
+    {
+      return mat->c;
+    }
+
+    FmpzMat(int nrows, int ncols)
+    {
+      fmpz_mat_init(mat,nrows,ncols);
+    }
+
+    // get entries
+    auto operator()(const int& row, const int& col) const
+    {
+      if((row<0) || (col<0) || (row>=nrows()) || (col>=ncols())) {
+        throw invalid_argument("Out of bounds matrix access");
+      }
+
+      auto entry = fmpz_mat_entry(mat, row, col);
+      return entry;
+    }
+
+    auto operator[](const tuple<int,int>& row_col) const
+    {
+      const auto[row,col] = row_col;
+      auto result = Fmpz();
+      fmpz_set(result.number,(*this)(row,col));
+      return result;
+    }
+
+    FmpzMat(const vector<vector<Fmpz>>& mat_as_vectors)
+    {
+      size_t nrows = mat_as_vectors.size();
+      size_t ncols;
+      if(nrows == 0)
+      {
+        ncols = 0;
+      }
+      else
+      {
+        ncols = mat_as_vectors[0].size();
+      }
+
+      fmpz_mat_init(mat,nrows,ncols);
+
+      for(size_t row = 0; row<nrows; row++)
+      {
+        if(mat_as_vectors[row].size() != ncols)
+        {
+          throw invalid_argument("list of vectors not a matrix!");
+        }
+        for(size_t col = 0; col<ncols; col++)
+        {
+          fmpz_set((*this)(row,col),mat_as_vectors[row][col].number);
+        }
+      }
+    }
+
+    FmpzMat(const vector<vector<int64_t>>& mat_as_vectors)
+    {
+      size_t nrows = mat_as_vectors.size();
+      size_t ncols;
+      if(nrows == 0)
+      {
+        ncols = 0;
+      }
+      else
+      {
+        ncols = mat_as_vectors[0].size();
+      }
+
+      fmpz_mat_init(mat,nrows,ncols);
+
+      for(size_t row = 0; row<nrows; row++)
+      {
+        if(mat_as_vectors[row].size() != ncols)
+        {
+          throw invalid_argument("list of vectors not a matrix!");
+        }
+        for(size_t col = 0; col<ncols; col++)
+        {
+          fmpz_set_si((*this)(row,col),mat_as_vectors[row][col]);
+        }
+      }
+    }
+
+    FmpzMat(const vector<vector<string>>& mat_as_strings)
+    {
+      size_t nrows = mat_as_strings.size();
+      size_t ncols;
+      if(nrows == 0)
+      {
+        ncols = 0;
+      }
+      else
+      {
+        ncols = mat_as_strings[0].size();
+      }
+
+      fmpz_mat_init(mat,nrows,ncols);
+
+      for(size_t row = 0; row<nrows; row++)
+      {
+        if(mat_as_strings[row].size() != ncols)
+        {
+          throw invalid_argument("list of vectors not a matrix!");
+        }
+        for(size_t col = 0; col<ncols; col++)
+        {
+          auto entry = Fmpz(mat_as_strings[row][col]);
+          fmpz_set((*this)(row,col),entry.number);
+        }
+      }
+
+    }
+
+    FmpzMat(const fmpz_mat_t other)
+    {
+      fmpz_mat_init_set(mat,other);
+    }
+
+    FmpzMat(const FmpzMat& other)
+    {
+      fmpz_mat_init_set(mat,other.mat);
+    }
+
+    bool dim_match(const FmpzMat &other)
+    {
+      return ((nrows() == other.nrows()) && (ncols() == other.ncols()));
+    }
+
+    auto realloc(int num_rows, int num_cols)
+    {
+      fmpz_mat_clear(mat);
+      fmpz_mat_init(mat, num_rows, num_cols);
+    }
+
+
+    FmpzMat& operator=(const FmpzMat &other)
+    {
+      if(!dim_match(other))
+      {
+        // clear and reallocate
+        fmpz_mat_clear(mat);
+        fmpz_mat_init_set(mat,other.mat);
+        return *this;
+      }
+
+      fmpz_mat_set(mat,other.mat);
+      return *this;
+    }
+
+    ~FmpzMat()
+    {
+      fmpz_mat_clear(mat);
+    }
+
+    // addition
+    FmpzMat& operator+=(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("addition with unequal dimensions is undefined!");
+      }
+
+      fmpz_mat_add(mat, mat, rhs.mat);
+      return *this;
+    }
+
+    FmpzMat operator+(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("addition with unequal dimensions is undefined!");
+      }
+
+      auto result = FmpzMat(nrows(),ncols());
+      fmpz_mat_add(result.mat, mat, rhs.mat);
+      return result;
+    }
+
+    // subtraction
+    FmpzMat& operator-=(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("subtraction with unequal dimensions is undefined!");
+      }
+
+      fmpz_mat_sub(mat, mat, rhs.mat);
+      return *this;
+    }
+
+    FmpzMat operator-(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("subtraction with unequal dimensions is undefined!");
+      }
+
+      auto result = FmpzMat(nrows(),ncols());
+      fmpz_mat_sub(result.mat, mat, rhs.mat);
+      return result;
+    }
+
+    FmpzMat operator-()
+    {
+      auto result = FmpzMat(nrows(),ncols());
+      fmpz_mat_neg(result.mat,mat);
+      return result;
+    }
+
+    // multiplication
+    FmpzMat& operator*=(const FmpzMat& rhs)
+    {
+      if(ncols() != rhs.nrows()){
+        throw invalid_argument("Incompatible dimensions for multiplication!");
+      }
+
+      fmpz_mat_mul(mat, mat, rhs.mat);
+      return *this;
+    }
+
+    FmpzMat operator*(const FmpzMat& rhs)
+    {
+      if(ncols() != rhs.nrows()){
+        throw invalid_argument("Incompatible dimensions for multiplication!");
+      }
+
+      auto result = FmpzMat(nrows(),rhs.ncols());
+      fmpz_mat_mul(result.mat, mat, rhs.mat);
+      return result;
+    }
+
+    // scalar multiplication
+    FmpzMat operator*=(const Fmpz& rhs)
+    {
+      fmpz_mat_scalar_mul_fmpz(mat,mat,rhs.number);
+      return *this;
+    }
+
+    FmpzMat operator*=(const int64_t& rhs)
+    {
+      fmpz_mat_scalar_mul_si(mat,mat,rhs);
+      return *this;
+    }
+
+    FmpzMat operator*(const Fmpz& rhs)
+    {
+      auto result = FmpzMat(nrows(),ncols());
+      fmpz_mat_scalar_mul_fmpz(result.mat,mat,rhs.number);
+      return result;
+    }
+
+    FmpzMat operator*(const int64_t& rhs)
+    {
+      auto result = FmpzMat(nrows(),ncols());
+      fmpz_mat_scalar_mul_si(result.mat,mat,rhs);
+      return result;
+    }
+
+    // addmul and submul with scalars
+    auto addmul(const Fmpz& scalar, const FmpzMat& other) {
+      if(!dim_match(other)){
+        throw invalid_argument("incompatible dimensions on addmul!");
+      }
+      fmpz_mat_scalar_addmul_fmpz(mat, other.mat, scalar.number);
+    }
+    auto addmul(const int64_t& scalar, const FmpzMat& other) {
+      if(!dim_match(other)){
+        throw invalid_argument("incompatible dimensions on addmul!");
+      }
+      fmpz_mat_scalar_addmul_si(mat, other.mat, scalar);
+    }
+    auto addmul(const FmpzMat& other, const Fmpz& scalar){addmul(scalar,other);}
+    auto addmul(const FmpzMat& other, const int64_t& scalar){addmul(scalar,other);}
+
+    auto submul(const Fmpz& scalar, const FmpzMat& other) {
+      if(!dim_match(other)){
+        throw invalid_argument("incompatible dimensions on submul!");
+      }
+      fmpz_mat_scalar_submul_fmpz(mat, other.mat, scalar.number);
+    }
+    auto submul(const int64_t& scalar, const FmpzMat& other) {
+      if(!dim_match(other)){
+        throw invalid_argument("incompatible dimensions on submul!");
+      }
+      fmpz_mat_scalar_submul_si(mat, other.mat, scalar);
+    }
+    auto submul(const FmpzMat& other, const Fmpz& scalar){submul(scalar,other);}
+    auto submul(const FmpzMat& other, const int64_t& scalar){submul(scalar,other);}
+
+    //division
+    FmpzMat& operator/=(const Fmpz &rhs)
+    {
+      if(fmpz_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      fmpz_mat_scalar_divexact_fmpz(mat, mat, rhs.number);
+
+      return *this;
+    }
+
+    FmpzMat& operator/=(const int64_t &rhs)
+    {
+      if(rhs==0)
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      fmpz_mat_scalar_divexact_si(mat, mat, rhs);
+
+      return *this;
+    }
+
+    FmpzMat operator/(const Fmpz &rhs) const
+    {
+      if(fmpz_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      auto result = FmpzMat(nrows(),ncols());
+      fmpz_mat_scalar_divexact_fmpz(result.mat, mat, rhs.number);
+
+      return result;
+    }
+
+    FmpzMat operator/(const int64_t &rhs) const
+    {
+      if(rhs==0)
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      auto result = FmpzMat(nrows(),ncols());
+      fmpz_mat_scalar_divexact_si(result.mat, mat, rhs);
+
+      return result;
+    }
+
+    // comparison
+    bool operator==(const fmpz_mat_t &rhs)
+    {
+      return (bool) fmpz_mat_equal(mat, rhs);
+    }
+    bool operator==(const FmpzMat &rhs) {return (*this == rhs.mat);}
+    bool operator==(const int64_t &rhs)
+    {
+      if(rhs != 0)
+      {
+        throw invalid_argument("Comparison to nonzero scalar not supported");
+      }
+      return fmpz_mat_is_zero(mat);
+    }
+
+    bool operator==(const fmpz_t &rhs)
+    {
+      if(!fmpz_is_zero(rhs))
+      {
+        throw invalid_argument("Comparison to nonzero scalar not supported");
+      }
+      return fmpz_mat_is_zero(mat);
+    }
+
+    bool operator==(const Fmpz &rhs){return (*this == rhs.number);}
+
+    auto to_string_vectors() const
+    {
+      auto result = vector<vector<string>>();
+
+      for(int row=0; row<nrows(); row++)
+      {
+        auto row_vec = vector<string>();
+        for(int col=0; col<ncols(); col++)
+        {
+          stringstream ss;
+          char *out_string = fmpz_get_str(NULL, 10, (*this)(row,col));
+          ss << out_string;
+          free(out_string);
+          row_vec.push_back(ss.str());
+        }
+        result.push_back(row_vec);
+      }
+
+      return result;
+    }
+
+    auto transpose()
+    {
+      auto result = FmpzMat(ncols(),nrows());
+      fmpz_mat_transpose(result.mat,mat);
+      return result;
+    }
+
+    auto transpose_inplace()
+    {
+      if(!fmpz_mat_is_square(mat)){
+        throw invalid_argument("can only transpose in place on square matrices");
+      }
+      fmpz_mat_transpose(mat,mat);
+    }
+
+    auto det()
+    {
+      auto result = Fmpz();
+      fmpz_mat_det(result.number, mat);
+      return result;
+    }
+
+    auto strong_echelon_form_inplace(Fmpz mod)
+    {
+      fmpz_mat_strong_echelon_form_mod(mat, mod.number);
+    }
+
+    auto strong_echelon_form(Fmpz mod) const
+    {
+      auto result = FmpzMat(mat);
+      result.strong_echelon_form_inplace(mod);
+      return result;
+    }
+
+    auto strong_echelon_form_inplace(int64_t mod) {
+      strong_echelon_form_inplace(Fmpz(mod));}
+
+    auto strong_echelon_form(int64_t mod) const {
+      return strong_echelon_form(Fmpz(mod));}
+
+    auto swap_rows(const int& i, const int& j)
+    {
+      const auto num_rows = nrows();
+
+      if(i<0 || j<0 || i>=num_rows || j>=num_rows){
+        throw invalid_argument("indices out of bounds");
+      }
+
+      fmpz_mat_swap_rows(mat, NULL, i, j);
+    }
+
+    auto add_a_times_row_b_to_row_c(const Fmpz& a, const int& b, const int& c)
+    {
+      const auto num_rows = nrows();
+      const auto num_cols = ncols();
+
+      if(b<0 || c<0 || b>=num_rows || c>=num_rows){
+        throw invalid_argument("indices out of bounds");
+      }
+
+      for(int col=0; col<num_cols; col++)
+      {
+        fmpz_addmul((*this)(c,col),a.number,(*this)(b,col));
+      }
+
+    }
+
+};
+
+tuple<bool,tuple<int,int>> dim_block_mat_valid(vector<vector<FmpzMat>> block_mat)
+{
+
+  const auto fail = tuple(false, tuple(0,0));
+
+  if(block_mat.size() == 0) return fail;
+
+  int nrows = 0;
+  int ncols = 0;
+  for(const auto &vec : block_mat)
+  {
+    if(vec.size() == 0) return fail;
+
+    int vec_nrows = 0;
+    int vec_ncols = 0;
+    for(const auto &mat : vec)
+    {
+      if(vec_nrows == 0) vec_nrows = mat.nrows();
+      else if(vec_nrows != mat.nrows()) return fail;
+
+      vec_ncols += mat.ncols();
+    }
+
+    // dim 0 bad
+    if(vec_nrows == 0) return fail;
+    if(vec_ncols == 0) return fail;
+
+    if(ncols == 0) ncols = vec_ncols;
+    else if(ncols != vec_ncols) return fail;
+
+    nrows += vec_nrows;
+  }
+
+  return tuple(true, tuple(nrows,ncols));
+}
+
+auto block_matrix(vector<vector<FmpzMat>> block_mat)
+{
+  // verify that the dimensions are good
+  const auto[valid,dims] = dim_block_mat_valid(block_mat);
+  const auto[nrows,ncols] = dims;
+
+  if(!valid) {
+    throw invalid_argument("invalid dimensions for a block matrix");
+  }
+
+  auto result = FmpzMat(nrows,ncols);
+
+  int row_offset = 0;
+  for(auto &block_row : block_mat)
+  {
+    int col_offset = 0;
+    const int nrows_block = block_row[0].nrows();
+    for(const auto &block : block_row)
+    {
+      const int ncols_block = block.ncols();
+      for(int row=0; row<nrows_block; row++)
+      {
+        for(int col=0; col<ncols_block; col++)
+        {
+          //fmpz_set(fmpz_mat_entry(result.mat,row_offset+row,col_offset+col),fmpz_mat_entry(block.mat,row,col));
+          fmpz_set(result(row_offset+row,col_offset+col),block(row,col));
+        }
+      }
+      col_offset += ncols_block;
+    }
+    row_offset += nrows_block;
+  }
+
+  return result;
+}
+
+auto zero_matrix(int nrows, int ncols)
+{
+  if((nrows<0) || (ncols<0)){
+    throw invalid_argument("negative dimension for zero_matrix not defined");
+  }
+
+  auto result = FmpzMat(nrows,ncols);
+  fmpz_mat_zero(result.mat);
+  return result;
+}
+
+auto identity_matrix(int dim)
+{
+  if(dim < 0){
+    throw invalid_argument("negative dimension for identity_matrix not defined");
+  }
+
+  auto result = FmpzMat(dim,dim);
+  fmpz_mat_one(result.mat);
+  return result;
+}
+
+auto column_width(vector<vector<string>> string_vectors, size_t col)
+{
+  size_t max_val = 0;
+
+  for(auto &vec : string_vectors)
+  {
+    if(vec.size() <= col)
+    {
+      throw invalid_argument("vector of vectors not a matrix");
+    }
+
+    max_val = max(max_val, vec[col].size());
+  }
+
+  return max_val;
+}
+
+auto column_widths (vector<vector<string>> string_vectors)
+{
+
+  if(string_vectors.size() == 0)
+  {
+    throw invalid_argument("column_widths of empty vector undefined");
+  }
+
+  auto ncols = string_vectors[0].size();
+
+  auto result = vector<size_t>(ncols);
+
+  for(size_t col=0; col<ncols; col++)
+  {
+    result[col] = column_width(string_vectors,col);
+  }
+
+  return result;
+}
+
+ostream& operator<<(ostream& os, const FmpzMat& f)
+{
+
+  if(f.nrows() == 0)
+  {
+    os << "[]";
+    return os;
+  }
+
+  const auto string_vectors = f.to_string_vectors();
+  const auto widths = column_widths(string_vectors);
+  const auto nrows = f.nrows();
+  const auto ncols = f.ncols();
+
+  os << "[" << endl;
+  for(int row=0; row<nrows; row++)
+  {
+    os << "  [";
+    for(int col=0; col<ncols; col++)
+    {
+      os << setw(widths[col]);
+      os << string_vectors[row][col];
+      if(col != ncols-1) os << ", ";
+    }
+    os << "]";
+    if (row != nrows-1) os << ",";
+    os << endl;
+  }
+  os << "]";
+
+  return os;
+}
+
+class FmpqMat {
+  public:
+    fmpq_mat_t mat;
+
+    auto nrows() const
+    {
+      return mat->r;
+    }
+    auto ncols() const
+    {
+      return mat->c;
+    }
+
+    // get entries
+    auto operator()(const int& row, const int& col) const
+    {
+      if((row<0) || (col<0) || (row>=nrows()) || (col>=ncols())) {
+        throw invalid_argument("Out of bounds matrix access");
+      }
+
+      auto entry = fmpq_mat_entry(mat, row, col);
+      return entry;
+
+    }
+
+    auto operator[](const tuple<int,int>& row_col) const
+    {
+      const auto[row,col] = row_col;
+      auto result = Fmpq();
+      fmpq_set(result.number,(*this)(row,col));
+      return result;
+    }
+
+    FmpqMat(int nrows, int ncols)
+    {
+      fmpq_mat_init(mat,nrows,ncols);
+    }
+
+    FmpqMat(const vector<vector<Fmpq>>& mat_as_vectors)
+    {
+      size_t nrows = mat_as_vectors.size();
+      size_t ncols;
+      if(nrows == 0)
+      {
+        ncols = 0;
+      }
+      else
+      {
+        ncols = mat_as_vectors[0].size();
+      }
+
+      fmpq_mat_init(mat,nrows,ncols);
+
+      for(size_t row = 0; row<nrows; row++)
+      {
+        if(mat_as_vectors[row].size() != ncols)
+        {
+          throw invalid_argument("list of vectors not a matrix!");
+        }
+        for(size_t col = 0; col<ncols; col++)
+        {
+          fmpq_set((*this)(row,col),mat_as_vectors[row][col].number);
+        }
+      }
+    }
+
+    FmpqMat(const vector<vector<Fmpz>>& mat_as_vectors)
+    {
+      size_t nrows = mat_as_vectors.size();
+      size_t ncols;
+      if(nrows == 0)
+      {
+        ncols = 0;
+      }
+      else
+      {
+        ncols = mat_as_vectors[0].size();
+      }
+
+      fmpq_mat_init(mat,nrows,ncols);
+
+      for(size_t row = 0; row<nrows; row++)
+      {
+        if(mat_as_vectors[row].size() != ncols)
+        {
+          throw invalid_argument("list of vectors not a matrix!");
+        }
+        for(size_t col = 0; col<ncols; col++)
+        {
+          fmpq_set_fmpz_frac((*this)(row,col),mat_as_vectors[row][col].number,Fmpz(1).number);
+        }
+      }
+    }
+
+    FmpqMat(const vector<vector<int64_t>>& mat_as_vectors)
+    {
+      size_t nrows = mat_as_vectors.size();
+      size_t ncols;
+      if(nrows == 0)
+      {
+        ncols = 0;
+      }
+      else
+      {
+        ncols = mat_as_vectors[0].size();
+      }
+
+      fmpq_mat_init(mat,nrows,ncols);
+
+      for(size_t row = 0; row<nrows; row++)
+      {
+        if(mat_as_vectors[row].size() != ncols)
+        {
+          throw invalid_argument("list of vectors not a matrix!");
+        }
+        for(size_t col = 0; col<ncols; col++)
+        {
+          fmpq_set_si((*this)(row,col),mat_as_vectors[row][col],1);
+        }
+      }
+    }
+
+    FmpqMat(const vector<vector<string>>& mat_as_strings)
+    {
+      size_t nrows = mat_as_strings.size();
+      size_t ncols;
+      if(nrows == 0)
+      {
+        ncols = 0;
+      }
+      else
+      {
+        ncols = mat_as_strings[0].size();
+      }
+
+      fmpq_mat_init(mat,nrows,ncols);
+
+      for(size_t row = 0; row<nrows; row++)
+      {
+        if(mat_as_strings[row].size() != ncols)
+        {
+          throw invalid_argument("list of vectors not a matrix!");
+        }
+        for(size_t col = 0; col<ncols; col++)
+        {
+          auto entry = Fmpq(mat_as_strings[row][col]);
+          fmpq_set((*this)(row,col),entry.number);
+        }
+      }
+
+    }
+
+    FmpqMat(const fmpq_mat_t other)
+    {
+      fmpq_mat_init_set(mat,other);
+    }
+
+    FmpqMat(const FmpqMat& other)
+    {
+      fmpq_mat_init_set(mat,other.mat);
+    }
+
+    FmpqMat(const FmpzMat& other) : FmpqMat(other.nrows(), other.ncols())
+    {
+      fmpq_mat_set_fmpz_mat(mat,other.mat);
+    }
+
+    bool dim_match(const FmpqMat &other)
+    {
+      return ((nrows() == other.nrows()) && (ncols() == other.ncols()));
+    }
+
+    bool dim_match(const FmpzMat &other)
+    {
+      return ((nrows() == other.nrows()) && (ncols() == other.ncols()));
+    }
+
+    auto realloc(int num_rows, int num_cols)
+    {
+      fmpq_mat_clear(mat);
+      fmpq_mat_init(mat, num_rows, num_cols);
+    }
+
+
+    FmpqMat& operator=(const FmpqMat &other)
+    {
+      if(!dim_match(other))
+      {
+        // clear and reallocate
+        fmpq_mat_clear(mat);
+        fmpq_mat_init_set(mat,other.mat);
+        return *this;
+      }
+
+      fmpq_mat_set(mat,other.mat);
+      return *this;
+    }
+
+    ~FmpqMat()
+    {
+      fmpq_mat_clear(mat);
+    }
+
+    // addition
+    FmpqMat& operator+=(const FmpqMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("addition with unequal dimensions is undefined!");
+      }
+
+      fmpq_mat_add(mat, mat, rhs.mat);
+      return *this;
+    }
+
+    FmpqMat operator+(const FmpqMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("addition with unequal dimensions is undefined!");
+      }
+
+      auto result = FmpqMat(nrows(),ncols());
+      fmpq_mat_add(result.mat, mat, rhs.mat);
+      return result;
+    }
+
+    FmpqMat& operator+=(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("addition with unequal dimensions is undefined!");
+      }
+
+      for(int row=0; row<nrows(); row++)
+      {
+        for(int col=0; col<ncols(); col++)
+        {
+          fmpq_add_fmpz((*this)(row,col),(*this)(row,col),rhs(row,col));
+        }
+      }
+
+      return *this;
+    }
+
+    FmpqMat operator+(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("addition with unequal dimensions is undefined!");
+      }
+
+      auto result = FmpqMat(nrows(),ncols());
+
+      for(int row=0; row<nrows(); row++)
+      {
+        for(int col=0; col<ncols(); col++)
+        {
+          fmpq_add_fmpz(result(row,col),(*this)(row,col),rhs(row,col));
+        }
+      }
+
+      return result;
+    }
+
+    // subtraction
+    FmpqMat& operator-=(const FmpqMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("subtraction with unequal dimensions is undefined!");
+      }
+
+      fmpq_mat_sub(mat, mat, rhs.mat);
+      return *this;
+    }
+
+    FmpqMat& operator-=(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("subtraction with unequal dimensions is undefined!");
+      }
+
+      for(int row=0; row<nrows(); row++)
+      {
+        for(int col=0; col<ncols(); col++)
+        {
+          fmpq_sub_fmpz((*this)(row,col),(*this)(row,col),rhs(row,col));
+        }
+      }
+
+      return *this;
+    }
+
+    FmpqMat operator-(const FmpqMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("subtraction with unequal dimensions is undefined!");
+      }
+
+      auto result = FmpqMat(nrows(),ncols());
+      fmpq_mat_sub(result.mat, mat, rhs.mat);
+      return result;
+    }
+
+    FmpqMat operator-(const FmpzMat& rhs)
+    {
+      if(!dim_match(rhs)) {
+        throw invalid_argument("subtraction with unequal dimensions is undefined!");
+      }
+
+      auto result = FmpqMat(nrows(),ncols());
+
+      for(int row=0; row<nrows(); row++)
+      {
+        for(int col=0; col<ncols(); col++)
+        {
+          fmpq_sub_fmpz(result(row,col),(*this)(row,col),rhs(row,col));
+        }
+      }
+
+      return result;
+    }
+
+    FmpqMat operator-()
+    {
+      auto result = FmpqMat(nrows(),ncols());
+      fmpq_mat_neg(result.mat,mat);
+      return result;
+    }
+
+    // multiplication
+    FmpqMat& operator*=(const FmpqMat& rhs)
+    {
+      if(ncols() != rhs.nrows()){
+        throw invalid_argument("Incompatible dimensions for multiplication!");
+      }
+
+      fmpq_mat_mul(mat, mat, rhs.mat);
+      return *this;
+    }
+
+    FmpqMat& operator*=(const FmpzMat& rhs)
+    {
+      if(ncols() != rhs.nrows()){
+        throw invalid_argument("Incompatible dimensions for multiplication!");
+      }
+
+      fmpq_mat_mul_fmpz_mat(mat, mat, rhs.mat);
+      return *this;
+    }
+
+    FmpqMat operator*(const FmpqMat& rhs)
+    {
+      if(ncols() != rhs.nrows()){
+        throw invalid_argument("Incompatible dimensions for multiplication!");
+      }
+
+      auto result = FmpqMat(nrows(),rhs.ncols());
+      fmpq_mat_mul(result.mat, mat, rhs.mat);
+      return result;
+    }
+
+    FmpqMat operator*(const FmpzMat& rhs)
+    {
+      if(ncols() != rhs.nrows()){
+        throw invalid_argument("Incompatible dimensions for multiplication!");
+      }
+
+      auto result = FmpqMat(nrows(),rhs.ncols());
+      fmpq_mat_mul_fmpz_mat(result.mat, mat, rhs.mat);
+      return result;
+    }
+
+    // scalar multiplication
+    FmpqMat operator*=(const Fmpq& rhs)
+    {
+      fmpq_mat_scalar_mul_fmpq(mat,mat,rhs.number);
+      return *this;
+    }
+
+    FmpqMat operator*=(const Fmpz& rhs)
+    {
+      fmpq_mat_scalar_mul_fmpz(mat,mat,rhs.number);
+      return *this;
+    }
+
+    FmpqMat operator*=(const int64_t& rhs)
+    {
+      *this *= Fmpz(rhs);
+      return *this;
+    }
+
+    FmpqMat operator*(const Fmpq& rhs)
+    {
+      auto result = FmpqMat(nrows(),ncols());
+      fmpq_mat_scalar_mul_fmpq(result.mat,mat,rhs.number);
+      return result;
+    }
+
+    FmpqMat operator*(const Fmpz& rhs)
+    {
+      auto result = FmpqMat(nrows(),ncols());
+      fmpq_mat_scalar_mul_fmpz(result.mat,mat,rhs.number);
+      return result;
+    }
+
+    FmpqMat operator*(const int64_t& rhs)
+    {
+      return (*this * Fmpz(rhs));
+    }
+
+    //division
+    FmpqMat& operator/=(const Fmpq &rhs)
+    {
+      if(fmpq_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      const auto[num,den] = rhs.fraction();
+
+      fmpq_mat_scalar_mul_fmpz(mat, mat, den.number);
+      fmpq_mat_scalar_div_fmpz(mat, mat, num.number);
+
+      return *this;
+    }
+
+    FmpqMat& operator/=(const Fmpz &rhs)
+    {
+      if(fmpz_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      fmpq_mat_scalar_div_fmpz(mat, mat, rhs.number);
+
+      return *this;
+    }
+
+    FmpqMat& operator/=(const int64_t &rhs)
+    {
+      *this /= Fmpz(rhs);
+      return *this;
+    }
+
+    FmpqMat operator/(const Fmpq &rhs) const
+    {
+      if(fmpq_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      auto result = FmpqMat(nrows(),ncols());
+
+      const auto[num,den] = rhs.fraction();
+
+      fmpq_mat_scalar_mul_fmpz(result.mat, mat, den.number);
+      fmpq_mat_scalar_div_fmpz(result.mat, result.mat, num.number);
+
+      return result;
+    }
+
+    FmpqMat operator/(const Fmpz &rhs) const
+    {
+      if(fmpz_is_zero(rhs.number))
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      auto result = FmpqMat(nrows(),ncols());
+
+      fmpq_mat_scalar_div_fmpz(result.mat, mat, rhs.number);
+
+      return result;
+    }
+
+    FmpqMat operator/(const int64_t &rhs) const
+    {
+      if(rhs==0)
+      {
+        throw invalid_argument("Divison by zero!");
+      }
+
+      return (*this / Fmpz(rhs));
+    }
+
+    // comparison
+    bool operator==(const fmpq_mat_t &rhs)
+    {
+      return (bool) fmpq_mat_equal(mat, rhs);
+    }
+    bool operator==(const FmpqMat &rhs) {return (*this == rhs.mat);}
+    bool operator==(const int64_t &rhs)
+    {
+      if(rhs != 0)
+      {
+        throw invalid_argument("Comparison to nonzero scalar not supported");
+      }
+      return fmpq_mat_is_zero(mat);
+    }
+
+    bool operator==(const fmpq_t &rhs)
+    {
+      if(!fmpq_is_zero(rhs))
+      {
+        throw invalid_argument("Comparison to nonzero scalar not supported");
+      }
+      return fmpq_mat_is_zero(mat);
+    }
+
+    bool operator==(const Fmpq &rhs){return (*this == rhs.number);}
+
+    auto to_string_vectors() const
+    {
+      auto result = vector<vector<string>>();
+
+      for(int row=0; row<nrows(); row++)
+      {
+        auto row_vec = vector<string>();
+        for(int col=0; col<ncols(); col++)
+        {
+          stringstream ss;
+          char *out_string = fmpq_get_str(NULL, 10, (*this)(row,col));
+          ss << out_string;
+          free(out_string);
+          row_vec.push_back(ss.str());
+        }
+        result.push_back(row_vec);
+      }
+
+      return result;
+    }
+
+    auto transpose()
+    {
+      auto result = FmpqMat(ncols(),nrows());
+      fmpq_mat_transpose(result.mat,mat);
+      return result;
+    }
+
+    auto transpose_inplace()
+    {
+      if(!fmpq_mat_is_square(mat)){
+        throw invalid_argument("can only transpose in place on square matrices");
+      }
+      fmpq_mat_transpose(mat,mat);
+    }
+
+    auto det()
+    {
+      auto result = Fmpq();
+      fmpq_mat_det(result.number, mat);
+      return result;
+    }
+
+    auto swap_rows(const int& i, const int& j)
+    {
+      const auto num_rows = nrows();
+
+      if(i<0 || j<0 || i>=num_rows || j>=num_rows){
+        throw invalid_argument("indices out of bounds");
+      }
+
+      fmpq_mat_swap_rows(mat, NULL, i, j);
+    }
+
+    auto add_a_times_row_b_to_row_c(const Fmpq& a, const int& b, const int& c)
+    {
+      const auto num_rows = nrows();
+      const auto num_cols = ncols();
+
+      if(b<0 || c<0 || b>=num_rows || c>=num_rows){
+        throw invalid_argument("indices out of bounds");
+      }
+
+      for(int col=0; col<num_cols; col++)
+      {
+        fmpq_addmul((*this)(c,col),a.number,(*this)(b,col));
+      }
+
+    }
+
+
+    // row operations
+
+};
+
+FmpqMat operator*(const FmpzMat& lhs, const FmpqMat& rhs)
+{
+  if(lhs.ncols() != rhs.nrows()){
+    throw invalid_argument("Incompatible dimensions for multiplication!");
+  }
+
+  auto result = FmpqMat(lhs.nrows(),rhs.ncols());
+  fmpq_mat_mul_r_fmpz_mat(result.mat, lhs.mat, rhs.mat);
+
+  return result;
+}
+
+ostream& operator<<(ostream& os, const FmpqMat& f)
+{
+
+  if(f.nrows() == 0)
+  {
+    os << "[]";
+    return os;
+  }
+
+  const auto string_vectors = f.to_string_vectors();
+  const auto widths = column_widths(string_vectors);
+  const auto nrows = f.nrows();
+  const auto ncols = f.ncols();
+
+  os << "[" << endl;
+  for(int row=0; row<nrows; row++)
+  {
+    os << "  [";
+    for(int col=0; col<ncols; col++)
+    {
+      os << setw(widths[col]);
+      os << string_vectors[row][col];
+      if(col != ncols-1) os << ", ";
+    }
+    os << "]";
+    if (row != nrows-1) os << ",";
+    os << endl;
+  }
+  os << "]";
+
+  return os;
+}

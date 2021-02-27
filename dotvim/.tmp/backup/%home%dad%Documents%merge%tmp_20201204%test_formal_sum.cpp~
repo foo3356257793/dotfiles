@@ -1,0 +1,735 @@
+#include "formal_sum.hpp"
+#include "myflint_factor.hpp"
+#include "myflint_poly.hpp"
+#include "myflint_ZZ_mat.hpp"
+#include "div_operator.hpp"
+#include "myflint_RR_mat.hpp"
+
+#include "yaml-cpp/yaml.h"
+
+#include "myflint_lll.hpp"
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <type_traits>
+#include <variant>
+#include <vector>
+
+#include <fstream>
+
+#include <valarray>
+
+// testing
+#include <gtest/gtest.h>
+
+using Term = FormalSumTerm<int64_t,int64_t>;
+using TermZZ = FormalSumTerm<ZZ,int64_t>;
+using TermZZ_ZZ = FormalSumTerm<ZZ,ZZ>;
+
+#if 0
+TEST(Tests, formal_sum) {
+
+  auto foo = FormalSum<ZZ,ZZ>();
+
+  foo += TermZZ_ZZ(10,3);
+  foo += TermZZ_ZZ(70,-5);
+  foo += TermZZ_ZZ(ZZ("123456789123456789"),-1);
+
+  print("{}\n", foo);
+
+  for(auto &term : foo){
+    print("{} and {}\n", term.first, term.second);
+  }
+
+  auto fac = Factorization<ZZ>();
+
+  fac.primes += TermZZ(2,2);
+  fac.primes += TermZZ(5,1);
+  fac.primes += TermZZ(11,-1);
+  fac.composites += TermZZ(13*17, 1);
+
+  print("factorization\n");
+  for(auto &term : fac){
+    print("{} and {}\n", term.first, term.second);
+  }
+}
+#endif
+
+TEST(Tests, stepping) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+  //print("Q = {}\n", Q);
+
+  //double bound = 6e+08;
+  double bound = 3 * L[0][0];
+
+  RR_mat_params params = {.in_phases = false, .two_sided=true, .len_bound=bound};
+
+  auto it = RR_mat_iterator(L, params);
+
+  int num_iter = 0;
+
+  auto results = vector<tuple<vector<int64_t>,vector<double>>>();
+
+  for(auto tup : it){
+    ++num_iter;
+    results.push_back(tup);
+
+    if(num_iter>=64) break;
+  }
+
+  sort(results.begin(), results.end());
+  for(auto &tup : results){
+    auto[coeffs,vec] = tup;
+    printf("%ld, %ld", coeffs[0], coeffs[1]);
+    print("  {}\n", fmt::join(vec, ", "));
+  }
+
+
+}
+
+TEST(Tests, shell_stepping) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+  //print("Q = {}\n", Q);
+
+  //double bound = 6e+08;
+  double bound = 3 * L[0][0];
+
+  RR_mat_params params = {.in_phases = true,
+                          .two_sided=false,
+                          .len_bound=bound,
+                          .grow_factor = 1.5 };
+
+  auto it = RR_mat_iterator(L, params);
+
+  int num_iter = 0;
+
+  auto results = vector<tuple<vector<int64_t>,vector<double>>>();
+
+  for(auto tup : it){
+    ++num_iter;
+    results.push_back(tup);
+
+    if(num_iter>=64) break;
+  }
+
+  sort(results.begin(), results.end());
+  for(auto &tup : results){
+    auto[coeffs,vec] = tup;
+    printf("%ld, %ld", coeffs[0], coeffs[1]);
+    print("  {}\n", fmt::join(vec, ", "));
+  }
+}
+
+bool in_one_sided(vector<int64_t> vec){
+  for(int index = ((int) vec.size())-1; index>=0; index--){
+    if(vec[index] != 0){ return vec[index]>0; }
+  }
+  return false;
+}
+
+TEST(Tests, two_sided) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+  //print("Q = {}\n", Q);
+
+  //double bound = 6e+08;
+  double bound = 3 * L[0][0];
+
+  int num_iter;
+
+  RR_mat_params two_sided_params = {
+    .in_phases   = true,
+    .two_sided   = true,
+    .len_bound   = bound,
+    .grow_factor = 1.5 };
+
+  auto two_sided_it = RR_mat_iterator(L, two_sided_params);
+  auto two_sided_results = vector<tuple<vector<int64_t>,vector<double>>>();
+
+  num_iter=0;
+  for(auto tup : two_sided_it){
+    ++num_iter;
+    two_sided_results.push_back(tup);
+
+    if(num_iter>=64) break;
+  }
+
+  sort(two_sided_results.begin(), two_sided_results.end());
+
+  RR_mat_params one_sided_params = {
+    .in_phases   = true,
+    .two_sided   = false,
+    .len_bound   = bound,
+    .grow_factor = 1.5 };
+
+  auto one_sided_it = RR_mat_iterator(L, one_sided_params);
+  auto one_sided_results = vector<tuple<vector<int64_t>,vector<double>>>();
+
+  num_iter=0;
+  for(auto tup : one_sided_it){
+    ++num_iter;
+    one_sided_results.push_back(tup);
+
+    if(num_iter>=64) break;
+  }
+
+  sort(one_sided_results.begin(), one_sided_results.end());
+
+  auto ts_it = two_sided_results.begin();
+  auto os_it = one_sided_results.begin();
+
+  int num_skip = 0;
+  while(ts_it != two_sided_results.end()){
+    if(!in_one_sided(get<0>(*ts_it))){
+      ts_it++;
+      num_skip++;
+    }
+    else{
+      ASSERT_TRUE(os_it != one_sided_results.end());
+      ASSERT_EQ(get<0>(*ts_it),get<0>(*os_it));
+      ts_it++;
+      os_it++;
+    }
+  }
+
+  ASSERT_EQ(os_it, one_sided_results.end());
+
+  ASSERT_EQ(2*num_skip-1, two_sided_results.size());
+
+  for(auto &tup : one_sided_results){
+    auto[coeffs,vec] = tup;
+    print("[{}, {}], [{}]\n", coeffs[0], coeffs[1], fmt::join(vec, ", "));
+  }
+
+}
+
+TEST(Tests, max_vecs) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+  //print("Q = {}\n", Q);
+
+  //double bound = 6e+08;
+  double bound = 3 * L[0][0];
+
+  int num_iter;
+
+  RR_mat_params one_sided_params = {
+    .in_phases   = true,
+    .two_sided   = false,
+    .len_bound   = bound,
+    .max_vecs    = 4,
+    .grow_factor = 1.5 };
+
+  auto one_sided_it = RR_mat_iterator(L, one_sided_params);
+  auto one_sided_results = vector<tuple<vector<int64_t>,vector<double>>>();
+
+  num_iter=0;
+  for(auto tup : one_sided_it){
+    ++num_iter;
+    one_sided_results.push_back(tup);
+    if(num_iter>=64) break;
+  }
+
+  sort(one_sided_results.begin(), one_sided_results.end());
+
+  for(auto &tup : one_sided_results){
+    auto[coeffs,vec] = tup;
+    print("[{}, {}], [{}]\n", coeffs[0], coeffs[1], fmt::join(vec, ", "));
+  }
+
+  ASSERT_TRUE(one_sided_results.size() <= 4);
+}
+
+TEST(Tests, no_bound) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+  //print("Q = {}\n", Q);
+
+  //double bound = 6e+08;
+  double bound = 3 * L[0][0];
+
+  int num_iter;
+
+  RR_mat_params one_sided_params = {
+    .in_phases   = true,
+    .two_sided   = false,
+    .max_vecs    = 64,
+    .grow_factor = 1.5 };
+
+  auto one_sided_it = RR_mat_iterator(L, one_sided_params);
+  auto one_sided_results = vector<tuple<vector<int64_t>,vector<double>>>();
+
+  num_iter=0;
+  for(auto tup : one_sided_it){
+    ++num_iter;
+    one_sided_results.push_back(tup);
+    if(num_iter>=256) break;
+  }
+
+  sort(one_sided_results.begin(), one_sided_results.end());
+
+  for(auto &tup : one_sided_results){
+    auto[coeffs,vec] = tup;
+    print("[{}, {}], [{}]\n", coeffs[0], coeffs[1], fmt::join(vec, ", "));
+  }
+
+  ASSERT_TRUE(one_sided_results.size() == 64);
+}
+
+TEST(Tests, coprime) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+  //print("Q = {}\n", Q);
+
+  //double bound = 6e+08;
+  double bound = 3 * L[0][0];
+
+  int num_iter;
+
+  RR_mat_params one_sided_params = {
+    .in_phases    = true,
+    .two_sided    = false,
+    .max_vecs     = 32,
+    .only_primitive = true,
+    .grow_factor  = 1.5 };
+
+  auto one_sided_it = RR_mat_iterator(L, one_sided_params);
+  auto one_sided_results = vector<tuple<vector<int64_t>,vector<double>>>();
+
+  print("\n");
+  num_iter=0;
+  for(auto tup : one_sided_it){
+    ++num_iter;
+    one_sided_results.push_back(tup);
+
+    auto[coeffs,vec] = tup;
+    print("[{}, {}], [{}]\n", coeffs[0], coeffs[1], fmt::join(vec, ", "));
+
+    if(num_iter>=256) break; // in case max_vecs doesn't work
+  }
+  print("\n");
+
+  sort(one_sided_results.begin(), one_sided_results.end());
+
+  for(auto &tup : one_sided_results){
+    auto[coeffs,vec] = tup;
+    print("[{}, {}], [{}]\n", coeffs[0], coeffs[1], fmt::join(vec, ", "));
+
+    auto should_vec = vector<double>(L.ncols());
+    for(int col=0; col<L.ncols(); col++){
+      should_vec[col] = 0;
+      for(int row=0; row<L.nrows(); row++){
+        should_vec[col] += coeffs[row] * L[row][col];
+      }
+      ASSERT_TRUE((abs(should_vec[col]-vec[col])/L[col][col]) < 1e-6);
+    }
+
+
+  }
+
+  ASSERT_TRUE(one_sided_results.size() == one_sided_params.max_vecs);
+
+}
+
+ZZ max(const Factorization<ZZ> &factors){
+
+  ZZ result = 1;
+
+  for(auto it : factors){
+    result = max(result, it.first);
+  }
+
+  return result;
+}
+
+double max_d(const Factorization<ZZ> &factors){
+
+  double result = 1;
+
+  for(auto it : factors){
+    result = max(result, (double) it.first);
+  }
+
+  return result;
+}
+
+ZZ mat_value(RR_mat_iterator::iterator &it,
+    const vector<ZZ> &vec){
+  auto coeffs = get<0>(*it);
+
+  ZZ value = vec[0] * coeffs[0];
+
+  for(size_t index=1; index<vec.size(); index++){
+    value += vec[index] * coeffs[index];
+  }
+
+  return value;
+}
+
+tuple<double,ZZ,Factorization<ZZ>> eval_mat_vec(RR_mat_iterator::iterator &it,
+    const vector<ZZ> &vec){
+
+  auto value = mat_value(it,vec);
+  auto fac = factor(value);
+  auto score = max_d(fac);
+
+  return tuple(score, value, fac);
+}
+
+tuple<
+  double,
+  optional<vector<ZZ>>,
+  optional<vector<Factorization<ZZ>>>
+>
+eval_mat_vec_many(
+    RR_mat_iterator::iterator &it,
+    const vector<vector<ZZ>> &vec,
+    double threshold){
+
+  auto value = mat_value(it,vec[0]);
+  auto fac = factor(value);
+  auto score = max_d(fac);
+
+  if(score > threshold){
+    return tuple(score,nullopt,nullopt);
+  }
+
+  vector<ZZ> result_values = {value};
+  vector<Factorization<ZZ>> result_facs = {fac};
+
+  for(size_t index=1; index<vec.size(); index++){
+    auto value = mat_value(it,vec[index]);
+    auto fac = factor(value);
+    score = max(score,max_d(fac));
+
+    if(score > threshold){
+      return tuple(score,nullopt,nullopt);
+    }
+
+    result_values.push_back(value);
+    result_facs.push_back(fac);
+  }
+
+  return tuple(score, result_values, result_facs);
+}
+
+tuple<
+double,
+  vector<ZZ>,
+  vector<Factorization<ZZ>>
+  >
+  eval_mat_vec_many(
+      RR_mat_iterator::iterator &it,
+      const vector<vector<ZZ>> &vec){
+
+    auto value = mat_value(it,vec[0]);
+    auto fac = factor(value);
+    auto score = max_d(fac);
+
+    vector<ZZ> result_values = {value};
+    vector<Factorization<ZZ>> result_facs = {fac};
+
+    for(size_t index=1; index<vec.size(); index++){
+      auto value = mat_value(it,vec[index]);
+      auto fac = factor(value);
+      score = max(score,max_d(fac));
+
+      result_values.push_back(value);
+      result_facs.push_back(fac);
+    }
+
+    return tuple(score, result_values, result_facs);
+}
+
+tuple<double,ZZ,Factorization<ZZ>> min_mat_val(
+    RR_mat_iterator &it,
+    const vector<ZZ> &vec,
+    double threshold){
+
+  if(it.mat.ncols() != vec.size()){
+    throw invalid_argument("dimensions don't match");
+  }
+
+  if(!(it.begin() != it.end())){
+    throw invalid_argument("Empty mat iterator");
+  }
+
+  auto it_it = it.begin();
+
+  auto[min_score,arg_min_value,arg_min_fac] = eval_mat_vec(it_it, vec);
+
+  while((min_score > threshold) && (++it_it != it.end())){
+    auto[score,min_value,min_fac] = eval_mat_vec(it_it, vec);
+    if(score < min_score){
+      min_score = score;
+      arg_min_value = min_value;
+      arg_min_fac = min_fac;
+    }
+  }
+
+  return tuple(min_score,arg_min_value,arg_min_fac);
+}
+
+tuple<double,ZZ,Factorization<ZZ>> min_mat_val(
+    RR_mat_iterator &it,
+    const vector<ZZ> &vec)
+{
+  return min_mat_val(it,vec,1);
+}
+
+tuple<
+  double,
+  vector<ZZ>,
+    vector<Factorization<ZZ>>
+>
+min_mat_val(
+    RR_mat_iterator &it,
+    const vector<vector<ZZ>> &vec,
+    double threshold){
+
+  for(auto &row : vec){
+    if(it.mat.ncols() != row.size()){
+      throw invalid_argument("dimensions don't match");
+    }
+  }
+
+  if(!(it.begin() != it.end())){
+    throw invalid_argument("Empty mat iterator");
+  }
+
+  auto it_it = it.begin();
+
+  auto[min_score,arg_min_value,arg_min_fac] = eval_mat_vec_many(it_it, vec);
+
+  while((min_score > threshold) && (++it_it != it.end())){
+    auto[score,min_value,min_fac] = eval_mat_vec_many(it_it, vec, min_score);
+    if(score < min_score){
+      min_score = score;
+      arg_min_value = min_value.value();
+      arg_min_fac = min_fac.value();
+    }
+  }
+
+  return tuple(min_score,arg_min_value,arg_min_fac);
+}
+
+TEST(Tests, best_score) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+
+  RR_mat_params it_params = {
+    .in_phases    = true,
+    .two_sided    = false,
+    .max_vecs     = 32,
+    .only_primitive = true,
+    .grow_factor  = 1.5 };
+
+  auto it = RR_mat_iterator(L, it_params);
+
+  auto c = ZZ(88789);
+  auto d = ZZ(37861);
+
+  auto[score,value,fac] = min_mat_val(it,{c,d},256);
+
+  print("min_score = {}\n", score);
+  print("value     = {}\n", value);
+  print("fac       = {}\n", fac);
+}
+
+TEST(Tests, best_score_many) {
+
+  auto p = ZZ("123456789123456823");
+  auto dim = 2;
+
+  auto A = ZZ_mat(dim,dim);
+  A[0][0] = p;
+
+  auto B = ZZ("234567891234567891");
+  auto C = ZZ("111111111111111111");
+
+  for(auto row=1; row<dim; row++){
+    A[row][0] = B * A[row-1][0] + C;
+    A[row][0] %= p;
+    A[row][row] = 1;
+  }
+
+  LLL_inplace(A);
+
+  auto[L,Q] = LQ(A);
+
+  print("A = {}\n", A);
+  print("L = {}\n", L);
+
+  RR_mat_params it_params = {
+    .in_phases    = true,
+    .two_sided    = false,
+    .max_vecs     = 32,
+    .only_primitive = true,
+    .grow_factor  = 1.5 };
+
+  auto it = RR_mat_iterator(L, it_params);
+
+  auto c = ZZ(88789);
+  auto d = ZZ(37861);
+
+  vector<vector<ZZ>> input = {{ZZ(88789),ZZ(37861)},{ZZ(-53633),ZZ(62927)}};
+
+  auto[score,values,facs] = min_mat_val(it,input,256);
+
+  print("min_score = {}\n", score);
+
+  print("[{},{}]\n", values[0], values[1]);
+  print("[{},{}]\n", facs[0], facs[1]);
+
+}
+
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

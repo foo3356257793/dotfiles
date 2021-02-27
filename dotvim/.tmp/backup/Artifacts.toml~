@@ -1,0 +1,10 @@
+[[GMP]]
+arch = "x86_64"
+cxxstring_abi = "cxx11"
+git-tree-sha1 = "39b8e3dea0a701983a8ae84a2c567e1c4e555c7a"
+libc = "glibc"
+os = "linux"
+
+    [[GMP.download]]
+    sha256 = "eb95f19cb29822cd71bbb5d4424e06224a4f8df544d957462348583efe4b0793"
+    url = "/home/dad/Downloads/for_nemo/gmp-6.2.0.tar.gz"

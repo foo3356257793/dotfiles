@@ -1,0 +1,65 @@
+_ZZ_mat &_ZZ_mat::translate(const std::function<void(fmpz_mat_t,const fmpz_mat_t)> &fun,
+    const _ZZ_mat_1 &in){
+  fun(data,in.data);
+  return *this;
+}
+
+_ZZ_mat &_ZZ_mat::translate(const std::function<void(fmpz_mat_t,fmpz_mat_t,const fmpz_mat_t)> &fun,
+    const _ZZ_mat_1 &in){
+  fun(data,data,in.data);
+  return *this;
+}
+
+bool _ZZ_mat::dim_match(const _ZZ_mat_1 &in) const{
+  return ((nrows() == in.nrows()) && (ncols() == in.ncols()));
+}
+
+bool _ZZ_mat::dim_rmul_match(const _ZZ_mat_1 &in) const {
+  return ncols() == in.nrows();
+}
+
+_ZZ_mat &_ZZ_mat::operator=(const _ZZ_mat_1 &in){
+  resize(in.nrows(),in.ncols());
+  return translate(fmpz_mat_set,in);
+}
+
+_ZZ_mat &_ZZ_mat::operator+=(const _ZZ_mat_1 &in) {
+  if(!dim_match(in)){
+    throw std::invalid_argument("Dimensions don't match for +=");
+  }
+  return translate(fmpz_mat_add,in);
+}
+
+_ZZ_mat &_ZZ_mat::operator-=(const _ZZ_mat_1 &in) {
+  if(!dim_match(in)){
+    throw std::invalid_argument("Dimensions don't match for -=");
+  }
+  return translate(fmpz_mat_sub,in);
+}
+
+_ZZ_mat &_ZZ_mat::operator*=(const _ZZ_mat_1 &in) {
+  if(!dim_rmul_match(in)){
+    throw std::invalid_argument("Dimensions don't match for *=");
+  }
+  return translate(fmpz_mat_mul,in);
+}
+
+_ZZ_mat &_ZZ_mat::operator/=(const _ZZ_mat_1 &in) {
+  if(in.nrows() != in.ncols()){
+    throw std::invalid_argument("Division by non-square matrix");
+  }
+  if(!dim_rmul_match(in)){
+    throw std::invalid_argument("Dimensions don't match for /=");
+  }
+  auto[inv,den] = inverse(in);
+  *this *= inv;
+  for(int row=0; row<nrows(); row++){
+    for(int col=0; col<ncols(); col++){
+      if(!(*this)[row][col].is_divisible_by(den)){
+        throw std::invalid_argument("Division gives denominator!");
+      }
+      (*this)[row][col].divexact_eq(den);
+    }
+  }
+  return *this;
+}

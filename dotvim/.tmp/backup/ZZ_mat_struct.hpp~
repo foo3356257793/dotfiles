@@ -1,0 +1,56 @@
+int nrows() const { return data->r; }
+int ncols() const { return data->c; }
+
+_ZZ_mat &translate(const std::function<void(fmpz_mat_t)> &fun);
+
+_ZZ_mat &translate(const std::function<void(fmpz_mat_t,fmpz_mat_t)> &fun);
+
+_ZZ_mat &operator-();
+
+ZZ inverse_eq();
+_ZZ_mat &inverse_strict_eq();
+
+_ZZ_mat &resize(int rows, int cols);
+
+ZZ_vec_ptr operator[](const slong col);
+const ZZ_vec_ptr operator[](const slong col) const;
+
+template <typename T>
+_ZZ_mat &operator=(const std::vector<std::vector<T>> &in) {
+  size_t rows = in.size();
+  size_t cols;
+  if (rows == 0) {
+    cols = 0;
+  } else {
+    cols = in[0].size();
+  }
+  for (size_t row = 0; row < rows; row++) {
+    if (in[row].size() != cols) {
+      throw std::invalid_argument("list of vectors not a matrix!");
+    }
+    for (size_t col = 0; col < cols; col++) {
+      (*this)[row][col] = in[row][col];
+    }
+  }
+  return *this;
+}
+
+template <typename T>
+explicit operator std::vector<std::vector<T>>() const {
+  auto out = std::vector<std::vector<T>>();
+
+  for(int row=0; row<nrows(); row++){
+    auto rowvec = std::vector<T>();
+    for(int col=0; col<ncols(); col++){
+      rowvec.push_back(static_cast<T>((*this)[row][col]));
+    }
+    out.push_back(rowvec);
+  }
+  return out;
+}
+
+#include "ZZ_mat_struct_ZZ_mat.hpp"
+#include "ZZ_mat_struct_ZZ.hpp"
+#include "ZZ_mat_struct_UI.hpp"
+#include "ZZ_mat_struct_SI.hpp"
+

@@ -1,0 +1,123 @@
+#!/usr/bin/python3
+
+import dad
+
+from math import *
+import unittest
+
+from fractions import Fraction
+
+def factor_vec(A):
+
+    result = A.factor_vec()
+    result = [(int(f),exponent) for f,exponent in result]
+
+    return result
+
+def prod_factor_vec(vec):
+
+    return prod([f**exponent for f,exponent in vec])
+
+def prod_factor_vec_num(vec):
+
+    return prod([f**exponent for f,exponent in vec if exponent > 0])
+
+def prod_factor_vec_den(vec):
+
+    return prod([f**(-exponent) for f,exponent in vec if exponent < 0])
+
+def prod_factor_vec_fraction(vec):
+
+    return Fraction(prod_factor_vec_num(vec), prod_factor_vec_den(vec))
+
+class TestDad(unittest.TestCase):
+
+    def test_dad(self):
+
+        a = 2*3*5*7
+
+        A = dad.DadFactors(a)
+
+        factors = factor_vec(A)
+
+        prod_factors = prod_factor_vec(factors)
+
+        self.assertEqual(prod_factors,a)
+
+    def test_mul(self):
+
+        a = 12
+        b = 27
+        c = a*b
+
+        A = dad.DadFactors(a)
+        B = dad.DadFactors(b)
+
+        C = A*B
+
+        factors_c = factor_vec(C)
+
+        should_c = prod_factor_vec(factors_c)
+
+        self.assertEqual(c,should_c)
+
+    def test_div(self):
+
+        a = 12
+        b = 27
+        c = Fraction(a,b)
+
+        A = dad.DadFactors(a)
+        A.factor()
+        B = dad.DadFactors(b)
+        B.factor()
+
+        C = A/B
+
+        factors_c = factor_vec(C)
+
+        should_c = prod_factor_vec_fraction(factors_c)
+
+        self.assertEqual(c,should_c)
+
+    def test_factor(self):
+
+        a = 2*3*5*7
+
+        A = dad.DadFactors(a)
+
+        A.factor()
+
+        factors_a = factor_vec(A)
+
+        should_factors_a = [(2,1),(3,1),(5,1),(7,1)]
+
+        self.assertEqual(factors_a,should_factors_a)
+
+    def test_fmpz_arithmetic(self):
+
+        a = dad.fmpz(8)
+        b = dad.fmpz(5)
+
+        breakpoint()
+
+        c = a+b
+        d = a-b
+        e = a*b
+        f = a/b
+
+        self.assertEqual(c,13)
+        self.assertEqual(d,3)
+        self.assertEqual(e,40)
+        self.assertEqual(f,1)
+
+
+if __name__ == "__main__":
+
+    suite = unittest.TestSuite()
+    suite.addTest(TestDad("test_dad"))
+    suite.addTest(TestDad("test_mul"))
+    suite.addTest(TestDad("test_div"))
+    suite.addTest(TestDad("test_factor"))
+    suite.addTest(TestDad("test_fmpz_arithmetic"))
+    unittest.TextTestRunner().run(suite)

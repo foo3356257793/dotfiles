@@ -1,0 +1,31 @@
+#include "QQ_mat.hpp"
+
+#define _QQ_mat QQ_mat
+#include "QQ_mat/QQ_mat_struct.cpp"
+#undef _QQ_mat
+#define _QQ_mat QQ_mat_ptr
+#include "QQ_mat/QQ_mat_struct.cpp"
+#undef _QQ_mat
+
+QQ_mat::QQ_mat(int rows, int cols){
+  if(rows<0 || cols<0){
+    throw std::invalid_argument("Negative dimensional matrix");
+  }
+  fmpq_mat_init(data,rows,cols);
+}
+
+QQ_mat::QQ_mat() : QQ_mat(0,0) {}
+
+
+QQ_mat::QQ_mat(QQ_mat &&in) noexcept : QQ_mat() {
+  fmpq_mat_swap(data,in.data);
+}
+
+QQ_mat &QQ_mat::operator=(QQ_mat &&in) noexcept {
+  fmpq_mat_swap(data,in.data);
+  return *this;
+}
+
+QQ_mat::~QQ_mat() { fmpq_mat_clear(data); }
+
+#include "QQ_mat/QQ_mat_fun.cpp"

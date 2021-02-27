@@ -1,0 +1,221 @@
+<div style="max-width: 600px;width: 100%;margin: auto">
+
+# Highlight of the Week
+
+* **Mom**: Sleeping in, snow
+* **Dad**: Work only 2.5 times
+* **Anna**: School only twice, double chocolate donut
+* **Leah**: Logging on computer twice
+* **Sam**: Lunch bunch, donut
+* **Juju**: Ice cream, froyo house, snuggling with elephant
+
+<!--
+# Treat of the week
+
+* **Mom**:
+* **Dad**:
+* **Anna**:
+* **Leah**:
+* **Sam**:
+* **Juju**:
+-->
+
+
+# Game
+
+### 5 pts
+
+<center>
+<img src="blur_0x64_pic_01.png" width="600"/>
+</center>
+
+### 4 pts
+
+<center>
+<img src="blur_0x32_pic_01.png" width="600"/>
+</center>
+
+### 3 pts
+
+<center>
+<img src="blur_0x16_pic_01.png" width="600"/>
+</center>
+
+### 2 pts
+
+<center>
+<img src="blur_0x8_pic_01.png" width="600"/>
+</center>
+
+### 1 pt
+
+<center>
+<img src="pic_01.gif" width="600"/>
+</center>
+
+### 5 pts
+
+<center>
+<img src="blur_0x64_pic_02.png" width="450"/>
+</center>
+
+### 4 pts
+
+<center>
+<img src="blur_0x32_pic_02.png" width="450"/>
+</center>
+
+### 3 pts
+
+<center>
+<img src="blur_0x16_pic_02.png" width="450"/>
+</center>
+
+### 2 pts
+
+<center>
+<img src="blur_0x8_pic_02.png" width="450"/>
+</center>
+
+### 1 pt
+
+<center>
+<img src="pic_02.gif" width="450"/>
+</center>
+
+### 5 pts
+
+<center>
+<img src="blur_0x64_pic_03.png" width="600"/>
+</center>
+
+### 4 pts
+
+<center>
+<img src="blur_0x32_pic_03.png" width="600"/>
+</center>
+
+### 3 pts
+
+<center>
+<img src="blur_0x16_pic_03.png" width="600"/>
+</center>
+
+### 2 pts
+
+<center>
+<img src="blur_0x8_pic_03.png" width="600"/>
+</center>
+
+### 1 pt
+
+<center>
+<img src="pic_03.gif" width="600"/>
+</center>
+
+### 5 pts
+
+<center>
+<img src="blur_0x64_pic_04.jpg" width="600"/>
+</center>
+
+### 4 pts
+
+<center>
+<img src="blur_0x32_pic_04.jpg" width="600"/>
+</center>
+
+### 3 pts
+
+<center>
+<img src="blur_0x16_pic_04.jpg" width="600"/>
+</center>
+
+### 2 pts
+
+<center>
+<img src="blur_0x8_pic_04.jpg" width="600"/>
+</center>
+
+### 1 pt
+
+<center>
+<img src="pic_04.gif" width="600"/>
+</center>
+
+# Farming
+
+<!--
+<video width="600" controls>
+<source src="harvest.mp4" type="video/mp4">
+</video>
+-->
+
+<center>
+<iframe width="600" height="338" src="https://www.youtube.com/embed/KjVVtXYaP0s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+# D&C 14:3--4
+
+> **3** Behold, the field is white already to harvest; therefore, whoso desireth to reap let him thrust in his sickle with his might, and reap while the day lasts, that he may treasure up for his soul everlasting salvation in the kingdom of God.
+> 
+> **4** Yea, whosoever will thrust in his sickle and reap, the same is called of God.
+
+# Missionaries
+
+<center>
+<img src="https://www.churchofjesuschrist.org/bc/content/ldsorg/church/news/2019/01/29/580-T1964864-Missionaries-(male).jpg"
+alt="Missionaries" width="600">
+</center>
+
+# Presents
+
+<center>
+<img src="presents.jpg" width="400">
+</center>
+
+</br>
+
+<center>
+<img src="present.jpg" width="600">
+</center>
+
+<style>
+#solution {
+  width: 100%;
+padding: 50px 0;
+         text-align: center;
+         margin-top: 20px;
+display: none;
+}
+</style>
+
+<center>
+<button onclick="myFunction()">Open Present</button>
+</center>
+
+<div id="solution">
+<center>
+<div style="font-size: 3em">
+Eternal Life
+</div>
+</center>
+</div>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("solution");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+# D&C 14:7
+
+> **7** And, if you keep my commandments and endure to the end you shall have eternal life, which gift is the greatest of all the gifts of God.
+
+</div>
+

@@ -1,0 +1,55 @@
+#define _ftype fmpz
+
+
+#define _TYPE _ZZ
+
+struct _TYPE {
+
+#include "rule_of_five.hpp"
+
+#define _setfun _fun_paster(_ftype,set_si)
+#include "copys_si.hpp"
+#undef _setfun
+
+#define _setfun _fun_paster(_ftype,set_ui)
+#include "copys_ui.hpp"
+#undef _setfun
+
+#define _setfun _fun_paster(_ftype,set_d)
+#include "copys_df.hpp"
+#undef _setfun
+
+#define _setfun _fun_paster(_ftype,set_str)
+#include "copy_string.hpp"
+#undef _setfun
+
+#define _getfun _fun_paster(_ftype,get_str)
+#include "cast_string.hpp"
+#undef _getfun
+
+#include "cast_si.hpp"
+#include "cast_ui.hpp"
+#include "cast_df.hpp"
+
+#include "ZZ_auto.hpp"
+
+#define _funname_eq pow_eq
+#include "fun_NN_eq_star.hpp"
+#undef _funname_eq
+
+_TYPE &next_prime_eq(int proved);
+_TYPE &next_prime_eq();
+
+#define _TYPE_IN _TYPE_NEW
+#include "is_divisible_by.hpp"
+#undef _TYPE_IN
+#define _TYPE_IN _TYPE_PTR
+#include "is_divisible_by.hpp"
+#undef _TYPE_IN
+
+bool is_prime() const;
+
+};
+
+#undef _TYPE
+

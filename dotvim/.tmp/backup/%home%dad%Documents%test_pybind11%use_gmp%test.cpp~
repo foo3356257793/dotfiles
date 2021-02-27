@@ -1,0 +1,120 @@
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
+
+#include <pybind11/functional.h>
+#include <pybind11/chrono.h>
+
+namespace py = pybind11;
+
+#include <any>
+#include <map>
+#include <string>
+
+#include <sstream>
+
+#include <gmp.h>
+#include <gmpxx.h>
+
+#include <math.h>
+
+using std::map;
+using std::any;
+using std::string;
+using std::any_cast;
+using std::stringstream;
+
+int64_t foo(int64_t a, int64_t b, int64_t c)
+{
+  return (a+b+c);
+}
+
+string foo_gmp(int64_t a, int64_t b, int64_t c)
+{
+  mpz_t A,B,C;
+  mpz_init(A);
+  mpz_init(B);
+  mpz_init(C);
+
+  mpz_set_si(A,a);
+  mpz_set_si(B,b);
+  mpz_set_si(C,c);
+
+  mpz_add(A,A,B);
+  mpz_add(A,A,C);
+
+  stringstream ss;
+
+  ss << A;
+
+  mpz_clear(A);
+  mpz_clear(B);
+  mpz_clear(C);
+
+  return ss.str();
+}
+
+string foo_float_gmp(double a, double b, double c)
+{
+  mpf_t A, B, C;
+
+  mpf_init2(A, 128);
+  mpf_init2(B, 128);
+  mpf_init2(C, 128);
+
+  mpf_set_si(A,a);
+  mpf_set_si(B,b);
+  mpf_set_si(C,c);
+
+  mpf_add(A,A,B);
+  mpf_add(A,A,C);
+
+  mpf_set_str(B,
+  "3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612847564823378678316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536", 10);
+
+  mpf_div(A,A,B);
+
+  stringstream ss;
+
+  ss.precision(30);
+  ss << A;
+
+  // clean up
+  mpf_clear(A);
+  mpf_clear(B);
+  mpf_clear(C);
+
+  return ss.str();
+}
+
+string foo_float_gmp_nice(double a, double b, double c)
+{
+  mpf_class A(a, 128);
+  mpf_class B(b, 128);
+  mpf_class C(c, 128);
+
+  A += B + C;
+
+  B.set_str("3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612847564823378678316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536", 10);
+
+  A /= B;
+
+  stringstream ss;
+
+  ss.precision(30);
+  ss << A;
+
+  return ss.str();
+}
+
+
+
+PYBIND11_MODULE(test_gmp, m) {
+  m.doc() = "pybind11 example plugin"; // docstring
+
+  m.def("foo", &foo, "add triple");
+  m.def("foo_gmp", &foo_gmp, "add triple w/gmp");
+  m.def("foo_float_gmp", &foo_float_gmp, "add triple floats w/gmp");
+  m.def("foo_float_gmp_nice", &foo_float_gmp_nice, "add triple floats w/gmp C++");
+
+}

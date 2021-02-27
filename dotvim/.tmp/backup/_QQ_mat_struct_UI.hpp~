@@ -1,0 +1,13 @@
+_QQ_mat &translate(const std::function<void(fmpq_mat_t,fmpq_mat_t,const ulong)> &fun,
+    const _UI in);
+
+_QQ_mat &translate(const std::function<void(fmpq_t,fmpq_t,const ulong)> &fun,
+    const _UI in);
+
+_QQ_mat &translate(const std::function<QQ(QQ,const ulong)> &fun,
+    const _UI in);
+
+_QQ_mat &operator*=(const _UI in);
+_QQ_mat &operator%=(const _UI in);
+_QQ_mat &operator/=(const _UI in);
+

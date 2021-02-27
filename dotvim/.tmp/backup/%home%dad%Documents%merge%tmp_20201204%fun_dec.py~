@@ -1,0 +1,104 @@
+#!/usr/bin/python3
+
+class InputName:
+    def __init__(self,name,prefix=None,suffix=None,flint_suffix=None,
+                 by_ref=True,const=True,move=False,var_name='in'):
+        self.name = name
+        self.prefix = prefix
+        self.suffix = suffix
+        self.flint_suffix = flint_suffix
+        self.by_ref = by_ref
+        self.const = const
+        self.move = move
+        self.var_name = var_name
+
+        if self.const and self.move:
+            raise ValueError("cannot both const and move")
+
+    def input_string(self):
+
+        result = ""
+
+        if self.const:
+            result += "const "
+
+        result += f"{self.name} "
+
+        if self.move:
+            result += "&&"
+        elif self.by_ref:
+            result += "&"
+
+        result += f"{self.var_name}"
+
+        return result
+
+    def variable_string(self)
+
+        result = ""
+
+        if self.prefix:
+            result += f"{self.prefix}"
+
+        result += f"{self.var_name}"
+
+        if not self.suffix is None:
+            result += f"{self.suffix}"
+
+        return result
+
+def input_string_many(names):
+
+    if isinstance(names,InputName):
+        return names.input_string()
+
+    if len(names)==0:
+        return ""
+
+    if len(names)==1:
+        return names[0].input_string()
+
+    in_list = [name.input_string(f"{name.var_string}_{index}")
+               for index,name in enumerate(names)]
+
+    return ", ".join(in_list)
+
+class FunDecl:
+
+    def __init__(self,name,
+                 output_type=None,
+                 input_types=None,
+                 body=None,
+                 member=None):
+        self.name = name
+        self.output_type = output_type
+        self.input_types = input_types
+        self.body = body
+        self.member = member
+
+    def __repr__(self):
+
+        result = ""
+        if self.output_type:
+            result += f"{self.output_type} "
+
+        result += f"{self.name}("
+        result += input_string_many(self.input_types)
+        result += ") "
+
+        if self.member:
+            result += f"{self.member} "
+
+        result += "{\n"
+        result += f"{self.body}\n"
+        result += "}\n\n"
+
+        return result
+
+if __name__ == "__main__":
+
+    my_input = InputName("ZZ")
+
+    fun = FunDecl("add",output_type="ZZ",input_types=my_input,body="foo;")
+
+    print(fun)

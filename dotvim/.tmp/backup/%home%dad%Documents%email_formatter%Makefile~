@@ -1,4 +1,4 @@
-NAME = weekly_wrap_20201018
+NAME = email_20210102
 
 all: $(NAME).html
 

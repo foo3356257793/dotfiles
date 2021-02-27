@@ -1,0 +1,9 @@
+#define _TYPE_OUT _TYPE
+#include "ZZ_auto_init.cpp"
+#undef _TYPE_OUT
+
+#include "ZZ_auto_eq.cpp"
+
+#include "compare_star.cpp"
+#include "addmul_star.cpp"
+

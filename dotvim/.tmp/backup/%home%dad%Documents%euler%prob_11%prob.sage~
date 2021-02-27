@@ -1,0 +1,87 @@
+import unittest
+
+INPUT_FILE = "input.txt"
+
+def parse_input_file(fname):
+
+    grid = []
+
+    with open("input.txt", "r") as f:
+        lines = f.readlines()
+
+    for line in lines:
+
+        row = []
+
+        parsed = line.split()
+
+        for d in parsed:
+            row.append(int(d))
+
+        grid.append(row)
+
+    return grid
+
+
+def prob_11():
+
+    grid = parse_input_file(INPUT_FILE)
+
+    answer = 0
+
+    # left to right
+    for i in range(20):
+        for j in range(17):
+            prod = 1
+            for k in range(4):
+                prod *= grid[i][j+k]
+            answer = max(answer,prod)
+
+    # up and down
+    for j in range(20):
+        for i in range(17):
+            prod = 1
+            for k in range(4):
+                prod *= grid[i+k][j]
+            answer = max(answer,prod)
+
+
+    # diag lu to rd
+    for i in range(17):
+        for j in range(17):
+            prod = 1
+            for k in range(4):
+                prod *= grid[i+k][j+k]
+            answer = max(answer,prod)
+
+    # diag ru to ld
+    for i in range(17):
+        for j in range(3,20):
+            prod = 1
+            for k in range(4):
+                prod *= grid[i+k][j-k]
+            answer = max(answer,prod)
+
+    return answer
+
+class Tests(unittest.TestCase):
+
+    def test_parser(self):
+
+        grid = parse_input_file(INPUT_FILE)
+
+        self.assertEqual(grid[0][0], 8)
+        self.assertEqual(grid[6][3], 28)
+        self.assertEqual(len(grid), 20)
+        self.assertEqual(len(grid[0]), 20)
+
+if __name__ == "__main__":
+
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(Tests)
+
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
+
+    answer = prob_11()
+
+    print(answer)

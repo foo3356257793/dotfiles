@@ -1,0 +1,2 @@
+_TYPE &addmul(const _TYPE_IN_NEW &in_1, const _TYPE_IN_UI in_2);
+_TYPE &addmul(const _TYPE_IN_UI in_2, const _TYPE_IN_NEW &in_1);

@@ -1,0 +1,10 @@
+#include "ZZ_auto_funs.cpp"
+
+#include "../fmma_star.cpp"
+
+#define _TYPE _TYPE_NEW
+#include "../ostream.cpp"
+#undef _TYPE
+#define _TYPE _TYPE_PTR
+#include "../ostream.cpp"
+#undef _TYPE

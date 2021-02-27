@@ -1,0 +1,46 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: dad <dad@thinkachu.lan>
+#
+# On branch master
+# Changes to be committed:
+#	modified:   Makefile
+#	modified:   div_operator.cpp
+#	modified:   div_operator.hpp
+#	deleted:    div_operator.o
+#	modified:   formal_sum.hpp
+#	new file:   log.log
+#	new file:   myflint_RR_mat.cpp
+#	new file:   myflint_RR_mat.hpp
+#	new file:   myflint_RR_mat.o
+#	modified:   myflint_ZZ.cpp
+#	modified:   myflint_ZZ.hpp
+#	new file:   myflint_ZZ.o
+#	modified:   myflint_ZZ_mat.cpp
+#	modified:   myflint_ZZ_mat.hpp
+#	new file:   myflint_ZZ_mat.o
+#	modified:   myflint_ZZ_ptr.cpp
+#	new file:   myflint_ZZ_ptr.o
+#	modified:   myflint_factor.cpp
+#	modified:   myflint_factor.hpp
+#	new file:   myflint_factor.o
+#	modified:   myflint_lll.cpp
+#	new file:   myflint_lll.o
+#	modified:   myflint_poly.cpp
+#	modified:   myflint_poly.hpp
+#	new file:   op_temporaries.cpp
+#	new file:   op_temporaries.hpp
+#	modified:   printout.cpp
+#	new file:   tags
+#	new file:   test_factor
+#	new file:   test_factor.cpp
+#	new file:   test_formal_sum
+#	new file:   test_formal_sum.cpp
+#	new file:   test_op_temporaries
+#	new file:   test_op_temporaries.cpp
+#	deleted:    test_vector
+#	modified:   test_vector.cpp
+#	modified:   test_vector_fancy.cpp
+#

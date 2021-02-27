@@ -1,0 +1,12 @@
+#ifndef _isptr
+_TYPE::_TYPE(const _TYPE_IN in) : _TYPE()
+{
+  _setfun(data,in);
+}
+#endif
+
+_TYPE &_TYPE::operator=(const _TYPE_IN in)
+{
+  _setfun(data,in);
+  return *this;
+}

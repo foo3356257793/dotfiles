@@ -1,0 +1,7294 @@
+#include "myflint.hpp"
+
+using namespace std;
+
+ZZ::ZZ() { fmpz_init(data); }
+
+ZZ::ZZ(const ZZ &in) : ZZ() { fmpz_set(data, in.data); }
+
+ZZ &ZZ::operator=(const ZZ &in) {
+  fmpz_set(data, in.data);
+  return *this;
+}
+
+ZZ::ZZ(ZZ &&in) noexcept : ZZ() { swap(data, in.data); }
+
+ZZ &ZZ::operator=(ZZ &&in) noexcept {
+  swap(data, in.data);
+  return *this;
+}
+
+ZZ::~ZZ() { fmpz_clear(data); }
+
+ZZ_ptr::ZZ_ptr(fmpz_t in) { data = in; }
+
+ZZ_ptr::ZZ_ptr(const ZZ &in) { fmpz_set(data, in.data); }
+
+ZZ_ptr &ZZ_ptr::operator=(const ZZ &in) {
+  fmpz_set(data, in.data);
+  return *this;
+}
+
+ZZ_ptr::~ZZ_ptr() {}
+
+ZZ::ZZ(const int8_t in) : ZZ() { fmpz_set_si(data, in); }
+
+ZZ &ZZ::operator=(const int8_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const int16_t in) : ZZ() { fmpz_set_si(data, in); }
+
+ZZ &ZZ::operator=(const int16_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const int32_t in) : ZZ() { fmpz_set_si(data, in); }
+
+ZZ &ZZ::operator=(const int32_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const int64_t in) : ZZ() { fmpz_set_si(data, in); }
+
+ZZ &ZZ::operator=(const int64_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const uint8_t in) : ZZ() { fmpz_set_ui(data, in); }
+
+ZZ &ZZ::operator=(const uint8_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const uint16_t in) : ZZ() { fmpz_set_ui(data, in); }
+
+ZZ &ZZ::operator=(const uint16_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const uint32_t in) : ZZ() { fmpz_set_ui(data, in); }
+
+ZZ &ZZ::operator=(const uint32_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const uint64_t in) : ZZ() { fmpz_set_ui(data, in); }
+
+ZZ &ZZ::operator=(const uint64_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const double in) : ZZ() { fmpz_set_d(data, in); }
+
+ZZ &ZZ::operator=(const double in) {
+  fmpz_set_d(data, in);
+  return *this;
+}
+
+ZZ::ZZ(const string in) : ZZ() { fmpz_set_str(data, in.c_str(), 10); }
+
+ZZ &ZZ::operator=(const string in) {
+  fmpz_set_str(data, in.c_str(), 10);
+  return *this;
+}
+
+ZZ::ZZ(const ZZ_ptr &in) : ZZ() { fmpz_set(data, in.data); }
+
+ZZ &ZZ::operator=(const ZZ_ptr in) {
+  fmpz_set(data, in.data);
+  return *this;
+}
+
+ZZ::operator fmpz *() { return (fmpz *)data; }
+
+ZZ::operator const fmpz *() const { return (const fmpz *)data; }
+
+ZZ::operator int8_t() const { return fmpz_get_si(data); }
+
+ZZ::operator int16_t() const { return fmpz_get_si(data); }
+
+ZZ::operator int32_t() const { return fmpz_get_si(data); }
+
+ZZ::operator int64_t() const { return fmpz_get_si(data); }
+
+ZZ::operator uint8_t() const { return fmpz_get_ui(data); }
+
+ZZ::operator uint16_t() const { return fmpz_get_ui(data); }
+
+ZZ::operator uint32_t() const { return fmpz_get_ui(data); }
+
+ZZ::operator uint64_t() const { return fmpz_get_ui(data); }
+
+ZZ::operator float() const { return fmpz_get_d(data); }
+
+ZZ::operator double() const { return fmpz_get_d(data); }
+
+ZZ::operator string() const {
+  stringstream ss;
+  char *tmp = fmpz_get_str(NULL, 10, data);
+  ss << tmp;
+  free(tmp);
+  return ss.str();
+}
+
+ostream &operator<<(ostream &os, const ZZ &in) {
+  os << ((const string)in);
+  return os;
+}
+
+ZZ &ZZ::operator-() {
+  fmpz_neg(data, data);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const int8_t in) { fmpz_set_si(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const int8_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const int16_t in) { fmpz_set_si(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const int16_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const int32_t in) { fmpz_set_si(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const int32_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const int64_t in) { fmpz_set_si(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const int64_t in) {
+  fmpz_set_si(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const uint8_t in) { fmpz_set_ui(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const uint8_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const uint16_t in) { fmpz_set_ui(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const uint16_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const uint32_t in) { fmpz_set_ui(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const uint32_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const uint64_t in) { fmpz_set_ui(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const uint64_t in) {
+  fmpz_set_ui(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const double in) { fmpz_set_d(data, in); }
+
+ZZ_ptr &ZZ_ptr::operator=(const double in) {
+  fmpz_set_d(data, in);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const string in) { fmpz_set_str(data, in.c_str(), 10); }
+
+ZZ_ptr &ZZ_ptr::operator=(const string in) {
+  fmpz_set_str(data, in.c_str(), 10);
+  return *this;
+}
+
+ZZ_ptr::ZZ_ptr(const ZZ_ptr &in) { fmpz_set(data, in.data); }
+
+ZZ_ptr &ZZ_ptr::operator=(const ZZ_ptr in) {
+  fmpz_set(data, in.data);
+  return *this;
+}
+
+ZZ_ptr::operator fmpz *() { return (fmpz *)data; }
+
+ZZ_ptr::operator const fmpz *() const { return (const fmpz *)data; }
+
+ZZ_ptr::operator int8_t() const { return fmpz_get_si(data); }
+
+ZZ_ptr::operator int16_t() const { return fmpz_get_si(data); }
+
+ZZ_ptr::operator int32_t() const { return fmpz_get_si(data); }
+
+ZZ_ptr::operator int64_t() const { return fmpz_get_si(data); }
+
+ZZ_ptr::operator uint8_t() const { return fmpz_get_ui(data); }
+
+ZZ_ptr::operator uint16_t() const { return fmpz_get_ui(data); }
+
+ZZ_ptr::operator uint32_t() const { return fmpz_get_ui(data); }
+
+ZZ_ptr::operator uint64_t() const { return fmpz_get_ui(data); }
+
+ZZ_ptr::operator float() const { return fmpz_get_d(data); }
+
+ZZ_ptr::operator double() const { return fmpz_get_d(data); }
+
+ZZ_ptr::operator string() const {
+  stringstream ss;
+  char *tmp = fmpz_get_str(NULL, 10, data);
+  ss << tmp;
+  free(tmp);
+  return ss.str();
+}
+
+ostream &operator<<(ostream &os, const ZZ_ptr &in) {
+  os << ((const string)in);
+  return os;
+}
+
+ZZ_ptr &ZZ_ptr::operator-() {
+  fmpz_neg(data, data);
+  return *this;
+}
+
+ZZ &ZZ::operator+=(const ZZ &in) {
+  fmpz_add(data, data, in.data);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const ZZ_ptr &in) {
+  fmpz_add(data, data, in.data);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const ZZ &in) {
+  fmpz_add(data, data, in.data);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const ZZ_ptr &in) {
+  fmpz_add(data, data, in.data);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const int8_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const int8_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const int16_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const int16_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const int32_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const int32_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const int64_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const int64_t in) {
+  fmpz_add_si(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const uint8_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const uint8_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const uint16_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const uint16_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const uint32_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const uint32_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator+=(const uint64_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator+=(const uint64_t in) {
+  fmpz_add_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator+(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ operator+(const int8_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const int8_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const int16_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const int16_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const int32_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const int32_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const int64_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const int64_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint8_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint8_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint16_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint16_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint32_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint32_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint64_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator+(const uint64_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const ZZ &in) {
+  fmpz_sub(data, data, in.data);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const ZZ_ptr &in) {
+  fmpz_sub(data, data, in.data);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const ZZ &in) {
+  fmpz_sub(data, data, in.data);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const ZZ_ptr &in) {
+  fmpz_sub(data, data, in.data);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const int8_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const int8_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const int16_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const int16_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const int32_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const int32_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const int64_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const int64_t in) {
+  fmpz_sub_si(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const uint8_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const uint8_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const uint16_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const uint16_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const uint32_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const uint32_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator-=(const uint64_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator-=(const uint64_t in) {
+  fmpz_sub_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator-(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ operator-(const int8_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const int8_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const int16_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const int16_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const int32_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const int32_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const int64_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const int64_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint8_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint8_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint16_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint16_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint32_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint32_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint64_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator-(const uint64_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const ZZ &in) {
+  fmpz_mul(data, data, in.data);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const ZZ_ptr &in) {
+  fmpz_mul(data, data, in.data);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const ZZ &in) {
+  fmpz_mul(data, data, in.data);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const ZZ_ptr &in) {
+  fmpz_mul(data, data, in.data);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const int8_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const int8_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const int16_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const int16_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const int32_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const int32_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const int64_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const int64_t in) {
+  fmpz_mul_si(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const uint8_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const uint8_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const uint16_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const uint16_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const uint32_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const uint32_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator*=(const uint64_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator*=(const uint64_t in) {
+  fmpz_mul_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator*(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ operator*(const int8_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const int8_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const int16_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const int16_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const int32_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const int32_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const int64_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const int64_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint8_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint8_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint16_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint16_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint32_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint32_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint64_t in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ operator*(const uint64_t in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const ZZ &in) {
+  fmpz_cdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const ZZ_ptr &in) {
+  fmpz_cdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const ZZ &in) {
+  fmpz_cdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const ZZ_ptr &in) {
+  fmpz_cdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const int8_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const int8_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const int16_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const int16_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const int32_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const int32_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const int64_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const int64_t in) {
+  fmpz_cdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const uint8_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const uint8_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const uint16_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const uint16_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const uint32_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const uint32_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::cdiv_q_eq(const uint64_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::cdiv_q_eq(const uint64_t in) {
+  fmpz_cdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ cdiv_q(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_cdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const ZZ &in) {
+  fmpz_fdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const ZZ_ptr &in) {
+  fmpz_fdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const ZZ &in) {
+  fmpz_fdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const ZZ_ptr &in) {
+  fmpz_fdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const int8_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const int8_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const int16_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const int16_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const int32_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const int32_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const int64_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const int64_t in) {
+  fmpz_fdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const uint8_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const uint8_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const uint16_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const uint16_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const uint32_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const uint32_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::fdiv_q_eq(const uint64_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::fdiv_q_eq(const uint64_t in) {
+  fmpz_fdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ fdiv_q(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_fdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const ZZ &in) {
+  fmpz_tdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const ZZ_ptr &in) {
+  fmpz_tdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const ZZ &in) {
+  fmpz_tdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const ZZ_ptr &in) {
+  fmpz_tdiv_q(data, data, in.data);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const int8_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const int8_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const int16_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const int16_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const int32_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const int32_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const int64_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const int64_t in) {
+  fmpz_tdiv_q_si(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const uint8_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const uint8_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const uint16_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const uint16_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const uint32_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const uint32_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::tdiv_q_eq(const uint64_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::tdiv_q_eq(const uint64_t in) {
+  fmpz_tdiv_q_ui(data, data, in);
+  return *this;
+}
+
+ZZ tdiv_q(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_tdiv_q_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const ZZ &in) {
+  fmpz_divexact(data, data, in.data);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_divexact(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const ZZ_ptr &in) {
+  fmpz_divexact(data, data, in.data);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_divexact(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const ZZ &in) {
+  fmpz_divexact(data, data, in.data);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_divexact(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const ZZ_ptr &in) {
+  fmpz_divexact(data, data, in.data);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_divexact(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const int8_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const int8_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const int16_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const int16_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const int32_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const int32_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const int64_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const int64_t in) {
+  fmpz_divexact_si(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const uint8_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const uint8_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const uint16_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const uint16_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const uint32_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const uint32_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::divexact_eq(const uint64_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::divexact_eq(const uint64_t in) {
+  fmpz_divexact_ui(data, data, in);
+  return *this;
+}
+
+ZZ divexact(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_divexact_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::gcd_eq(const ZZ &in) {
+  fmpz_gcd(data, data, in.data);
+  return *this;
+}
+
+ZZ gcd(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_gcd(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::gcd_eq(const ZZ_ptr &in) {
+  fmpz_gcd(data, data, in.data);
+  return *this;
+}
+
+ZZ gcd(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_gcd(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::gcd_eq(const ZZ &in) {
+  fmpz_gcd(data, data, in.data);
+  return *this;
+}
+
+ZZ gcd(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_gcd(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::gcd_eq(const ZZ_ptr &in) {
+  fmpz_gcd(data, data, in.data);
+  return *this;
+}
+
+ZZ gcd(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_gcd(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::pow_eq(const ZZ &in) {
+  int error = fmpz_pow_fmpz(data, data, in.data);
+  if (error == 0) {
+    throw invalid_argument("pow_eq failed");
+  }
+  return *this;
+}
+
+ZZ pow(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  int error = fmpz_pow_fmpz(result.data, in_1.data, in_2.data);
+  if (error == 0) {
+    throw invalid_argument("pow failed");
+  }
+  return result;
+}
+
+ZZ &ZZ::pow_eq(const ZZ_ptr &in) {
+  int error = fmpz_pow_fmpz(data, data, in.data);
+  if (error == 0) {
+    throw invalid_argument("pow_eq failed");
+  }
+  return *this;
+}
+
+ZZ pow(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  int error = fmpz_pow_fmpz(result.data, in_1.data, in_2.data);
+  if (error == 0) {
+    throw invalid_argument("pow failed");
+  }
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::pow_eq(const ZZ &in) {
+  int error = fmpz_pow_fmpz(data, data, in.data);
+  if (error == 0) {
+    throw invalid_argument("pow_eq failed");
+  }
+  return *this;
+}
+
+ZZ pow(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  int error = fmpz_pow_fmpz(result.data, in_1.data, in_2.data);
+  if (error == 0) {
+    throw invalid_argument("pow failed");
+  }
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::pow_eq(const ZZ_ptr &in) {
+  int error = fmpz_pow_fmpz(data, data, in.data);
+  if (error == 0) {
+    throw invalid_argument("pow_eq failed");
+  }
+  return *this;
+}
+
+ZZ pow(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  int error = fmpz_pow_fmpz(result.data, in_1.data, in_2.data);
+  if (error == 0) {
+    throw invalid_argument("pow failed");
+  }
+  return result;
+}
+
+ZZ &ZZ::operator<<=(const uint8_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator<<=(const uint8_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator<<=(const uint16_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator<<=(const uint16_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator<<=(const uint32_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator<<=(const uint32_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator<<=(const uint64_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator<<=(const uint64_t in) {
+  fmpz_mul_2exp(data, data, in);
+  return *this;
+}
+
+ZZ operator<<(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::pow_eq(const uint8_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::pow_eq(const uint8_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::pow_eq(const uint16_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::pow_eq(const uint16_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::pow_eq(const uint32_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::pow_eq(const uint32_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::pow_eq(const uint64_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::pow_eq(const uint64_t in) {
+  fmpz_pow_ui(data, data, in);
+  return *this;
+}
+
+ZZ pow(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_pow_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::abs_eq() {
+  fmpz_abs(data, data);
+  return *this;
+}
+
+ZZ abs(const ZZ &in) {
+  auto result = ZZ();
+  fmpz_abs(result.data, in.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::abs_eq() {
+  fmpz_abs(data, data);
+  return *this;
+}
+
+ZZ abs(const ZZ_ptr &in) {
+  auto result = ZZ();
+  fmpz_abs(result.data, in.data);
+  return result;
+}
+
+ZZ &ZZ::next_prime_eq(const int in) {
+  fmpz_nextprime(data, data, in);
+  return *this;
+}
+
+ZZ &ZZ::next_prime_eq() { return next_prime_eq(0); }
+
+ZZ next_prime(const ZZ &in_1, const int in_2) {
+  auto result = ZZ();
+  fmpz_nextprime(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ next_prime(const ZZ &in) { return next_prime(in, 0); }
+
+ZZ_ptr &ZZ_ptr::next_prime_eq(const int in) {
+  fmpz_nextprime(data, data, in);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::next_prime_eq() { return next_prime_eq(0); }
+
+ZZ next_prime(const ZZ_ptr &in_1, const int in_2) {
+  auto result = ZZ();
+  fmpz_nextprime(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ next_prime(const ZZ_ptr &in) { return next_prime(in, 0); }
+
+ZZ &ZZ::operator%=(const ZZ &in) {
+  fmpz_mod(data, data, in.data);
+  return *this;
+}
+
+ZZ operator%(const ZZ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mod(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator%=(const ZZ_ptr &in) {
+  fmpz_mod(data, data, in.data);
+  return *this;
+}
+
+ZZ operator%(const ZZ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mod(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator%=(const ZZ &in) {
+  fmpz_mod(data, data, in.data);
+  return *this;
+}
+
+ZZ operator%(const ZZ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpz_mod(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator%=(const ZZ_ptr &in) {
+  fmpz_mod(data, data, in.data);
+  return *this;
+}
+
+ZZ operator%(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpz_mod(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ &ZZ::operator%=(const uint8_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator%=(const uint8_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator%=(const uint16_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator%=(const uint16_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator%=(const uint32_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator%=(const uint32_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ &ZZ::operator%=(const uint64_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+ZZ_ptr &ZZ_ptr::operator%=(const uint64_t in) {
+  fmpz_mod_ui(data, data, in);
+  return *this;
+}
+
+ZZ operator%(const ZZ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpz_mod_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+bool ZZ::is_divisible_by(const ZZ &in) const {
+  return fmpz_divisible(data, in.data);
+}
+
+bool ZZ::is_divisible_by(const ZZ_ptr &in) const {
+  return fmpz_divisible(data, in.data);
+}
+
+bool ZZ_ptr::is_divisible_by(const ZZ &in) const {
+  return fmpz_divisible(data, in.data);
+}
+
+bool ZZ_ptr::is_divisible_by(const ZZ_ptr &in) const {
+  return fmpz_divisible(data, in.data);
+}
+
+bool ZZ::is_divisible_by(const int8_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool ZZ_ptr::is_divisible_by(const int8_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool ZZ::is_divisible_by(const int16_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool ZZ_ptr::is_divisible_by(const int16_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool ZZ::is_divisible_by(const int32_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool ZZ_ptr::is_divisible_by(const int32_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool ZZ::is_divisible_by(const int64_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool ZZ_ptr::is_divisible_by(const int64_t in) const {
+  return fmpz_divisible_si(data, in);
+}
+
+bool is_prime(const ZZ &in) { return fmpz_is_prime(in.data); }
+
+bool is_prime(const ZZ_ptr &in) { return fmpz_is_prime(in.data); }
+
+bool ZZ::operator==(const ZZ &other) const {
+  return ((bool)fmpz_equal(data, other.data));
+}
+
+strong_ordering ZZ::operator<=>(const ZZ &other) const {
+  return (fmpz_cmp(data, other.data)) <=> 0;
+}
+
+bool ZZ::operator==(const ZZ_ptr &other) const {
+  return ((bool)fmpz_equal(data, other.data));
+}
+
+strong_ordering ZZ::operator<=>(const ZZ_ptr &other) const {
+  return (fmpz_cmp(data, other.data)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const ZZ &other) const {
+  return ((bool)fmpz_equal(data, other.data));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const ZZ &other) const {
+  return (fmpz_cmp(data, other.data)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const ZZ_ptr &other) const {
+  return ((bool)fmpz_equal(data, other.data));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const ZZ_ptr &other) const {
+  return (fmpz_cmp(data, other.data)) <=> 0;
+}
+
+bool ZZ::operator==(const int8_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const int8_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const int8_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const int8_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ::operator==(const int16_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const int16_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const int16_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const int16_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ::operator==(const int32_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const int32_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const int32_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const int32_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ::operator==(const int64_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const int64_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const int64_t other) const {
+  return ((bool)fmpz_equal_si(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const int64_t other) const {
+  return (fmpz_cmp_si(data, other)) <=> 0;
+}
+
+bool ZZ::operator==(const uint8_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const uint8_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const uint8_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const uint8_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+bool ZZ::operator==(const uint16_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const uint16_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const uint16_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const uint16_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+bool ZZ::operator==(const uint32_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const uint32_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const uint32_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const uint32_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+bool ZZ::operator==(const uint64_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ::operator<=>(const uint64_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+bool ZZ_ptr::operator==(const uint64_t other) const {
+  return ((bool)fmpz_equal_ui(data, other));
+}
+
+strong_ordering ZZ_ptr::operator<=>(const uint64_t other) const {
+  return (fmpz_cmp_ui(data, other)) <=> 0;
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const ZZ &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const ZZ_ptr &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const ZZ &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const ZZ &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const ZZ_ptr &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const ZZ &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  fmpz_addmul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const ZZ &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const ZZ_ptr &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const ZZ &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const ZZ &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const ZZ_ptr &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const ZZ &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const ZZ_ptr &in_2) {
+  fmpz_submul(data, in_1.data, in_2.data);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const uint8_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const uint8_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const uint8_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const uint8_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const uint16_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const uint16_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const uint16_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const uint16_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const uint32_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const uint32_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const uint32_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const uint32_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const uint64_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const uint64_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const uint64_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const uint64_t in_2) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const uint8_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const uint8_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const uint8_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const uint8_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const uint16_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const uint16_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const uint16_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const uint16_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const uint32_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const uint32_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const uint32_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const uint32_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const uint64_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const uint64_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const uint64_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const uint64_t in_2) {
+  fmpz_submul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const int8_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const int16_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const int32_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const ZZ &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const ZZ_ptr &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::submul(const ZZ_ptr &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const ZZ_ptr &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return submul(in_1, (uint64_t)(-in_2));
+  }
+  return addmul(in_1, (uint64_t)in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const ZZ_ptr &in_1, const int64_t in_2) {
+  if (in_2 < 0) {
+    return addmul(in_1, (uint64_t)(-in_2));
+  }
+  return submul(in_1, (uint64_t)in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const ZZ &in_2) { return addmul(in_2, in_1); }
+
+ZZ &ZZ::addmul(const int8_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const ZZ &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const ZZ_ptr &in_2) {
+  return addmul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const ZZ &in_2) { return submul(in_2, in_1); }
+
+ZZ &ZZ::submul(const int8_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const ZZ &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const ZZ_ptr &in_2) {
+  return submul(in_2, in_1);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint8_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint8_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint16_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint16_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint32_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint32_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const uint64_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const uint64_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int8_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int8_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int16_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int16_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int32_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int32_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const uint8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const uint16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const uint32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const uint64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const int8_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const int16_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const int32_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::addmul(const int64_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::addmul(const int64_t in_1, const int64_t in_2) {
+  return addmul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint8_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint8_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint16_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint16_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint32_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint32_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const uint64_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const uint64_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int8_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int8_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int16_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int16_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int32_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int32_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const uint8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const uint16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const uint32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const uint64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const int8_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const int16_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const int32_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ &ZZ::submul(const int64_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+ZZ_ptr &ZZ_ptr::submul(const int64_t in_1, const int64_t in_2) {
+  return submul(ZZ(in_1), in_2);
+}
+
+QQ::QQ() { fmpq_init(data); }
+
+QQ::QQ(const QQ &in) : QQ() { fmpq_set(data, in.data); }
+
+QQ &QQ::operator=(const QQ &in) {
+  fmpq_set(data, in.data);
+  return *this;
+}
+
+QQ::QQ(QQ &&in) noexcept : QQ() { swap(data, in.data); }
+
+QQ &QQ::operator=(QQ &&in) noexcept {
+  swap(data, in.data);
+  return *this;
+}
+
+QQ::~QQ() { fmpq_clear(data); }
+
+QQ_ptr::QQ_ptr(fmpq_t in) { data = in; }
+
+QQ_ptr::QQ_ptr(const QQ &in) { fmpq_set(data, in.data); }
+
+QQ_ptr &QQ_ptr::operator=(const QQ &in) {
+  fmpq_set(data, in.data);
+  return *this;
+}
+
+QQ_ptr::~QQ_ptr() {}
+
+QQ::QQ(const int8_t num, const uint8_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int8_t num, const uint16_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int8_t num, const uint32_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int8_t num, const uint64_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int16_t num, const uint8_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int16_t num, const uint16_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int16_t num, const uint32_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int16_t num, const uint64_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int32_t num, const uint8_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int32_t num, const uint16_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int32_t num, const uint32_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int32_t num, const uint64_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int64_t num, const uint8_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int64_t num, const uint16_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int64_t num, const uint32_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const int64_t num, const uint64_t den) : QQ() {
+  fmpq_set_si(data, num, den);
+}
+
+QQ::QQ(const uint8_t num, const uint8_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint8_t num, const uint16_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint8_t num, const uint32_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint8_t num, const uint64_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint16_t num, const uint8_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint16_t num, const uint16_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint16_t num, const uint32_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint16_t num, const uint64_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint32_t num, const uint8_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint32_t num, const uint16_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint32_t num, const uint32_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint32_t num, const uint64_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint64_t num, const uint8_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint64_t num, const uint16_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint64_t num, const uint32_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const uint64_t num, const uint64_t den) : QQ() {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ::QQ(const int8_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int8_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int8_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int8_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int16_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int16_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int16_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int16_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int32_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int32_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int32_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int32_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int64_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int64_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int64_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const int64_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint8_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint8_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint8_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint8_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint16_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint16_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint16_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint16_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint32_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint32_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint32_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint32_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint64_t num, const int8_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint64_t num, const int16_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint64_t num, const int32_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const uint64_t num, const int64_t den) : QQ() {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ::QQ(const ZZ &num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const int8_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int8_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const int16_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int16_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const int32_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int32_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const int64_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int64_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const uint8_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint8_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const uint16_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint16_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const uint32_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint32_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ &num, const uint64_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint64_t num, const ZZ &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const int8_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int8_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const int16_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int16_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const int32_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int32_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const int64_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const int64_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const uint8_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint8_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const uint16_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint16_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const uint32_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint32_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const ZZ_ptr &num, const uint64_t den) : QQ() {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ::QQ(const uint64_t num, const ZZ_ptr &den) : QQ() {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ::QQ(const string in) : QQ() { fmpq_set_str(data, in.c_str(), 10); }
+
+QQ &QQ::operator=(const string in) {
+  fmpq_set_str(data, in.c_str(), 10);
+  return *this;
+}
+
+QQ::QQ(const QQ_ptr &in) : QQ() { fmpq_set(data, in.data); }
+
+QQ &QQ::operator=(const QQ_ptr in) {
+  fmpq_set(data, in.data);
+  return *this;
+}
+
+QQ::operator fmpq *() { return (fmpq *)data; }
+
+QQ::operator const fmpq *() const { return (const fmpq *)data; }
+
+QQ::operator float() const { return fmpq_get_d(data); }
+
+QQ::operator double() const { return fmpq_get_d(data); }
+
+QQ::operator string() const {
+  stringstream ss;
+  char *tmp = fmpq_get_str(NULL, 10, data);
+  ss << tmp;
+  free(tmp);
+  return ss.str();
+}
+
+ostream &operator<<(ostream &os, const QQ &in) {
+  os << ((const string)in);
+  return os;
+}
+
+QQ &QQ::operator-() {
+  fmpq_neg(data, data);
+  return *this;
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const uint8_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const uint16_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const uint32_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const uint64_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const uint8_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const uint16_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const uint32_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const uint64_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const uint8_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const uint16_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const uint32_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const uint64_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const uint8_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const uint16_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const uint32_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const uint64_t den) {
+  fmpq_set_si(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const uint8_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const uint16_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const uint32_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const uint64_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const uint8_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const uint16_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const uint32_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const uint64_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const uint8_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const uint16_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const uint32_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const uint64_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const uint8_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const uint16_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const uint32_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const uint64_t den) {
+  fmpq_set_ui(data, num, den);
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_si(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_si(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const int8_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const int16_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const int32_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const int64_t den) {
+  if (den < 0) {
+    fmpq_set_ui(data, -num, (uint64_t)(-den));
+  } else {
+    fmpq_set_ui(data, num, (uint64_t)den);
+  }
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, num.data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const int8_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const int16_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const int32_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const int64_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const uint8_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const uint16_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const uint32_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ &num, const uint64_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const ZZ &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const int8_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int8_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const int16_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int16_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const int32_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int32_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const int64_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const int64_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const uint8_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint8_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const uint16_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint16_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const uint32_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint32_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const ZZ_ptr &num, const uint64_t den) {
+  fmpq_set_fmpz_frac(data, num.data, ZZ(den).data);
+}
+
+QQ_ptr::QQ_ptr(const uint64_t num, const ZZ_ptr &den) {
+  fmpq_set_fmpz_frac(data, ZZ(num).data, den.data);
+}
+
+QQ_ptr::QQ_ptr(const string in) { fmpq_set_str(data, in.c_str(), 10); }
+
+QQ_ptr &QQ_ptr::operator=(const string in) {
+  fmpq_set_str(data, in.c_str(), 10);
+  return *this;
+}
+
+QQ_ptr::QQ_ptr(const QQ_ptr &in) { fmpq_set(data, in.data); }
+
+QQ_ptr &QQ_ptr::operator=(const QQ_ptr in) {
+  fmpq_set(data, in.data);
+  return *this;
+}
+
+QQ_ptr::operator fmpq *() { return (fmpq *)data; }
+
+QQ_ptr::operator const fmpq *() const { return (const fmpq *)data; }
+
+QQ_ptr::operator float() const { return fmpq_get_d(data); }
+
+QQ_ptr::operator double() const { return fmpq_get_d(data); }
+
+QQ_ptr::operator string() const {
+  stringstream ss;
+  char *tmp = fmpq_get_str(NULL, 10, data);
+  ss << tmp;
+  free(tmp);
+  return ss.str();
+}
+
+ostream &operator<<(ostream &os, const QQ_ptr &in) {
+  os << ((const string)in);
+  return os;
+}
+
+QQ_ptr &QQ_ptr::operator-() {
+  fmpq_neg(data, data);
+  return *this;
+}
+
+QQ &QQ::operator+=(const QQ &in) {
+  fmpq_add(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator+=(const QQ_ptr &in) {
+  fmpq_add(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const QQ &in) {
+  fmpq_add(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const QQ_ptr &in) {
+  fmpq_add(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator+=(const int8_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const int8_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator+=(const int16_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const int16_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator+=(const int32_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const int32_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator+=(const int64_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const int64_t in) {
+  fmpq_add_si(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator+=(const uint8_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const uint8_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator+=(const uint16_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const uint16_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator+=(const uint32_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const uint32_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator+=(const uint64_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const uint64_t in) {
+  fmpq_add_ui(data, data, in);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ operator+(const int8_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const int8_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const int16_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const int16_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const int32_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const int32_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const int64_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const int64_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint8_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint8_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint16_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint16_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint32_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint32_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint64_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator+(const uint64_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ &QQ::operator+=(const ZZ &in) {
+  fmpq_add_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator+=(const ZZ_ptr &in) {
+  fmpq_add_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const ZZ &in) {
+  fmpq_add_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator+=(const ZZ_ptr &in) {
+  fmpq_add_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator+(const QQ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ operator+(const ZZ &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator+(const ZZ_ptr &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator+(const ZZ &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator+(const ZZ_ptr &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_add_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ &QQ::operator-=(const QQ &in) {
+  fmpq_sub(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator-=(const QQ_ptr &in) {
+  fmpq_sub(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const QQ &in) {
+  fmpq_sub(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const QQ_ptr &in) {
+  fmpq_sub(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator-=(const int8_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const int8_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator-=(const int16_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const int16_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator-=(const int32_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const int32_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator-=(const int64_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const int64_t in) {
+  fmpq_sub_si(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator-=(const uint8_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const uint8_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator-=(const uint16_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const uint16_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator-=(const uint32_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const uint32_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator-=(const uint64_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const uint64_t in) {
+  fmpq_sub_ui(data, data, in);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ operator-(const int8_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const int8_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const int16_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const int16_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const int32_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const int32_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const int64_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const int64_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint8_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint8_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint16_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint16_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint32_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint32_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint64_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator-(const uint64_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ &QQ::operator-=(const ZZ &in) {
+  fmpq_sub_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator-=(const ZZ_ptr &in) {
+  fmpq_sub_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const ZZ &in) {
+  fmpq_sub_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator-=(const ZZ_ptr &in) {
+  fmpq_sub_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator-(const QQ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ operator-(const ZZ &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator-(const ZZ_ptr &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator-(const ZZ &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator-(const ZZ_ptr &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_sub_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ &QQ::operator*=(const QQ &in) {
+  fmpq_mul(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator*=(const QQ_ptr &in) {
+  fmpq_mul(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const QQ &in) {
+  fmpq_mul(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const QQ_ptr &in) {
+  fmpq_mul(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator*=(const int8_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const int8_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator*=(const int16_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const int16_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator*=(const int32_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const int32_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator*=(const int64_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const int64_t in) {
+  fmpq_mul_si(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator*=(const uint8_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const uint8_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator*=(const uint16_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const uint16_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator*=(const uint32_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const uint32_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator*=(const uint64_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const uint64_t in) {
+  fmpq_mul_ui(data, data, in);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ operator*(const int8_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const int8_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const int16_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const int16_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const int32_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const int32_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const int64_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const int64_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_si(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint8_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint8_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint16_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint16_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint32_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint32_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint64_t in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ operator*(const uint64_t in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_ui(result.data, in_2.data, in_1);
+  return result;
+}
+
+QQ &QQ::operator*=(const ZZ &in) {
+  fmpq_mul_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator*=(const ZZ_ptr &in) {
+  fmpq_mul_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const ZZ &in) {
+  fmpq_mul_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator*=(const ZZ_ptr &in) {
+  fmpq_mul_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator*(const QQ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ operator*(const ZZ &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator*(const ZZ_ptr &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator*(const ZZ &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ operator*(const ZZ_ptr &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_mul_fmpz(result.data, in_2.data, in_1.data);
+  return result;
+}
+
+QQ &QQ::operator/=(const QQ &in) {
+  fmpq_div(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_div(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator/=(const QQ_ptr &in) {
+  fmpq_div(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_div(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator/=(const QQ &in) {
+  fmpq_div(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ_ptr &in_1, const QQ &in_2) {
+  auto result = QQ();
+  fmpq_div(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator/=(const QQ_ptr &in) {
+  fmpq_div(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ_ptr &in_1, const QQ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_div(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator/=(const ZZ &in) {
+  fmpq_div_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_div_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::operator/=(const ZZ_ptr &in) {
+  fmpq_div_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_div_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator/=(const ZZ &in) {
+  fmpq_div_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ_ptr &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_div_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator/=(const ZZ_ptr &in) {
+  fmpq_div_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ operator/(const QQ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_div_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::pow_eq(const ZZ &in) {
+  int error = fmpq_pow_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ pow(const QQ &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_pow_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ &QQ::pow_eq(const ZZ_ptr &in) {
+  int error = fmpq_pow_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ pow(const QQ &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_pow_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::pow_eq(const ZZ &in) {
+  int error = fmpq_pow_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ pow(const QQ_ptr &in_1, const ZZ &in_2) {
+  auto result = QQ();
+  fmpq_pow_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::pow_eq(const ZZ_ptr &in) {
+  int error = fmpq_pow_fmpz(data, data, in.data);
+  return *this;
+}
+
+QQ pow(const QQ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = QQ();
+  fmpq_pow_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const ZZ &in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const ZZ_ptr &in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, in_2.data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const int8_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const int16_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const int32_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const int64_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const uint8_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const uint16_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const uint32_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+ZZ operator%(const QQ_ptr &in_1, const uint64_t in_2) {
+  auto result = ZZ();
+  fmpq_mod_fmpz(result.data, in_1.data, ZZ(in_2).data);
+  return result;
+}
+
+QQ &QQ::operator<<=(const uint8_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator<<=(const uint8_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ_ptr &in_1, const uint8_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator<<=(const uint16_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator<<=(const uint16_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ_ptr &in_1, const uint16_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator<<=(const uint32_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator<<=(const uint32_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ_ptr &in_1, const uint32_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::operator<<=(const uint64_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::operator<<=(const uint64_t in) {
+  fmpq_mul_2exp(data, data, in);
+  return *this;
+}
+
+QQ operator<<(const QQ_ptr &in_1, const uint64_t in_2) {
+  auto result = QQ();
+  fmpq_mul_2exp(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::pow_eq(const int8_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::pow_eq(const int8_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ_ptr &in_1, const int8_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::pow_eq(const int16_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::pow_eq(const int16_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ_ptr &in_1, const int16_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::pow_eq(const int32_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::pow_eq(const int32_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ_ptr &in_1, const int32_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::pow_eq(const int64_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::pow_eq(const int64_t in) {
+  fmpq_pow_si(data, data, in);
+  return *this;
+}
+
+QQ pow(const QQ_ptr &in_1, const int64_t in_2) {
+  auto result = QQ();
+  fmpq_pow_si(result.data, in_1.data, in_2);
+  return result;
+}
+
+QQ &QQ::abs_eq() {
+  fmpq_abs(data, data);
+  return *this;
+}
+
+QQ abs(const QQ &in) {
+  auto result = QQ();
+  fmpq_abs(result.data, in.data);
+  return result;
+}
+
+QQ_ptr &QQ_ptr::abs_eq() {
+  fmpq_abs(data, data);
+  return *this;
+}
+
+QQ abs(const QQ_ptr &in) {
+  auto result = QQ();
+  fmpq_abs(result.data, in.data);
+  return result;
+}
+
+#include "ZZ_mat.cpp"
+#include "ZZ_vec.cpp"
+#include "QQ_vec.cpp"
+#include "QQ_mat.cpp"

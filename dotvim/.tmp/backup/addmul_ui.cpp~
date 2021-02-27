@@ -1,0 +1,9 @@
+_TYPE &_TYPE::_ADDMUL(const _TYPE_IN_NEW &in_1, const _TYPE_IN_UI in_2) {
+  _native_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}
+
+_TYPE &_TYPE::_ADDMUL(const _TYPE_IN_UI in_2, const _TYPE_IN_NEW &in_1) {
+  fmpz_addmul_ui(data, in_1.data, in_2);
+  return *this;
+}

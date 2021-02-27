@@ -1,0 +1,152 @@
+#include "myflint_fmpz.hpp"
+
+#include <flint/fmpq.h>
+
+class Fmpq {
+  public:
+    fmpq_t number;
+
+    Fmpq();
+    Fmpq(const string in_string);
+    Fmpq(const fmpq_t& in_number);
+    Fmpq(const int64_t& in_number);
+    Fmpq(const Fmpz &in_number);
+    Fmpq(const fmpz_t& in_number);
+    Fmpq(const Fmpq &other);
+
+    Fmpq(const int64_t& num, const int64_t& den);
+    Fmpq(const fmpz_t& num, const fmpz_t& den);
+    Fmpq(const Fmpz &num, const Fmpz &den);
+    Fmpq(const fmpz_t& num, const int64_t& den);
+    Fmpq(const int64_t& num, const fmpz_t& den);
+    Fmpq(const Fmpz& num, const int64_t& den);
+    Fmpq(const int64_t& num, const Fmpz& den);
+
+
+    Fmpq& operator=(const Fmpq &other);
+    Fmpq& operator=(const Fmpz &other);
+    Fmpq& operator=(const int64_t &other);
+
+    ~Fmpq();
+
+    auto numerator() const;
+    auto denominator() const;
+    auto fraction() const;
+
+    // addition
+    Fmpq& operator+=(const Fmpq &rhs);
+    Fmpq operator+(const Fmpq &rhs) const;
+    Fmpq& operator+=(const Fmpz &rhs);
+    Fmpq operator+(const Fmpz &rhs) const;
+    Fmpq& operator+=(const int64_t &rhs);
+    Fmpq operator+(const int64_t &rhs) const;
+
+    // subtraction
+    Fmpq& operator-=(const Fmpq &rhs);
+    Fmpq operator-(const Fmpq &rhs) const;
+    Fmpq& operator-=(const Fmpz &rhs);
+    Fmpq operator-(const Fmpz &rhs) const;
+    Fmpq& operator-=(const int64_t &rhs);
+    Fmpq operator-(const int64_t &rhs) const;
+
+    Fmpq operator-() const;
+
+    // multiplication
+    Fmpq& operator*=(const Fmpq &rhs);
+    Fmpq operator*(const Fmpq &rhs) const;
+    Fmpq& operator*=(const Fmpz &rhs);
+    Fmpq operator*(const Fmpz &rhs) const;
+    Fmpq& operator*=(const int64_t &rhs);
+    Fmpq operator*(const int64_t &rhs) const;
+
+    // addmul
+    void addmul(const Fmpq& in0, const Fmpq& in1);
+    void addmul(const Fmpz& in0, const Fmpz& in1);
+    void addmul(const int64_t& in0, const int64_t& in1);
+    void addmul(const Fmpq& in0, const Fmpz& in1);
+    void addmul(const Fmpq& in0, const int64_t& in1);
+    void addmul(const Fmpz& in0, const Fmpq& in1);
+    void addmul(const Fmpz& in0, const int64_t& in1);
+    void addmul(const int64_t& in0, const Fmpq& in1);
+    void addmul(const int64_t& in0, const Fmpz& in1);
+
+    void submul(const Fmpq& in0, const Fmpq& in1);
+    void submul(const Fmpz& in0, const Fmpz& in1);
+    void submul(const int64_t& in0, const int64_t& in1);
+    void submul(const Fmpq& in0, const Fmpz& in1);
+    void submul(const Fmpq& in0, const int64_t& in1);
+    void submul(const Fmpz& in0, const Fmpq& in1);
+    void submul(const Fmpz& in0, const int64_t& in1);
+    void submul(const int64_t& in0, const Fmpq& in1);
+    void submul(const int64_t& in0, const Fmpz& in1);
+
+    // comparison
+    bool operator==(const Fmpq &rhs) const;
+    bool operator==(const int64_t &rhs) const;
+    bool operator==(const Fmpz &rhs) const;
+    bool operator!=(const Fmpq &rhs) const;
+    bool operator!=(const int64_t &rhs) const;
+    bool operator!=(const Fmpz &rhs) const;
+
+    bool operator>(const Fmpq &rhs) const;
+    bool operator>(const Fmpz &rhs) const;
+    bool operator>(const int64_t &rhs) const;
+
+    bool operator>=(const Fmpq &rhs) const;
+    bool operator>=(const Fmpz &rhs) const;
+    bool operator>=(const int64_t &rhs) const;
+
+    bool operator<=(const Fmpq &rhs) const;
+    bool operator<=(const Fmpz &rhs) const;
+    bool operator<=(const int64_t &rhs) const;
+
+    bool operator<(const Fmpq &rhs) const;
+    bool operator<(const Fmpz &rhs) const;
+    bool operator<(const int64_t &rhs) const;
+
+    // division
+    Fmpq& operator/=(const Fmpq &rhs);
+    Fmpq& operator/=(const Fmpz &rhs);
+    Fmpq& operator/=(const int64_t &rhs);
+
+    Fmpq operator/(const Fmpq& rhs) const;
+    Fmpq operator/(const Fmpz& rhs) const;
+    Fmpq operator/(const int64_t& rhs) const;
+
+    // other stuff
+    Fmpq abs() const;
+};
+
+ostream& operator<<(ostream& os, const Fmpq& f);
+
+// define all the operators with rational on rhs
+Fmpq operator+(const Fmpz &lhs, const Fmpq &rhs);
+Fmpq operator-(const Fmpz &lhs, const Fmpq &rhs);
+Fmpq operator*(const Fmpz &lhs, const Fmpq &rhs);
+Fmpq operator/(const Fmpz &lhs, const Fmpq &rhs);
+
+Fmpq operator+(const int64_t &lhs, const Fmpq &rhs);
+Fmpq operator-(const int64_t &lhs, const Fmpq &rhs);
+Fmpq operator*(const int64_t &lhs, const Fmpq &rhs);
+Fmpq operator/(const int64_t &lhs, const Fmpq &rhs);
+
+bool operator==(const Fmpz &lhs, const Fmpq &rhs);
+bool operator!=(const Fmpz &lhs, const Fmpq &rhs);
+bool operator<(const Fmpz &lhs, const Fmpq &rhs);
+bool operator<=(const Fmpz &lhs, const Fmpq &rhs);
+bool operator>=(const Fmpz &lhs, const Fmpq &rhs);
+bool operator>(const Fmpz &lhs, const Fmpq &rhs);
+
+bool operator==(const int64_t &lhs, const Fmpq &rhs);
+bool operator!=(const int64_t &lhs, const Fmpq &rhs);
+bool operator<(const int64_t &lhs, const Fmpq &rhs);
+bool operator<=(const int64_t &lhs, const Fmpq &rhs);
+bool operator>=(const int64_t &lhs, const Fmpq &rhs);
+bool operator>(const int64_t &lhs, const Fmpq &rhs);
+
+// divide integers to get rationals
+//Fmpq operator/(int64_t &lhs, Fmpz &rhs);
+//Fmpq operator/(Fmpz &lhs, int64_t &rhs);
+//Fmpq operator/(Fmpz &lhs, Fmpz &rhs);
+
+auto pow(Fmpq base, int64_t exponent);

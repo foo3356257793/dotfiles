@@ -1,0 +1,7 @@
+bool _TYPE::operator==(const _TYPE_IN &in) const {
+  return ((bool)_equalfun(data, in.data));
+}
+
+strong_ordering _TYPE::operator<=>(const _TYPE_IN &in) const {
+  return (_cmpfun(data, in.data)) <=> 0;
+}

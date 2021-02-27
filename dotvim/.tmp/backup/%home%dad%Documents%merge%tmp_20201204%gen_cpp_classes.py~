@@ -1,0 +1,818 @@
+#!/usr/bin/python3
+
+import os
+
+def first_not_None(*args):
+    for a in args:
+        if not (a is None):
+            return a
+    return None
+
+class InputName:
+    def __init__(self,name,prefix=None,suffix=None,flint_suffix=None,
+                 by_ref=True,const=True,move=False,var_name='in',
+                 is_member=False):
+        self.name = name
+        self.prefix = prefix
+        self.suffix = suffix
+        self.flint_suffix = flint_suffix
+        self.by_ref = by_ref
+        self.const = const
+        self.move = move
+        self.var_name = var_name
+        self.is_member = is_member
+
+        if self.const and self.move:
+            raise ValueError("cannot both const and move")
+
+    def __call__(self,name=None,
+                 prefix=None,suffix=None,flint_suffix=None,
+                 by_ref=None,const=None,move=None,var_name=None,
+                 is_member=None):
+
+        if move:
+            const = False
+
+        return InputName(name=first_not_None(name,self.name),
+                         prefix=first_not_None(prefix,self.prefix),
+                         suffix=first_not_None(suffix,self.suffix),
+                         flint_suffix=first_not_None(flint_suffix,self.flint_suffix),
+                         by_ref=first_not_None(by_ref,self.by_ref),
+                         const=first_not_None(const,self.const),
+                         move=first_not_None(move,self.move),
+                         var_name=first_not_None(var_name,self.var_name),
+                         is_member=first_not_None(is_member,self.is_member))
+
+    def input_string(self,index=None):
+
+        if(self.is_member):
+            return None
+
+        result = ""
+
+        if self.const:
+            result += "const "
+
+        result += f"{self.name} "
+
+        if self.move:
+            result += "&&"
+        elif self.by_ref:
+            result += "&"
+
+        result += f"{self.var_name}"
+
+        if index:
+            result += f"_{index}"
+
+        return result
+
+    def variable_string(self,index=None):
+
+        result = ""
+
+        if not self.prefix is None:
+            result += f"{self.prefix}"
+
+        result += f"{self.var_name}"
+
+        if index:
+            result += f"_{index}"
+
+        if not self.suffix is None:
+            result += f"{self.suffix}"
+
+        return result
+
+def star_string_many(names,lam):
+
+    if isinstance(names,InputName):
+        return lam(names)
+
+    if len(names)==0:
+        return ""
+
+    if len(names)==1:
+        return lam(names[0])
+
+    in_list = [lam(name) for name in names]
+
+    return ", ".join(in_list)
+
+def star_input_string(name,index=None):
+    return name.input_string(index)
+
+def star_variable_string(name,index=None):
+    return name.variable_string(index)
+
+def input_string_many(names):
+
+    if isinstance(names,InputName):
+        if names.is_member:
+            return ""
+        else:
+            return star_string_many(names,star_input_string)
+
+    non_members = [name for name in names if (not name.is_member)]
+    return star_string_many(non_members,star_input_string)
+
+def variable_string_many(names):
+    return star_string_many(names,star_variable_string)
+
+INT_TYPES = {}
+INT_TYPES["si"] = []
+INT_TYPES["ui"] = []
+
+for i in range(3,7):
+
+    b = 2**i
+
+    name = InputName(f"int{b}_t",flint_suffix="si",by_ref=False)
+    INT_TYPES["si"].append(name)
+
+    name = InputName(f"uint{b}_t",flint_suffix="ui",by_ref=False)
+    INT_TYPES["ui"].append(name)
+
+FLOAT_TYPES = []
+for name in ["float", "double"]:
+    FLOAT_TYPES.append(InputName(name,flint_suffix="d",by_ref=False))
+
+STRING_SET_TYPE = InputName("string", suffix=".c_str(), 10", flint_suffix="str")
+STRING_GET_TYPE = InputName("string", prefix="NULL, 10, ", flint_suffix="str")
+
+OSTREAM_TYPE = InputName("ostream",const=False,var_name='os')
+
+class FlintName:
+    def __init__(self,new_name,flint_name):
+        self.new = new_name
+        self.flint = flint_name
+
+    def output_eq(self):
+        return f"{self.new}&"
+
+    def member(self):
+        return InputName(self.new,suffix=None,by_ref=True,var_name="data",
+                         is_member=True)
+
+    def var(self):
+        return InputName(self.new,suffix=".data",by_ref=True)
+
+    def result(self):
+        return InputName(self.new,suffix=".data",by_ref=True,var_name="result")
+
+    def raw(self):
+        return InputName(f"{self.flint}_t",by_ref=False)
+
+    def raw_ptr(self,const=False):
+        if const:
+            return InputName(f"{self.flint}*",by_ref=False)
+        return InputName(f"const {self.flint}*",by_ref=False)
+
+    def is_raw(self,other):
+        for is_const in [False, True]:
+            if other.name == self.raw_ptr(is_const).name:
+                return True
+        return False
+
+    def new_body(self,fun_call):
+        result = f"auto result = {self.new}();\n"
+        result += f"{fun_call};\n"
+        result += "return result;"
+        return result
+
+def list_flint_suffix(other):
+
+    result = ""
+    for entry in other:
+        if entry.flint_suffix:
+            result += f"_{entry.flint_suffix}"
+    return result
+
+def flint_fun_name(fun,name,other):
+
+    suffix = ""
+    if isinstance(other,list):
+        suffix = list_flint_suffix(other)
+    elif other and other.flint_suffix:
+        suffix += list_flint_suffix([other])
+
+    result = f"{name.flint}_{fun}{suffix}"
+
+    return result
+
+class FunCall:
+
+    def __init__(self,fun,input_vars=None):
+        self.fun = fun
+        self.input_vars = input_vars
+
+    def __repr__(self):
+        result = f"{self.fun}("
+        result += variable_string_many(self.input_vars)
+        result += ")"
+        return result
+
+    def mem_eq(self):
+        result = f"{self};"
+        result += "\nreturn *this;"
+        return result
+
+    def ret(self):
+        return f"return {self};"
+
+    def __add__(self,other):
+        return str(self) + str(other)
+
+    def __radd__(self,other):
+        return str(other) + str(self)
+
+class FunDecl:
+
+    def __init__(self,name,
+                 output_type=None,
+                 input_types=None,
+                 body=None,
+                 member=None):
+        self.name = name
+        self.output_type = output_type
+        self.input_types = input_types
+
+        if isinstance(body,FunCall):
+            self.body = f"{body};"
+        else:
+            self.body = body
+
+        self.member = member
+
+    def __repr__(self):
+
+        result = ""
+        if self.output_type:
+            result += f"{self.output_type} "
+
+        result += f"{self.name}("
+        result += input_string_many(self.input_types)
+        result += ") "
+
+        if self.member:
+            result += f"{self.member} "
+
+        result += "{\n"
+        result += f"{self.body}\n"
+        result += "}\n"
+
+        return result
+
+    def __add__(self,other):
+        return str(self) + "\n" + str(other)
+
+    def __radd__(self,other):
+        return str(other) + str(self) + "\n"
+
+def struct_start(name):
+
+    result = f"struct {name.new}" + "{\n"
+    result += f"{name.flint}_t data;\n"
+    result += "\n"
+
+    return result
+
+def struct_end():
+
+    result =  "};\n"
+    result += "\n"
+
+    return result
+
+def init_data(name):
+
+    fun_call = FunCall(f"{name.flint}_init", name.member())
+    return FunDecl(name.new, input_types=[], body=fun_call)
+
+def set_generic(name,other):
+    return FunCall(flint_fun_name("set",name,other),[name.member(),other])
+
+def _get_generic(name,other,prefix=None):
+
+    member_var = name.member()(prefix=prefix)
+    return FunCall(flint_fun_name("get",name,other),member_var)
+
+def get_command_string(name):
+
+    result = "char* raw = "
+    result += _get_generic(name,STRING_GET_TYPE,prefix="NULL, 10, ")
+    result += ";\n"
+    result += "stringstream ss;\n"
+    result += "ss << raw;\n"
+    result += "free(raw);\n"
+    result += "return ss.str()"
+
+    return result
+
+def get_generic(name,other):
+
+    if other.name == "string":
+        return get_command_string(name)
+
+    if name.is_raw(other):
+        return f"return ({other.name}) data"
+
+    return _get_generic(name,other).ret()
+
+def copy_constructor_skeleton(name,other=None):
+
+    if other is None:
+        other = name.var()
+
+    body = set_generic(name,other)
+
+    return FunDecl(name.new, input_types=other, body=body, member=f" : {name.new}()")
+
+def copy_constructor_data(name):
+    return copy_constructor_skeleton(name)
+
+def copy_constructor_raw(name):
+    return copy_constructor_skeleton(name,name.raw())
+
+def set_command_string(name):
+    return set_generic(name,STRING_SET_TYPE)
+
+def copy_constructor_string(name):
+    return copy_constructor_skeleton(name,STRING_SET_TYPE)
+
+def copy_assign_skeleton(name,other=None):
+    
+    if other is None:
+        other = name.var()
+
+    fun_call = set_generic(name,other)
+    body = fun_call.mem_eq()
+
+    return FunDecl("operator=", output_type=f"{name.new}&",
+                    input_types=other, body=body)
+
+def copy_assign_data(name):
+    return copy_assign_skeleton(name)
+
+def copy_assign_string(name):
+    return copy_assign_skeleton(name,STRING_SET_TYPE)
+
+def copy_both_skeleton(name,other=None):
+
+    result = f"{copy_constructor_skeleton(name,other)}\n"
+    result += f"{copy_assign_skeleton(name,other)}\n"
+
+    return result
+
+def copy_both_data(name):
+    return copy_both_skeleton(name)
+
+def copy_both_string(name):
+    return copy_both_skeleton(name,STRING_SET_TYPE)
+
+def star_float_types(lam,name):
+
+    result = ""
+    for float_type in FLOAT_TYPES:
+        result += lam(name,float_type)
+
+    return result
+
+def copy_both_float(name):
+    return star_float_types(copy_both_skeleton,name)
+
+def star_int_types(lam,name,suffixes):
+
+    result = ""
+
+    for suffix in suffixes:
+        if not suffix in INT_TYPES:
+            raise ValueError(f"{suffix} is not a valid suffix")
+        for int_type in INT_TYPES[suffix]:
+            result += lam(name,int_type)
+
+    return result
+
+def copy_int(name,suffixes):
+    return star_int_types(copy_both_skeleton,name,suffixes)
+
+def copy_both_int(name):
+    return copy_int(name,["ui","si"])
+
+def copy_si_assignments(name):
+    return copy_int(name,["si"])
+
+def copy_ui_assignments(name):
+    return copy_int(name,["ui"])
+
+def move_constructor_data(name):
+
+    fun_call = FunCall("swap",[name.member(),name.var()])
+
+    return FunDecl(name.new,
+                  input_types=name.var()(move=True),
+                  member=f"noexcept : {name.new}()",
+                  body=fun_call)
+
+def move_assign_data(name):
+
+    fun_call = FunCall("swap",[name.member(),name.var()])
+    body = fun_call.mem_eq()
+
+    return FunDecl("operator=",
+                   output_type=f"{name.new}&",
+                   input_types=name.var()(move=True),
+                   member=f"noexcept",
+                   body=body)
+
+def move_both_data(name):
+
+    result = f"{move_constructor_data(name)}\n"
+    result += f"{move_assign_data(name)}\n"
+
+    return result
+
+def clear_data(name):
+
+    fun_call = FunCall(f"{name.flint}_clear", name.member())
+    return FunDecl(f"~{name.new}", input_types=[], body=fun_call)
+
+def rule_of_five_data(name):
+
+    result = ""
+
+    result += init_data(name)
+    result += copy_both_data(name)
+    result += move_both_data(name)
+    result += clear_data(name)
+
+    return result
+
+def cast_op_get(name,other, is_explicit=True, is_const=True):
+
+    fun_name = f"operator {other.name}"
+    if is_explicit:
+        fun_name = f"explicit {fun_name}"
+
+    body = f"{get_generic(name,other)};\n"
+
+    member_str = None
+    if is_const:
+        member_str = "const"
+
+    return FunDecl(fun_name,input_types=name.member(),body=body,member=member_str)
+
+def cast_op_raw(name):
+
+    result = ""
+    for is_const in [False,True]:
+        raw_type = name.raw_ptr(is_const)
+        result += cast_op_get(name,raw_type,is_explicit=True,is_const=False)
+        result += "\n"
+
+    return result
+
+def cast_op_int(name,suffixes):
+    return star_int_types(cast_op_get,name,suffixes)
+
+def cast_op_both_int(name):
+    return cast_op_int(name,["ui","si"])
+
+def cast_op_si_assignments(name):
+    return cast_op_int(name,["si"])
+
+def cast_op_ui_assignments(name):
+    return cast_op_int(name,["ui"])
+
+def cast_op_floats(name):
+    return star_float_types(cast_op_get,name)
+
+def cast_op_string(name,is_explicit=True):
+    return cast_op_get(name,STRING_GET_TYPE,is_explicit)
+
+class FlintOp:
+
+    def __init__(self,token,name,commutes=True,builtin=True,eq_repeats=True,
+                 si=True,ui=True,other_types=None,builtin_ret=None):
+
+        self.token = token
+        self.name = name
+        self.commutes = commutes
+        self.builtin = builtin
+        self.eq_repeats = eq_repeats
+        self.si = si
+        self.ui = ui
+        self.other_types = other_types
+        self.builtin_ret = builtin_ret
+
+    def op(self):
+        if self.builtin:
+            return f"operator{self.token}"
+        return self.token
+
+    def op_eq(self):
+        if self.builtin:
+            return f"operator{self.token}="
+        return self.token
+
+def index_input_list(names,var_name='rhs'):
+
+    if names is None:
+        return []
+    if isinstance(names,InputName):
+        return [names(var_name=var_name)]
+    if not isinstance(names, list):
+        raise ValueError(f"cannot parse object of type {type(names)}")
+    if len(names) == 0:
+        return []
+    if len(names) == 1:
+        return [names[0](var_name=var_name)]
+
+    return [name(var_name=f"{var_name}_{index}")
+            for index,name in enumerate(names)]
+
+
+def operator_eq_skeleton(name,op,other=None):
+
+    if other is None:
+        other = name.var()
+
+    input_types = [name.member()]
+    input_types += index_input_list(other)
+
+    fun_input_types = input_types
+    if op.eq_repeats:
+        fun_input_types = [name.member()] + fun_input_types
+
+    fun_call = FunCall(flint_fun_name(op.name,name,other),
+                   fun_input_types)
+    body = fun_call.mem_eq()
+
+    return FunDecl(op.op_eq(),
+                       output_type=name.output_eq(),
+                       input_types=input_types,
+                       body=body)
+
+def operator_skeleton(name,op,other=None):
+
+    if other is None:
+        other = name.var()
+
+    lhs = name.var()(var_name='lhs')
+    rhs = other(var_name='rhs')
+
+    fun_call = FunCall(flint_fun_name(op.name,name,other),
+                       [name.result(),lhs,rhs])
+    body = name.new_body(fun_call)
+
+    return FunDecl(op.op(),output_type=name.new,
+                       input_types=[lhs,rhs],body=body)
+
+def operator_both_skeleton(name,op,other=None):
+
+    result_eq = operator_eq_skeleton(name,op,other)
+    result = operator_skeleton(name,op,other)
+
+    return result_eq, result
+
+def operator_commute(name,op,other):
+
+    if not op.commutes:
+        return ""
+
+    lhs = other(var_name='lhs')
+    rhs = name.var()(var_name='rhs')
+
+    body = f"return rhs {op.token} lhs;"
+
+    return FunDecl(op.op(),output_type=name.new,
+                       input_types=[lhs,rhs],body=body)
+
+def coerce_check(op,var_name='rhs'):
+
+    result =  f"if ({var_name} < 0)"
+    result += "{\n"
+    result += f"throw invalid_argument(\"{op.name} requires non-negative integer\");\n"
+    result += "}\n"
+
+    return result
+
+def operator_eq_coerce_si_to_ui(name,op,si_type):
+
+    rhs = si_type(var_name='rhs')
+
+    body = coerce_check(op)
+    body += f"*this {op.token}= ((uint64_t) rhs);\n"
+    body += f"return *this;\n"
+
+    return FunDecl(op.op_eq(),output_type=name.output_eq(),
+                   input_types=[name.member(),rhs],body=body)
+
+def operator_coerce_si_to_ui(name,op,si_type):
+
+    lhs = name.var()(var_name='lhs')
+    rhs = si_type(var_name='rhs')
+
+    body = coerce_check(op)
+    body += f"return lhs {op.token} ((uint64_t) rhs);\n"
+
+    return FunDecl(op.op(),output_type=name.new,
+                   input_types=[lhs,rhs],body=body)
+
+def operator_coerce_to_ui(name,op):
+
+    result = ["",""]
+
+    for int_type in INT_TYPES["si"]:
+        result[0] += operator_eq_coerce_si_to_ui(name,op,int_type)
+        result[1] += operator_coerce_si_to_ui(name,op,int_type)
+
+    return result
+
+def operator_all_types(name,op):
+
+    result = ["",""]
+
+    tup = operator_both_skeleton(name,op)
+    for i in range(2):
+        result[i] += tup[i]
+
+    suffixes = []
+    if op.si:
+        suffixes.append("si")
+    if op.ui:
+        suffixes.append("ui")
+
+    for suffix in suffixes:
+        for int_type in INT_TYPES[suffix]:
+            tup = operator_both_skeleton(name,op,int_type)
+            for i in range(2):
+                result[i] += tup[i]
+            if op.commutes:
+                result[1] += operator_commute(name,op,int_type)
+
+    if op.ui and (not op.si):
+        tup = operator_coerce_to_ui(name,op)
+        result[0] += tup[0]
+        result[1] += tup[1]
+
+    if not op.other_types:
+        return result
+
+    for other in op.other_types:
+        tup = operator_both_skeleton(name,op,other)
+        for i in range(2):
+            result[i] += tup[i]
+        if op.commutes:
+            result[1] += operator_commute(name,op,other)
+
+    return result
+
+
+def wrap_built_in_ret_member_fun(output_type,name,op,other=None):
+
+    if other is None:
+        other = name.var()
+
+    input_types = [name.member()]
+    input_types += index_input_list(other)
+
+    fun_call = FunCall(flint_fun_name(op.name,name,other),
+                       input_types)
+    body = fun_call.ret()
+
+    return FunDecl(op.token,output_type=output_type,
+                       input_types=input_types,body=body)
+
+def wrap_built_in_ret_fun(output_type,name,op,other=None):
+
+    if other is None:
+        other = name.var()
+
+    input_types = [name.var()(var_name='lhs')]
+    input_types += index_input_list(other)
+
+    fun_call = FunCall(flint_fun_name(op.name,name,other),
+                       input_types)
+    body = fun_call.ret()
+
+    return FunDecl(op.token,output_type=output_type,
+                       input_types=input_types,body=body)
+
+def ostream(name):
+
+    lhs = OSTREAM_TYPE
+    rhs = name.var()
+
+    body = f"{lhs.var_name} << ((const string) {rhs.var_name});\n"
+    body += f"return {lhs.var_name};"
+
+    return FunDecl("operator<<", output_type=f"{lhs.name}&",
+                       input_types=[lhs,rhs],
+                       body=body)
+
+def addmul(name,other=None):
+
+    op = FlintOp("addmul","addmul",builtin=False,eq_repeats=False)
+
+    if other is None:
+        other = [name.var()(var_name=f"in_{index}") for index in range(2)]
+
+    return operator_eq_skeleton(name,op,other)
+
+def define_ZZ():
+
+    name = FlintName("ZZ", "fmpz")
+
+    result = struct_start(name)
+    result += rule_of_five_data(name)
+    result += copy_constructor_raw(name)
+    result += copy_both_int(name)
+    result += copy_both_float(name)
+    result += copy_both_string(name)
+
+    result += cast_op_raw(name)
+    result += cast_op_both_int(name)
+    result += cast_op_floats(name)
+    result += cast_op_string(name)
+
+    op_string = ""
+
+    ops = [FlintOp("+","add"),
+           FlintOp("-","sub"),
+           FlintOp("*","mul"),
+           FlintOp("%","mod",commutes=False,si=False)]
+
+    for op in ops:
+        tup = operator_all_types(name,op)
+        result += tup[0]
+        op_string += tup[1]
+
+    bool_compare_ops = [FlintOp("is_divisible_by","divisible",
+                                commutes=False,builtin=False,builtin_ret="bool")]
+
+    #TODO: negation
+    #TODO: comparison operators
+    #TODO: divisible_si
+    #TODO: is_prime
+    #TODO: divexact and /
+
+    for op in bool_compare_ops:
+        result += wrap_built_in_ret_member_fun("bool",name,op)
+
+    result += addmul(name)
+
+    result += struct_end()
+
+    result += ostream(name)
+    result += op_string
+
+    return result
+
+def generate_header(fname="tmp.hpp"):
+
+    output = ""
+
+    output += "#include <flint/fmpz.h>\n"
+    output += "#include <flint/fmpq.h>\n"
+    output += "#include <flint/fmpz_mat.h>\n"
+
+    output += "#include <algorithm>\n"
+    output += "#include <iomanip>\n"
+    output += "#include <iostream>\n"
+    output += "#include <string>\n"
+    output += "#include <type_traits>\n"
+    output += "#include <variant>\n"
+    output += "#include <vector>\n"
+    output += "\n"
+    output += "using namespace std;\n"
+    output += "\n"
+
+    output += define_ZZ()
+
+    with open(fname,'w') as f:
+        f.write(output)
+
+    os.system(f"clang-format -i --style=Google {fname}")
+
+    # with open(fname,'r') as f:
+    #     print(f.read())
+
+if __name__ == "__main__":
+
+    # name = FlintName("ZZ","fmpz")
+
+    # op = FlintOp("+", "add")
+
+    # result = operator_all_types(name,op)
+
+    # op = FlintOp("addmul", "addmul", builtin=False, eq_repeats=False)
+
+    # other = [name.var()(var_name=f"in_{index}") for index in range(2)]
+
+    # print(operator_eq_skeleton(name,op,other))
+
+    #################################################
+
+    generate_header()
+

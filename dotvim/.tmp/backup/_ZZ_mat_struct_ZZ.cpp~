@@ -1,0 +1,32 @@
+_ZZ_mat &_ZZ_mat::translate(const std::function<void(fmpz_mat_t,fmpz_mat_t,const fmpz_t)> &fun,
+    const _ZZ &in){
+  fun(data,data,in.data);
+  return *this;
+}
+
+_ZZ_mat &_ZZ_mat::translate(const std::function<void(fmpz_t,fmpz_t,const fmpz_t)> &fun,
+    const _ZZ &in){
+
+  for(int row=0; row<nrows(); row++){
+    for(int col=0; col<ncols(); col++){
+      fun((*this)[row][col].data,(*this)[row][col].data,in.data);
+    }
+  }
+
+  return *this;
+}
+
+_ZZ_mat &_ZZ_mat::operator*=(const _ZZ &in)
+{
+  return translate(fmpz_mat_scalar_mul_fmpz,in);
+}
+
+_ZZ_mat &_ZZ_mat::operator%=(const _ZZ &in)
+{
+  return translate(fmpz_mod,in);
+}
+
+_ZZ_mat &_ZZ_mat::divexact_eq(const _ZZ &in)
+{
+  return translate(fmpz_mat_scalar_divexact_fmpz,in);
+}

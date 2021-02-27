@@ -1,0 +1,56 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+using namespace std;
+
+#include <fmt/core.h>
+#include <fmt/ostream.h>
+
+using fmt::print;
+
+#include <flint/fmpz_mod_poly.h>
+#include <flint/fmpz_mod_poly_factor.h>
+
+
+int main(int argc, char *argv[]){
+
+  fmpz_mod_poly_factor_t stuff;
+
+  fmpz_mod_poly_factor_init(stuff);
+
+  fmpz_mod_poly_t f;
+
+  fmpz_t p;
+  fmpz_init_set_ui(p, 7);
+
+  fmpz_mod_poly_init(f,p);
+
+  fmpz_mod_poly_set_coeff_ui(f,0,5);
+  fmpz_mod_poly_set_coeff_ui(f,1,1);
+  fmpz_mod_poly_set_coeff_ui(f,2,1);
+
+  fmpz_mod_poly_print_pretty(f,"x");
+  print("\n");
+
+  fmpz_mod_poly_factor(stuff, f);
+
+  print("{} factors\n", stuff->num);
+
+  for(int i=0; i<stuff->num; i++)
+  {
+    fmpz_mod_poly_print_pretty(stuff->poly + i,"x");
+    print("\n");
+  }
+
+  fmpz_clear(p);
+  fmpz_mod_poly_clear(f);
+  fmpz_mod_poly_factor_clear(stuff);
+
+
+
+}
+

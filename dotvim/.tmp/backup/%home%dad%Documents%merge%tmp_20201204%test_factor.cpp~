@@ -1,0 +1,220 @@
+#include "formal_sum.hpp"
+#include "myflint_factor.hpp"
+#include "myflint_poly.hpp"
+#include "myflint_ZZ_mat.hpp"
+#include "div_operator.hpp"
+#include "myflint_RR_mat.hpp"
+
+#include <flint/qsieve.h>
+
+#include "yaml-cpp/yaml.h"
+
+#include "myflint_lll.hpp"
+
+#include <iomanip>
+#include <iostream>
+#include <string>
+#include <type_traits>
+#include <variant>
+#include <vector>
+
+#include <fstream>
+
+#include <valarray>
+
+// testing
+#include <gtest/gtest.h>
+
+using Term = FormalSumTerm<int64_t,int64_t>;
+using TermZZ = FormalSumTerm<ZZ,int64_t>;
+using TermZZ_ZZ = FormalSumTerm<ZZ,ZZ>;
+
+TEST(Tests, factor_new) {
+
+  auto target = ZZ("48222648924224528332090922912037930609472797631248617");
+
+  auto params = FactorParamsNew(15, 20);
+
+  auto fac = factor(target, params);
+
+  print("{}\n", target);
+  print("{}\n", fac);
+
+  print("prime     : {}\n", fac.primes);
+  print("composites: {}\n", fac.composites);
+
+  #if 0
+  for(auto &term : fac.composites){
+    print("trying to factor {}\n", term.first);
+
+    auto fac_term = factor_ecm(term.first, 30);
+
+    print("found: {}\n", fac_term);
+  }
+  #endif
+
+  print("trying up to 30 bits...");
+
+  fac = factor_ecm(fac, 30);
+
+  print("{}\n", fac);
+  print("prime     : {}\n", fac.primes);
+  print("composites: {}\n", fac.composites);
+
+  print("trying up to 50 bits...");
+
+  fac = factor_ecm(fac, 50);
+
+  print("{}\n", fac);
+  print("prime     : {}\n", fac.primes);
+  print("composites: {}\n", fac.composites);
+
+  print("trying up to 100 bits...");
+
+  fac = factor_ecm(fac, 100);
+
+  print("{}\n", fac);
+  print("prime     : {}\n", fac.primes);
+  print("composites: {}\n", fac.composites);
+
+}
+
+#if 0
+TEST(Tests, factor_big) {
+
+  string target_str = "2927248943133038453187199470761737740288487371954340321612271728892245575870341366194552903944569879009071403142940948313123986498538467";
+
+  auto target = ZZ(target_str);
+
+  print("factoring small primes...\n");
+
+  auto fac = factor(target);
+
+  print("{}\n", target);
+  print("{}\n", fac);
+
+  print("prime     : {}\n", fac.primes);
+  print("composites: {}\n", fac.composites);
+
+  for(int bits = 10; bits<=100; bits += 10){
+    print("trying up to {} bits...", bits);
+
+    fac = factor_ecm(fac, bits);
+
+    print("{}\n", fac);
+    print("prime     : {}\n", fac.primes);
+    print("composites: {}\n", fac.composites);
+  }
+
+}
+#endif
+
+#if 0
+TEST(Tests, factor_huge) {
+
+  string target_str =  "3616220235119528911947911499101024539711153915769473063296039700339781569283298209880462792270596705361621481694046087535252420188144639363537160799651553384414579760163433031959592597344077995993278163921355669501270980230332667553794679973366034778016743404404690032364597123480570991946713480803161458658258557916161492209879811049904157898967274108034331192268428450043793439605563523394651062641826984626741537037584816452143522759893164621953714013114817223011355381693277418350064710385566113399281203126736731900659485592638090764196355918497100859232624141682747393955504027775696246150639257433887687185431105443655566254397551792970904255662094920967347334689766772963789266528766331237326456105938019027620011722568623365912135210513478030975238256818156124014002396694440289392305644600333585661624782914935767581414611334553495969338270688349865150344903073831919180078943375468843554656729488394632864995906802574289843331703121629029572047310045687302716608158194374899834756638780391801400658576767904215669433146531324084070382674367821692357904429448788697208050500192131414889474782539999867871144702287715620510009111100334299788030646387190266028192116010413215454962245066463665420589557305567983326440794465524383778017429367535182833294076030826584249644254988100001834230336034641880960319907676284420116237598192905548569121205839044694836102503609148391533294041793316564567395925657772682771706163526844583976834608515459978073146910314069687549627";
+
+  auto target = ZZ(target_str);
+
+  print("factoring small primes...\n");
+
+  auto fac = factor(target);
+
+  print("{}\n", target);
+  print("{}\n", fac);
+
+  print("prime     : {}\n", fac.primes);
+  print("composites: {}\n", fac.composites);
+
+  for(int bits = 10; bits<=100; bits += 10){
+    print("trying up to {} bits...", bits);
+
+    fac = factor_ecm(fac, bits);
+
+    print("{}\n", fac);
+    print("prime     : {}\n", fac.primes);
+    print("composites: {}\n", fac.composites);
+  }
+
+}
+#endif
+
+TEST(Tests, quad_sieve) {
+
+  auto target = ZZ("1645504557321206042154969182916951289002478841103157145133653303");
+
+  fmpz_factor_t result;
+  fmpz_factor_init(result);
+
+  print("doing the qsieve...\n");
+  qsieve_factor(result,(fmpz*) target);
+  print("done!\n");
+
+  auto fac = Factorization<ZZ>();
+
+  for(auto index=0; index<result->num; index++)
+  {
+    auto key = ZZ();
+    fmpz_factor_get_fmpz((fmpz*) key,result,index);
+
+    bool key_is_prime = is_prime(key);
+    int64_t exponent = (result->exp[index]);
+
+    if(key_is_prime){
+      fac.primes += tuple(move(key),exponent);
+    }
+    else{
+      fac.composites += tuple(move(key),exponent);
+    }
+  }
+
+  fmpz_factor_clear(result);
+
+  print("result: {}\n", fac);
+}
+
+TEST(Tests, quad_sieve_or_ecm) {
+
+  auto target = ZZ("1606938044258990275541962264985066573186282347689218058227207");
+
+  fmpz_factor_t result;
+  fmpz_factor_init(result);
+
+  print("doing the qsieve...\n");
+  qsieve_factor(result,(fmpz*) target);
+  print("done!\n");
+
+  auto fac = Factorization<ZZ>();
+
+  for(auto index=0; index<result->num; index++)
+  {
+    auto key = ZZ();
+    fmpz_factor_get_fmpz((fmpz*) key,result,index);
+
+    bool key_is_prime = is_prime(key);
+    int64_t exponent = (result->exp[index]);
+
+    if(key_is_prime){
+      fac.primes += tuple(move(key),exponent);
+    }
+    else{
+      fac.composites += tuple(move(key),exponent);
+    }
+  }
+
+  fmpz_factor_clear(result);
+
+  print("result: {}\n", fac);
+
+  print("trying ecm...\n");
+  auto fac_ecm = factor_ecm(target,90);
+  print("from ecm: {}\n", fac_ecm);
+
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}

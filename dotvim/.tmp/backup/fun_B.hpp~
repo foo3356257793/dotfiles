@@ -1,0 +1,3 @@
+//#ifndef _notfuneq
+_TYPEOUT &_funname(const _TYPEIN in);
+//#endif

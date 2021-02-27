@@ -1,0 +1,169 @@
+#include "formal_sum.hpp"
+
+template <typename T, typename U>
+tuple<T,bool>& operator+=(tuple<T,bool> &lhs, const tuple<U,bool> rhs){
+  get<0>(lhs) += get<0>(rhs);
+  return lhs;
+}
+
+#if 0
+template <typename T, typename U>
+tuple<T,bool> operator+(const tuple<T,bool> lhs,
+    const tuple<U,bool> rhs){
+  auto result = tuple(get<0>(lhs) + get<0>(rhs), get<1>(lhs));
+  return result;
+}
+
+template <typename T, typename U>
+tuple<T,bool>& operator*=(tuple<T,bool> &lhs, const U rhs){
+  get<0>(lhs) *= rhs;
+  return lhs;
+}
+
+template <typename T, typename U>
+tuple<T,bool> operator*(const tuple<T,bool> lhs,
+    const U rhs){
+  auto result = tuple(get<0>(lhs)*rhs, get<1>(lhs));
+  return result;
+}
+
+template <typename T, typename U>
+tuple<T,bool> operator*(const U lhs,
+    const tuple<T,bool> rhs){
+  auto result = tuple(get<0>(rhs)*lhs, get<1>(rhs));
+  return result;
+}
+
+template <typename T, typename U>
+bool operator==(const tuple<T,bool> lhs, U rhs){
+  return (get<0>(lhs) == rhs);
+}
+template <typename T, typename U>
+bool operator!=(const tuple<T,bool> lhs, U rhs){
+  return !(lhs==rhs);
+}
+
+template <typename S,typename T>
+struct FormalSum {
+  unordered_map<S,T> data;
+
+  FormalSum() {}
+
+  vector<tuple<S,T>> sorted_items() const{
+    auto result = vector<tuple<S,T>>(data.begin(),data.end());
+    sort(result.begin(), result.end());
+    return result;
+  }
+
+  FormalSum& operator+=(const tuple<S,T>& rhs){
+
+    auto key = get<0>(rhs);
+    auto val = get<1>(rhs);
+
+    auto it = data.find(key);
+    if(it == data.end()){
+      data[key] = val;
+    }
+    else{
+      it->second += val;
+      if(it->second == 0){
+        data.erase(it);
+      }
+    }
+    return *this;
+  }
+
+  FormalSum& operator+=(const vector<tuple<S,T>>& rhs){
+    for(auto &item : rhs){*this += item;}
+    return *this;
+  }
+
+  FormalSum& operator+=(const FormalSum& rhs){
+    for(auto &item : rhs.data){
+      auto key = item.first;
+      auto value = item.second;
+      auto it = data.find(key);
+      if(it == data.end()){
+        data[key] = value;
+      }
+      else{
+        it->second += value;
+        if(it->second == 0){
+          data.erase(it);
+        }
+      }
+    }
+    return *this;
+  }
+
+  FormalSum operator+(const FormalSum& rhs) const{
+    auto result = data;
+    result += rhs;
+    return result;
+  }
+
+  template <typename U>
+    FormalSum& operator*=(const U rhs) {
+
+      for(auto it = data.begin(); it != data.end(); ){
+        it->second *= rhs;
+        if (it->second == 0) { it = data.erase(it); }
+        else { ++it; }
+      }
+
+      return *this;
+    }
+
+  template <typename U>
+    FormalSum operator*(const U rhs) {
+      auto result = FormalSum();
+      for(auto &item : data){
+        auto value = item.second * rhs;
+        if(value != 0){
+          result[item.first] = value;
+        }
+      }
+      return result;
+    }
+
+  bool operator==(const int64_t rhs){
+    return ((rhs == 0) && (data.empty()));
+  }
+  bool operator!=(const int64_t rhs){return !(*this == rhs);}
+
+};
+
+template <typename T>
+using Factorization = FormalSum<T,tuple<int64_t,bool>>;
+
+  template <typename T>
+ostream& operator<<(ostream& os, const Factorization<T>& f)
+{
+
+  auto factors = f.sorted_items();
+
+  if(factors.size() == 0){
+    os << "1";
+    return os;
+  }
+
+  bool include_times = false;
+
+  for(auto &tup : factors) {
+    if(include_times){
+      os << " * ";
+    }
+    include_times = true;
+
+    auto[factor,info_tup] = tup;
+    auto[exponent,prime] = info_tup;
+    os << factor;
+    if(exponent != 1){
+      os << "^" << exponent;
+    }
+  }
+
+  return os;
+}
+
+#endif

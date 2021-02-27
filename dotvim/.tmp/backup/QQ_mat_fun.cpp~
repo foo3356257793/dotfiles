@@ -1,0 +1,27 @@
+#include "QQ_mat_fun_QQ_mat.cpp"
+#if 0
+#include "QQ_mat_fun_QQ_mat_QQ_mat.cpp"
+#endif
+#include "QQ_mat_fun_QQ_mat_QQ.cpp"
+#include "QQ_mat_fun_QQ_mat_UI.cpp"
+#include "QQ_mat_fun_QQ_mat_SI.cpp"
+#include "QQ_mat_fun_QQ_mat_ZZ.cpp"
+
+QQ_mat identity_matrix_QQ(int dim){
+  if(dim < 0){
+    throw std::invalid_argument("Negative dimensional identity");
+  }
+  auto out = QQ_mat(dim,dim);
+  out.translate(fmpq_mat_one);
+  return out;
+}
+
+QQ_mat zero_matrix_QQ(int rows, int cols){
+  if(rows<0 || cols<0){
+    throw std::invalid_argument("Negative dimensional zero_matrix");
+  }
+  auto out = QQ_mat(rows,cols);
+  out.translate(fmpq_mat_zero);
+  return out;
+}
+

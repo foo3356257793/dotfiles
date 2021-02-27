@@ -1,0 +1,99 @@
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <numeric>
+#include <tuple>
+#include <vector>
+
+using namespace std;
+
+#include <fmt/core.h>
+#include <fmt/ostream.h>
+
+using fmt::print;
+using fmt::format;
+
+#include <gtest/gtest.h>
+
+#include "tmp.hpp"
+
+TEST(Tests, ZZ) {
+
+  auto a = ZZ(123456L);
+  auto b = ZZ("123456789123456789");
+  auto c = a + b;
+
+  cout << a << endl;
+  cout << b << endl;
+  cout << c << endl;
+
+  auto d = c - b;
+  cout << d << endl;
+
+  auto e = a * d;
+  cout << e << endl;
+
+  auto f = e % a;
+  cout << f << endl;
+
+  auto g = a * 2;
+  cout << g << endl;
+
+  auto h = g % 47U;
+  cout << h << endl;
+
+  cout << g.is_divisible_by(a) << endl;
+
+  cout << is_prime(g) << endl;
+
+  g.addmul(a,c);
+
+  cout << g << endl;
+
+  cout << (g << 1U) << endl;
+
+  g = -g;
+
+  cout << g << endl;
+
+  g.abs_eq();
+
+  cout << g << endl;
+
+  g = pow(g,2U);
+
+  cout << g << endl;
+
+  h = gcd(a,g);
+
+  cout << h << endl;
+}
+
+TEST(Tests, id_mat) {
+
+  auto mat = identity_matrix<ZZ_mat>(3);
+
+  for(int row=0; row<3; row++){
+    for(int col=0; col<3; col++){
+      cout << mat[row][col] << ", ";
+    }
+    cout << endl;
+  }
+
+  auto mat_QQ = identity_matrix<QQ_mat>(3);
+
+  for(int row=0; row<3; row++){
+    for(int col=0; col<3; col++){
+      cout << mat_QQ[row][col] << ", ";
+    }
+    cout << endl;
+  }
+}
+
+int main(int argc, char *argv[]){
+
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+
+}
+
