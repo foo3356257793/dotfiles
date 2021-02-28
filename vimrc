@@ -357,6 +357,7 @@ nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 " }}}
 " fzf {{{
 source /usr/share/doc/fzf/examples/fzf.vim
+
 "nnoremap <leader>F :FZF <cr>
 "nnoremap <leader>f :cd %:p:h<cr>:Files <cr>
 nnoremap <leader>f :Files <cr>
@@ -380,16 +381,16 @@ tnoremap <c-l> <c-W>l
 " }}}
 " buffer movement {{{
 " pretty nice one-liner
-"nnoremap <leader>b :ls<cr>:b<Space>
+nnoremap <leader>b :ls<cr>:b<Space>
 " fzf version
-nnoremap <leader>b :Buffers<cr>
+"nnoremap <leader>b :Buffers<cr>
 nnoremap - :bp<cr>
 nnoremap + :bn<cr>
 " }}}
 " clipboard {{{
 " use a file to pass around stuff (works)
-vnoremap <leader>y "cy:call writefile(getreg('c',1,1),'/home/dad/.clipboard.txt')<cr>
-noremap <leader>p :let @c = system('cat /home/dad/.clipboard.txt')<cr>"cp
+vnoremap <leader>y "cy:call writefile(getreg('c',1,1),'/home/foo/.clipboard.txt')<cr>
+noremap <leader>p :let @c = system('cat /home/foo/.clipboard.txt')<cr>"cp
 " Note: alt-v in tmux also is pretty useful for pasting
 
 " interact directly with tmux buffers (doesn't work if tmux buffers haven't
@@ -772,7 +773,7 @@ augroup END
 " === Makefile === {{{
 augroup makefileSettings
   au!
-  au bufnewfile Makefile 0r /home/dad/.vim/Makefile_for_tex
+  au bufnewfile Makefile 0r $HOME/.vim/Makefile_for_tex
 augroup END
 " }}}
 " ===== abbrev =====  {{{

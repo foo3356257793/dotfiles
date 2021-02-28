@@ -4,6 +4,12 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/opt:$HOME/.local/bin
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+export CMAKEPREFIX=-DCMAKE_INSTALL_PREFIX:PATH=$HOME/.local
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:$HOME/.local/include
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$HOME/.local/include
+export LIBRARY_PATH=$LIBRARY_PATH:$HOME/.local/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
