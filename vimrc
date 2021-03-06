@@ -290,7 +290,9 @@ set pastetoggle=<F2>
 inoremap <c-v> <c-O>:set paste<Enter><c-R>+<c-O>:set nopaste<Enter>
 " }}}
 " Shortcut for saving file {{{
-nnoremap <leader>w  :w<cr>
+" Q defaults to Ex mode
+" which I never want
+nnoremap Q :w<cr>
 " }}}
 " Shortcut for resizing windows {{{
 "nnoremap <silent> + :vertical resize +5<cr>
@@ -554,6 +556,8 @@ augroup pythonShortcuts
   "au FileType python :nnoremap <buffer> <localleader>he yyp^v$r#yykPjj
 augroup END
   au FileType python :nnoremap <buffer> <localleader>lt ostart_tm = time.perf_counter()<cr><cr>end_tm = time.perf_counter()<cr>tot_tm = end_tm-start_tm<cr>print("TIME = %.3lf" % tot_tm)<esc>
+  "au FileType python :nnoremap <buffer> <localleader>lp oprint("X = {X}")<esc>:s/X/
+  au FileType python :vnoremap <buffer> <localleader>lp :!py_var_to_print.py<cr>
 " }}}
 " }}}
 " {{{ ==== Sage ====
@@ -845,3 +849,5 @@ augroup END
 "     I installed it just in case I want it later
 " - vim-startify: didn't use the recently used: shifting to bookmarking
 " }}}
+let @a = "f.lyt]opath = \"../pA\"n"
+
