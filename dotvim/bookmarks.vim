@@ -12,3 +12,5 @@ nnoremap <leader>5 :FZF $HOME/dotfiles/dotvim<cr>
 
 " current projects: open directly
 nnoremap <leader>9 :e $HOME/Documents/notes_20200718.md<cr>
+
+nnoremap <leader> :e /home/foo/Documents/notes_neovim_build.md<cr>

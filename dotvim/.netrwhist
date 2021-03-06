@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/home/foo/Documents/crates/can_take_out'
+let g:netrw_dirhist_2='/home/foo/Documents/crates/vendor/dirs'
+let g:netrw_dirhist_1='/home/foo/.local/src/tree-sitter/.cargo'

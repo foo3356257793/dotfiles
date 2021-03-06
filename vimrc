@@ -557,7 +557,8 @@ augroup pythonShortcuts
 augroup END
   au FileType python :nnoremap <buffer> <localleader>lt ostart_tm = time.perf_counter()<cr><cr>end_tm = time.perf_counter()<cr>tot_tm = end_tm-start_tm<cr>print("TIME = %.3lf" % tot_tm)<esc>
   "au FileType python :nnoremap <buffer> <localleader>lp oprint("X = {X}")<esc>:s/X/
-  au FileType python :vnoremap <buffer> <localleader>lp :!py_var_to_print.py<cr>
+  au FileType python :nnoremap <buffer> <localleader>lp vap:!$HOME/.vim/py_var_to_print.py<cr>:Tabularize /=/<cr>
+  au FileType python :vnoremap <buffer> <localleader>lp :!$HOME/.vim/py_var_to_print.py<cr>:Tabularize /=/<cr>
 " }}}
 " }}}
 " {{{ ==== Sage ====
