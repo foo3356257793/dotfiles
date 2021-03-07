@@ -76,6 +76,9 @@ set hlsearch
 set incsearch
 set showmatch
 set matchtime=3 " tenths of a second to show matching parens
+if has("nvim")
+  set inccommand=split
+endif
 " }}}
 " file shortcuts {{{
 "nnoremap <leader>1 :tabnew $MYVIMRC<cr>
@@ -576,6 +579,8 @@ augroup sageSettings
   "au FileType python :nnoremap <silent> <buffer> <leader>m :w<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "load(\"' . expand('%') . '\")" Enter')<cr>
   au FileType python.sage :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "load(\"' . expand('%') . '\")" Enter')<cr>
 augroup END
+  au FileType python.sage :nnoremap <buffer> <localleader>lp vap:!$HOME/.vim/py_var_to_print.py<cr>:Tabularize /=/<cr>
+  au FileType python.sage :vnoremap <buffer> <localleader>lp :!$HOME/.vim/py_var_to_print.py<cr>:Tabularize /=/<cr>
 " running commands in a tmux session {{{
 augroup sageShell
   au!
@@ -613,6 +618,9 @@ augroup cShortcuts
   au FileType c,cpp :onoremap <buffer> ip{ :<c-u>normal!F{vi{<cr>
   au FileType c,cpp :inoremap <buffer> {<cr> {<cr>}<esc>O
   au FileType c,cpp :nnoremap <buffer> <localleader>d oDEBUG(<esc>"=printf("%d",line('.'))<c-M>pa,);<esc>hi
+  au FileType cpp :nnoremap <buffer> <localleader>lp vap:!$HOME/.vim/cpp_var_to_print.py<cr>:Tabularize /=/<cr>
+  au FileType cpp :vnoremap <buffer> <localleader>lp :!$HOME/.vim/cpp_var_to_print.py<cr>:Tabularize /=/<cr>
+  au FileType cpp :nnoremap <buffer> <localleader>ln 0f""=printf("%d",line('.'))<c-M>pa:<space><esc>
 augroup END
 " }}}
 " }}}
@@ -775,6 +783,14 @@ augroup juliaSettings
   au FileType julia :nnoremap <buffer> <localleader>lf ofunction<cr>end<esc>kA<space>
 augroup END
 " }}}
+" === Lua === {{{
+augroup luaSettings
+  au!
+  au FileType lua setlocal formatoptions-=o
+  let g:lua_target = "right"
+  au FileType lua :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:lua_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:lua_target . ' "dofile(\"' . expand('%') . '"\"\) Enter')<cr>
+augroup END
+" }}}
 " === Makefile === {{{
 augroup makefileSettings
   au!
@@ -850,5 +866,5 @@ augroup END
 "     I installed it just in case I want it later
 " - vim-startify: didn't use the recently used: shifting to bookmarking
 " }}}
-let @a = "f.lyt]opath = \"../pA\"n"
+"let @a = "f.lyt]opath = \"../pA\"n"
 
