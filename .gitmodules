@@ -31,3 +31,6 @@
 [submodule "dotvim/bundle/julia-vim"]
 	path = dotvim/bundle/julia-vim
 	url = https://github.com/JuliaEditorSupport/julia-vim.git
+[submodule "dotvim/bundle/vim-highlightedyank"]
+	path = dotvim/bundle/vim-highlightedyank
+	url = https://github.com/machakann/vim-highlightedyank.git
