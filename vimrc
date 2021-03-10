@@ -13,7 +13,11 @@ set complete-=i     " in sensible.vim
 "set relativenumber
 " set foldcolumn=1
 " highlight FoldColumn ctermbg=None
-set t_Co=256
+if has("nvim")
+  set termguicolors
+else
+  set t_Co=256
+endif
 set background=dark
 "set showcmd
 set hidden         " if you open new file, the old one is just 'hidden'

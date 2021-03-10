@@ -68,6 +68,14 @@ hi markdownH6Line cterm=bold ctermfg=1 ctermbg=none
 
 
 " TODO {{{
+" vim-highlightedyank
+"
+" if has("nvim")
+"   set termguicolors
+" else
+"   set t_Co=256
+" endif
+
 " autocomplete
 " live preview of markdown
 " rainbow parens
