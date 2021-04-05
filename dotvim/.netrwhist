@@ -1,9 +1,12 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =7
+let g:netrw_dirhistcnt =1
+let g:netrw_dirhist_1='/home/foo/.julia/config'
+let g:netrw_dirhist_0='/home/foo/Documents/euler/prob_10/prob_rust'
+let g:netrw_dirhist_9='/home/foo/Documents/euler/prob_10'
+let g:netrw_dirhist_8='/home/foo/Documents/merge/tmp_20210115'
 let g:netrw_dirhist_7='/home/foo/Documents/sync.git/flint_cpp'
 let g:netrw_dirhist_6='/home/foo/Documents/sync.git'
 let g:netrw_dirhist_5='/home/foo/Documents/sync.git/flint_cpp'
 let g:netrw_dirhist_4='/home/foo/Documents/merge/number_fields'
 let g:netrw_dirhist_3='/home/foo/Documents/crates/can_take_out'
 let g:netrw_dirhist_2='/home/foo/Documents/crates/vendor/dirs'
-let g:netrw_dirhist_1='/home/foo/.local/src/tree-sitter/.cargo'

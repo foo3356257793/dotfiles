@@ -13,11 +13,13 @@ set complete-=i     " in sensible.vim
 "set relativenumber
 " set foldcolumn=1
 " highlight FoldColumn ctermbg=None
-if has("nvim")
-  set termguicolors
-else
-  set t_Co=256
-endif
+" I just use simple terminal colors
+"if has("nvim")
+"  set termguicolors
+"else
+set t_Co=256
+"endif
+set formatoptions-=o
 set background=dark
 "set showcmd
 set hidden         " if you open new file, the old one is just 'hidden'
@@ -340,9 +342,9 @@ nnoremap <Leader>H# yyPVr#yyjp
 nnoremap <Leader>H* yyPVr*yyjp
 " }}}
 " navigate tabs {{{
-"nnoremap <leader>n :tabnew<CR>
-"nnoremap <leader>, :tabnext<CR>
-"nnoremap <leader>. :tabprevious<CR>
+nnoremap <leader>t :tabnew<CR>
+nnoremap <TAB> :tabnext<CR>
+nnoremap <S-TAB> :tabprevious<CR>
 ":set showtabline=0
 "nnoremap <leader>q :wqa<cr>
 " }}}
@@ -644,14 +646,15 @@ augroup rustSettings
   au!
   au bufnewfile *.rs 0r $HOME/.vim/rust_template.rs
   au bufnewfile *.rs exe 'normal 2G'
-  au FileType rs setlocal softtabstop=4|set shiftwidth=4|set expandtab
-  au FileType rs setlocal autoindent|set smartindent
-  au FileType rs setlocal tw=80 " good coding practice
-  au FileType rs setlocal cinkeys-=0#
-  au FileType rs setlocal comments-=:// comments+=f://
+  au FileType rust setlocal softtabstop=4|set shiftwidth=4|set expandtab
+  au FileType rust setlocal autoindent|set smartindent
+  au FileType rust setlocal tw=80 " good coding practice
+  au FileType rust setlocal cinkeys-=0#
+  au FileType rust setlocal comments-=:// comments+=f://
+  au FileType rust :nnoremap <buffer> m :w<cr>:!cargo build<cr>
 augroup END
 " }}}
-" ===== txt ======  {{{
+" ===== txt ======  {{
 augroup txtSettings
   au!
   au Bufread *.txt setlocal ft=txt
@@ -720,7 +723,7 @@ augroup markdownSettings
   au FileType markdown setlocal foldlevel=99
   au FileType markdown nnoremap <buffer> go o*<space>
   au FileType markdown nnoremap <buffer> gO O*<space>
-  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'cpp', 'vim', 'yaml', 'julia']
+  let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'cpp', 'vim', 'yaml', 'julia', 'rust']
   " fixes highlighting issue with breaking up items in a list
   au FileType markdown :syn clear markdownCodeBlock
 
@@ -780,6 +783,7 @@ augroup juliaSettings
   au!
   au bufnewfile *.jl 0r $HOME/.vim/julia_template.jl
   let g:julia_target = "right"
+  au FileType julia setlocal formatoptions-=o
   au FileType julia :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:julia_target . ' "include(\"' . expand('%') . '\")" Enter')<cr>
 
   au FileType julia let maplocalleader="\<Space>"
@@ -787,7 +791,7 @@ augroup juliaSettings
   au FileType julia :nnoremap <buffer> <localleader>lf ofunction<cr>end<esc>kA<space>
 augroup END
 " }}}
-" === Lua === {{{
+" ==== Lua ==== {{{
 augroup luaSettings
   au!
   au FileType lua setlocal formatoptions-=o
