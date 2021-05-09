@@ -756,6 +756,8 @@ augroup markdownSettings
 
   au FileType markdown :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\",' . line(".") . ')" Enter')<cr>
   au FileType markdown :nnoremap <silent> <buffer> M :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\")" Enter')<cr>
+
+  au FileType markdown :nnoremap <buffer> <localleader>lp vap:!$HOME/.vim/py_var_to_print.py<cr>:Tabularize /=/<cr>
 augroup END
 " LaTeX: {{{
 augroup markdownTeX
