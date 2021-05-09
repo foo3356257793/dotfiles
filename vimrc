@@ -367,7 +367,7 @@ nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 "nnoremap <leader>F :set columns=150<cr>
 " }}}
 " fzf {{{
-source /usr/share/doc/fzf/examples/fzf.vim
+"source /usr/share/doc/fzf/examples/fzf.vim
 
 "nnoremap <leader>F :FZF <cr>
 "nnoremap <leader>f :cd %:p:h<cr>:Files <cr>
@@ -392,9 +392,9 @@ tnoremap <c-l> <c-W>l
 " }}}
 " buffer movement {{{
 " pretty nice one-liner
-nnoremap <leader>b :ls<cr>:b<Space>
+"nnoremap <leader>b :ls<cr>:b<Space>
 " fzf version
-"nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>b :Buffers<cr>
 nnoremap - :bp<cr>
 nnoremap + :bn<cr>
 " }}}
@@ -654,7 +654,7 @@ augroup rustSettings
   au FileType rust :nnoremap <buffer> m :w<cr>:!cargo build<cr>
 augroup END
 " }}}
-" ===== txt ======  {{
+" ===== txt ======  {{{
 augroup txtSettings
   au!
   au Bufread *.txt setlocal ft=txt
@@ -753,8 +753,10 @@ augroup markdownSettings
 
   au FileType markdown :inoremap <buffer> $$<cr> $$<cr>$$<esc>O
   au FileType markdown :vnoremap <buffer> <localleader>k :!add_numbers_in_string.py<cr>
-augroup END
 
+  au FileType markdown :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\",' . line(".") . ')" Enter')<cr>
+  au FileType markdown :nnoremap <silent> <buffer> M :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\")" Enter')<cr>
+augroup END
 " LaTeX: {{{
 augroup markdownTeX
   au!
