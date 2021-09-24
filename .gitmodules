@@ -34,3 +34,6 @@
 [submodule "dotvim/bundle/vim-highlightedyank"]
 	path = dotvim/bundle/vim-highlightedyank
 	url = https://github.com/machakann/vim-highlightedyank.git
+[submodule "dotvim/bundle/image.vim"]
+	path = dotvim/bundle/image.vim
+	url = https://github.com/ashisha/image.vim.git

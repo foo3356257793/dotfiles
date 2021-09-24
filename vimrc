@@ -419,6 +419,9 @@ augroup time_log
   au FileType yaml.timelog :nnoremap <buffer> <localleader>g o-<space><esc>"=strftime("%Y-%m-%d %H:%M:%S")<cr>p
 augroup END
 " }}}
+" typos {{{
+iab reutrn return
+" }}}
 " }}}
 " ===== Perl =====  {{{
 " Settings  {{{
@@ -601,8 +604,9 @@ augroup END
 " Settings  {{{
 augroup cSettings
   au!
-  au bufnewfile *.c,*.cpp 0r $HOME/.vim/c_template.c
+  au bufnewfile *.c 0r $HOME/.vim/c_template.c
   au bufnewfile *.c exe 'normal 5G'
+  au bufnewfile *.cc,*.cpp 0r $HOME/.vim/cpp_template.cpp
   au bufnewfile,bufread *.cuh setlocal ft=cpp
   au FileType c,cpp setlocal softtabstop=2|set shiftwidth=2|set expandtab
   au FileType c,cpp setlocal autoindent|set smartindent
@@ -629,6 +633,27 @@ augroup cShortcuts
   au FileType cpp :nnoremap <buffer> <localleader>ln 0f""=printf("%d",line('.'))<c-M>pa:<space><esc>
 augroup END
 " }}}
+" custom types {{{
+  au FileType cpp syntax keyword cppType ZZ
+  au FileType cpp syntax keyword cppType ZZ_ref
+  au FileType cpp syntax keyword cppType Const_ZZ_ref
+  au FileType cpp syntax keyword cppType ZZ_mat
+  au FileType cpp syntax keyword cppType ZZ_poly
+  au FileType cpp syntax keyword cppType QQ
+  au FileType cpp syntax keyword cppType QQ_ref
+  au FileType cpp syntax keyword cppType Const_QQ_ref
+  au FileType cpp syntax keyword cppType QQ_mat
+  au FileType cpp syntax keyword cppType QQ_poly
+  au FileType cpp syntax keyword cppType RR
+  au FileType cpp syntax keyword cppType RR_ref
+  au FileType cpp syntax keyword cppType Const_RR_ref
+  au FileType cpp syntax keyword cppType RR_mat
+  au FileType cpp syntax keyword cppType RR_poly
+  au FileType cpp syntax keyword cppType ZZ_nmod_mat
+  au FileType cpp syntax keyword cppType CC
+  au FileType cpp syntax keyword cppType CC_ref
+  au FileType cpp syntax keyword cppType Const_CC_ref
+" }}}
 " }}}
 " ===== go ===== {{{
 augroup goSettings
@@ -652,6 +677,7 @@ augroup rustSettings
   au FileType rust setlocal cinkeys-=0#
   au FileType rust setlocal comments-=:// comments+=f://
   au FileType rust :nnoremap <buffer> m :w<cr>:!cargo build<cr>
+  au FileType rust :inoremap <buffer> {<cr> {<cr>}<esc>O
 augroup END
 " }}}
 " ===== txt ======  {{{
@@ -754,10 +780,13 @@ augroup markdownSettings
   au FileType markdown :inoremap <buffer> $$<cr> $$<cr>$$<esc>O
   au FileType markdown :vnoremap <buffer> <localleader>k :!add_numbers_in_string.py<cr>
 
-  au FileType markdown :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\",' . line(".") . ')" Enter')<cr>
-  au FileType markdown :nnoremap <silent> <buffer> M :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\")" Enter')<cr>
+  au FileType markdown :nnoremap <silent> <buffer> <leader>m :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\",' . line(".") . ')" Enter')<cr>
+  au FileType markdown :nnoremap <silent> <buffer> <leader>M :w<cr>:call system('tmux send -t ' . g:sage_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:sage_target . ' "codeblock_eval(\"' . expand('%') . '\")" Enter')<cr>
 
   au FileType markdown :nnoremap <buffer> <localleader>lp vap:!$HOME/.vim/py_var_to_print.py<cr>:Tabularize /=/<cr>
+  au FileType markdown :vnoremap <buffer> <localleader>lp :!$HOME/.vim/py_var_to_print.py<cr>:Tabularize /=/<cr>
+
+  au FileType markdown :nnoremap <buffer> <leader>lc o```python<cr>```<esc>O
 augroup END
 " LaTeX: {{{
 augroup markdownTeX
@@ -807,6 +836,18 @@ augroup END
 augroup makefileSettings
   au!
   au bufnewfile Makefile 0r $HOME/.vim/Makefile_for_tex
+augroup END
+" }}}
+" ==== twiki ==== {{{
+augroup twikiSettings
+  au!
+  au bufnewfile,bufread *.twiki set ft=markdown.twiki
+  " block $$...$$
+  au FileType markdown.twiki syn region math start=/\$\$/ end=/\$\$/
+  " inline math
+  au FileType markdown.twiki syn match math '\$[^$].\{-}\$'
+  " actually highlight the region we defined as "math"
+  au FileType markdown.twiki hi link math Statement
 augroup END
 " }}}
 " ===== abbrev =====  {{{

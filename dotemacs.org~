@@ -1,0 +1,308 @@
+#+TITLE: dotemacs
+
+* Set package archives
+
+#+begin_src emacs-lisp
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
+#+end_src
+
+* Bootstrap use-package
+
+Make sure =use-package= is installed.
+
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'use-package)
+   (package-refresh-contents)
+   (package-install 'use-package))
+#+end_src
+
+* Look
+
+** Basics
+
+I just want a clean look.
+
+#+begin_src emacs-lisp
+(setq inhibit-startup-screen t)
+(when window-system
+ (blink-cursor-mode 0) ; Disable cursor blinking
+ (menu-bar-mode -1)     ; No menu bar
+ (toggle-scroll-bar -1) ; No scroll bar
+ (fringe-mode 0)        ; No fringe
+ (tool-bar-mode -1)     ; No tool bar
+)
+
+(setq initial-frame-alist
+ '(
+   (vertical-scroll-bars . nil)
+   (width . 90)
+   (height . 35)
+  ))
+
+(setq default-frame-alist
+ '(
+   (vertical-scroll-bars . nil)
+   (width . 90)
+   (height . 35)
+  ))
+#+end_src
+
+Set the font
+
+#+Begin_src emacs-lisp
+;;(set-frame-font "Inconsolata 16" nil t)
+(set-frame-font "JetBrainsMono 14" nil t)
+#+end_src
+
+#+RESULTS:
+
+Use visual line mode: don't worry about manually wrapping paragraphs anymore.
+
+#+begin_src emacs-lisp
+(add-hook 'text-mode-hook #'visual-line-mode)
+#+end_src
+
+#+RESULTS:
+| (lambda nil (interactive) (message Olivetti text-mode-hook) (setq olivetti-body-width 81) (olivetti-mode 1)) | visual-line-mode | text-mode-hook-identify |
+
+Vim scrolloff setting
+
+#+begin_src emacs-lisp
+
+(setq scroll-margin 4)
+
+#+end_src
+
+  ** Olivetti: center in buffer
+
+  Here is a thing which centers the buffer, which I think looks nice.  Configure =text-mode= and =prog-mode= to use this.
+
+#+begin_src emacs-lisp
+  (use-package olivetti
+   :ensure olivetti
+   :config
+   (progn
+    (add-hook 'text-mode-hook (lambda()
+                               (interactive)
+                               (message "Olivetti text-mode-hook")
+                               (setq olivetti-body-width 81)
+                               ;(hide-mode-line-mode)
+                               (olivetti-mode 1)))
+    (add-hook 'prog-mode-hook (lambda()
+                               (interactive)
+                               (message "Olivetti prog-mode-hook")
+                               (setq olivetti-body-width 81)
+                               ;(hide-mode-line-mode)
+                               (olivetti-mode 1)))))
+#+end_src
+
+** Theme
+
+Using Spacemacs light theme currently.
+
+*Note*. In the past, fixed this by using =customize-theme=.  Probably this is the way I want to set it.
+
+#+begin_src emacs-lisp
+(use-package spacemacs-theme
+ :defer t
+ :init (load-theme 'spacemacs-light t)
+)
+#+end_src
+
+** Mode line
+
+I want a simple mode line.
+
+#+begin_src emacs-lisp
+(setq-default mode-line-format '("%e" mode-line-front-space buffer-file-name))
+#+end_src
+
+* Bind keys
+
+Need this package to set some of the shortcuts.
+
+*Update*. Maybe not.
+
+#+begin_src emacs-lisp
+(use-package bind-key
+)
+#+end_src
+
+* Evil mode
+
+** Load it
+Make emacs be like Vim.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+ :init (progn
+   (use-package evil-leader
+    :init 
+    ; I had to load these things first for evil collection
+    (setq evil-want-integration nil)
+    (setq evil-want-keybinding nil)
+    ; I have to load evil-leader before evil
+    (global-evil-leader-mode)
+    :config (progn
+      (setq evil-leader/in-all-states t)
+      )
+   )
+   (evil-mode 1)
+   )
+)
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC emacs-lisp
+ (use-package evil-collection
+  :ensure 
+  :after evil
+  :config (evil-collection-init))
+#+END_SRC
+
+#+RESULTS:
+ : t
+
+ ** Evil leader keys
+
+ Here are some basic leader keys
+
+#+begin_src emacs-lisp
+ (evil-leader/set-leader "<SPC>")
+ (evil-leader/set-key
+  ;; simple shortcuts from my vimrc
+  ;; need to add the other-window part to make the splitting act the way I am used to
+  "v" (lambda() (interactive) (evil-window-vsplit) (other-window 1))
+  "s" (lambda() (interactive) (evil-window-split) (other-window 1))
+  ;;"w" 'save-buffer
+  ; change this to helm?
+  "b" 'buffer-menu
+  "n" 'previous-buffer
+  ;"t" (lambda() (interactive) (select-frame (make-frame)) (sane-term-create))
+  "t" 'my/shell-create
+  ;"T" (lambda() (interactive) (sane-term-create) (make-frame) (previous-buffer))
+  ;; edit emacs config
+  "1" (lambda() (interactive)(find-file "~/dotfiles/dotemacs.org"))
+  ; org-mode
+  "p" 'org-toggle-latex-fragment
+  "P" (lambda() (interactive) (setq current-prefix-arg '(16)) (call-interactively 'org-toggle-latex-fragment))
+  ;;"r" (lambda () (interactive) (org-edit-src-exit) (org-ctrl-c-ctrl-c))
+  "e" 'org-edit-src-exit
+  "c" 'evil-close-folds
+  "o" 'evil-open-folds
+ "l" 'LaTeX-environment
+ ;;"m" 'my-compile
+ )
+#+end_src
+
+#+RESULTS:
+
+ ** Window movement keys
+
+ I like using =C-[dir key]= to move between split windows.  *Note*. This overwrites some default emacs things.  I don't care.
+
+#+begin_src emacs-lisp
+ ;; (eval-after-load "evil"
+     ;;   '(progn
+       ;;      (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
+       ;;      (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
+       ;;      (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
+       ;;      (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+       ;;      (bind-key* (kbd "C-h") #'evil-window-left)
+       ;;      (bind-key* (kbd "C-j") #'evil-window-down)
+       ;;      (bind-key* (kbd "C-k") #'evil-window-up)
+       ;;      (bind-key* (kbd "C-l") #'evil-window-right)
+       ;;      )
+     ;;   )
+#+end_src
+
+#+RESULTS:
+
+ *Update*. A better thing to do, perhaps, is the following.
+
+#+begin_src emacs-lisp
+ (eval-after-load "evil"
+  '(progn
+    (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
+    (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
+    (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
+    (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+    (with-eval-after-load 'evil-maps
+     '(progn
+       (define-key evil-window-map (kbd "C-h") #'evil-window-left)
+       (define-key evil-window-map (kbd "C-j") #'evil-window-down)
+       (define-key evil-window-map (kbd "C-k") #'evil-window-up)
+       (define-key evil-window-map (kbd "C-l") #'evil-window-right)
+      )
+    )
+   )
+ )
+#+end_src
+
+#+RESULTS:
+ | progn | (define-key evil-window-map (kbd C-h) #'evil-window-left) | (define-key evil-window-map (kbd C-j) #'evil-window-down) | (define-key evil-window-map (kbd C-k) #'evil-window-up) | (define-key evil-window-map (kbd C-l) #'evil-window-right) |
+
+
+ ** Visual lines
+
+ I want direction commands to go up and down "visual" lines.
+
+#+begin_src emacs-lisp
+ (define-key evil-motion-state-map (kbd "j") 'evil-next-visual-line)
+ (define-key evil-motion-state-map (kbd "k") 'evil-previous-visual-line)
+ (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
+ (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
+#+end_src
+
+#+RESULTS:
+ : evil-previous-visual-line
+
+ ** Evil surround
+
+ Use the surround package.
+
+ *Note*. I still don't really use this stuff.
+
+ *Shortcuts*.
+
+ /Visual/. =S<textobject>= or =gS<textobject>=
+
+ /Normal/. =ys<textobject>= or =yS<textobject>=
+
+ /Change/. =cs<old><new>=
+
+ /Delete/. =ds<textobject>=
+
+ /Add new surround pairs./ You can.  Perhaps look at =C-h v evil-surround-pairs-alist= for more information.
+
+#+begin_src emacs-lisp
+ (use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+#+end_src
+
+#+RESULTS:
+ : t
+
+ ** Paragraphs
+
+ The default is un-Vim-like.  I want paragraphs to be blocks of text.
+
+#+begin_src emacs-lisp
+
+(with-eval-after-load 'evil
+ (defadvice forward-evil-paragraph (around default-values activate)
+  (let ((paragraph-start (default-value 'paragraph-start))
+        (paragraph-separate (default-value 'paragraph-separate)))
+   ad-do-it)))
+
+#+end_src
+
+#+RESULTS:
+: forward-evil-paragraph
+

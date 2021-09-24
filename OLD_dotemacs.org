@@ -1,0 +1,903 @@
+#+TITLE: dotemacs
+
+* Set package archives
+
+  #+begin_src emacs-lisp
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
+  #+end_src
+
+  #+RESULTS:
+  : ((gnu . http://elpa.gnu.org/packages/) (melpa . http://melpa.org/packages/) (melpa-stable . http://stable.melpa.org/packages/) (org . http://orgmode.org/elpa/))
+
+* Bootstrap use-package
+
+Make sure =use-package= is installed.
+
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'use-package)
+   (package-refresh-contents)
+   (package-install 'use-package))
+#+end_src
+
+#+RESULTS:
+
+* Look
+
+** Basics
+
+I just want a clean look.
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-screen t)
+    (when window-system
+     (blink-cursor-mode 0) ; Disable cursor blinking
+     (menu-bar-mode -1)     ; No menu bar
+     (toggle-scroll-bar -1) ; No scroll bar
+     (fringe-mode 0)        ; No fringe
+     (tool-bar-mode -1)     ; No tool bar
+    )
+
+  (setq initial-frame-alist
+        '(
+          (vertical-scroll-bars . nil)
+          (width . 90)
+          (height . 35)
+          ))
+
+  (setq default-frame-alist
+        '(
+          (vertical-scroll-bars . nil)
+          (width . 90)
+          (height . 35)
+          ))
+#+end_src
+
+#+RESULTS:
+: ((vertical-scroll-bars) (width . 90) (height . 35))
+
+
+Set the font
+
+#+Begin_src emacs-lisp
+;;(set-frame-font "Inconsolata 16" nil t)
+(set-frame-font "DejaVu Sans Mono 16" nil t)
+#+end_src
+
+#+RESULTS:
+
+Use visual line mode: don't worry about manually wrapping paragraphs anymore.
+
+#+begin_src emacs-lisp
+(add-hook 'text-mode-hook #'visual-line-mode)
+#+end_src
+
+#+RESULTS:
+| (lambda nil (interactive) (message Olivetti text-mode-hook) (setq olivetti-body-width 81) (olivetti-mode 1)) | visual-line-mode | text-mode-hook-identify |
+
+Vim scrolloff setting
+
+#+begin_src emacs-lisp
+
+(setq scroll-margin 4)
+
+#+end_src
+
+#+RESULTS:
+: 4
+
+** Olivetti: center in buffer
+  
+Here is a thing which centers the buffer, which I think looks nice.  Configure =text-mode= and =prog-mode= to use this.
+  
+#+begin_src emacs-lisp
+  (use-package olivetti
+  :ensure olivetti
+  :config
+  (progn
+  (add-hook 'text-mode-hook (lambda()
+                              (interactive)
+                              (message "Olivetti text-mode-hook")
+                              (setq olivetti-body-width 81)
+                              ;(hide-mode-line-mode)
+                              (olivetti-mode 1)))
+  (add-hook 'prog-mode-hook (lambda()
+                              (interactive)
+                              (message "Olivetti prog-mode-hook")
+                              (setq olivetti-body-width 81)
+                              ;(hide-mode-line-mode)
+                              (olivetti-mode 1)))))
+#+end_src
+
+#+RESULTS:
+: t
+
+** Theme
+   
+Using Spacemacs light theme currently.
+
+*Note*. In the past, fixed this by using =customize-theme=.  Probably this is the way I want to set it.
+   
+   #+begin_src emacs-lisp
+     (use-package spacemacs-theme
+       :defer t
+       :init (load-theme 'spacemacs-light t)
+       )
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+** Mode line
+   
+I want a simple mode line.
+
+#+begin_src emacs-lisp
+  (setq-default mode-line-format '("%e" mode-line-front-space buffer-file-name))
+#+end_src
+
+#+RESULTS:
+| %e | mode-line-front-space | buffer-file-name |
+
+* Bind keys
+  
+Need this package to set some of the shortcuts.
+
+*Update*. Maybe not.
+
+#+begin_src emacs-lisp
+(use-package bind-key
+)
+#+end_src
+
+#+RESULTS:
+
+* Evil mode
+
+** Load it
+Make emacs be like Vim.
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+:init (progn
+        (use-package evil-leader
+          :init 
+            ; I had to load these things first for evil collection
+            (setq evil-want-integration nil)
+            (setq evil-want-keybinding nil)
+            ; I have to load evil-leader before evil
+            (global-evil-leader-mode)
+          :config (progn
+          (setq evil-leader/in-all-states t)
+            )
+        )
+        (evil-mode 1)
+        )
+)
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-collection
+    :ensure 
+    :after evil
+    :config (evil-collection-init))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** Evil leader keys
+   
+Here are some basic leader keys
+
+#+begin_src emacs-lisp
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+   ;; simple shortcuts from my vimrc
+   ;; need to add the other-window part to make the splitting act the way I am used to
+   "v" (lambda() (interactive) (evil-window-vsplit) (other-window 1))
+   "s" (lambda() (interactive) (evil-window-split) (other-window 1))
+   ;;"w" 'save-buffer
+   ; change this to helm?
+   "b" 'buffer-menu
+   "n" 'previous-buffer
+   ;"t" (lambda() (interactive) (select-frame (make-frame)) (sane-term-create))
+   "t" 'my/shell-create
+   ;"T" (lambda() (interactive) (sane-term-create) (make-frame) (previous-buffer))
+   ;; edit emacs config
+   "1" (lambda() (interactive)(find-file "~/.emacs.d/dotemacs.org"))
+   ; org-mode
+   "p" 'org-toggle-latex-fragment
+   "P" (lambda() (interactive) (setq current-prefix-arg '(16)) (call-interactively 'org-toggle-latex-fragment))
+   ;;"r" (lambda () (interactive) (org-edit-src-exit) (org-ctrl-c-ctrl-c))
+   "e" 'org-edit-src-exit
+   "c" 'evil-close-folds
+   "o" 'evil-open-folds
+   "l" 'LaTeX-environment
+   ;;"m" 'my-compile
+  )
+#+end_src
+
+#+RESULTS:
+
+** Window movement keys
+   
+I like using =C-[dir key]= to move between split windows.  *Note*. This overwrites some default emacs things.  I don't care.
+
+#+begin_src emacs-lisp
+  ;; (eval-after-load "evil"
+  ;;   '(progn
+  ;;      (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
+  ;;      (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
+  ;;      (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
+  ;;      (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+  ;;      (bind-key* (kbd "C-h") #'evil-window-left)
+  ;;      (bind-key* (kbd "C-j") #'evil-window-down)
+  ;;      (bind-key* (kbd "C-k") #'evil-window-up)
+  ;;      (bind-key* (kbd "C-l") #'evil-window-right)
+  ;;      )
+  ;;   )
+#+end_src
+
+#+RESULTS:
+
+*Update*. A better thing to do, perhaps, is the following.
+
+#+begin_src emacs-lisp
+  (eval-after-load "evil"
+    '(progn
+       (define-key evil-normal-state-map (kbd "C-h") #'evil-window-left)
+       (define-key evil-normal-state-map (kbd "C-j") #'evil-window-down)
+       (define-key evil-normal-state-map (kbd "C-k") #'evil-window-up)
+       (define-key evil-normal-state-map (kbd "C-l") #'evil-window-right)
+       (with-eval-after-load 'evil-maps
+         '(progn
+            (define-key evil-window-map (kbd "C-h") #'evil-window-left)
+            (define-key evil-window-map (kbd "C-j") #'evil-window-down)
+            (define-key evil-window-map (kbd "C-k") #'evil-window-up)
+            (define-key evil-window-map (kbd "C-l") #'evil-window-right)
+            )
+         )
+       )
+    )
+#+end_src
+
+#+RESULTS:
+| progn | (define-key evil-window-map (kbd C-h) #'evil-window-left) | (define-key evil-window-map (kbd C-j) #'evil-window-down) | (define-key evil-window-map (kbd C-k) #'evil-window-up) | (define-key evil-window-map (kbd C-l) #'evil-window-right) |
+  
+
+** Visual lines
+   
+I want direction commands to go up and down "visual" lines.
+
+#+begin_src emacs-lisp
+  (define-key evil-motion-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-motion-state-map (kbd "k") 'evil-previous-visual-line)
+  (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
+#+end_src
+
+#+RESULTS:
+: evil-previous-visual-line
+
+** Evil surround
+   
+Use the surround package.
+
+*Note*. I still don't really use this stuff.
+
+*Shortcuts*.
+
+/Visual/. =S<textobject>= or =gS<textobject>=
+
+/Normal/. =ys<textobject>= or =yS<textobject>=
+
+/Change/. =cs<old><new>=
+
+/Delete/. =ds<textobject>=
+
+/Add new surround pairs./ You can.  Perhaps look at =C-h v evil-surround-pairs-alist= for more information.
+   
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+#+end_src
+
+#+RESULTS:
+: t
+
+** Paragraphs
+   
+The default is un-Vim-like.  I want paragraphs to be blocks of text.
+   
+#+begin_src emacs-lisp
+
+  (with-eval-after-load 'evil
+    (defadvice forward-evil-paragraph (around default-values activate)
+      (let ((paragraph-start (default-value 'paragraph-start))
+            (paragraph-separate (default-value 'paragraph-separate)))
+        ad-do-it)))
+
+#+end_src
+
+#+RESULTS:
+: forward-evil-paragraph
+
+* Compilation shortcut
+  
+** Don't ask
+
+Don't ask what compilation command to use.  Just assume what we want is =make -k=.  Typically I should have a =Makefile= handy.
+
+#+begin_src emacs-lisp
+(setq compilation-read-command nil)
+#+end_src
+
+#+RESULTS:
+
+Don't ask me to save before compile: just do it.
+
+#+begin_src emacs-lisp
+(setq compilation-ask-about-save nil)
+#+end_src
+
+#+RESULTS:
+
+** Nice compilation buffer
+
+I want the compilation buffer to just go away if there were no problems.
+
+#+begin_src emacs-lisp
+(setq compilation-finish-functions
+      (lambda (buf str)
+        (if (null (string-match ".*exited abnormally.*" str))
+            ;; no errors, make the compilation window go away
+            (progn
+              (run-at-time
+               "2 sec" nil 'delete-windows-on
+               (get-buffer-create "*compilation*"))
+              (message "No Compilation Errors!")))))
+#+end_src
+
+#+RESULTS:
+| lambda | (buf str) | (if (null (string-match .*exited abnormally.* str)) (progn (run-at-time 2 sec nil 'delete-windows-on (get-buffer-create *compilation*)) (message No Compilation Errors!))) |
+
+I want the compilation buffer to be small and always a 'split'.
+
+#+begin_src emacs-lisp
+(defun my/compile ()
+    "Run compile and resize the compile window"
+    (interactive)
+    (progn
+      (call-interactively 'compile)
+      (setq cur (selected-window))
+      (setq w (get-buffer-window "*compilation*"))
+      (select-window w)
+      (setq h (window-height w))
+      (shrink-window (- h 10))
+      (select-window cur)
+      )
+  )
+
+;; I want compile buffer to always be a split
+(setq split-height-threshold 0)
+(setq split-width-threshold nil)
+#+end_src
+
+#+RESULTS:
+
+** Shortcut
+   
+Bind =my/compile= to a leader key.  Have been using =m= for =Make=.
+
+#+begin_src emacs-lisp
+(evil-leader/set-key
+  "m" 'my/compile
+)
+#+end_src
+
+#+RESULTS:
+
+* org-mode
+
+** Folding
+
+Startup all folded by default
+
+#+begin_src emacs-lisp
+(setq org-startup-folded nil)
+#+end_src
+
+#+RESULTS:
+
+** Indenting
+   
+The following seems to make things look nice.
+
+#+begin_src emacs-lisp
+  (org-indent-mode t)
+#+end_src
+
+#+RESULTS:
+: t
+
+** LaTeX preview
+   
+Just start up an org file in preview already.
+
+#+begin_src emacs-lisp
+(setq org-startup-with-latex-preview t)
+#+end_src
+
+#+RESULTS:
+: t
+
+Set the scale as shown to make the font size (set above) match the fragments well.
+
+#+begin_src emacs-lisp
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.6))
+#+end_src
+
+#+RESULTS:
+| :foreground | default | :background | default | :scale | 1.6 | :html-foreground | Black | :html-background | Transparent | :html-scale | 1.0 | :matchers | (begin $1 $ $$ \( \[) |
+
+** Images
+
+Show images when opening a file.
+
+#+begin_src emacs-lisp
+(setq org-startup-with-inline-images t)
+#+end_src
+
+#+RESULTS:
+: t
+
+Show images after evaluating code blocks
+
+#+begin_src emacs-lisp
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+#+end_src
+
+#+RESULTS:
+| org-display-inline-images |
+
+** don't ask
+   
+Don't double check if I want to compile a code block.
+
+#+begin_src emacs-lisp
+(setq org-confirm-babel-evaluate nil)
+#+end_src
+
+#+RESULTS:
+
+** languages
+   
+Need this for syntax coloring stuff??
+
+#+begin_src emacs-lisp
+(setq org-src-fontify-natively t)
+#+end_src
+
+#+RESULTS:
+: t
+
+Things to make languages work.
+  
+#+begin_src emacs-lisp
+(setq org-highlight-latex-and-related '(latex script entities))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (latex . t)))
+#+end_src
+
+#+RESULTS:
+
+** easy-templates
+
+Make easy-templates work in org-mode again.
+#+begin_src emacs-lisp
+(require 'org-tempo)
+#+end_src
+
+#+RESULTS:
+: org-tempo
+
+** Python
+   
+Here is a thing which we need for some reason.
+   
+#+begin_src emacs-lisp
+(setq python-shell-completion-native-enable nil)
+#+end_src
+
+#+RESULTS:
+
+Set the default header.
+   
+#+begin_src 
+(setq org-babel-default-header-args:python
+             '((:exports . "both")
+               (:results . "output")
+               (:session . "*org-python*")))
+#+end_src
+
+** Sagemath
+   
+Set default header.  *Note*. Must have =:session= true at all times.
+   
+#+begin_src emacs-lisp
+(setq org-babel-default-header-args:sage '((:session . t)
+                                           (:results . "output")
+                                           (:exports . "both")))
+#+end_src
+
+=C-c c= for asynchronous evaluating (only for SageMath code blocks).
+
+TODO: I should bind this to a leader expression?
+
+#+begin_src emacs-lisp
+(with-eval-after-load "org"
+  (define-key org-mode-map (kbd "C-c c") 'ob-sagemath-execute-async))
+#+end_src
+
+
+** Leader keys
+   
+Here are some leader shortcuts for orgmode only.
+
+#+begin_src emacs-lisp
+(evil-leader/set-key-for-mode 'org-mode
+  "e" 'org-edit-src-code
+  "r" 'org-ctrl-c-ctrl-c
+  "R" 'org-babel-execute-buffer
+  "C" 'org-content
+  "W" 'widen
+  )
+#+end_src
+
+** org-slides
+  
+I want a simple setup for showing slides.
+
+*** slides movement
+   
+Here are beginning and next slides.  I just want to cycle through the headings.
+
+#+begin_src emacs-lisp
+  (defun my/org-next-slide ()
+    (interactive)
+    (widen)
+    (org-next-visible-heading 1)
+    (org-narrow-to-subtree)
+    (evil-close-folds)
+    (evil-open-fold))
+
+  (defun my/org-previous-slide ()
+    (interactive)
+    (widen)
+    (org-previous-visible-heading 1)
+    (org-narrow-to-subtree)
+    (evil-close-folds)
+    (evil-open-fold))
+
+  (evil-leader/set-key-for-mode 'org-mode
+    "," 'my/org-previous-slide
+    "." 'my/org-next-slide
+  )
+#+end_src
+
+** src window
+   
+I want to pop out the src as its own window.
+
+#+begin_src emacs-lisp
+  (setq org-src-window-setup 'other-frame)
+#+end_src
+
+I want =ZZ= to just do the exit (and not close and save).
+
+#+begin_src emacs-lisp
+  (evil-define-minor-mode-key 'normal 'org-src-mode
+    (kbd "ZZ") 'org-edit-src-exit)
+#+end_src
+
+* Templates
+  
+  For various files.
+
+  #+begin_src emacs-lisp
+    (use-package autoinsert
+      :init
+      ;; Don't get prompted before insertion
+      (setq auto-insert-query nil) ;;; Don't ask before inserting
+      (setq auto-insert-directory (locate-user-emacs-file "templates")) ;;; Trailing slash necessary for some reason
+      (add-hook 'find-file-hook 'auto-insert)
+      (auto-insert-mode 1)
+
+      :config
+      (define-auto-insert "\\.c" "c.template")
+      (define-auto-insert "\\.py" "python.template")
+      (define-auto-insert "\\.sage" "sage.template")
+      (define-auto-insert "Makefile" "Makefile_for_tex")
+      (define-auto-insert "\\.tex" "latex-template.tex")
+      )
+  #+end_src
+
+* LaTeX
+  
+#+begin_src emacs-lisp
+  (defun my/latex-meta-ret ()
+    (interactive)
+    (evil-append-line 1)
+    (latex-insert-item)
+    )
+
+  (defun my/latex-meta-ret-backwards ()
+    (interactive)
+    (evil-previous-line)
+    (evil-append-line 1)
+    (latex-insert-item))
+
+  (eval-after-load 'latex
+    '(progn
+       (evil-define-key 'normal LaTeX-mode-map (kbd "go") 'my/latex-meta-ret)
+       (evil-define-key 'normal LaTeX-mode-map (kbd "gO") 'my/latex-meta-ret-backwards)
+       )
+    )
+#+end_src
+
+* Autocompletion (company)
+ 
+Enable company mode in all buffers
+
+#+begin_src emacs-lisp
+(add-hook 'after-init-hook 'global-company-mode)
+#+end_src
+
+** Activate quickly
+
+Want company to activate after 2 characters
+
+#+begin_src emacs-lisp
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 3)
+#+end_src
+
+** Wrap around
+
+Need this to wrap around the menu?
+
+#+begin_src emacs-lisp
+(setq company-selection-wrap-around t)
+#+end_src
+
+** Vim style tabbing
+
+Use tab key to cycle through suggestions.
+('=tng=' means 'tab and go')
+
+#+begin_src emacs-lisp
+  (company-tng-configure-default)
+#+end_src
+
+** Configure backends
+
+An annoying thing is that often dabbrev isn't activated unless I do the following hack.
+
+#+begin_src emacs-lisp
+  (setq company-backends '((company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files company-dabbrev-code company-gtags company-etags company-keywords company-oddmuse company-dabbrev)))
+#+end_src
+
+** Sorting
+   
+I want to sort by occurance I think.
+
+#+begin_src emacs-lisp
+  (setq company-transformers '(company-sort-by-occurrence))
+#+end_src
+
+
+** Statistics
+   
+#+begin_src emacs-lisp
+  (use-package company-statistics
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'company-statistics-mode))
+#+end_src
+
+* Rainbow delimiters
+  
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+    :ensure t
+    :init
+    (progn
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+#+end_src
+
+* Smartparens
+  
+Simple config.
+
+TODO. There are some completions in LaTeX which don't work yet.
+  
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :diminish smartparens-mode
+    :config
+    (progn
+      (require 'smartparens-config)
+      (smartparens-global-mode 1)))
+#+end_src
+
+* Smooth scrolling
+  
+Simple config.
+
+TODO. The scrolling isn't that smooth.  Would need a pixel mode, available in later emacs versions.
+
+#+begin_src emacs-lisp
+  (use-package smooth-scrolling
+    :ensure t
+    :config
+    (progn
+      (require 'smooth-scrolling)
+      (smooth-scrolling-mode 1)))
+#+end_src
+
+* Helm
+  
+TODO: I should configure this more.
+  
+#+begin_src emacs-lisp
+  (use-package helm-config
+  :ensure helm
+  :diminish helm-mode
+  :config
+  (progn
+  (bind-key* (kbd "M-x") 'helm-M-x)
+  (setq helm-M-x-fuzzy-match t)
+  (helm-mode 1)
+  ))
+#+end_src
+
+* Autosave
+  
+Have a directory for backup files.
+
+#+begin_src emacs-lisp
+  (setq backup-directory-alist
+        `(("." . ,(concat user-emacs-directory "backups"))))
+#+end_src
+
+There is a "real autosave" package.
+
+#+begin_src emacs-lisp
+  ;; (use-package real-auto-save
+  ;;   :ensure t
+  ;;   :init (setq real-auto-save-interval 5)
+  ;;   :config (progn
+  ;;          (require 'real-auto-save)
+  ;;          (add-hook 'prog-mode-hook 'real-auto-save-mode)
+  ;;          (add-hook 'text-mode-hook 'real-auto-save-mode)
+  ;;          )
+  ;;   )
+#+end_src
+
+For later versions of emacs, there is an option
+
+#+begin_src emacs-lisp
+  (auto-save-visited-mode)
+#+end_src
+
+* Miscellaneous
+  
+** Buffers match newest version
+   
+#+begin_src emacs-lisp
+  (global-auto-revert-mode t)
+#+end_src
+
+** "yes or no"
+  
+Don't ask me to type the whole word "yes" or "no".
+
+#+begin_src emacs-lisp
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+** Server
+   
+I always want to start a server.
+
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
+
+** Open new window
+   
+Try the following shortcut.
+
+#+begin_src emacs-lisp
+  (bind-key* (kbd "C-M-n") #'make-frame)
+#+end_src
+
+** Open multiple shells
+   
+The =sane-term= package seems to do things I want.  See my leader keys above.
+
+I think I only want to create a new shell sometimes.
+
+#+begin_src emacs-lisp
+  (use-package sane-term
+    :ensure t
+    :init
+    (setq sane-term-kill-on-exit t)
+    ;; :bind (
+    ;;        ("C-x t" . sane-term)
+    ;;        ("C-x T" . sane-term-create)
+    ;;        )
+    )
+#+end_src
+
+I want =ZZ= to close the shell and kill the process.
+
+#+begin_src emacs-lisp
+  ;; If WINDOW is the only one in its frame, `delete-frame'.
+  (defadvice delete-window (around delete-frame-if-one-win activate)
+    "If WINDOW is the only one in its frame, then `delete-frame' too."
+    (if (fboundp 'with-selected-window)   ; Emacs 22+
+        (with-selected-window
+            (or (ad-get-arg 0)  (selected-window))
+          (if (one-window-p t) (delete-frame) ad-do-it))
+      (save-current-buffer
+        (select-window (or (ad-get-arg 0)  (selected-window)))
+        (if (one-window-p t) (delete-frame) ad-do-it))))
+
+  ;; I don't want to be asked to kill the process: just do it
+  (setq kill-buffer-query-functions
+        (remq 'process-kill-buffer-query-function
+              kill-buffer-query-functions))
+
+  ;; I want ZZ to kill terminal window
+  (eval-after-load 'term
+    '(progn
+       (evil-define-key 'normal term-mode-map (kbd "ZZ") (lambda() (interactive) (kill-buffer) (delete-window)))
+       ))
+
+  (defun my/shell-create ()
+    (interactive)
+    (select-frame (make-frame))
+    (sane-term-create)
+    )
+#+end_src
+
+#+RESULTS:
+: my/shell-create
+
+** Spaces instead of tabs
+   
+Probably just better this way: makes alignment unambiguous.
+   
+#+begin_src emacs-lisp
+  (setq-default indent-tabs-mode nil)
+#+end_src
+
+*Note*. To replace the tabs with spaces in a region (example: mark entire buffer) call the function =untabify=.
+
+* Wishlist
+  
+Create a terminal and have a different color theme on it.  It seems like this is kind of impossible, however.
+
+
+
