@@ -422,6 +422,14 @@ augroup END
 " typos {{{
 iab reutrn return
 " }}}
+" git {{{
+augroup git
+  au!
+  nnoremap <leader>gg :Git<cr>
+  nnoremap <leader>gc :Git commit<cr>
+  nnoremap <leader>gp :Git push<cr>
+augroup END
+" }}}
 " }}}
 " ===== Perl =====  {{{
 " Settings  {{{
@@ -551,6 +559,7 @@ augroup pythonSettings
   au FileType python setlocal tw=80 " good coding practice
   au FileType python setlocal foldmethod=indent
   au FileType python setlocal foldlevel=99
+  au FileType python setlocal foldmethod=indent
   let g:python_target = "right"
   au FileType python :nnoremap <silent> <buffer> m :w<cr>:call system('tmux send -t ' . g:python_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:python_target . ' "%run ' . expand('%') . '" Enter')<cr>
 
@@ -631,28 +640,80 @@ augroup cShortcuts
   au FileType cpp :nnoremap <buffer> <localleader>lp vap:!$HOME/.vim/cpp_var_to_print.py<cr>:Tabularize /=/<cr>
   au FileType cpp :vnoremap <buffer> <localleader>lp :!$HOME/.vim/cpp_var_to_print.py<cr>:Tabularize /=/<cr>
   au FileType cpp :nnoremap <buffer> <localleader>ln 0f""=printf("%d",line('.'))<c-M>pa:<space><esc>
+  let g:c_target = "right"
+  au FileType c,cpp :nnoremap <silent> <buffer> M :w<cr>:call system('tmux send -t ' . g:c_target . ' -X cancel')<cr>:call system('tmux send-keys -t ' . g:python_target . ' "make" Enter')<cr>
 augroup END
 " }}}
 " custom types {{{
+  au FileType cpp syntax keyword cppType slong
+  au FileType cpp syntax keyword cppType ulong
   au FileType cpp syntax keyword cppType ZZ
-  au FileType cpp syntax keyword cppType ZZ_ref
-  au FileType cpp syntax keyword cppType Const_ZZ_ref
-  au FileType cpp syntax keyword cppType ZZ_mat
-  au FileType cpp syntax keyword cppType ZZ_poly
+  au FileType cpp syntax keyword cppType _ZZ_ref
+  au FileType cpp syntax keyword cppType _Const_ZZ_ref
+  au FileType cpp syntax keyword cppType mat_ZZ
+  au FileType cpp syntax keyword cppType WindowDims
+  au FileType cpp syntax keyword cppType _Const_mat_ZZ_row
+  au FileType cpp syntax keyword cppType _Const_mat_ZZ_row_iterable
+  au FileType cpp syntax keyword cppType _mat_ZZ_row
+  au FileType cpp syntax keyword cppType _mat_ZZ_row_iterable
+  au FileType cpp syntax keyword cppType _Const_mat_ZZ_window
+  au FileType cpp syntax keyword cppType _mat_ZZ_window
+  au FileType cpp syntax keyword cppType mat_ZZ_mod
+  au FileType cpp syntax keyword cppType poly_ZZ
+  au FileType cpp syntax keyword cppType _poly_ZZ_ref
+  au FileType cpp syntax keyword cppType _Const_poly_ZZ_ref
+  au FileType cpp syntax keyword cppType poly_ZZ_mod
   au FileType cpp syntax keyword cppType QQ
-  au FileType cpp syntax keyword cppType QQ_ref
-  au FileType cpp syntax keyword cppType Const_QQ_ref
-  au FileType cpp syntax keyword cppType QQ_mat
-  au FileType cpp syntax keyword cppType QQ_poly
+  au FileType cpp syntax keyword cppType _QQ_ref
+  au FileType cpp syntax keyword cppType _Const_QQ_ref
+  au FileType cpp syntax keyword cppType mat_QQ
+  au FileType cpp syntax keyword cppType Const_mat_QQ_row
+  au FileType cpp syntax keyword cppType mat_QQ_row
+  au FileType cpp syntax keyword cppType Const_mat_QQ_window
+  au FileType cpp syntax keyword cppType mat_QQ_window
+  au FileType cpp syntax keyword cppType poly_QQ
+  au FileType cpp syntax keyword cppType _poly_QQ_ref
+  au FileType cpp syntax keyword cppType _Const_poly_QQ_ref
   au FileType cpp syntax keyword cppType RR
-  au FileType cpp syntax keyword cppType RR_ref
-  au FileType cpp syntax keyword cppType Const_RR_ref
-  au FileType cpp syntax keyword cppType RR_mat
-  au FileType cpp syntax keyword cppType RR_poly
+  au FileType cpp syntax keyword cppType _RR_ref
+  au FileType cpp syntax keyword cppType _Const_RR_ref
+  au FileType cpp syntax keyword cppType mat_RR
+  au FileType cpp syntax keyword cppType mat_RR_window
+  au FileType cpp syntax keyword cppType Const_mat_RR_window
+  au FileType cpp syntax keyword cppType mat_RR_armadillo
+  au FileType cpp syntax keyword cppType mat_RR_armadillo_window
+  au FileType cpp syntax keyword cppType Const_mat_RR_armadillo_window
+  au FileType cpp syntax keyword cppType poly_RR
+  au FileType cpp syntax keyword cppType poly_CC
   au FileType cpp syntax keyword cppType ZZ_nmod_mat
   au FileType cpp syntax keyword cppType CC
-  au FileType cpp syntax keyword cppType CC_ref
-  au FileType cpp syntax keyword cppType Const_CC_ref
+  au FileType cpp syntax keyword cppType _CC_ref
+  au FileType cpp syntax keyword cppType _Const_CC_ref
+  au FileType cpp syntax keyword cppType poly_ZZ_nmod
+  au FileType cpp syntax keyword cppType _poly_ZZ_nmod_ref
+  au FileType cpp syntax keyword cppType _Const_poly_ZZ_nmod_ref
+  au FileType cpp syntax keyword cppType ZZ_mod_ring
+  au FileType cpp syntax keyword cppType poly_ZZ_mod_ref
+  au FileType cpp syntax keyword cppType Const_poly_ZZ_mod_ref
+  au FileType cpp syntax keyword cppType factor_poly_ZZ_mod
+  au FileType cpp syntax keyword cppType NumberFieldData
+  au FileType cpp syntax keyword cppType NumberField
+  au FileType cpp syntax keyword cppType NumberFieldElement
+  au FileType cpp syntax keyword cppType vec_CC
+  au FileType cpp syntax keyword cppType factor_ZZ
+  au FileType cpp syntax keyword cppType _factor_ZZ_tuple_ref
+  au FileType cpp syntax keyword cppType FormalSumTerm
+  au FileType cpp syntax keyword cppType FormalSum
+  au FileType cpp syntax keyword cppType Factorization
+  au FileType cpp syntax keyword cppType mat_ZZ_nmod
+  au FileType cpp syntax keyword cppType Const_mat_ZZ_nmod_window
+  au FileType cpp syntax keyword cppType mat_ZZ_nmod_window
+  au FileType cpp syntax keyword cppType mat_ZZ_mod
+  au FileType cpp syntax keyword cppType Const_mat_ZZ_mod_window
+  au FileType cpp syntax keyword cppType mat_ZZ_mod_window
+  au FileType cpp syntax keyword cppType mat_ZZ_2nmod
+  au FileType cpp syntax keyword cppType Const_mat_ZZ_2nmod_window
+  au FileType cpp syntax keyword cppType mat_ZZ_2nmod_window
 " }}}
 " }}}
 " ===== go ===== {{{
@@ -848,6 +909,12 @@ augroup twikiSettings
   au FileType markdown.twiki syn match math '\$[^$].\{-}\$'
   " actually highlight the region we defined as "math"
   au FileType markdown.twiki hi link math Statement
+augroup END
+" }}}
+" === misc fts === {{{
+augroup xdefaults
+  au!
+  au FileType xdefaults nnoremap m :w<cr>:!xrdb %<cr>
 augroup END
 " }}}
 " ===== abbrev =====  {{{
