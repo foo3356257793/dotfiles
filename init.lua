@@ -443,3 +443,18 @@ vim.keymap.set('i', '<S-Tab>', function()
     return '<C-n>'
   end
 end, { expr = true, noremap = true, silent = true })
+
+-- ============================================================================
+-- Fugitive
+-- ============================================================================
+map("n", "<leader>gg", function()
+  vim.cmd.Git()
+end, { desc = "Git status" })
+
+map("n", "<leader>gc", function()
+  vim.cmd("Git commit")
+end, { desc = "Git commit" })
+
+map("n", "<leader>gp", function()
+  vim.cmd("Git push")
+end, { desc = "Git push" })
