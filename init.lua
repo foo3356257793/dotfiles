@@ -76,6 +76,7 @@ local options = {
   inccommand = "split",
 
   background = "dark",
+  termguicolors = false,
 
   omnifunc = "syntaxcomplete#Complete",
 
@@ -323,11 +324,13 @@ autocmd("FileType", {
   pattern = "markdown",
   callback = function()
     local bo = vim.bo
+    local wo = vim.wo
 
     bo.softtabstop = 2
     bo.shiftwidth = 2
     bo.textwidth = 0
-    bo.foldlevel = 99
+
+    wo.foldlevel = 99
 
     map("n", "go", "o* ", { buffer = true })
     map("n", "gO", "O* ", { buffer = true })
@@ -416,3 +419,27 @@ vim.cmd([[
 -- ============================================================================
 
 opt.statusline = "%{expand('%:p')}"
+
+
+-- ============================================================================
+-- TAB COMPLETE
+-- ============================================================================
+-- Map Tab to behave like Ctrl+P in Insert Mode
+vim.keymap.set('i', '<Tab>', function()
+  -- If the completion menu is already visible, go to the previous item
+  if vim.fn.pumvisible() == 1 then
+    return '<C-p>'
+  else
+    -- If menu isn't open, trigger keyword completion (backwards search)
+    return '<C-p>'
+  end
+end, { expr = true, noremap = true, silent = true })
+
+-- Optional: Map Shift+Tab to behave like Ctrl+N to cycle forwards
+vim.keymap.set('i', '<S-Tab>', function()
+  if vim.fn.pumvisible() == 1 then
+    return '<C-n>'
+  else
+    return '<C-n>'
+  end
+end, { expr = true, noremap = true, silent = true })
