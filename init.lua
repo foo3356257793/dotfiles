@@ -416,3 +416,10 @@ vim.cmd([[
 -- ============================================================================
 
 opt.statusline = "%{expand('%:p')}"
+
+-- Load machine-specific settings safely if the file exists
+local has_local, _ = pcall(require, "local")
+if not has_local then
+    -- Optional: Silent fallback or a quiet debug message
+    -- print("No local configuration found.")
+end

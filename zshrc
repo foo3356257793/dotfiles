@@ -133,16 +133,6 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
-# fzf config
-#export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
-#export FZF_DEFAULT_COMMAND='/home/dad/opt/list_files_in_dir.py'
-#export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-
-#export FZF_ALT_C_COMMAND="ag --ignore '.git' -g ."
-#export FZF_ALT_C_COMMAND="/home/dad/opt/list_all_directories.py"
-
-source /usr/share/fzf/shell/key-bindings.zsh
-
 # don't remove files by accident
 alias rm='safedelete'
 function safedelete {
