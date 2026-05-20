@@ -432,6 +432,7 @@ vim.cmd([[
 
 opt.statusline = "%{expand('%:p')}"
 
+<<<<<<< HEAD
 
 -- ============================================================================
 -- TAB COMPLETE
@@ -479,3 +480,11 @@ end, { desc = "Git commit" })
 map("n", "<leader>gp", function()
   vim.cmd("Git push")
 end, { desc = "Git push" })
+=======
+-- Load machine-specific settings safely if the file exists
+local has_local, _ = pcall(require, "local")
+if not has_local then
+    -- Optional: Silent fallback or a quiet debug message
+    -- print("No local configuration found.")
+end
+>>>>>>> db88857ac4cb4b9ed299127ec6cbf5c043cf656c

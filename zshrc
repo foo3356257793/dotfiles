@@ -91,5 +91,3 @@ if command -v nvim >/dev/null 2>&1; then
     alias vim="nvim"
     alias vimdiff="nvim -d"
 fi
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
