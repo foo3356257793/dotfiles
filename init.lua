@@ -76,7 +76,7 @@ local options = {
   inccommand = "split",
 
   background = "dark",
-  termguicolors = false,
+  termguicolors = true,
 
   omnifunc = "syntaxcomplete#Complete",
 
@@ -289,6 +289,7 @@ autocmd("FileType", {
   pattern = "python",
   callback = function()
     local bo = vim.bo
+    local wo = vim.wo
 
     bo.softtabstop = 4
     bo.shiftwidth = 4
@@ -299,14 +300,25 @@ autocmd("FileType", {
 
     bo.textwidth = 80
 
-    bo.foldmethod = "indent"
-    bo.foldlevel = 99
+    wo.foldmethod = "indent"
+    wo.foldlevel = 99
 
-    map("n", "m", ":w<CR>:!python %<CR>", {
+    map("n", "m", function()
+      vim.cmd.write()
+      vim.cmd("!python %")
+    end, {
       buffer = true,
       silent = true,
+      desc = "Run python file",
     })
   end,
+})
+
+-- Sage
+vim.filetype.add({
+  extension = {
+    sage = "python.sage",
+  },
 })
 
 -- Lua
@@ -424,18 +436,27 @@ opt.statusline = "%{expand('%:p')}"
 -- ============================================================================
 -- TAB COMPLETE
 -- ============================================================================
--- Map Tab to behave like Ctrl+P in Insert Mode
+-- Map Tab to behave like Ctrl+P in Insert Mode, unless at the start of a line
 vim.keymap.set('i', '<Tab>', function()
-  -- If the completion menu is already visible, go to the previous item
+  -- If the completion menu is visible, go to the previous item
   if vim.fn.pumvisible() == 1 then
     return '<C-p>'
-  else
-    -- If menu isn't open, trigger keyword completion (backwards search)
-    return '<C-p>'
   end
+
+  -- Get current line and cursor column position
+  local col = vim.fn.col('.') - 1
+  local line = vim.fn.getline('.')
+
+  -- Check if cursor is at the start or only preceded by whitespace
+  if col == 0 or line:sub(1, col):match('^%s*$') then
+    return '<Tab>'
+  end
+
+  -- If menu isn't open and we are in text, trigger keyword completion (backwards)
+  return '<C-p>'
 end, { expr = true, noremap = true, silent = true })
 
--- Optional: Map Shift+Tab to behave like Ctrl+N to cycle forwards
+-- Map Shift+Tab to behave like Ctrl+N to cycle forwards
 vim.keymap.set('i', '<S-Tab>', function()
   if vim.fn.pumvisible() == 1 then
     return '<C-n>'
