@@ -1,0 +1,14 @@
+local map = vim.keymap.set
+
+vim.opt_local.formatoptions:remove("o")
+
+local tmux = require("tmux")
+local b = { buffer = true, silent = true }
+map("n", "m", function()
+  vim.cmd.write()
+  tmux.send('include("' .. vim.fn.expand("%") .. '")')
+end, b)
+map("n", "<localleader>lt",
+  [[ofunction TEST_XXX()<CR>@testset "TEST XXX" begin<CR>end<CR>end<Esc>{=apvap:s/XXX/]],
+  { buffer = true })
+map("n", "<localleader>lf", "ofunction<CR>end<Esc>kA ", { buffer = true })
