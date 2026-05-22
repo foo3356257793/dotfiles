@@ -180,6 +180,37 @@ autocmd("InsertLeave", {
 })
 
 -- ============================================================================
+-- TEMPLATES
+-- ============================================================================
+
+local tmpl_dir  = vim.fn.expand("$HOME/dotfiles/templates/")
+local tmpl_group = augroup("Templates", { clear = true })
+
+local function template(pattern, file)
+  autocmd("BufNewFile", {
+    group   = tmpl_group,
+    pattern = pattern,
+    callback = function()
+      local path = tmpl_dir .. file
+      if vim.fn.filereadable(path) == 1 then
+        vim.cmd("0r " .. vim.fn.fnameescape(path))
+      end
+    end,
+  })
+end
+
+template("*.py",          "python.py")
+template("*.sage",        "sage.sage")
+template("*.spyx",        "sage.sage")
+template("*.c",           "c.c")
+template({ "*.cpp", "*.cc" }, "cpp.cpp")
+template("*.jl",          "julia.jl")
+template("*.tex",         "latex.tex")
+template("*.rs",          "rust.rs")
+template("*.go",          "go.go")
+template("*.pl",          "perl.pl")
+
+-- ============================================================================
 -- KEYMAPS
 -- ============================================================================
 
