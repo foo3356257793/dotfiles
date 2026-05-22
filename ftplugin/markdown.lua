@@ -6,20 +6,35 @@ bo.shiftwidth  = 2
 bo.textwidth   = 0
 vim.wo.foldlevel = 99
 
-vim.cmd([[
-  syntax region markdownH1Line start="^#"      end="$"
-  syntax region markdownH2Line start="^##"     end="$"
-  syntax region markdownH3Line start="^###"    end="$"
-  syntax region markdownH4Line start="^####"   end="$"
-  syntax region markdownH5Line start="^#####"  end="$"
-  syntax region markdownH6Line start="^######" end="$"
-  hi markdownH1Line cterm=bold ctermbg=2  ctermfg=0
-  hi markdownH2Line cterm=bold ctermbg=11 ctermfg=0
-  hi markdownH3Line cterm=bold ctermbg=1  ctermfg=7
-  hi markdownH4Line cterm=bold ctermfg=2
-  hi markdownH5Line cterm=bold ctermfg=11
-  hi markdownH6Line cterm=bold ctermfg=1
-]])
+local hl = vim.api.nvim_set_hl
+hl(0, 'MarkdownH1', { bold = true, ctermbg = 2, ctermfg = 0 })
+hl(0, 'MarkdownH2', { bold = true, ctermbg = 11, ctermfg = 0 })
+hl(0, 'MarkdownH3', { bold = true, ctermbg = 1, ctermfg = 7 })
+hl(0, 'MarkdownH4', { bold = true, ctermbg = 4, ctermfg = 0 })
+hl(0, 'MarkdownH5', { bold = true, ctermbg = 11, ctermfg = 'none' })
+hl(0, 'MarkdownH6', { bold = true, ctermbg = 1, ctermfg = 'none' })
+
+hl(0, "@markup.heading.1.markdown", { bold = true, bg = 2, fg = 0 })
+hl(0, "@markup.heading.2.markdown", { bold = true, bg = 11, fg = 0 })
+hl(0, "@markup.heading.3.markdown", { bold = true, bg = 1, fg = 7 })
+hl(0, "@markup.heading.4.markdown", { bold = true, bg = 4, fg = 0 })
+hl(0, "@markup.heading.5.markdown", { bold = true, bg = 11, fg = 'none' })
+hl(0, "@markup.heading.6.markdown", { bold = true, bg = 1, fg = 'none' })
+
+-- Clear old matches to protect editor performance
+for _, match in ipairs(vim.fn.getmatches()) do
+    if match.group:find("^MarkdownH") then
+        vim.fn.matchdelete(match.id)
+    end
+end
+
+-- Explicitly assign priority 100 so it overrides TreeSitter's foreground rules
+vim.fn.matchadd("MarkdownH1", [[^#\s.*$]], 100)
+vim.fn.matchadd("MarkdownH2", [[^##\s.*$]], 100)
+vim.fn.matchadd("MarkdownH3", [[^###\s.*$]], 100)
+vim.fn.matchadd("MarkdownH4", [[^####\s.*$]], 100)
+vim.fn.matchadd("MarkdownH5", [[^#####\s.*$]], 100)
+vim.fn.matchadd("MarkdownH6", [[^######\s.*$]], 100)
 
 local b = { buffer = true }
 map("n", "go",         "o* ", b)
