@@ -55,3 +55,51 @@ map("n", "<leader>M", function()
   vim.cmd.write()
   tmux.send('codeblock_eval("' .. vim.fn.expand("%") .. '")')
 end, vim.tbl_extend("force", b, { silent = true }))
+
+-- text effects
+hl(0, 'markdownItalic', { bold = true, ctermfg = 14 })
+hl(0, 'markdownItalicDelimiter', { bold = true, ctermfg = 14 })
+hl(0, 'markdownBold', { bold = true, ctermfg = 11 })
+hl(0, 'markdownBoldDelimiter', { bold = true, ctermfg = 11 })
+hl(0, 'markdownBoldItalic', { bold = true, ctermfg = 13 })
+hl(0, 'markdownBoldItalicDelimiter', { bold = true, ctermfg = 13 })
+
+-- code block highlighting
+local code_style = { ctermfg = 7, ctermbg = 'none' }
+hl(0, 'markdownCode', code_style)
+hl(0, 'markdownCodeBlock', code_style)
+hl(0, 'markdownCodeDelimiter', code_style)
+
+-- lists and links
+hl(0, 'markdownListMarker', { ctermfg = 4})
+hl(0, 'markdownAutomaticLink', { ctermfg = 12})
+
+-- Date Headers
+map('n', '<leader>G', function()
+    local date = os.date("%Y%m%d")
+    local keys = string.format("# %s\n\t= ", date)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("i" .. keys .. "<Esc>", true, false, true), 'n', false)
+end, vim.tbl_extend("force", b, { desc = "Insert Markdown Date Header"}))
+
+map('n', '<leader>T', function()
+    local date = os.date("%a %b %d %Y")
+    vim.api.nvim_put({date}, 'c', true, true)
+end, vim.tbl_extend("force", b, { desc = "Insert Full Date" }))
+
+-- copy everything
+map('n', '<localleader>C', 'Go<esc>pkdgg', b)
+map('n', '<localleader>c', 'ggyG<C-o><C-o>', b)
+
+-- insert mode bracket snippet
+map('i', '\\[<cr>', '[\n[\n<Esc>O<Tab>', b)
+
+local md_tex_snippets = {
+    ['<localleader>l('] = [[i\left(<cr>\right)<esc>O]],
+    ['<localleader>l['] = [[i\left[<cr>\right]<esc>O]],
+    ['<localleader>la'] = [[i\begin{align*}<cr>\end{align*}<esc>O]],
+    ['<localleader>lb'] = [[i\begin{bmatrix}<cr>\end{bmatrix}<esc>O]],
+}
+
+for trigger, action in pairs(md_tex_snippets) do
+    map('n', trigger, action, b)
+end
