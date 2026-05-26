@@ -103,3 +103,12 @@ local md_tex_snippets = {
 for trigger, action in pairs(md_tex_snippets) do
     map('n', trigger, action, b)
 end
+
+vim.keymap.set(
+    "n",
+    "<localleader>t",
+    function()
+        require("workhours").show_options()
+    end,
+    { desc = "Show work hour options" }
+)
