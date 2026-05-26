@@ -271,13 +271,8 @@ map("n", "<Tab>",     ":tabnext<CR>",     opts)
 map("n", "<S-Tab>",   ":tabprevious<CR>", opts)
 
 -- buffers
-map("n", "<leader>b", ":Buffers<CR>", opts)
 map("n", "-",         ":bp<CR>",      opts)
 map("n", "+",         ":bn<CR>",      opts)
-
--- fzf
-map("n", "<leader>f", ":Files<CR>", opts)
-vim.cmd([[imap <c-x><c-f> <plug>(fzf-complete-path)]])
 
 -- terminal
 map("t", "<C-s>", [[<C-\><C-n><C-w>N]])

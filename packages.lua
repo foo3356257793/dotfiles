@@ -12,6 +12,8 @@ vim.pack.add({
   github("lervag/vimtex"),
   github("kien/rainbow_parentheses.vim"),
   github("christoomey/vim-tmux-navigator"),
+  github("nvim-lua/plenary.nvim"),
+  github("nvim-telescope/telescope.nvim"),
   github("folke/zen-mode.nvim"),
 
   {
