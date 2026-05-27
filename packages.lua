@@ -14,8 +14,6 @@ vim.pack.add({
   github("nvim-lua/plenary.nvim"),
   github("nvim-telescope/telescope.nvim"),
   github("folke/zen-mode.nvim"),
-  github("nvim-lua/plenary.nvim"),
-  github("nvim-telescope/telescope.nvim"),
   github("nvim-treesitter/nvim-treesitter"),
   github("HiPhish/rainbow-delimiters.nvim"),
   github("stevearc/conform.nvim"),
