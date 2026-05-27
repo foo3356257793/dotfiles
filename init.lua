@@ -62,7 +62,7 @@ local options = {
   wildmode       = { "longest", "list" },
   wildignorecase = true,
 
-  laststatus = 2,
+  laststatus = 3,
 
   hlsearch  = true,
   incsearch = true,
@@ -73,8 +73,6 @@ local options = {
 
   background    = "dark",
   termguicolors = false,
-
-  omnifunc = "syntaxcomplete#Complete",
 
   number         = false,
   relativenumber = false,
@@ -105,8 +103,6 @@ opt.listchars = {
   nbsp     = "+",
 }
 
-opt.runtimepath:append("/usr/bin/fzf")
-
 opt.sessionoptions:remove("options")
 opt.viewoptions:remove("options")
 
@@ -126,9 +122,10 @@ vim.cmd([[
 -- BACKUP DIRECTORIES
 -- ============================================================================
 
-local undo_dir   = vim.fn.expand("~/.vim/.tmp/undo//")
-local backup_dir = vim.fn.expand("~/.vim/.tmp/backup//")
-local swap_dir   = vim.fn.expand("~/.vim/.tmp/swap//")
+local state_dir  = vim.fn.stdpath("state")
+local undo_dir   = state_dir .. "/undo"
+local backup_dir = state_dir .. "/backup"
+local swap_dir   = state_dir .. "/swap"
 
 opt.undodir   = undo_dir
 opt.backupdir = backup_dir
@@ -144,10 +141,8 @@ end
 -- HIGHLIGHTS
 -- ============================================================================
 
-vim.cmd([[
-  highlight default link EndOfLineSpace ErrorMsg
-  match EndOfLineSpace /\s\+$/
-]])
+vim.api.nvim_set_hl(0, "EndOfLineSpace", { link = "ErrorMsg", default = true })
+vim.cmd([[match EndOfLineSpace /\s\+$/]])
 
 -- ============================================================================
 -- AUTOCOMMANDS
@@ -170,13 +165,13 @@ autocmd("BufReadPost", {
 })
 
 autocmd("InsertEnter", {
-  group   = trailing,
-  command = "highlight link EndOfLineSpace Normal",
+  group    = trailing,
+  callback = function() vim.api.nvim_set_hl(0, "EndOfLineSpace", { link = "Normal" }) end,
 })
 
 autocmd("InsertLeave", {
-  group   = trailing,
-  command = "highlight link EndOfLineSpace ErrorMsg",
+  group    = trailing,
+  callback = function() vim.api.nvim_set_hl(0, "EndOfLineSpace", { link = "ErrorMsg" }) end,
 })
 
 -- ============================================================================
@@ -271,13 +266,13 @@ map("n", "<Tab>",     ":tabnext<CR>",     opts)
 map("n", "<S-Tab>",   ":tabprevious<CR>", opts)
 
 -- buffers
-map("n", "<leader>b", ":Buffers<CR>", opts)
+map("n", "<leader>b", function() require("telescope.builtin").buffers() end,    opts)
 map("n", "-",         ":bp<CR>",      opts)
 map("n", "+",         ":bn<CR>",      opts)
 
--- fzf
-map("n", "<leader>f", ":Files<CR>", opts)
-vim.cmd([[imap <c-x><c-f> <plug>(fzf-complete-path)]])
+-- telescope
+map("n", "<leader>f", function() require("telescope.builtin").find_files() end, opts)
+map("n", "<leader>/", function() require("telescope.builtin").live_grep() end,  opts)
 
 -- terminal
 map("t", "<C-s>", [[<C-\><C-n><C-w>N]])
