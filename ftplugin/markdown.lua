@@ -21,20 +21,34 @@ hl(0, "@markup.heading.4.markdown", { bold = true, bg = 4, fg = 0 })
 hl(0, "@markup.heading.5.markdown", { bold = true, bg = 11, fg = 'none' })
 hl(0, "@markup.heading.6.markdown", { bold = true, bg = 1, fg = 'none' })
 
--- Clear old matches to protect editor performance
-for _, match in ipairs(vim.fn.getmatches()) do
-    if match.group:find("^MarkdownH") then
-        vim.fn.matchdelete(match.id)
+-- matchadd() is window-local, so we need to re-apply whenever this buffer
+-- appears in a new window (e.g. after a split).
+local function apply_header_matches()
+    -- Clear old matches to protect editor performance
+    for _, match in ipairs(vim.fn.getmatches()) do
+        if match.group:find("^MarkdownH") then
+            vim.fn.matchdelete(match.id)
+        end
     end
+    -- Explicitly assign priority 100 so it overrides TreeSitter's foreground rules
+    vim.fn.matchadd("MarkdownH1", [[^#\s.*$]], 100)
+    vim.fn.matchadd("MarkdownH2", [[^##\s.*$]], 100)
+    vim.fn.matchadd("MarkdownH3", [[^###\s.*$]], 100)
+    vim.fn.matchadd("MarkdownH4", [[^####\s.*$]], 100)
+    vim.fn.matchadd("MarkdownH5", [[^#####\s.*$]], 100)
+    vim.fn.matchadd("MarkdownH6", [[^######\s.*$]], 100)
 end
 
--- Explicitly assign priority 100 so it overrides TreeSitter's foreground rules
-vim.fn.matchadd("MarkdownH1", [[^#\s.*$]], 100)
-vim.fn.matchadd("MarkdownH2", [[^##\s.*$]], 100)
-vim.fn.matchadd("MarkdownH3", [[^###\s.*$]], 100)
-vim.fn.matchadd("MarkdownH4", [[^####\s.*$]], 100)
-vim.fn.matchadd("MarkdownH5", [[^#####\s.*$]], 100)
-vim.fn.matchadd("MarkdownH6", [[^######\s.*$]], 100)
+apply_header_matches()
+
+-- BufWinEnter alone isn't enough: it doesn't fire for `:split` without args
+-- when the buffer doesn't change. WinEnter catches the cursor entering the
+-- newly-created split.
+vim.api.nvim_create_autocmd({"BufWinEnter", "WinEnter"}, {
+    buffer = vim.api.nvim_get_current_buf(),
+    callback = apply_header_matches,
+    desc = "Re-apply header match highlights in each new window",
+})
 
 local b = { buffer = true }
 map("n", "go",         "o* ", b)
@@ -103,12 +117,3 @@ local md_tex_snippets = {
 for trigger, action in pairs(md_tex_snippets) do
     map('n', trigger, action, b)
 end
-
-vim.keymap.set(
-    "n",
-    "<localleader>t",
-    function()
-        require("workhours").show_options()
-    end,
-    { desc = "Show work hour options" }
-)
