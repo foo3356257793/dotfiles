@@ -265,14 +265,8 @@ map("n", "<leader>t", ":tabnew<CR>",      opts)
 map("n", "<Tab>",     ":tabnext<CR>",     opts)
 map("n", "<S-Tab>",   ":tabprevious<CR>", opts)
 
--- buffers
-map("n", "<leader>b", function() require("telescope.builtin").buffers() end,    opts)
 map("n", "-",         ":bp<CR>",      opts)
 map("n", "+",         ":bn<CR>",      opts)
-
--- telescope
-map("n", "<leader>f", function() require("telescope.builtin").find_files() end, opts)
-map("n", "<leader>/", function() require("telescope.builtin").live_grep() end,  opts)
 
 -- terminal
 map("t", "<C-s>", [[<C-\><C-n><C-w>N]])

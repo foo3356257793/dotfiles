@@ -11,6 +11,8 @@ vim.pack.add({
   github("godlygeek/tabular"),
   github("lervag/vimtex"),
   github("christoomey/vim-tmux-navigator"),
+  github("nvim-lua/plenary.nvim"),
+  github("nvim-telescope/telescope.nvim"),
   github("folke/zen-mode.nvim"),
   github("nvim-lua/plenary.nvim"),
   github("nvim-telescope/telescope.nvim"),
