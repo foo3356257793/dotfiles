@@ -90,6 +90,10 @@ opt.display:append("lastline")
 opt.formatoptions:append("j")
 opt.formatoptions:remove("o")
 
+-- align changed lines within diff hunks up to 60 lines (default caps at 40)
+opt.diffopt:remove("linematch:40")
+opt.diffopt:append("linematch:60")
+
 opt.wildignore:append({
   "*.aux", "*.out", "*.toc", "*.pdf",
   "*.jpg", "*.bmp", "*.gif", "*.png", "*.jpeg",
