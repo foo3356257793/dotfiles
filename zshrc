@@ -57,31 +57,38 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 # don't remove files by accident
 alias rm='safedelete'
 function safedelete {
-    if command -v gio > /dev/null; then
-        for f in "$@"
-        do
-            gio trash -f "$f"
-        done
+    local -a files
+    local force_real=0
+    for arg in "$@"; do
+        case "$arg" in
+            -P|--permanent) force_real=1 ;;
+            --) ;;              # end-of-options marker, ignore
+            -*) ;;              # ignore rm-style flags (-r -f -rf -i -v ...)
+            *) files+=("$arg") ;;
+        esac
+    done
 
-    elif command -v gvfs-trash > /dev/null; then
-        for f in "$@"
-        do
-            gvfs-trash "$f"
-        done
+    (( ${#files} )) || return 0          # nothing to delete
 
-    elif [ -d "$HOME/.local/share/Trash/files" ]; then
-        for f in "$@"
-        do
-            mv "$f" "$HOME/.local/share/Trash/files"
-        done
-
-    else
-        for f in "$@"
-        do
-            # shellcheck disable=SC1012
-            \rm "$f"
-        done
+    if (( force_real )); then
+        \rm -rf -- "$files[@]"
+        return
     fi
+
+    if command -v gio > /dev/null; then
+        gio trash -f -- "$files[@]"
+    elif command -v gvfs-trash > /dev/null; then
+        gvfs-trash "$files[@]"
+    elif [ -d "$HOME/.local/share/Trash/files" ]; then
+        mv "$files[@]" "$HOME/.local/share/Trash/files"
+    else
+        \rm -f "$files[@]"
+    fi
+}
+
+# permanent delete, bypassing trash
+function hardrm {
+    \rm -rf -- "$@"
 }
 
 # # use neovim by default
