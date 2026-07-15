@@ -62,7 +62,7 @@ local options = {
   wildmode       = { "longest", "list" },
   wildignorecase = true,
 
-  laststatus = 3,
+  laststatus = 2,
 
   hlsearch  = true,
   incsearch = true,
@@ -88,7 +88,7 @@ opt.whichwrap:append("<,>,h,l,[,]")
 opt.display:append("lastline")
 
 opt.formatoptions:append("j")
-opt.formatoptions:remove("o")
+opt.formatoptions:remove({"r", "o"})
 
 opt.wildignore:append({
   "*.aux", "*.out", "*.toc", "*.pdf",
@@ -172,6 +172,17 @@ autocmd("InsertEnter", {
 autocmd("InsertLeave", {
   group    = trailing,
   callback = function() vim.api.nvim_set_hl(0, "EndOfLineSpace", { link = "ErrorMsg" }) end,
+})
+
+-- Highlight text briefly after yanking
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight yanked text",
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = "IncSearch",
+      timeout = 200,
+    })
+  end,
 })
 
 -- ============================================================================

@@ -1,3 +1,5 @@
+require("telescope").setup()
+
 local map = vim.keymap.set
 
 map("n", "<leader>b", function() require("telescope.builtin").buffers() end, opts)

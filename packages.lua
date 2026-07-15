@@ -10,13 +10,16 @@ vim.pack.add({
   github("tpope/vim-fugitive"),
   github("godlygeek/tabular"),
   github("lervag/vimtex"),
+  github("kien/rainbow_parentheses.vim"),
   github("christoomey/vim-tmux-navigator"),
   github("nvim-lua/plenary.nvim"),
   github("nvim-telescope/telescope.nvim"),
   github("folke/zen-mode.nvim"),
-  github("nvim-treesitter/nvim-treesitter"),
-  github("HiPhish/rainbow-delimiters.nvim"),
-  github("stevearc/conform.nvim"),
+
+  {
+    src     = github("averms/black-nvim"),
+    version = "master",
+  },
 })
 
 -- ============================================================================
