@@ -11,41 +11,61 @@ local telescope_fzf_path_complete = function()
   local actions = require("telescope.actions")
   local action_state = require("telescope.actions.state")
 
-  -- 1. Grab the current cursor position and the current line text
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  -- Capture the *exact* window/buffer we're editing, plus the cursor and line,
+  -- so the insertion later targets them explicitly rather than "whatever is
+  -- focused" once Telescope closes.
+  local win  = vim.api.nvim_get_current_win()
+  local buf  = vim.api.nvim_get_current_buf()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(win)) -- col is bytes left of cursor
   local line = vim.api.nvim_get_current_line()
 
-  -- 2. Extract the word directly to the left of the cursor
-  -- This pattern looks for the string of characters ending at the cursor
-  local prefix = string.match(line:sub(1, col), "(%S+)$") or ""
+  -- Extract the filename prefix to the left of the cursor.  Grab the full
+  -- non-whitespace token (e.g. `src="foo`), then keep only the part after the
+  -- last quote or paren so attribute/markdown syntax like src="" or ![](
+  -- doesn't leak into the search text.
+  local word   = string.match(line:sub(1, col), "(%S+)$") or ""
+  local prefix = string.match(word, "[\"'(]([^\"'(]*)$") or word
+
+  -- Split the line into the part before the prefix and the part from the
+  -- cursor onward (which keeps any closing quote/paren intact).
+  local left  = line:sub(1, col - #prefix)
+  local right = line:sub(col + 1)
 
   builtin.find_files({
     prompt_title = "Insert Path Completion",
-    search_file = prefix, -- Presets Telescope's search with your typed string
+    cwd = vim.fn.expand("%:p:h"),
+    default_text = prefix,
 
     attach_mappings = function(prompt_bufnr, map)
       actions.select_default:replace(function()
         local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
 
-        if selection then
-          local path = selection.value
+        if not selection then return end
 
-          -- 3. If the user typed a prefix (e.g., "foo"), delete it from the line first
-          if #prefix > 0 then
-            -- Replace the prefix chunk with an empty string, keeping everything else
-            local new_line = line:sub(1, col - #prefix) .. line:sub(col + 1)
-            vim.api.nvim_set_current_line(new_line)
-            -- Readjust cursor position backward by the length of the deleted prefix
-            vim.api.nvim_win_set_cursor(0, { row, col - #prefix })
+        -- Defer until after Telescope has finished closing, then restore focus
+        -- to the original window explicitly so the edit can't land on the wrong
+        -- buffer on a cold first invocation.
+        vim.schedule(function()
+          local path = selection.value:gsub("^%./", "") -- strip fd's leading ./
+
+          local new_line = left .. path .. right
+          vim.api.nvim_buf_set_lines(buf, row - 1, row, false, { new_line })
+
+          if vim.api.nvim_win_is_valid(win) then
+            vim.api.nvim_set_current_win(win)
+            if #right == 0 then
+              -- Appending at end of line: A-style insert.
+              vim.api.nvim_win_set_cursor(win, { row, 0 })
+              vim.cmd("startinsert!")
+            else
+              -- Inside quotes/parens: place cursor right after the inserted
+              -- path (i.e. on the first char of `right`) and insert before it.
+              vim.api.nvim_win_set_cursor(win, { row, #left + #path })
+              vim.cmd("startinsert")
+            end
           end
-
-          -- 4. Paste the path exactly where the prefix used to be
-          vim.api.nvim_put({ path }, "c", true, true)
-
-          -- 5. Force Neovim back into Insert Mode right after the inserted text
-          vim.cmd("startinsert")
-        end
+        end)
       end)
       return true
     end,
