@@ -30,16 +30,43 @@ vim.keymap.set("n", "<C-l>",  "<cmd>TmuxNavigateRight<cr>",    { silent = true, 
 vim.keymap.set("n", "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { silent = true, desc = "Navigate previous" })
 
 -- ============================================================================
+-- RAINBOW DELIMITERS
+-- ============================================================================
+
+-- Uses vim.treesitter directly, so this only needs the parsers, not
+-- nvim-treesitter. Queries ship for 82 languages and every language with a
+-- query is on by default, including markdown/vimdoc/latex; whitelist the code
+-- languages only.
+require("rainbow-delimiters.setup").setup({
+  whitelist = { "c", "cpp", "go", "julia", "lua", "python", "rust", "vim" },
+})
+
+-- ============================================================================
 -- TREESITTER
 -- ============================================================================
 
-require("nvim-treesitter.configs").setup({
-  ensure_installed = {
-    "c", "cpp", "go", "julia", "lua", "markdown", "markdown_inline",
-    "python", "rust", "vim", "vimdoc",
-  },
-  highlight = { enable = true },
-  indent    = { enable = true },
+require("nvim-treesitter").setup()
+
+-- Asynchronous; parsers already present are skipped.
+require("nvim-treesitter").install({
+  "c", "cpp", "go", "julia", "lua", "markdown", "markdown_inline",
+  "python", "rust", "vim", "vimdoc",
+})
+
+-- The main branch has no highlight/indent options: highlighting is started per
+-- buffer instead, for every filetype resolving to an installed parser.
+-- rainbow-delimiters also needs a live parser, so it only draws where this has
+-- run. Resolving the language rather than matching on filetype keeps the
+-- compound filetypes from init.lua working: sage files are "python.sage".
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("Treesitter", { clear = true }),
+  callback = function(args)
+    local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+    if not lang then return end
+    -- Fails when the parser is absent or still installing.
+    if not pcall(vim.treesitter.start, args.buf, lang) then return end
+    vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
 })
 
 -- ============================================================================
