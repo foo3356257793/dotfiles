@@ -7,9 +7,6 @@
 [submodule "dotvim/bundle/traces.vim"]
 	path = dotvim/bundle/traces.vim
 	url = https://github.com/markonm/traces.vim.git
-[submodule "dotvim/bundle/rainbow"]
-	path = dotvim/bundle/rainbow
-	url = https://github.com/luochen1990/rainbow.git
 [submodule "dotvim/bundle/supertab"]
 	path = dotvim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git

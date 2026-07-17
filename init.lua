@@ -411,4 +411,9 @@ vim.cmd([[iabbrev reutrn return]])
 -- MACHINE-SPECIFIC SETTINGS
 -- ============================================================================
 
-pcall(require, "machine")
+-- Absent on machines without a machine.lua, so failure to load is not an
+-- error; report anything else rather than dropping it.
+local ok, err = pcall(require, "machine")
+if not ok and not tostring(err):match("module 'machine' not found") then
+  vim.notify("machine.lua: " .. tostring(err), vim.log.levels.WARN)
+end
