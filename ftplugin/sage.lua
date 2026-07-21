@@ -7,7 +7,8 @@ local bl = { buffer = true }
 
 map("n", "m", function()
   vim.cmd.write()
-  tmux.send('load("' .. vim.fn.expand("%") .. '")')
+  -- absolute: the REPL pane's cwd is independent of this instance's
+  tmux.send('load("' .. vim.fn.expand("%:p") .. '")')
 end, b)
 
 map("n", "<localleader>lp",

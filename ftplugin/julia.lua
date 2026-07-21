@@ -6,7 +6,8 @@ local tmux = require("tmux")
 local b = { buffer = true, silent = true }
 map("n", "m", function()
   vim.cmd.write()
-  tmux.send('include("' .. vim.fn.expand("%") .. '")')
+  -- absolute: the REPL pane's cwd is independent of this instance's
+  tmux.send('include("' .. vim.fn.expand("%:p") .. '")')
 end, b)
 map("n", "<localleader>lt",
   [[ofunction TEST_XXX()<CR>@testset "TEST XXX" begin<CR>end<CR>end<Esc>{=apvap:s/XXX/]],

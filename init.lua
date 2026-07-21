@@ -38,8 +38,6 @@ local options = {
   splitbelow = true,
   splitright = true,
 
-  autochdir = true,
-
   wrap = true,
   list = false,
 
