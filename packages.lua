@@ -6,16 +6,28 @@ local github = function(repo)
   return "https://github.com/" .. repo
 end
 
+-- Pinned to a major (or, below 1.0, a minor) range rather than left tracking
+-- the default branch: the lockfile already makes installs reproducible, but it
+-- pins whatever happened to be HEAD at install time. A range means an update
+-- can pick up fixes without silently crossing a breaking release.
+local range = vim.version.range
+
 vim.pack.add({
-  github("tpope/vim-fugitive"),
-  github("godlygeek/tabular"),
-  github("lervag/vimtex"),
-  github("nvim-lua/plenary.nvim"),
-  github("nvim-telescope/telescope.nvim"),
-  github("folke/zen-mode.nvim"),
-  github("nvim-treesitter/nvim-treesitter"),
-  github("HiPhish/rainbow-delimiters.nvim"),
-  github("stevearc/conform.nvim"),
+  { src = github("tpope/vim-fugitive"),              version = range("3")    },
+  { src = github("godlygeek/tabular"),               version = range("1")    },
+  { src = github("lervag/vimtex"),                   version = range("2")    },
+  { src = github("nvim-lua/plenary.nvim"),           version = range("0.1")  },
+  { src = github("nvim-telescope/telescope.nvim"),   version = range("0.2")  },
+  { src = github("folke/zen-mode.nvim"),             version = range("1")    },
+  { src = github("HiPhish/rainbow-delimiters.nvim"), version = range("0.12") },
+  { src = github("stevearc/conform.nvim"),           version = range("9")    },
+
+  -- Branch, NOT a version range. nvim-treesitter's tags (v0.10.0 and older)
+  -- all sit on the legacy master line and are not ancestors of main; a range
+  -- here would quietly drag this back to the pre-rewrite API and break the
+  -- setup()/install() calls below. main is unreleased and moves, so this is
+  -- the one plugin where an update genuinely needs reading the changelog.
+  { src = github("nvim-treesitter/nvim-treesitter"), version = "main" },
 })
 
 -- ============================================================================
