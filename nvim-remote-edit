@@ -1,0 +1,30 @@
+#!/bin/sh
+# $EDITOR / $VISUAL wrapper.
+#
+# Opens into the nvim already running in this tmux window instead of nesting a
+# second one inside it, so `git commit`, `crontab -e`, ipython's %edit and so
+# on land in the editor that is already open. Each nvim publishes its server
+# socket onto its own pane as @nvim_server (see the TMUX section of
+# dotfiles/init.lua), so this searches the window's panes for one.
+#
+# An $EDITOR must block until the file is done being edited, or git commits an
+# empty message. Plain `nvim --remote-wait` cannot do this -- nvim does not
+# implement the wait commands and fails with E5600 -- so this needs nvr
+# (neovim-remote, `pipx install neovim-remote`). Without it, fall through to a
+# nested nvim, which is correct, just less pleasant.
+#
+# The $TMUX test is not redundant: outside tmux, tmux still answers from the
+# default session's current window, so without it a plain terminal would hand
+# the file to an nvim it cannot see. -t pins the search to this pane's own
+# window, and the $1 != me test skips our own pane when a nested nvim is what
+# is asking.
+
+if [ -n "$TMUX" ] && command -v nvr >/dev/null 2>&1; then
+    sock=$(tmux list-panes -t "$TMUX_PANE" -F '#{pane_id} #{@nvim_server}' 2>/dev/null \
+           | awk -v me="$TMUX_PANE" 'NF > 1 && $1 != me { print $2; exit }')
+    if [ -n "$sock" ] && [ -S "$sock" ]; then
+        exec nvr --servername "$sock" --remote-wait "$@"
+    fi
+fi
+
+exec nvim "$@"

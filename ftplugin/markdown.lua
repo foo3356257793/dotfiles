@@ -60,15 +60,34 @@ map("n", "<localleader>lp",
 map("v", "<localleader>lp",
   ":!$HOME/.vim/py_var_to_print.py<CR>:Tabularize /=/<CR>", b)
 
+-- Send the fence text itself rather than a filename and a line number for the
+-- REPL to go re-read. The REPL then does its own preparsing and keeps its own
+-- top-level state, which is what the old codeblock_eval was reimplementing.
 local tmux = require("tmux")
+local bs = vim.tbl_extend("force", b, { silent = true })
+
 map("n", "<leader>m", function()
   vim.cmd.write()
-  tmux.send('codeblock_eval("' .. vim.fn.expand("%") .. '",' .. vim.fn.line(".") .. ')')
-end, vim.tbl_extend("force", b, { silent = true }))
+  tmux.send_region()
+end, bs)
+
 map("n", "<leader>M", function()
   vim.cmd.write()
-  tmux.send('codeblock_eval("' .. vim.fn.expand("%") .. '")')
-end, vim.tbl_extend("force", b, { silent = true }))
+  local lines = {}
+  local inside = false
+  for _, line in ipairs(vim.fn.getline(1, "$")) do
+    if line:match("^%s*```") then
+      inside = not inside
+    elseif inside then
+      lines[#lines + 1] = line
+    end
+  end
+  if inside then
+    vim.notify("markdown: unterminated code fence", vim.log.levels.WARN)
+    return
+  end
+  tmux.send_text(lines)
+end, bs)
 
 -- text effects
 hl(0, 'markdownItalic', { bold = true, ctermfg = 14 })
