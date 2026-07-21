@@ -28,6 +28,7 @@ vim.pack.add({
   -- setup()/install() calls below. main is unreleased and moves, so this is
   -- the one plugin where an update genuinely needs reading the changelog.
   { src = github("nvim-treesitter/nvim-treesitter"), version = "main" },
+  { src = github("nvim-treesitter/nvim-treesitter-textobjects"), version = "main" },
 })
 
 -- ============================================================================
@@ -67,8 +68,49 @@ vim.api.nvim_create_autocmd("FileType", {
     -- Fails when the parser is absent or still installing.
     if not pcall(vim.treesitter.start, args.buf, lang) then return end
     vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+    -- Folding follows the syntax tree rather than indentation. This autocmd is
+    -- registered after 'filetypeplugin', so it runs *after* ftplugin/*.lua and
+    -- would otherwise clobber the deliberate choices there -- python's indent
+    -- folds, vim's marker folds. Claiming 'foldmethod' only while it is still
+    -- "manual" leaves those alone and takes the filetypes nobody spoke for.
+    for _, win in ipairs(vim.fn.win_findbuf(args.buf)) do
+      if vim.wo[win].foldmethod == "manual" then
+        vim.wo[win].foldmethod = "expr"
+        vim.wo[win].foldexpr   = "v:lua.vim.treesitter.foldexpr()"
+        -- Open files fully folded-out; zc/zM fold on demand.
+        vim.wo[win].foldlevel  = 99
+      end
+    end
   end,
 })
+
+-- ============================================================================
+-- TREESITTER TEXTOBJECTS
+-- ============================================================================
+
+-- lookahead jumps forward to the next textobject when the cursor is not inside
+-- one, so `dif` works without first navigating into the function.
+require("nvim-treesitter-textobjects").setup({
+  select = { lookahead = true },
+})
+
+-- Queries ship for every language whitelisted for rainbow-delimiters above.
+-- Coverage is not uniform: cpp has no @conditional, lua and vim have no
+-- @class. A missing capture is a no-op, not an error.
+local textobjects = {
+  ["af"] = "@function.outer",    ["if"] = "@function.inner",
+  ["ac"] = "@class.outer",       ["ic"] = "@class.inner",
+  ["aa"] = "@parameter.outer",   ["ia"] = "@parameter.inner",
+  ["ai"] = "@conditional.outer", ["ii"] = "@conditional.inner",
+  ["al"] = "@loop.outer",        ["il"] = "@loop.inner",
+}
+
+for lhs, query in pairs(textobjects) do
+  vim.keymap.set({ "x", "o" }, lhs, function()
+    require("nvim-treesitter-textobjects.select").select_textobject(query, "textobjects")
+  end, { silent = true, desc = "textobject " .. query })
+end
 
 -- ============================================================================
 -- TELESCOPE
