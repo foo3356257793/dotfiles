@@ -1,5 +1,9 @@
 local map = vim.keymap.set
 
+-- The bundled runtime ftplugin sources after this one and forces ts/sts/sw=4
+-- unless this is off; without it the settings below are silently overwritten.
+vim.g.markdown_recommended_style = 0
+
 local bo = vim.bo
 bo.softtabstop = 2
 bo.shiftwidth  = 2
@@ -35,7 +39,6 @@ vim.fn.matchadd("MarkdownH3", [[^###\s.*$]], 100)
 vim.fn.matchadd("MarkdownH4", [[^####\s.*$]], 100)
 vim.fn.matchadd("MarkdownH5", [[^#####\s.*$]], 100)
 vim.fn.matchadd("MarkdownH6", [[^######\s.*$]], 100)
-})
 
 local b = { buffer = true }
 map("n", "go",         "o* ", b)

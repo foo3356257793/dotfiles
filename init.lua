@@ -124,6 +124,13 @@ vim.cmd([[
   syntax enable
 ]])
 
+-- .tex is shared by three formats, so nvim sniffs the contents and falls back
+-- to plaintex when nothing says otherwise. That catches every \input-ed piece
+-- of a paper -- a sections/*.tex holding no \documentclass is not recognisably
+-- LaTeX -- leaving those buffers without ftplugin/tex.lua, so no makeprg and
+-- none of the tex mappings. Nothing here is ever plain TeX or ConTeXt.
+vim.g.tex_flavor = "latex"
+
 -- ============================================================================
 -- BACKUP DIRECTORIES
 -- ============================================================================
@@ -242,7 +249,21 @@ local opts = { noremap = true, silent = true }
 map("n", "j", "gj")
 map("n", "k", "gk")
 
-map("n", "m", ":w<CR>:!make<CR>", opts)
+-- Build through the quickfix list rather than shelling out, so errors are
+-- jumpable and a clean build leaves the screen alone -- no scrollback of
+-- compiler output, no "Press ENTER". Filetypes that set their own 'makeprg'
+-- get that instead of make: tex goes through tex-make, perl syntax-checks.
+map("n", "m", function()
+  vim.cmd("write")
+  vim.cmd("make!")   -- the bang defers the jump until we know there is one
+  local errs = vim.tbl_filter(function(e) return e.valid == 1 end, vim.fn.getqflist())
+  if #errs > 0 then
+    vim.cmd("copen")
+    pcall(vim.cmd, "cfirst")   -- entries without a real file cannot be jumped to
+  else
+    vim.cmd("cclose")
+  end
+end, opts)
 map("n", "Q", ":w<CR>", opts)
 map("n", "Y", "y$")
 
@@ -270,9 +291,19 @@ for _, key in ipairs({ "h", "j", "k", "l" }) do
 end
 map("n", [[<C-\>]], [[<Cmd>lua require("tmux_nav").prev()<CR>]], opts)
 
--- paste with auto-indent; C- variants bypass it
-map("n", "p",     "p=`]")
-map("n", "P",     "P=`]")
+-- paste with auto-indent; C- variants bypass it. Prose filetypes have no
+-- meaningful indentexpr, so "=" there just flattens nested lists.
+local no_reindent = {
+  markdown = true, text = true, txt = true, tex = true, plaintex = true,
+  org = true, twiki = true, csv = true, timelog = true, gitcommit = true,
+}
+
+for _, key in ipairs({ "p", "P" }) do
+  map("n", key, function()
+    return no_reindent[vim.bo.filetype] and key or (key .. "=`]")
+  end, { expr = true })
+end
+
 map("n", "<C-p>", "p")
 map("n", "<C-P>", "P")
 

@@ -1,0 +1,174 @@
+#!/usr/bin/perl
+# Runs a build and prints only what went wrong.
+#
+#     tex-make make            # normally, via 'makeprg' in ftplugin/tex.lua
+#     tex-make latexmk paper   # or anything else that ends up running TeX
+#     tex-make -f transcript   # parse a saved transcript instead of building
+#
+# A latexmk run is several hundred lines of per-pass chatter with the one line
+# that matters buried in it. This swallows all of that and, on failure, prints
+# one line per error in the form
+#
+#     paper.tex:42: Undefined control sequence  [\begin{aligne}]
+#
+# which 'errorformat' turns into a quickfix list. On success it prints nothing.
+#
+# It wraps the command rather than filtering a pipe so the real exit status
+# survives: `make | tex-make` would report this script's status, and a Makefile
+# that fails for a reason TeX never sees would look like it passed.
+#
+# The parsing assumes the engine ran with -file-line-error, which dotfiles'
+# latexmkrc forces on. Without it TeX names no file and only the second branch
+# below fires, which still reports the error, just with less to jump to.
+
+use strict;
+use warnings;
+use List::Util qw(min);
+
+# TeX hard-wraps its terminal output at 79 columns, splitting long messages and
+# paths mid-line where no regex can follow them. error_line/half_error_line are
+# how much source context it shows around the error point; 254 is the ceiling.
+$ENV{max_print_line}   = 10000;
+$ENV{error_line}       = 254;
+$ENV{half_error_line}  = 238;
+
+my $MAX_ERRORS  = 10;   # a cascade after the first few is rarely informative
+my $MAX_SNIPPET = 60;
+my $MAX_RAW     = 15;   # lines of raw output shown when nothing parsed
+
+# Every one of these only ever appears alongside the real error that caused it.
+my @NOISE = (
+    qr/^==> Fatal error occurred/,
+    qr/^Emergency stop/,
+    qr/^Type\s+H\s+<return>/,
+    qr/^See the LaTeX manual/,
+);
+
+# ============================================================================
+# PARSING
+# ============================================================================
+
+# The source line TeX echoes after an error is split in two: what it had read
+# when it gave up, and the remainder, indented to line up underneath. Rejoin
+# them so the snippet reads like the file does.
+sub snippet {
+    my ($lines, $i) = @_;
+
+    for my $j ($i .. min($i + 6, $#$lines)) {
+        next unless $lines->[$j] =~ /^l\.(\d+)\s?(.*)$/;
+        my ($lno, $text) = ($1, $2);
+
+        my $rest = $j < $#$lines ? $lines->[$j + 1] : "";
+        $rest =~ s/^\s+//;
+        $text .= $rest if $rest ne "" && $rest !~ /^l\.\d/;
+
+        $text =~ s/\s+/ /g;
+        $text =~ s/^\s+|\s+$//g;
+        $text = substr($text, 0, $MAX_SNIPPET) . "..."
+            if length($text) > $MAX_SNIPPET;
+
+        return ($lno, $text);
+    }
+    return (undef, undef);
+}
+
+sub parse {
+    my @lines = @_;
+    my (@errs, %seen, $truncated);
+
+    for my $i (0 .. $#lines) {
+        my ($file, $lno, $msg);
+
+        # -file-line-error form. The extension test keeps make's own
+        # "Makefile:5: ..." and similar out of the LaTeX error list.
+        if ($lines[$i] =~ /^(\S[^:]*\.\w+):(\d+):\s*(.+)$/) {
+            ($file, $lno, $msg) = ($1, $2, $3);
+            $file =~ s{^\./}{};
+        }
+        # Errors carrying no file context, and the fallback when something
+        # else has taken -file-line-error away again.
+        elsif ($lines[$i] =~ /^!\s+(.+)$/) {
+            $msg = $1;
+        }
+        else { next }
+
+        next if grep { $msg =~ $_ } @NOISE;
+        $msg =~ s/\s*\.\s*$//;
+
+        my ($snip_lno, $snip) = snippet(\@lines, $i + 1);
+        $lno //= $snip_lno;
+
+        # latexmk reruns the engine until the aux files settle, so the same
+        # error arrives once per pass.
+        my $key = join(":", $file // "", $lno // "", $msg);
+        next if $seen{$key}++;
+
+        if (@errs >= $MAX_ERRORS) { $truncated++; next }
+
+        my $out = defined $file ? "$file:$lno: $msg"
+                : defined $lno  ? "line $lno: $msg"
+                :                 $msg;
+        $out .= "  [$snip]" if defined $snip && $snip ne "";
+        push @errs, $out;
+    }
+
+    push @errs, "(+$truncated more)" if $truncated;
+    return @errs;
+}
+
+# ============================================================================
+# REPORTING
+# ============================================================================
+
+sub report {
+    my ($lines, @errs) = @_;
+
+    if (@errs) {
+        print "$_\n" for @errs;
+        return;
+    }
+
+    # Never swallow a failure silently: something went wrong that this script
+    # does not know how to read, so hand back the tail verbatim.
+    my @raw = grep { /\S/ } @$lines;
+    @raw = @raw[-$MAX_RAW .. -1] if @raw > $MAX_RAW;
+    print "-- build failed, no LaTeX error parsed; last output: --\n";
+    print "$_\n" for @raw;
+}
+
+# ============================================================================
+# MAIN
+# ============================================================================
+
+if (@ARGV >= 2 && $ARGV[0] eq "-f") {
+    open(my $fh, "<", $ARGV[1]) or die "tex-make: $ARGV[1]: $!\n";
+    chomp(my @lines = <$fh>);
+    close($fh);
+
+    # A transcript carries no exit status, and one is only ever handed over to
+    # find out why a build broke, so this always reports as a failure.
+    report(\@lines, parse(@lines));
+    exit 1;
+}
+
+die "usage: tex-make <command...> | tex-make -f <transcript>\n" unless @ARGV;
+
+my $pid = open(my $out, "-|");
+die "tex-make: fork failed: $!\n" unless defined $pid;
+unless ($pid) {
+    open(STDERR, ">&", \*STDOUT);
+    no warnings "exec";   # the failure is reported below, more legibly
+    exec { $ARGV[0] } @ARGV;
+    print "tex-make: $ARGV[0]: $!\n";
+    exit 127;
+}
+
+chomp(my @lines = <$out>);
+close($out);
+
+my $status = $? >> 8;
+$status = 128 + ($? & 127) if $? & 127;
+exit 0 unless $status;
+
+report(\@lines, parse(@lines));
+exit $status;
