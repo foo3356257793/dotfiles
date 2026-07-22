@@ -78,6 +78,8 @@ local options = {
   relativenumber = false,
 
   errorbells = false,
+
+  mouse = "",
 }
 
 for k, v in pairs(options) do
@@ -249,15 +251,15 @@ map("n", "<leader>r", [[:%s/\v\s+$//<CR>``:noh<CR>]], opts)
 map("n", "_", "<C-w>s")
 map("n", "|", "<C-w>v")
 
--- window navigation
-map("n", "<C-j>", "<C-w>j")
-map("n", "<C-k>", "<C-w>k")
-map("n", "<C-h>", "<C-w>h")
-map("n", "<C-l>", "<C-w>l")
-map("i", "<C-j>", "<Esc><C-j>")
-map("i", "<C-k>", "<Esc><C-k>")
-map("i", "<C-h>", "<Esc><C-h>")
-map("i", "<C-l>", "<Esc><C-l>")
+-- window navigation; falls through to the tmux pane that way when there is no
+-- split left to move to. Terminal mode leaves the terminal first.
+for _, key in ipairs({ "h", "j", "k", "l" }) do
+  local nav = ([[<Cmd>lua require("tmux_nav").nav("%s")<CR>]]):format(key)
+  map("n", "<C-" .. key .. ">", nav, opts)
+  map("i", "<C-" .. key .. ">", "<Esc>" .. nav, opts)
+  map("t", "<C-" .. key .. ">", [[<C-\><C-n>]] .. nav, opts)
+end
+map("n", [[<C-\>]], [[<Cmd>lua require("tmux_nav").prev()<CR>]], opts)
 
 -- paste with auto-indent; C- variants bypass it
 map("n", "p",     "p=`]")
@@ -283,16 +285,14 @@ map("n", "<S-Tab>",   ":tabprevious<CR>", opts)
 map("n", "-",         ":bp<CR>",      opts)
 map("n", "+",         ":bn<CR>",      opts)
 
--- terminal
+-- terminal (C-hjkl are mapped with the other window navigation, above)
 map("t", "<C-s>", [[<C-\><C-n><C-w>N]])
-map("t", "<C-j>", [[<C-\><C-n><C-w>j]])
-map("t", "<C-k>", [[<C-\><C-n><C-w>k]])
-map("t", "<C-h>", [[<C-\><C-n><C-w>h]])
-map("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 
--- file-based clipboard (works across tmux panes)
-map("v", "<leader>y", [["cy:call writefile(getreg('c',1,1),'/home/foo/.clipboard.txt')<CR>]])
-map("n", "<leader>p", [[:let @c = system('cat /home/foo/.clipboard.txt')<CR>"cp]])
+-- send to the REPL in the tmux pane; required lazily because machine.lua is
+-- what puts ~/dotfiles on package.path, and it loads at the end of this file
+map("v", "<leader>s", [[:<C-u>lua require("tmux").send_selection()<CR>]], opts)
+map("n", "<leader>s", [[<Cmd>lua require("tmux").send_region()<CR>]], opts)
+map("n", "<leader>e", [[<Cmd>lua require("tmux").errors()<CR>]], opts)
 
 -- time logger
 map("n", "<leader>l",
@@ -352,10 +352,60 @@ map("n", "<leader>gc", function() vim.cmd("Git commit") end, { desc = "Git commi
 map("n", "<leader>gp", function() vim.cmd("Git push") end,   { desc = "Git push"   })
 
 -- ============================================================================
--- TMUX TARGETS
+-- TMUX
 -- ============================================================================
 
+-- Where require("tmux") looks for the REPL, before it caches a pane id.
 vim.g.tmux_target = "right"
+
+vim.api.nvim_create_user_command("TmuxTarget", function(args)
+  require("tmux").retarget(args.args)
+end, { nargs = "?", desc = "Re-resolve the REPL pane, optionally from a new target" })
+
+-- Publish this instance to tmux, so the panes around it can find it:
+--   @is_vim       "this pane is running vim" (tmux.conf, tmux_nav.lua)
+--   @nvim_server  this instance's server socket, so a sibling pane can open
+--                 files in here (the `v` function and $EDITOR wrapper in zshrc)
+--
+-- Both are cleared on suspend as well as exit: a suspended nvim's pane is a
+-- shell, and its server will not answer.
+--
+-- Both are pane-scoped, and every call targets $TMUX_PANE explicitly.
+--
+-- Pane-scoped because a window can hold more than one nvim -- a $EDITOR
+-- fallback opening in the shell pane, say. On a window-scoped option the
+-- newcomer overwrites the socket, and then unsets it outright when it exits,
+-- orphaning the nvim that is still running next door. Per-pane, each instance
+-- owns exactly its own entry.
+--
+-- Explicitly targeted because without -t, tmux applies the option to the
+-- session's *current* window rather than to the caller's, so an nvim started
+-- in a background window would mark the wrong pane entirely.
+local tmux_grp = augroup("TmuxIntegration", { clear = true })
+
+local function publish(set)
+  if not vim.env.TMUX then return end
+  local pane = vim.env.TMUX_PANE
+
+  if set then
+    vim.fn.system({ "tmux", "set-option", "-p", "-t", pane, "@is_vim", "yes" })
+    vim.fn.system({ "tmux", "set-option", "-p", "-t", pane,
+                    "@nvim_server", vim.v.servername })
+  else
+    vim.fn.system({ "tmux", "set-option", "-p", "-t", pane, "-u", "@is_vim" })
+    vim.fn.system({ "tmux", "set-option", "-p", "-t", pane, "-u", "@nvim_server" })
+  end
+end
+
+autocmd({ "VimEnter", "VimResume" }, {
+  group    = tmux_grp,
+  callback = function() publish(true) end,
+})
+
+autocmd({ "VimLeave", "VimSuspend" }, {
+  group    = tmux_grp,
+  callback = function() publish(false) end,
+})
 
 -- ============================================================================
 -- BOOKMARKS

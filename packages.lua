@@ -10,27 +10,18 @@ vim.pack.add({
   github("tpope/vim-fugitive"),
   github("godlygeek/tabular"),
   github("lervag/vimtex"),
-  github("kien/rainbow_parentheses.vim"),
+  github("HiPhish/rainbow-delimiters.nvim"),
   github("christoomey/vim-tmux-navigator"),
   github("nvim-lua/plenary.nvim"),
   github("nvim-telescope/telescope.nvim"),
   github("folke/zen-mode.nvim"),
+  github("stevearc/conform.nvim"),
 
   {
-    src     = github("averms/black-nvim"),
-    version = "master",
+    src     = github("nvim-treesitter/nvim-treesitter"),
+    version = "main",
   },
 })
-
--- ============================================================================
--- TMUX NAVIGATOR
--- ============================================================================
-
-vim.keymap.set("n", "<C-h>",  "<cmd>TmuxNavigateLeft<cr>",     { silent = true, desc = "Navigate left"     })
-vim.keymap.set("n", "<C-j>",  "<cmd>TmuxNavigateDown<cr>",     { silent = true, desc = "Navigate down"     })
-vim.keymap.set("n", "<C-k>",  "<cmd>TmuxNavigateUp<cr>",       { silent = true, desc = "Navigate up"       })
-vim.keymap.set("n", "<C-l>",  "<cmd>TmuxNavigateRight<cr>",    { silent = true, desc = "Navigate right"    })
-vim.keymap.set("n", "<C-\\>", "<cmd>TmuxNavigatePrevious<cr>", { silent = true, desc = "Navigate previous" })
 
 -- ============================================================================
 -- RAINBOW DELIMITERS

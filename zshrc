@@ -93,8 +93,42 @@ function hardrm {
 
 # # use neovim by default
 if command -v nvim >/dev/null 2>&1; then
-    export VISUAL="nvim"
-    export EDITOR="nvim"
     alias vim="nvim"
     alias vimdiff="nvim -d"
+
+    # Prefer the wrapper, which reuses the nvim already open in this tmux
+    # window; it falls back to a plain nvim on its own, but the wrapper itself
+    # is not installed on every machine.
+    if command -v nvim-remote-edit >/dev/null 2>&1; then
+        export VISUAL="nvim-remote-edit"
+        export EDITOR="nvim-remote-edit"
+    else
+        export VISUAL="nvim"
+        export EDITOR="nvim"
+    fi
+
+    # Open files in this window's nvim. Unlike $EDITOR this does not wait --
+    # you are handing a file off to the editor, not blocking on an edit.
+    v() {
+        # Outside tmux, tmux still answers from the default session's current
+        # window, so without the $TMUX test this would silently open files in
+        # an nvim that is not on screen. Each nvim publishes onto its own pane,
+        # so find the first pane in this window that has one.
+        local pane sock
+        if [[ -n $TMUX ]]; then
+            local found=$(tmux list-panes -t "$TMUX_PANE" \
+                              -F '#{pane_id} #{@nvim_server}' 2>/dev/null \
+                          | awk -v me="$TMUX_PANE" 'NF > 1 && $1 != me { print; exit }')
+            pane=${found%% *}
+            sock=${found##* }
+        fi
+
+        if [[ -z $sock || ! -S $sock ]]; then
+            command nvim "$@"
+            return
+        fi
+
+        command nvim --server "$sock" --remote "$@"
+        tmux select-pane -t "$pane"
+    }
 fi
