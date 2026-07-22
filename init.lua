@@ -159,6 +159,15 @@ local autocmd = vim.api.nvim_create_autocmd
 
 local trailing = augroup("TrailingWhitespace", { clear = true })
 local line_ret  = augroup("LineReturn",         { clear = true })
+local fmtopts   = augroup("FormatOptions",      { clear = true })
+
+-- Built-in ftplugins re-add "o"/"r" per filetype; strip them everywhere so
+-- o/O (and Enter) never continue a comment leader.
+autocmd("FileType", {
+  group    = fmtopts,
+  pattern  = "*",
+  callback = function() vim.opt_local.formatoptions:remove({ "r", "o" }) end,
+})
 
 autocmd("BufReadPost", {
   group = line_ret,
