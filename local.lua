@@ -7,3 +7,4 @@ package.path = package.path .. ";" .. vim.fn.expand("$HOME/dotfiles/") .. "?.lua
 require("telescope_bindings")
 require("tmux_fix")
 require("packages")
+require("lsp")

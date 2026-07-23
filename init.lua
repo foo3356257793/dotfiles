@@ -325,6 +325,16 @@ vim.keymap.set("i", "<Tab>", function()
   local col  = vim.fn.col(".") - 1
   local line = vim.fn.getline(".")
   if col == 0 or line:sub(1, col):match("^%s*$") then return "<Tab>" end
+  -- With a language server attached, ask it rather than scanning the buffer
+  -- for keywords: vim.lsp points 'omnifunc' at itself on attach, so <C-x><C-o>
+  -- is the LSP popup.  Falls back to keyword completion wherever there is no
+  -- server -- sage, markdown, or a machine missing that server's binary.
+  --
+  -- In tex this reaches vimtex instead, which sets 'omnifunc' itself and so
+  -- keeps it; that is the better completion there (citations, labels, \ref).
+  if next(vim.lsp.get_clients({ bufnr = 0, method = "textDocument/completion" })) then
+    return "<C-x><C-o>"
+  end
   return "<C-p>"
 end, { expr = true, noremap = true, silent = true })
 
