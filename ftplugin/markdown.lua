@@ -1,5 +1,9 @@
 local map = vim.keymap.set
 
+-- The bundled runtime ftplugin sources after this one and forces ts/sts/sw=4
+-- unless this is off; without it the settings below are silently overwritten.
+vim.g.markdown_recommended_style = 0
+
 local bo = vim.bo
 bo.softtabstop = 2
 bo.shiftwidth  = 2
@@ -21,34 +25,20 @@ hl(0, "@markup.heading.4.markdown", { bold = true, bg = 4, fg = 0 })
 hl(0, "@markup.heading.5.markdown", { bold = true, bg = 11, fg = 'none' })
 hl(0, "@markup.heading.6.markdown", { bold = true, bg = 1, fg = 'none' })
 
--- matchadd() is window-local, so we need to re-apply whenever this buffer
--- appears in a new window (e.g. after a split).
-local function apply_header_matches()
-    -- Clear old matches to protect editor performance
-    for _, match in ipairs(vim.fn.getmatches()) do
-        if match.group:find("^MarkdownH") then
-            vim.fn.matchdelete(match.id)
-        end
+-- Clear old matches to protect editor performance
+for _, match in ipairs(vim.fn.getmatches()) do
+    if match.group:find("^MarkdownH") then
+        vim.fn.matchdelete(match.id)
     end
-    -- Explicitly assign priority 100 so it overrides TreeSitter's foreground rules
-    vim.fn.matchadd("MarkdownH1", [[^#\s.*$]], 100)
-    vim.fn.matchadd("MarkdownH2", [[^##\s.*$]], 100)
-    vim.fn.matchadd("MarkdownH3", [[^###\s.*$]], 100)
-    vim.fn.matchadd("MarkdownH4", [[^####\s.*$]], 100)
-    vim.fn.matchadd("MarkdownH5", [[^#####\s.*$]], 100)
-    vim.fn.matchadd("MarkdownH6", [[^######\s.*$]], 100)
 end
 
-apply_header_matches()
-
--- BufWinEnter alone isn't enough: it doesn't fire for `:split` without args
--- when the buffer doesn't change. WinEnter catches the cursor entering the
--- newly-created split.
-vim.api.nvim_create_autocmd({"BufWinEnter", "WinEnter"}, {
-    buffer = vim.api.nvim_get_current_buf(),
-    callback = apply_header_matches,
-    desc = "Re-apply header match highlights in each new window",
-})
+-- Explicitly assign priority 100 so it overrides TreeSitter's foreground rules
+vim.fn.matchadd("MarkdownH1", [[^#\s.*$]], 100)
+vim.fn.matchadd("MarkdownH2", [[^##\s.*$]], 100)
+vim.fn.matchadd("MarkdownH3", [[^###\s.*$]], 100)
+vim.fn.matchadd("MarkdownH4", [[^####\s.*$]], 100)
+vim.fn.matchadd("MarkdownH5", [[^#####\s.*$]], 100)
+vim.fn.matchadd("MarkdownH6", [[^######\s.*$]], 100)
 
 local b = { buffer = true }
 map("n", "go",         "o* ", b)
