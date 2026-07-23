@@ -1,13 +1,15 @@
-TEX = xelatex
-
 NAME = default
 
 all: $(NAME).pdf
 
+# tex-make streams latexmk's output through and, on failure, reprints the one
+# error that matters at the bottom. -file-line-error is what lets it name the
+# file and line; -interaction=nonstopmode keeps a broken build from blocking on
+# TeX's "?" prompt instead of failing. See the tex-make script for the details.
 %.pdf: %.tex
-	$(TEX) $+
+	tex-make latexmk -xelatex -file-line-error -interaction=nonstopmode $+
 
 clean:
-	rm -rf $(NAME).pdf $(NAME).log $(NAME).aux
+	latexmk -C
 
-.PHONY: clean
+.PHONY: all clean
