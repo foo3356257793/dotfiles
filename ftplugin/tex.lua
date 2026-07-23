@@ -7,13 +7,6 @@ bo.shiftwidth  = 2
 bo.softtabstop = 2
 bo.autoindent  = true
 
--- tex-make runs the Makefile and reduces latexmk's output to one line per
--- error; see the script and latexmkrc for how the engine is made to cooperate.
--- The bare %m is deliberate: it catches errors that carry no file, and the raw
--- tail tex-make falls back to, so neither can vanish out of the quickfix list.
-bo.makeprg     = "tex-make make"
-bo.errorformat = "%f:%l: %m,%m"
-
 local b = { buffer = true }
 map("n", "<leader>a",       "{gq}<C-o><C-o>", b)
 map("n", [[<localleader>"]], [[viW<Esc>a''<Esc>hBi``<Esc>lEl]], b)

@@ -6,8 +6,6 @@ bo.shiftwidth  = 2
 bo.expandtab   = true
 bo.autoindent  = true
 bo.textwidth   = 80
-bo.makeprg     = "perl -c % $*"
-bo.errorformat = "%f:%l:%m"
 bo.autowrite   = true
 vim.g.perl_fold = 1
 

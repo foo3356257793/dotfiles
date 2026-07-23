@@ -125,8 +125,8 @@ vim.cmd([[
 -- .tex is shared by three formats, so nvim sniffs the contents and falls back
 -- to plaintex when nothing says otherwise. That catches every \input-ed piece
 -- of a paper -- a sections/*.tex holding no \documentclass is not recognisably
--- LaTeX -- leaving those buffers without ftplugin/tex.lua, so no makeprg and
--- none of the tex mappings. Nothing here is ever plain TeX or ConTeXt.
+-- LaTeX -- leaving those buffers without ftplugin/tex.lua, so none of the tex
+-- mappings. Nothing here is ever plain TeX or ConTeXt.
 vim.g.tex_flavor = "latex"
 
 -- ============================================================================
@@ -247,20 +247,12 @@ local opts = { noremap = true, silent = true }
 map("n", "j", "gj")
 map("n", "k", "gk")
 
--- Build through the quickfix list rather than shelling out, so errors are
--- jumpable and a clean build leaves the screen alone -- no scrollback of
--- compiler output, no "Press ENTER". Filetypes that set their own 'makeprg'
--- get that instead of make: tex goes through tex-make, perl syntax-checks.
+-- Save, then run make in the sibling tmux pane, so the build's output stays
+-- visible alongside the editor rather than blocking nvim or scrolling past.
+-- tmux.send resolves and caches the target pane and warns when there is none.
 map("n", "m", function()
   vim.cmd("write")
-  vim.cmd("make!")   -- the bang defers the jump until we know there is one
-  local errs = vim.tbl_filter(function(e) return e.valid == 1 end, vim.fn.getqflist())
-  if #errs > 0 then
-    vim.cmd("copen")
-    pcall(vim.cmd, "cfirst")   -- entries without a real file cannot be jumped to
-  else
-    vim.cmd("cclose")
-  end
+  require("tmux").send("make")
 end, opts)
 map("n", "Q", ":w<CR>", opts)
 map("n", "Y", "y$")
