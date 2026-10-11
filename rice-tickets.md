@@ -41,7 +41,8 @@ System: Ubuntu 26.04, GNOME 50.1, Wayland. Plasma is also installed.
 ## Open
 
 - [ ] **R9 Loose ends**
-  - Nothing in `rice/` or the `zshrc` alias is committed yet.
+  - Emacs changes and `neon-purple-theme.el` in this repo are still
+    uncommitted (not part of the rice commits).
   - `gtk.css` at the repo root is the old GTK3 file, superseded by
     `rice/gtk-3.0/gtk.css`; delete or keep.
   - GNOME Text Editor's Neon scheme was never load-tested; check it once.
