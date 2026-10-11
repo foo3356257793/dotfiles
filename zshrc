@@ -54,6 +54,9 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
+# nicer ls, if eza is installed
+command -v eza > /dev/null && alias ls='eza'
+
 # don't remove files by accident
 alias rm='safedelete'
 function safedelete {

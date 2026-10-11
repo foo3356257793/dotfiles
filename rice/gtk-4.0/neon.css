@@ -1,0 +1,73 @@
+/* Neon palette as GTK named colours.
+ * Mirrors the "Neon" GNOME Terminal profile and dotfiles/neon-purple-theme.el.
+ * Imported by gtk-4.0/gtk.css and gtk-3.0/gtk.css (adw-gtk3 reads these names).
+ */
+
+@define-color neon_bg        #3A1160;
+@define-color neon_bg_dim    #2A0C48;
+@define-color neon_bg_mid    #320E54;
+@define-color neon_bg_alt    #4E1980;
+@define-color neon_bg_region #5A2A8C;
+@define-color neon_fg        #FFFFFF;
+@define-color neon_pink      #FE53BB;
+@define-color neon_green     #23EE15;
+@define-color neon_yellow    #FFE700;
+@define-color neon_orange    #FF6B35;
+@define-color neon_cyan      #00FFCA;
+
+@define-color accent_bg_color @neon_pink;
+@define-color accent_fg_color @neon_bg_dim;
+@define-color accent_color    @neon_pink;
+
+@define-color destructive_bg_color @neon_orange;
+@define-color destructive_fg_color @neon_bg_dim;
+@define-color destructive_color    @neon_orange;
+@define-color error_bg_color       @neon_orange;
+@define-color error_fg_color       @neon_bg_dim;
+@define-color error_color          @neon_orange;
+@define-color success_bg_color     @neon_green;
+@define-color success_fg_color     @neon_bg_dim;
+@define-color success_color        @neon_green;
+@define-color warning_bg_color     @neon_yellow;
+@define-color warning_fg_color     @neon_bg_dim;
+@define-color warning_color        @neon_yellow;
+
+@define-color window_bg_color @neon_bg;
+@define-color window_fg_color @neon_fg;
+@define-color view_bg_color   @neon_bg_dim;
+@define-color view_fg_color   @neon_fg;
+
+@define-color headerbar_bg_color           @neon_bg;
+@define-color headerbar_fg_color           @neon_fg;
+@define-color headerbar_border_color       @neon_fg;
+@define-color headerbar_backdrop_color     @neon_bg;
+@define-color headerbar_shade_color        rgba(0, 0, 0, 0.36);
+@define-color headerbar_darker_shade_color rgba(0, 0, 0, 0.9);
+
+@define-color sidebar_bg_color       @neon_bg_mid;
+@define-color sidebar_fg_color       @neon_fg;
+@define-color sidebar_backdrop_color @neon_bg_mid;
+@define-color sidebar_shade_color    rgba(0, 0, 0, 0.25);
+@define-color sidebar_border_color   rgba(0, 0, 0, 0.36);
+
+@define-color secondary_sidebar_bg_color       @neon_bg;
+@define-color secondary_sidebar_fg_color       @neon_fg;
+@define-color secondary_sidebar_backdrop_color @neon_bg;
+@define-color secondary_sidebar_shade_color    rgba(0, 0, 0, 0.25);
+@define-color secondary_sidebar_border_color   rgba(0, 0, 0, 0.36);
+
+@define-color card_bg_color    rgba(255, 255, 255, 0.08);
+@define-color card_fg_color    @neon_fg;
+@define-color card_shade_color rgba(0, 0, 0, 0.36);
+
+@define-color dialog_bg_color     @neon_bg_alt;
+@define-color dialog_fg_color     @neon_fg;
+@define-color popover_bg_color    @neon_bg_alt;
+@define-color popover_fg_color    @neon_fg;
+@define-color popover_shade_color rgba(0, 0, 0, 0.25);
+
+@define-color thumbnail_bg_color @neon_bg_alt;
+@define-color thumbnail_fg_color @neon_fg;
+
+@define-color shade_color             rgba(0, 0, 0, 0.25);
+@define-color scrollbar_outline_color rgba(0, 0, 0, 0.95);
