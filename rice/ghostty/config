@@ -26,7 +26,7 @@ palette = 13=#f000ff
 palette = 14=#00ffca
 palette = 15=#ffffff
 
-background-opacity = 0.85
+background-opacity = 0.6
 
 window-decoration = none
 window-padding-x = 8

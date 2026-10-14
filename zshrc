@@ -42,6 +42,9 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ffb8d1"
 
 source $ZSH/oh-my-zsh.sh
 
+# starship prompt, if installed (otherwise the PROMPT above is used)
+command -v starship > /dev/null && eval "$(starship init zsh)"
+
 export ZSH_COLORIZE_STYLE="colorful"
 
 open() { xdg-open </dev/null &>/dev/null "$@" & }
